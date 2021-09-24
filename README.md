@@ -1,10 +1,10 @@
-# Website quản lý quán cà phê
+# Hệ thống quản lý quán cà phê
 
-## [ 👉 Hệ thống](https://hphudev.github.io/coffeeshopmanagement/)
+## [ 👉 Truy cập hệ thống](https://hphudev.github.io/coffeeshopmanagement/)
 
 ## Giới thiệu
-
-## Usecase
-### Lược đồ usecase tổng quát
-
+Hệ thống quản lý quán cà phê của chúng tôi sẽ giúp bạn giải quyết bài quản lý kinh doanh một cách hiệu quả.
+Với chiến lược đáp ứng thực tế cho người dùng, các tính năng của hệ thống sẽ thể hiện rõ ràng các vai trò mà nó vốn có. Ngoài ra, để tránh tình trạng khó sử dụng, đội ngũ thiết kế của chúng tôi đã áp dụng các phương pháp bố trí, màu sắc một cách phù hợp nhất với khách hàng. Mục tiêu mà chúng tôi là thích ứng với bất kỳ loại hình kinh doanh quán cà phê nào. Hướng mà chúng tôi xây dựng chính là chiến lược cho các chuỗi kinh doanh lớn. Tuy nhiên, nếu loại hình kinh doanh của bạn là vừa và nhỏ thì chúng tôi vẫn đáp ứng được.
+## Lược đồ tính năng dành cho người dùng
+### Lược đồ Chủ sở hữu (người đứng đầu)
 ![Lược đồ usecase tổng quát](./docs/usecase/master.svg)
