@@ -8,3 +8,11 @@ Với chiến lược đáp ứng thực tế cho người dùng, các tính nă
 ## Lược đồ tính năng dành cho người dùng
 ### Lược đồ dành cho chủ sở hữu (người đứng đầu)
 ![Lược đồ usecase tổng quát](./docs/usecase/master.svg)
+## Tác giả
+  - [Leader] *Lê Hoàng Phú - hphudev*
+  - [Developer] *Tống Đức Dũng -  ducdung-tong*
+  - [Developer] *Mai Công Danh - congdanh1252*
+  - [Developer] *Trương Vĩnh Thái - truongvinhthai2506*
+## Thông tin thêm
+  - **Giảng viên hướng dẫn:** Ths. *Huỳnh Hồ Thị Mộng Trinh*
+  - Khoa Công nghệ Phần mềm - Trường Đại học Công nghệ Thông tin (ĐHQG - TPHCM)
