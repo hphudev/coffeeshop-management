@@ -16,7 +16,7 @@ Với chiến lược đáp ứng thực tế cho người dùng, các tính nă
 ![Lược đồ usecase tổng quát](./docs/usecase/cashier.svg)
 ### Lược đồ hệ thống quản lý bàn và tiếp nhận đơn đặt bàn
 ![Lược đồ usecase tổng quát](./docs/usecase/room_table.svg)
-### Lược đồ Hệ thống quản lý nhân sự
+### Lược đồ hệ thống quản lý nhân sự
 ![Lược đồ usecase tổng quát](./docs/usecase/manage_staff.svg)
 ## Tác giả
   - [Leader] *Lê Hoàng Phú - hphudev*
