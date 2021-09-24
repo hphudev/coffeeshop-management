@@ -8,10 +8,14 @@ Với chiến lược đáp ứng thực tế cho người dùng, các tính nă
 ## Lược đồ tính năng dành cho người dùng
 ### Lược đồ dành cho chủ sở hữu (người đứng đầu)
 ![Lược đồ usecase tổng quát](./docs/usecase/master.svg)
-### Lược đồ dành cho nhân viên phục vụ
+### Lược đồ hệ thống xử lý đơn món từ khách hàng của phục vụ
 ![Lược đồ usecase tổng quát](./docs/usecase/serve.svg)
-### Lược đồ dành cho nhà bếp
+### Lược đồ hệ thống xử lý tiếp nhận order của nhà bếp
 ![Lược đồ usecase tổng quát](./docs/usecase/kitchen.svg)
+### Lược đồ hệ thống dịch vụ thanh toán
+![Lược đồ usecase tổng quát](./docs/usecase/cashier.svg)
+### Lược đồ hệ thống quản lý bàn và tiếp nhận đơn đặt bàn
+![Lược đồ usecase tổng quát](./docs/usecase/room_table.svg)
 ## Tác giả
   - [Leader] *Lê Hoàng Phú - hphudev*
   - [Developer] *Tống Đức Dũng -  ducdung-tong*
