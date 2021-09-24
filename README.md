@@ -7,4 +7,4 @@
 ## Usecase
 ### Lược đồ usecase tổng quát
 
-![Lược đồ usecase tổng quát](./usecase/master.svg)
+![Lược đồ usecase tổng quát](./docs/usecase/master.svg)
