@@ -18,6 +18,14 @@ Với chiến lược đáp ứng thực tế cho người dùng, các tính nă
 ![Lược đồ usecase tổng quát](./docs/usecase/room_table.svg)
 ### Lược đồ hệ thống quản lý nhân sự
 ![Lược đồ usecase tổng quát](./docs/usecase/manage_staff.svg)
+### Lược đồ hệ thống quản lý tài chính
+![Lược đồ usecase tổng quát](./docs/usecase/financial.svg)
+### Lược đồ hệ thống quản lý kho hàng
+![Lược đồ usecase tổng quát](./docs/usecase/warehouse.svg)
+### Lược đồ hệ thống quản lý khách hàng
+![Lược đồ usecase tổng quát](./docs/usecase/manage_customer.svg)
+### Lược đồ hệ thống quản lý thực đơn
+![Lược đồ usecase tổng quát](./docs/usecase/manage_item.svg)
 ## Tác giả
   - [Leader] *Lê Hoàng Phú - hphudev*
   - [Developer] *Tống Đức Dũng -  ducdung-tong*
