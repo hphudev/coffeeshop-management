@@ -1,19 +1,5 @@
 # Hệ thống quản lý quán cà phê
 
-
-# Table of Contents
-1. [Examplce](#example)
-2. [Example2](#example2)
-3. [Third Example](#third-example)
-4. [Fourth Example](#fourth-examplehttpwwwfourthexamplecom)
-
-
-## Example
-## Example2
-## Third Example
-## [Fourth Example](http://www.fourthexample.com) 
-
-
 ## [ 👉 Truy cập hệ thống](https://hphudev.github.io/coffeeshopmanagement/)
 ## [Bảng phân tích Use Case](https://online.visual-paradigm.com/community/share/usecase-vpd-p4hv9ofi3)
 ## Giới thiệu
