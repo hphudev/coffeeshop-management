@@ -1,0 +1,6 @@
+div{
+    margin: 0;
+    box-sizing: border-box;
+    border-collapse: collapse;
+    /* border: 2px solid rgb(255, 0, 0);    */
+}
