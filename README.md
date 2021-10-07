@@ -1,7 +1,7 @@
 # Hệ thống quản lý quán cà phê
 
 ## [ 👉 Truy cập hệ thống](https://hphudev.github.io/coffeeshopmanagement/)
-## [ 👉 Bảng phân công nhiệm vụ](https://docs.google.com/spreadsheets/d/1psbGGun83JsakSIM-gpP8nIIP9mZv5U0/edit?fbclid=IwAR1gj6W3gNi1wb4QwRkokk77b7XSIgp_PLL6XxfC5mASWNKXgsinehr9vF0#gid=808072217)
+## [ 👉 Phân công nhiệm vụ (cập nhật thường xuyên)](https://docs.google.com/spreadsheets/d/1psbGGun83JsakSIM-gpP8nIIP9mZv5U0/edit?fbclid=IwAR1gj6W3gNi1wb4QwRkokk77b7XSIgp_PLL6XxfC5mASWNKXgsinehr9vF0#gid=808072217)
 ## [ 👉 Bảng vẽ các diagram](https://drive.google.com/drive/folders/1iC2xoFvRN-WQ5mUu8ZjJn1vEpBAjeAEL?usp=sharing)
 ## [ 👉 Bảng kết quả nghiệp vụ, biểu mẫu và use case](https://drive.google.com/drive/folders/13W19SFg6E-EZxEFMayFxOCbp06rLV28g?usp=sharing)
 ## [ 👉 Tài liệu báo cáo](https://drive.google.com/drive/folders/1Tyh59_adWCVteFblncSQSIfa9AZRlZ8z?usp=sharing)
