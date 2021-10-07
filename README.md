@@ -3,7 +3,7 @@
 ## [ 👉 Truy cập hệ thống](https://hphudev.github.io/coffeeshopmanagement/)
 ## [ 👉 Bảng phân công nhiệm vụ](https://docs.google.com/spreadsheets/d/1psbGGun83JsakSIM-gpP8nIIP9mZv5U0/edit?fbclid=IwAR1gj6W3gNi1wb4QwRkokk77b7XSIgp_PLL6XxfC5mASWNKXgsinehr9vF0#gid=808072217)
 ## [ 👉 Bảng phân tích Use Case](https://drive.google.com/drive/folders/1iC2xoFvRN-WQ5mUu8ZjJn1vEpBAjeAEL?usp=sharing)
-## [ 👉 Bảng làm việc giai đoạn phân tích 1](https://drive.google.com/drive/folders/13W19SFg6E-EZxEFMayFxOCbp06rLV28g?usp=sharing)
+## [ 👉 Bảng kết quả nghiệp vụ, biểu mẫu và use case](https://drive.google.com/drive/folders/13W19SFg6E-EZxEFMayFxOCbp06rLV28g?usp=sharing)
 ## [ 👉 Tài liệu báo cáo](https://drive.google.com/drive/folders/1Tyh59_adWCVteFblncSQSIfa9AZRlZ8z?usp=sharing)
 ## Giới thiệu
 Hệ thống quản lý quán cà phê của chúng tôi sẽ giúp bạn giải quyết bài toán quản lý kinh doanh một cách hiệu quả.
