@@ -19,7 +19,13 @@
             border: 2px solid red;
             background-color: red;
             overflow: hidden;
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;
         }
+        body::-webkit-scrollbar{
+          display: none;
+        }
+
     </style>
 
 </head>
@@ -95,7 +101,7 @@
               </ul>
             </div>
           </div>
-        <div class="main-panel">
+        <div class="main-panel overflow-hidden">
              <!-- Navbar -->
             <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
                 <div class="container-fluid">
@@ -163,7 +169,7 @@
             </nav>
             <!-- End Navbar -->
             <div class="scrollbar scrollbar-primary" style="height: 100%; width: 100%;">
-                <iframe src="tem.html" frameborder="" name="frameMain" height="100%" width="100%" style=" overflow: hidden;"></iframe>
+                <iframe class="overflow-hidden" src="tem.html" frameborder="" name="frameMain" height="100%" width="100%" style=" overflow: hidden;"></iframe>
             </div>
         </div>
         
