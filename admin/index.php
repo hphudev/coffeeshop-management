@@ -14,8 +14,8 @@
 
     <style>
         body {
-            border: 2px solid wheat;
-            background-color: wheat;
+            border: 2px solid white;
+            background-color: white;
             overflow: hidden;
             -ms-overflow-style: none;
             /* IE and Edge */
