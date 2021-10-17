@@ -4,19 +4,19 @@ class Topping {
     private $MaTopping;
 
     function set_MaMon($ma) {
-        $this->$MaMon = $ma;
+        $this->MaMon = $ma;
     }
 
     function get_MaMon() {
-        return $this->$MaMon;
+        return $this->MaMon;
     }
 
     function set_MaTopping($ma) {
-        $this->$MaTopping = $ma;
+        $this->MaTopping = $ma;
     }
 
     function get_MaTopping() {
-        return $this->$MaTopping;
+        return $this->MaTopping;
     }
 }
 ?>
