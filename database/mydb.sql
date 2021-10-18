@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 16, 2021 lúc 07:05 PM
+-- Thời gian đã tạo: Th10 18, 2021 lúc 04:35 AM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 7.4.23
 
@@ -89,13 +89,13 @@ CREATE TABLE `ct_kichthuocmon` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `ct_nguyenvatlieu`
+-- Cấu trúc bảng cho bảng `ct_mon`
 --
 
-CREATE TABLE `ct_nguyenvatlieu` (
-  `MaMon` varchar(10) NOT NULL,
-  `MaNVL` varchar(10) NOT NULL,
-  `SoLuong` int(11) NOT NULL
+CREATE TABLE `ct_mon` (
+  `MaMon` varchar(10) CHARACTER SET utf8 NOT NULL,
+  `TenKichThuoc` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `DonGia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -255,11 +255,8 @@ CREATE TABLE `mon` (
   `MaMon` varchar(10) NOT NULL,
   `TenMon` varchar(50) NOT NULL,
   `MaLoaiMon` varchar(10) NOT NULL,
-  `MaKTM` varchar(10) NOT NULL,
   `MaTT` varchar(10) NOT NULL,
   `MaDVT` varchar(10) NOT NULL,
-  `DonGia` int(11) NOT NULL,
-  `MaChiTietNVL` varchar(10) NOT NULL,
   `HinhAnh` varchar(200) NOT NULL,
   `MoTa` varchar(200) NOT NULL,
   `GhiChu` varchar(100) NOT NULL,
@@ -397,6 +394,12 @@ ALTER TABLE `ctkm_phantram`
 --
 ALTER TABLE `ct_kichthuocmon`
   ADD PRIMARY KEY (`TenDonVi`,`MaKTM`);
+
+--
+-- Chỉ mục cho bảng `ct_mon`
+--
+ALTER TABLE `ct_mon`
+  ADD PRIMARY KEY (`MaMon`,`TenKichThuoc`);
 
 --
 -- Chỉ mục cho bảng `donvitinh`
