@@ -1,16 +1,32 @@
 <?php
+// include '../models/ChucVu.php';
 class NhanVien
 {
     private $MaNV;
     private $HoTenDem;
     private $Ten;
     private $NgaySinh;
+    private $GioiTinh;
     private $CMND;
     private $SDT;
     private $DiaChi;
     private $NgayVaoLam;
     private $MaCV;
     private $Luong;
+
+    public function __construct($row)
+    {
+        $this->MaNV = $row['MaNV'];
+        $this->HoTenDem = $row['HoTen'];
+        $this->Ten = $row['HoTen'];
+        $this->NgaySinh = $row['NgaySinh'];
+        $this->GioiTinh = $row['GioiTinh'];
+        $this->CMND = $row['CMND'];
+        $this->DiaChi = $row['DiaChi'];
+        $this->NgayVaoLam = $row['NgayVaoLam'];
+        $this->MaCV = $row['MaCV'];
+        $this->Luong = $row['Luong'];
+    }
 
     function set_MaNV($MaNV)
     {
@@ -43,6 +59,14 @@ class NhanVien
     function get_NgaySinh()
     {
         return $this->NgaySinh;
+    }
+    function set_GioiTinh($GioiTinh)
+    {
+        $this->GioiTinh = $GioiTinh;
+    }
+    function get_GioiTinh()
+    {
+        return $this->GioiTinh;
     }
     function set_CMND($CMND)
     {
