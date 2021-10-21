@@ -178,6 +178,7 @@ CREATE TABLE `khachhang` (
   `MaKH` varchar(10) NOT NULL,
   `HoTen` varchar(150) NOT NULL,
   `SDT` int(10) NOT NULL,
+  `GioiTinh` varchar(10) NOT NULL,
   `MaLoaiTV` varchar(10) NOT NULL,
   `DiemTV` int(11) NOT NULL,
   `NgayDangKy` date NOT NULL,
@@ -291,6 +292,7 @@ CREATE TABLE `nhanvien` (
   `MaNV` varchar(10) NOT NULL,
   `HoTen` varchar(50) NOT NULL,
   `NgaySinh` date NOT NULL,
+  `GioiTinh` varchar(10) NOT NULL,
   `CMND` int(12) NOT NULL,
   `SDT` int(10) NOT NULL,
   `DiaChi` varchar(150) NOT NULL,
@@ -365,6 +367,18 @@ CREATE TABLE `tinhtrang` (
 CREATE TABLE `topping_lienket` (
   `MaMon` varchar(10) CHARACTER SET utf8 NOT NULL,
   `MaTopping` varchar(10) CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `taikhoan`
+--
+
+CREATE TABLE `taikhoan` (
+  `MaTaiKhoan` varchar(10) NOT NULL,
+  `MatKhau` varchar(20) NOT NULL,
+  `MaNV` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -490,6 +504,13 @@ ALTER TABLE `tinhtrang`
 --
 ALTER TABLE `topping_lienket`
   ADD PRIMARY KEY (`MaMon`,`MaTopping`);
+
+--
+-- Chỉ mục cho bảng `taikhoan`
+--
+ALTER TABLE `taikhoan`
+  ADD PRIMARY KEY (`MaTaiKhoan`);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
