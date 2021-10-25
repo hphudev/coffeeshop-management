@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 18, 2021 lúc 04:35 AM
+-- Thời gian đã tạo: Th10 25, 2021 lúc 09:58 AM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 7.4.23
 
@@ -258,7 +258,7 @@ CREATE TABLE `mon` (
   `MaLoaiMon` varchar(10) NOT NULL,
   `MaTT` varchar(10) NOT NULL,
   `MaDVT` varchar(10) NOT NULL,
-  `HinhAnh` varchar(200) NOT NULL,
+  `HinhAnh` blob NOT NULL,
   `MoTa` varchar(200) NOT NULL,
   `GhiChu` varchar(100) NOT NULL,
   `NgayThem` date NOT NULL,
@@ -350,6 +350,18 @@ CREATE TABLE `phieuxuat` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `taikhoan`
+--
+
+CREATE TABLE `taikhoan` (
+  `MaTaiKhoan` varchar(10) NOT NULL,
+  `MatKhau` varchar(20) NOT NULL,
+  `MaNV` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `tinhtrang`
 --
 
@@ -367,18 +379,6 @@ CREATE TABLE `tinhtrang` (
 CREATE TABLE `topping_lienket` (
   `MaMon` varchar(10) CHARACTER SET utf8 NOT NULL,
   `MaTopping` varchar(10) CHARACTER SET utf8 NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Cấu trúc bảng cho bảng `taikhoan`
---
-
-CREATE TABLE `taikhoan` (
-  `MaTaiKhoan` varchar(10) NOT NULL,
-  `MatKhau` varchar(20) NOT NULL,
-  `MaNV` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -494,6 +494,12 @@ ALTER TABLE `phieuxuat`
   ADD PRIMARY KEY (`MaPX`);
 
 --
+-- Chỉ mục cho bảng `taikhoan`
+--
+ALTER TABLE `taikhoan`
+  ADD PRIMARY KEY (`MaTaiKhoan`);
+
+--
 -- Chỉ mục cho bảng `tinhtrang`
 --
 ALTER TABLE `tinhtrang`
@@ -504,13 +510,6 @@ ALTER TABLE `tinhtrang`
 --
 ALTER TABLE `topping_lienket`
   ADD PRIMARY KEY (`MaMon`,`MaTopping`);
-
---
--- Chỉ mục cho bảng `taikhoan`
---
-ALTER TABLE `taikhoan`
-  ADD PRIMARY KEY (`MaTaiKhoan`);
-
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
