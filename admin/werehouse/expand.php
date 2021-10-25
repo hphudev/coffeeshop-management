@@ -4,53 +4,53 @@ include '../models/M_LoaiNguyenVatLieu.php';
 include '../models/M_NhaCungCap.php';
 include '../models/M_TinhTrang.php';
 
-$ModelDonViTinh = new Model_DonViTinh();
-$DonViTinhList = $ModelDonViTinh->get_AllDonViTinh();
+// $ModelDonViTinh = new Model_DonViTinh();
+// $DonViTinhList = $ModelDonViTinh->get_AllDonViTinh();
 
-function getTenDVT($DonViTinhList, $maDVT)
-{
-    for ($i = 0; $i < count($DonViTinhList); $i++) {
-        if ($DonViTinhList[$i]->get_MaDVT() == $maDVT) {
-            return $DonViTinhList[$i]->get_TenDVT();
-        }
-    }
-}
+// function getTenDVT($DonViTinhList, $maDVT)
+// {
+//     for ($i = 0; $i < count($DonViTinhList); $i++) {
+//         if ($DonViTinhList[$i]->get_MaDVT() == $maDVT) {
+//             return $DonViTinhList[$i]->get_TenDVT();
+//         }
+//     }
+// }
 
-$ModelLoaiNguyenVatLieu = new Model_LoaiNguyenVatLieu();
-$LoaiNguyenVatLieuList = $ModelLoaiNguyenVatLieu->get_AllLoaiNguyenVatLieu();
+// $ModelLoaiNguyenVatLieu = new Model_LoaiNguyenVatLieu();
+// $LoaiNguyenVatLieuList = $ModelLoaiNguyenVatLieu->get_AllLoaiNguyenVatLieu();
 
-function getTenLoaiNVL($LoaiNguyenVatLieuList, $maLNVL)
-{
-    for ($i = 0; $i < count($LoaiNguyenVatLieuList); $i++) {
-        if ($LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() == $maLNVL) {
-            return $LoaiNguyenVatLieuList[$i]->get_TenLoaiNVL();
-        }
-    }
-}
+// function getTenLoaiNVL($LoaiNguyenVatLieuList, $maLNVL)
+// {
+//     for ($i = 0; $i < count($LoaiNguyenVatLieuList); $i++) {
+//         if ($LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() == $maLNVL) {
+//             return $LoaiNguyenVatLieuList[$i]->get_TenLoaiNVL();
+//         }
+//     }
+// }
 
-$ModelNhaCungCap = new Model_NhaCungCap();
-$NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
+// $ModelNhaCungCap = new Model_NhaCungCap();
+// $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
 
-function getTenNCC($NhaCungCapList, $maNCC)
-{
-    for ($i = 0; $i < count($NhaCungCapList); $i++) {
-        if ($NhaCungCapList[$i]->get_MaNCC() == $maNCC) {
-            return $NhaCungCapList[$i]->get_TenNCC();
-        }
-    }
-}
+// function getTenNCC($NhaCungCapList, $maNCC)
+// {
+//     for ($i = 0; $i < count($NhaCungCapList); $i++) {
+//         if ($NhaCungCapList[$i]->get_MaNCC() == $maNCC) {
+//             return $NhaCungCapList[$i]->get_TenNCC();
+//         }
+//     }
+// }
 
-$ModelTinhTrang = new Model_TinhTrang();
-$TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
+// $ModelTinhTrang = new Model_TinhTrang();
+// $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
 
-function getTenTT($TinhTrangList, $maTT)
-{
-    for ($i = 0; $i < count($TinhTrangList); $i++) {
-        if ($TinhTrangList[$i]->get_MaTinhTrang() == $maTT) {
-            return $TinhTrangList[$i]->get_TenTinhTrang();
-        }
-    }
-}
+// function getTenTT($TinhTrangList, $maTT)
+// {
+//     for ($i = 0; $i < count($TinhTrangList); $i++) {
+//         if ($TinhTrangList[$i]->get_MaTinhTrang() == $maTT) {
+//             return $TinhTrangList[$i]->get_TenTinhTrang();
+//         }
+//     }
+// }
 ?>
 
 <style>
@@ -79,43 +79,20 @@ function getTenTT($TinhTrangList, $maTT)
         background-color: #ccc;
     }
 
-    .flex-sp-bet {
+    .content-in-card {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        flex-wrap: wrap;
+        justify-content: flex-end;
     }
 
-    .buttons-group,
-    .fields-group {
-        display: flex;
-    }
-
-    .align-right {
-        align-self: flex-end;
-    }
-
-    .content {
+    .sections-container {
         width: 100%;
-        height: max-content;
+        height: auto;
         display: flex;
-    }
-
-    .border-box {
-        width: 100%;
-        height: max-content;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        background-color: #fff;
-    }
-
-    .summary {
-        padding-top: 12px;
-        padding-bottom: 12px;
-    }
-
-    .data-box {
-        padding: 12px;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 
     .input-label {
@@ -137,30 +114,15 @@ function getTenTT($TinhTrangList, $maTT)
         overflow-y: auto;
     }
 
-    /* .alert {
-        display: none;
+    .scroll {
+        overflow: scroll;
     }
-
-    .open {
-        display: block;
-        position: absolute;
-        top: 0;
-        z-index: 2050;
-    } */
 
     /* mobile */
     @media (max-width: 739px) {
-        .buttons-group {
-            flex-direction: column;
-        }
-
         .modal-width-sm {
             max-width: 90%;
             margin: auto;
-        }
-
-        .align-right {
-            align-self: center;
         }
 
         .input-label {
@@ -185,100 +147,134 @@ function getTenTT($TinhTrangList, $maTT)
 </style>
 
 <div class="container">
-    <div class="below-menu-icon flex-sp-bet col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <h3 class="d-none d-sm-none d-md-none d-lg-block d-xl-block"><strong>KHO</strong></h3>
-
-        <div class="buttons-group">
-            <div class="btn btn-success">Nguyên vật liệu</div>
-            <div class="btn">Nhập kho</div>
-            <div class="btn">Xuất kho</div>
-            <div class="btn">Kiểm kho</div>
-        </div>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <h3><strong>KHO / MỞ RỘNG</strong></h3>
     </div>
 
     <div class="line-break"></div>
 
-    <div class="content mt-24">
-        <div class="summary border-box flex-sp-bet">
-            <p class="pd-8 centerlize">Tổng số lượng nguyên vật liệu: <strong><?php echo count($NguyenVatLieuList)?></strong></p>
-            <p class="pd-8 centerlize">Tổng loại nguyên vật liệu: <strong><?php echo count($LoaiNguyenVatLieuList)?></strong></p>
-            <p class="pd-8 centerlize">Tổng loại nguyên vật liệu: <strong><?php echo count($NguyenVatLieuList)?></strong></p>
-        </div>
-    </div>
+    <div class="sections-container">
+        <!-- đơn vị tính -->
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-header card-header-text card-header-primary">
+                    <div class="card-text">
+                        <h4 class="card-title">Đơn vị tính</h4>
+                    </div>
+                </div>
+                <div class="card-body content-in-card">
+                    <button class="btn btn-info btn-add-material" data-toggle="modal" data-target="#myModal">
+                        <i class="material-icons">add</i>
+                        Thêm NVL
+                    </button>
 
-    <div class="data-box border-box flex-sp-bet mt-24">
-        <div class="buttons-group align-right">
-            <button class="btn btn-info btn-add-material" data-toggle="modal" data-target="#myModal">
-                <i class="material-icons">add</i>
-                Thêm NVL
-            </button>
-            <button class="btn btn-info btn-expand d-none d-sm-none d-md-none d-lg-block">
-                <i class="material-icons">more_horiz</i>
-                Mở rộng
-            </button>
+                    <div class="table-responsive">
+                        <table id="datatables" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class='text-center text-info'>STT</th>
+                                    <th class='text-center text-info'>Mã NVL</th>
+                                    <th class='text-center text-info'>Tên nguyên vật liệu</th>
+                                    <th class='text-center text-info'>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th class='text-center'>STT</th>
+                                    <th class='text-center'>Mã NVL</th>
+                                    <th class='text-center'>Tên nguyên vật liệu</th>
+                                    <th class='text-center'>Thao tác</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="table-responsive">
-            <table id="datatables" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
-                <thead>
-                    <tr role="row">
-                        <th class='text-center text-info'>STT</th>
-                        <th class='text-center text-info'>Mã NVL</th>
-                        <th class='text-center text-info'>Tên nguyên vật liệu</th>
-                        <th class='text-center text-info'>Loại NVL</th>
-                        <th class='text-center text-info'>Đơn vị tính</th>
-                        <th class='text-center text-info'>Số lượng</th>
-                        <th class='text-center text-info'>Đơn giá nhập</th>
-                        <th class='text-center text-info'>Nhà cung cấp</th>
-                        <th class='text-center text-info'>Tình trạng</th>
-                        <th class='text-center text-info'>Thao tác</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <th class='text-center'>STT</th>
-                        <th class='text-center'>Mã NVL</th>
-                        <th class='text-center'>Tên nguyên vật liệu</th>
-                        <th class='text-center'>Loại NVL</th>
-                        <th class='text-center'>Đơn vị tính</th>
-                        <th class='text-center'>Số lượng</th>
-                        <th class='text-center'>Đơn giá nhập</th>
-                        <th class='text-center'>Nhà cung cấp</th>
-                        <th class='text-center'>Tình trạng</th>
-                        <th class='text-center'>Thao tác</th>
-                    </tr>
-                </tfoot>
-                <tbody>
-                    <?php
-                    if (count($NguyenVatLieuList) > 0) {
-                    // output data of each row
-                    for ($i = 0; $i < count($NguyenVatLieuList); $i++) {
-                        echo "<tr role='row' class='odd'>";
-                        echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
-                        echo "<td class='text-center material-id'>" . $NguyenVatLieuList[$i]->get_MaNVL() . "</td>";
-                        echo "<td class='text-center material-name'>" . $NguyenVatLieuList[$i]->get_TenNVL() . "</td>";
-                        echo "<td class='text-center material-type'>" . getTenLoaiNVL($LoaiNguyenVatLieuList, $NguyenVatLieuList[$i]->get_MaLoaiNVL()) . "</td>";
-                        echo "<td class='text-center material-unit'>" . getTenDVT($DonViTinhList, $NguyenVatLieuList[$i]->get_MaDVT()) . "</td>";
-                        echo "<td class='text-center material-quantity'>" . $NguyenVatLieuList[$i]->get_SoLuongTon() . "</td>";
-                        echo "<td class='text-center material-unitprice'>" . $NguyenVatLieuList[$i]->get_DonGiaNhap() . "</td>";
-                        echo "<td class='text-center material-supplier'>" . getTenNCC($NhaCungCapList, $NguyenVatLieuList[$i]->get_MaNhaCungCap()) . "</td>";
-                        echo "<td class='text-center material-status'>" . getTenTT($TinhTrangList, $NguyenVatLieuList[$i]->get_MaTinhTrang()) . "</td>";
-                        echo '<td class="td-actions text-right">
-                                <button type="button" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
-                                    <i class="material-icons">edit</i>
-                                </button>
-                                <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
-                                    <i class="material-icons">close</i>
-                                </button>
-                            </td>';
-                        echo "</tr>";
-                    }
-                    } else {
-                    echo "Dữ liệu trống!";
-                    }
-                    ?>
-                </tbody>
-            </table>
+        <!-- loại nguyên vật liệu -->
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-header card-header-text card-header-primary">
+                    <div class="card-text">
+                        <h4 class="card-title">Đơn vị tính</h4>
+                    </div>
+                </div>
+                <div class="card-body content-in-card">
+                    <button class="btn btn-info btn-add-material" data-toggle="modal" data-target="#myModal">
+                        <i class="material-icons">add</i>
+                        Thêm NVL
+                    </button>
+
+                    <div class="table-responsive">
+                        <table id="datatables" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class='text-center text-info'>STT</th>
+                                    <th class='text-center text-info'>Mã NVL</th>
+                                    <th class='text-center text-info'>Tên nguyên vật liệu</th>
+                                    <th class='text-center text-info'>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th class='text-center'>STT</th>
+                                    <th class='text-center'>Mã NVL</th>
+                                    <th class='text-center'>Tên nguyên vật liệu</th>
+                                    <th class='text-center'>Thao tác</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- nhà cung cấp -->
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-header card-header-text card-header-primary">
+                    <div class="card-text">
+                        <h4 class="card-title">Đơn vị tính</h4>
+                    </div>
+                </div>
+                <div class="card-body content-in-card">
+                    <button class="btn btn-info btn-add-material" data-toggle="modal" data-target="#myModal">
+                        <i class="material-icons">add</i>
+                        Thêm NVL
+                    </button>
+
+                    <div class="table-responsive">
+                        <table id="datatables" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class='text-center text-info'>STT</th>
+                                    <th class='text-center text-info'>Mã NVL</th>
+                                    <th class='text-center text-info'>Tên nguyên vật liệu</th>
+                                    <th class='text-center text-info'>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th class='text-center'>STT</th>
+                                    <th class='text-center'>Mã NVL</th>
+                                    <th class='text-center'>Tên nguyên vật liệu</th>
+                                    <th class='text-center'>Thao tác</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -401,7 +397,7 @@ function getTenTT($TinhTrangList, $maTT)
   </div>
 </div>
 
-<script>
+<!-- <script>
     var submit_type = "";
     var nvl_id = "";
     $(document).ready(function() {
@@ -410,11 +406,6 @@ function getTenTT($TinhTrangList, $maTT)
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
             }
-        });
-
-        //mở rộng
-        $(".btn-expand").on("click", function() {
-            window.location.href = "../admin/index.php?page=werehouse&expand=1";
         });
 
         //add nvl
@@ -496,7 +487,7 @@ function getTenTT($TinhTrangList, $maTT)
                 return false;
             }
         return true;
-    }
+    }   
 </script>
 
 <script type="text/javascript">
@@ -552,4 +543,4 @@ function getTenTT($TinhTrangList, $maTT)
             }
   		});
   	});
-</script>
+</script> -->
