@@ -10,7 +10,7 @@ class C_NguyenVatLieu
             // $ModelNguyenVatLieu = new Model_NguyenVatLieu();
             // $NguyenVatLieu = $ModelNguyenVatLieu->get_NguyenVatLieuDetails($MaNVL);
 
-            include_once('../admin/werehouse/expand.php');
+            include_once('../admin/warehouse/expand.php');
         } else {
             $ModelNguyenVatLieu = new Model_NguyenVatLieu();
             $NguyenVatLieuList = $ModelNguyenVatLieu->get_AllNguyenVatLieu();

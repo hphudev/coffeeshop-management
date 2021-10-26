@@ -212,7 +212,7 @@ function getTenTT($TinhTrangList, $maTT)
                 <i class="material-icons">add</i>
                 Thêm NVL
             </button>
-            <button class="btn btn-info btn-expand d-none d-sm-none d-md-none d-lg-block">
+            <button class="btn btn-info btn-expand">
                 <i class="material-icons">more_horiz</i>
                 Mở rộng
             </button>
@@ -223,7 +223,7 @@ function getTenTT($TinhTrangList, $maTT)
                 <thead>
                     <tr role="row">
                         <th class='text-center text-info'>STT</th>
-                        <th class='text-center text-info'>Mã NVL</th>
+                        <th class='text-center text-info'>Mã</th>
                         <th class='text-center text-info'>Tên nguyên vật liệu</th>
                         <th class='text-center text-info'>Loại NVL</th>
                         <th class='text-center text-info'>Đơn vị tính</th>
@@ -237,7 +237,7 @@ function getTenTT($TinhTrangList, $maTT)
                 <tfoot>
                     <tr>
                         <th class='text-center'>STT</th>
-                        <th class='text-center'>Mã NVL</th>
+                        <th class='text-center'>Mã</th>
                         <th class='text-center'>Tên nguyên vật liệu</th>
                         <th class='text-center'>Loại NVL</th>
                         <th class='text-center'>Đơn vị tính</th>
@@ -256,7 +256,7 @@ function getTenTT($TinhTrangList, $maTT)
                         echo "<tr role='row' class='odd'>";
                         echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                         echo "<td class='text-center material-id'>" . $NguyenVatLieuList[$i]->get_MaNVL() . "</td>";
-                        echo "<td class='text-center material-name'>" . $NguyenVatLieuList[$i]->get_TenNVL() . "</td>";
+                        echo "<td class='text-center material-name'><strong>" . $NguyenVatLieuList[$i]->get_TenNVL() . "</strong></td>";
                         echo "<td class='text-center material-type'>" . getTenLoaiNVL($LoaiNguyenVatLieuList, $NguyenVatLieuList[$i]->get_MaLoaiNVL()) . "</td>";
                         echo "<td class='text-center material-unit'>" . getTenDVT($DonViTinhList, $NguyenVatLieuList[$i]->get_MaDVT()) . "</td>";
                         echo "<td class='text-center material-quantity'>" . $NguyenVatLieuList[$i]->get_SoLuongTon() . "</td>";
@@ -288,7 +288,7 @@ function getTenTT($TinhTrangList, $maTT)
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title"><strong>Thêm nguyên vật liệu</strong></h5>
+            <h5><strong class="modal-title">Thêm nguyên vật liệu</strong></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
@@ -414,12 +414,12 @@ function getTenTT($TinhTrangList, $maTT)
 
         //mở rộng
         $(".btn-expand").on("click", function() {
-            window.location.href = "../admin/index.php?page=werehouse&expand=1";
+            window.location.href = "../admin/index.php?page=werehouse&expand";
         });
 
         //add nvl
         $(".btn-add-material").on("click", function() {
-            submit_type = "add";
+            submit_type = "add-material";
             $(".modal-title").text("Thêm nguyên vật liệu");
             $("#material-name-val").val("");
             $("#material-type-val").text("Chọn loại");
@@ -436,7 +436,7 @@ function getTenTT($TinhTrangList, $maTT)
                 nvl_id = $($(".material-id").get(index)).text();
                 console.log(nvl_id);
 
-                submit_type = "edit";
+                submit_type = "edit-material";
                 $(".modal-title").text("Chỉnh sửa nguyên vật liệu");
                 $("#material-name-val").val($($(".material-name").get(index)).text());
                 $("#material-type-val").text($($(".material-type").get(index)).text());

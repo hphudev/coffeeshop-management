@@ -71,9 +71,9 @@ class Model_NguyenVatLieu
 
     public function generate_MaNVL()
     {
-        $num = count($this->get_AllNguyenVatLieu()) + 1;
-        $newId = "nvl" . $num;
-        return $newId;
+        include 'M_General_CMD.php';
+        $general_cmd = new General_CMD();
+        return $general_cmd->AutoGetID("nguyenvatlieu", "nvl");
     }
 }
 
@@ -131,7 +131,7 @@ if (isset($_POST['name']) && isset($_POST['type']) && isset($_POST['unit']) && i
     }
 
     //Define action
-    if ($_POST['action'] == "add")
+    if ($_POST['action'] == "add-material")
     {
         $data = array(
             "MaNVL"=>$modelNVL->generate_MaNVL(),
@@ -155,7 +155,7 @@ if (isset($_POST['name']) && isset($_POST['type']) && isset($_POST['unit']) && i
             echo json_encode(array('success' =>'0'));
         }
     }
-    elseif ($_POST['action'] == "edit")
+    elseif ($_POST['action'] == "edit-material")
     {
         $data = array(
             "MaNVL"=>$_POST['id'],
