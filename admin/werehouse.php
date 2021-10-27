@@ -509,7 +509,7 @@ function getTenTT($TinhTrangList, $maTT)
                 // Ajax config
                 $.ajax({
                     type: "POST",
-                    url: "../models/M_NguyenVatLieu.php",
+                    url: "../controllers/C_NguyenVatLieu.php",
                     data: {
                         action: submit_type,
                         id: nvl_id,
