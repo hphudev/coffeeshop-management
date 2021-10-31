@@ -17,10 +17,12 @@
             }
             return (int)$result;
         }
+
         public static function AutoGetID($table, $prefix)
         {
             $num = General_CMD::countRowInTable($table);
             return (string)$prefix + strval($num);
         }
     }
+
 ?>

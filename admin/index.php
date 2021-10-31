@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,8 +13,8 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <script src="../assets/js/core/jquery.min.js" type="text/javascript"></script>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
     <link href="../admin/css/sale.css" rel="stylesheet" /> <!-- Fonts and icons -->
     <style>
         body {
@@ -178,7 +179,7 @@
                             include './account.php';
                             break;
                         case 'sale':
-                            include './sale.php';
+                            include '../controllers/C_BanHang.php';
                             break;
                         case 'table':
                             include './table.php';
@@ -205,6 +206,12 @@
     <script src="../assets_control/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
     <!-- Datatables -->
     <script src="../assets_control/js/plugins/jquery.dataTables.min.js"></script>
+    <?php 
+    if (isset($_POST['functionName']))
+    {
+        echo "<script> alert('post'); </script>";
+    }
+    ?>
 </body>
 
 </html>
