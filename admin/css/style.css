@@ -1,0 +1,158 @@
+*
+{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+
+body
+{
+	font-family: Arial, san-serif;
+	font-size: 18px;
+	line-height: 2em;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	background-color: black;
+	color: white;
+}
+
+.myButton
+{
+	text-decoration: none;
+	width: 100px;
+	display: block;
+	color: white;
+}
+
+#lHeader
+{
+	margin: 0 0 3em;
+}
+
+#bAdd, #bChange, #bDelete
+{
+	margin: 0 0 2em;
+}
+
+.myButton:hover, .myButton:visited
+{
+	background-color: #990000;
+}
+
+.content
+{
+	position: relative;
+	width: 100%;
+}
+
+.modifier ul, .seperator .table ul
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+.roundedControl
+{
+	border-radius: 10px;
+}
+
+.seperator
+{
+	overflow: auto;
+}
+
+.coloredControl
+{
+	background-color: #CC0000;
+}
+
+.header
+{
+	padding: 1px 0 1px 0;
+}
+
+#tbSearch
+{
+	float: left;
+	margin-left: 40%;
+}
+
+#tbMonth
+{
+	float: left;
+	margin-left: 45.25%;
+}
+
+#bSearch
+{
+	float: right;
+	margin-right: 15%;
+}
+
+#bConfirm
+{
+	float: left;
+	margin-top: 1%;
+	margin-left: 45%;
+}
+
+#bCancel
+{
+	float: right;
+	margin-top: 2%;
+	margin-right: 30%;
+}
+
+.table
+{
+	float: left;
+}
+
+.searchEngine
+{
+	margin: 0 0 30px;
+}
+
+.modifier
+{
+	float: right;
+	width: 10%;
+	margin-left: 100%;
+	margin-top: -13.5%;
+}
+
+.seperator .table
+{
+	width: 80%;
+	margin-left: 5%;
+	margin-top: 2%;
+}
+
+.seperator .table .row .cell
+{
+	float: left;
+	width: 20%;
+	border: 1px solid;
+}
+
+#firstRow .cell
+{
+	background-color: #660000;
+}
+
+#tbName, #tbPhoneNumber, #tbSex
+{
+	margin-bottom: 1%;
+}
+
+#tbPhoneNumber
+{
+	margin-left: 2.8%;
+}
+
+#tbSex
+{
+	margin-left: 0.6%;
+}
