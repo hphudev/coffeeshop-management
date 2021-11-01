@@ -14,6 +14,18 @@ class Mon {
     private $GhiChu;
     private $NgayChinhSuaLanCuoi;
 
+    public function __construct($row){
+        $this->set_MaMon($row['MaMon']);
+        $this->set_TenMon($row['TenMon']);
+        $this->set_MaLoaiMon($row['MaLoaiMon']);
+        $this->set_MaTinhTrang($row['MaTT']);
+        $this->set_MaDVT($row['MaDVT']);
+        $this->set_HinhAnh($row['HinhAnh']);
+        $this->set_MoTa($row['MoTa']);
+        $this->set_GhiChu($row['GhiChu']);
+        $this->get_NgayThem($row['NgayThem']);
+        $this->get_NgayChinhSuaLanCuoi($row['NgayChinhSuaLanCuoi']);
+    }
 
     function set_MaMon($ma) {
         $this->MaMon = $ma;

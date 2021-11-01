@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -179,7 +180,7 @@
                             include './account.php';
                             break;
                         case 'sale':
-                            include './sale.php';
+                            include '../controllers/C_BanHang.php';
                             break;
                         case 'table':
                             include './table.php';
