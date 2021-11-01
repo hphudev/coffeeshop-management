@@ -56,9 +56,10 @@ class Model_ChucVu
     public function add_ChucVu($ChucVu)
     {
         include '../configs/config.php';
-        $sql = "INSERT INTO `chucvu`(`TenCV`, `TroCap`) 
+        $sql = "INSERT INTO `chucvu`(`MaCV`,`TenCV`, `TroCap`) 
                 VALUES 
-                ('" . $ChucVu->get_TenCV() . "',
+                ('" . $ChucVu->get_MaCV() . "',
+                '" . $ChucVu->get_TenCV() . "',
                 '" . $ChucVu->get_MucTroCap() . "')";
 
         if ($conn->query($sql) === TRUE) {

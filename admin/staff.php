@@ -350,7 +350,7 @@
                     <div class="tab-content">
                         <div class="tab-pane active" id="profile">
                             <div>
-                                <button id="btnAddNV" type="button" rel="tooltip" class="btn btn-success" data-toggle="modal" data-target="#addCVModel">
+                                <button id="btnAddCV" type="button" rel="tooltip" class="btn btn-success" data-toggle="modal" data-target="#addCVModel">
                                     <i class="material-icons">add</i>
                                     Thêm chức vụ
                                 </button>
@@ -372,10 +372,8 @@
                                         echo "<td>" . $ChucVuList[$i]->get_MucTroCap() . "</td>";
                                     ?>
                                         <td class="td-actions text-right">
-                                            <button <?php
-                                                    echo 'id="' . $ChucVuList[$i]->get_MaCV() . '"'
-                                                    ?> type="button" rel="tooltip" class="btn btn-Edit-NV btn-link btn-info btn-just-icon" data-placement="top" title="Chỉnh sửa thông tin" data-toggle="modal" data-target="#addCVModel">
-                                                <i class="material-icons">info</i>
+                                            <button type="button" rel="tooltip" class="btn btnEditCV btn-link btn-warning btn-just-icon" data-placement="top" title="Chỉnh sửa thông tin" data-toggle="modal" data-target="#addCVModel">
+                                                <i class="material-icons">edit</i>
                                             </button>
                                         </td>
 
@@ -777,11 +775,18 @@
                         <div class="card-body">
                             <div class="container-fluid">
                                 <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group bmd-form-group">
+                                            <label class="bmd-label-floating">Mã chức vụ
+                                            </label>
+                                            <input id="inputMaChucVu" value=" " type="text" class="form-control chucvu_info" disabled>
+                                        </div>
+                                    </div>
                                     <div class="col-md-7">
                                         <div class="form-group bmd-form-group">
                                             <label class="bmd-label-floating">Tên chức vụ
                                             </label>
-                                            <input id="inputTenChucVu" type="text" class="form-control chucvu_info">
+                                            <input id="inputTenChucVu" value=" " type="text" class="form-control chucvu_info">
                                         </div>
                                     </div>
                                 </div>
@@ -789,7 +794,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group bmd-form-group">
                                             <label class="bmd-label-floating">Mức trợ cấp (VNĐ)</label>
-                                            <input id="inputMucTroCap" type="number" class="form-control chucvu_info">
+                                            <input id="inputMucTroCap" value=" " type="text" class="form-control chucvu_info">
 
                                         </div>
                                     </div>
@@ -976,9 +981,20 @@
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
             }
         });
-        $(".btn-Edit-CV").click(function() {
-            var cvID = $(this).attr('id')
-            window.location.href = "../admin/index.php?page=title&id=" + cvID;
+
+        $('#btnAddCV').click(function() {
+            $('#inputMaChucVu').attr('value', '')
+            $('#inputTenChucVu').attr('value', '')
+            $('#inputMucTroCap').attr('value', '')
+        })
+
+        $(".btnEditCV").click(function() {
+            var $row = $(this).closest('tr')
+            var $columns = $row.find('td');
+            $('#btnConfirmAddCV').addClass('edit')
+            $('#inputMaChucVu').attr('value', $columns[0].innerHTML)
+            $('#inputTenChucVu').attr('value', $columns[1].innerHTML)
+            $('#inputMucTroCap').attr('value', $columns[2].innerHTML)
         });
 
         $(".btn-Delete-CV").click(function() {
@@ -1022,23 +1038,28 @@
         });
 
         $('#btnConfirmAddCV').click(function() {
-            checkCVInfomation()
+            if ($(this).hasClass('edit')) {
+                alert("Edit")
+            } else {
+                alert("Add")
+                checkCVInfomation()
+            }
         });
 
         function checkCVInfomation() {
-            if ($('#inputTenChucVu').val() == "" ||
-                $('#inputMucTroCap').val() == "") {
+            if ($('#inputMaChucVu').val() == " " ||
+                $('#inputTenChucVu').val() == " " ||
+                $('#inputMucTroCap').val() == " ") {
                 Swal.fire(
                     'Thất bại!',
                     'Vui lòng nhập đầy đủ thông tin',
                     'error'
                 )
-                return
-            };
-            if (!checkMucTroCap()) {
-                return
+            } else if (!checkMucTroCap()) {
+
+            } else {
+                checkTenChucVu()
             }
-            checkTenChucVu()
         }
 
         function checkTenChucVu() {
