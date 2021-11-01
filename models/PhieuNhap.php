@@ -11,6 +11,19 @@ class PhieuNhap
     private $TienNo;
     private $GhiChu;
 
+    public function __construct($row)
+    {
+        $this->MaPN = $row['MaPN'];
+        $this->MaNVNhap = $row['MaNVNhap'];
+        $this->MaNCC = $row['MaNCC'];
+        $this->NgayLap = $row['NgayLap'];
+        $this->TongTien = $row['TongTien'];
+        $this->TenNguoiGiao = $row['TenNguoiGiao'];
+        $this->TienThanhToan = $row['TienThanhToan'];
+        $this->TienNo = $row['TienNo'];
+        $this->GhiChu = $row['GhiChu'];
+    }
+
     function set_MaPN($MaPN)
     {
         $this->MaPN = $MaPN;
@@ -91,6 +104,14 @@ class CT_PhieuNhap
     private $MaNVL;
     private $DonGiaNhap;
     private $SoLuong;
+
+    public function __construct($row)
+    {
+        $this->MaPN = $row['MaPN'];
+        $this->MaNVL = $row['MaNVL'];
+        $this->DonGiaNhap = $row['DonGia'];
+        $this->SoLuong = $row['SoLuong'];
+    }
 
     function set_MaPN($MaPN)
     {
