@@ -80,13 +80,14 @@ function getTenTT($TinhTrangList, $maTT)
     }
 
     .flex-sp-bet {
-        display: flex;
         align-items: center;
         justify-content: space-between;
     }
 
+    .flex-sp-bet,
     .buttons-group,
-    .fields-group {
+    .fields-group,
+    .content {
         display: flex;
     }
 
@@ -97,7 +98,6 @@ function getTenTT($TinhTrangList, $maTT)
     .content {
         width: 100%;
         height: max-content;
-        display: flex;
     }
 
     .border-box {
@@ -190,9 +190,10 @@ function getTenTT($TinhTrangList, $maTT)
 
         <div class="buttons-group">
             <div class="btn btn-success">Nguyên vật liệu</div>
-            <div class="btn">Nhập kho</div>
-            <div class="btn">Xuất kho</div>
-            <div class="btn">Kiểm kho</div>
+            <div class="btn btn-import">Nhập kho</div>
+            <div class="btn btn-export">Xuất kho</div>
+            <div class="btn btn-report">Kiểm kho</div>
+            <div class="btn btn-expand">Mở rộng</div>
         </div>
     </div>
 
@@ -212,10 +213,10 @@ function getTenTT($TinhTrangList, $maTT)
                 <i class="material-icons">add</i>
                 Thêm NVL
             </button>
-            <button class="btn btn-info btn-expand">
+            <!-- <button class="btn btn-info btn-expand">
                 <i class="material-icons">more_horiz</i>
                 Mở rộng
-            </button>
+            </button> -->
         </div>
 
         <div class="table-responsive">
@@ -344,14 +345,14 @@ function getTenTT($TinhTrangList, $maTT)
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Số lượng: </p>
-                        <input id="material-quantity-val" type="number" class="form-control input-value" placeholder="Nhập số lượng">
+                        <input disabled id="material-quantity-val" type="number" class="form-control input-value" placeholder="0">
                     </div>
                 </div>
 
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Đơn giá nhập: </p>
-                        <input id="material-unitprice-val" type="number" class="form-control input-value" placeholder="Đơn giá nhập">
+                        <input id="material-unitprice-val" disabled type="number" class="form-control input-value" placeholder="0">
                     </div>
                 </div>
 
@@ -417,6 +418,16 @@ function getTenTT($TinhTrangList, $maTT)
             window.location.href = "../admin/index.php?page=werehouse&expand";
         });
 
+        //nhập kho
+        $(".btn-import").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse&receipt";
+        });
+
+        //xuất kho
+        $(".btn-export").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse&export";
+        });
+
         //add nvl
         $(".btn-add-material").on("click", function() {
             submit_type = "add-material";
@@ -424,8 +435,8 @@ function getTenTT($TinhTrangList, $maTT)
             $("#material-name-val").val("");
             $("#material-type-val").text("Chọn loại");
             $("#material-unit-val").text("Chọn ĐVT");
-            $("#material-quantity-val").val("");
-            $("#material-unitprice-val").val("");
+            //$("#material-quantity-val").val("");
+            //$("#material-unitprice-val").val("");
             $("#material-supplier-val").text("Chọn NCC");
             $("#material-status-val").text("Chọn tình trạng");
         });
@@ -442,6 +453,7 @@ function getTenTT($TinhTrangList, $maTT)
                 $("#material-type-val").text($($(".material-type").get(index)).text());
                 $("#material-unit-val").text($($(".material-unit").get(index)).text());
                 $("#material-quantity-val").val($($(".material-quantity").get(index)).text());
+                $("#material-unitprice-val").removeAttr("disabled");
                 $("#material-unitprice-val").val($($(".material-unitprice").get(index)).text());
                 $("#material-supplier-val").text($($(".material-supplier").get(index)).text());
                 $("#material-status-val").text($($(".material-status").get(index)).text());

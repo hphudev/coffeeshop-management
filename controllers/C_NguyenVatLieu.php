@@ -120,6 +120,14 @@ class C_NguyenVatLieu
                 //echo json_encode(array('success' =>'0'));
             }
         }
+        elseif (isset($_GET['receipt']))
+        {
+            include 'C_PhieuNhap.php';
+        }
+        elseif (isset($_GET['export']))
+        {
+            include 'C_PhieuXuat.php';
+        }
         else
         {
             $ModelNguyenVatLieu = new Model_NguyenVatLieu();
@@ -132,3 +140,4 @@ class C_NguyenVatLieu
 
 $C_NguyenVatLieu = new C_NguyenVatLieu();
 $C_NguyenVatLieu->invoke();
+?>

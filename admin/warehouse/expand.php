@@ -31,8 +31,18 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
         margin-top: 24px !important;
     }
 
-    .fields-group {
+    .flex-sp-bet {
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .buttons-group,
+    .fields-group,
+    .flex-sp-bet {
         display: flex;
+    }
+
+    .fields-group {
         align-items: center;
         justify-content: space-evenly;
     }
@@ -43,20 +53,21 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
         background-color: #ccc;
     }
 
-    .content-in-card {
+    .content-in-card,
+    .sections-container {
         display: flex;
-        align-items: center;
         flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .content-in-card {
         justify-content: flex-end;
     }
 
     .sections-container {
         width: 100%;
         height: auto;
-        display: flex;
-        align-items: center;
         justify-content: center;
-        flex-wrap: wrap;
     }
 
     .input-label {
@@ -74,6 +85,10 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
 
     /* mobile */
     @media (max-width: 739px) {
+        .buttons-group {
+            flex-direction: column;
+        }
+
         .modal-width-sm {
             max-width: 90%;
             margin: auto;
@@ -101,8 +116,16 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
 </style>
 
 <div class="container">
-    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <h3><strong>KHO / MỞ RỘNG</strong></h3>
+    <div class="flex-sp-bet below-menu-icon col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <h3 class="d-none d-sm-none d-md-none d-lg-block d-xl-block"><strong>KHO / MỞ RỘNG</strong></h3>
+
+        <div class="buttons-group">
+            <div class="btn btn-material">Nguyên vật liệu</div>
+            <div class="btn btn-import">Nhập kho</div>
+            <div class="btn btn-export">Xuất kho</div>
+            <div class="btn btn-report">Kiểm kho</div>
+            <div class="btn btn-success">Mở rộng</div>
+        </div>
     </div>
 
     <div class="line-break"></div>
@@ -339,6 +362,16 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
             }
+        });
+
+        //nguyên vật liệu
+        $(".btn-material").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse";
+        });
+
+        //nhập kho
+        $(".btn-import").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse&receipt";
         });
 
         //add đvt
