@@ -5,6 +5,13 @@ class NhaCungCap
     private $TenNCC;
     private $SDT;
 
+    public function __construct($row)
+    {
+        $this->MaNCC = $row['MaNCC'];
+        $this->TenNCC = $row['TenNCC'];
+        $this->SDT = 0;
+    }
+
     function set_MaNCC($MaNCC)
     {
         $this->MaNCC = $MaNCC;

@@ -185,7 +185,7 @@
                             include './table.php';
                             break;
                         case 'werehouse':
-                            include './werehouse.php';
+                            include '../controllers/C_NguyenVatLieu.php';
                             break;
                         case 'financial':
                             include './financial.php';
