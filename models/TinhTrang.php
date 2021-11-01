@@ -3,6 +3,12 @@ class TinhTrang {
     private $MaTinhTrang;
     private $TenTinhTrang;
 
+    public function __construct($row)
+    {
+        $this->MaTinhTrang = $row['MaTT'];
+        $this->TenTinhTrang = $row['TenTT'];
+    }
+
     function set_MaTinhTrang($ma) {
         $this->MaTinhTrang = $ma;
     }

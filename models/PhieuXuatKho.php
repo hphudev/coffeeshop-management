@@ -2,9 +2,18 @@
 class PhieuXuat {
     private $MaPX;
     private $NgayLap;
-    private $MaNhanVienXuat;
+    private $MaNVXuat;
     private $GhiChu;
-    private $MaNhanVienNhan;
+    private $MaNVNhan;
+
+    public function __construct($row)
+    {
+        $this->MaPX = $row['MaPX'];
+        $this->NgayLap = $row['NgayLap'];
+        $this->MaNVXuat = $row['MaNVXuat'];
+        $this->GhiChu = $row['GhiChu'];
+        $this->MaNVNhan = $row['MaNVNhan'];
+    }
 
     function set_MaPX($ma) {
         $this->MaPX = $ma;
@@ -22,20 +31,20 @@ class PhieuXuat {
         return $this->NgayLap;
     }
 
-    function set_MaNhanVienXuat($ma) {
-        $this->MaNhanVienXuat = $ma;
+    function set_MaNVXuat($ma) {
+        $this->MaNVXuat = $ma;
     }
 
-    function get_MaNhanVienXuat() {
-        return $this->MaNhanVienXuat;
+    function get_MaNVXuat() {
+        return $this->MaNVXuat;
     }
 
-    function set_MaNhanVienNhan($ma) {
-        $this->MaNhanVienNhan = $ma;
+    function set_MaNVNhan($ma) {
+        $this->MaNVNhan = $ma;
     }
 
-    function get_MaNhanVienNhan() {
-        return $this->MaNhanVienNhan;
+    function get_MaNVNhan() {
+        return $this->MaNVNhan;
     }
 
     function set_GhiChu($note) {
@@ -49,7 +58,7 @@ class PhieuXuat {
 
 class ChiTietPhieuXuat {
     private $MaPX;
-    private $MaNguyenVatLieu;
+    private $MaNVL;
     private $SoLuong;
 
     function set_MaPX($ma) {
@@ -60,12 +69,12 @@ class ChiTietPhieuXuat {
         return $this->MaPX;
     }
 
-    function set_MaNguyenVatLieu($ma) {
-        $this->MaNguyenVatLieu = $ma;
+    function set_MaNVL($ma) {
+        $this->MaNVL = $ma;
     }
 
-    function get_MaNguyenVatLieu() {
-        return $this->MaNguyenVatLieu;
+    function get_MaNVL() {
+        return $this->MaNVL;
     }
 
     function set_SoLuong($sl) {

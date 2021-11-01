@@ -9,6 +9,18 @@ class NguyenVatLieu {
     private $MaNhaCungCap;
     private $MaTinhTrang;
 
+    public function __construct($row)
+    {
+        $this->MaNVL = $row['MaNVL'];
+        $this->MaLoaiNVL = $row['MaLoaiNVL'];
+        $this->TenNVL = $row['TenNVL'];
+        $this->SoLuongTon = $row['SoLuongTon'];
+        $this->MaDVT = $row['MaDVT'];
+        $this->DonGiaNhap = $row['DonGiaNhap'];
+        $this->MaNhaCungCap = $row['MaNCC'];
+        $this->MaTinhTrang = $row['MaTinhTrang'];
+    }
+
     function set_MaNVL($ma) {
         $this->MaNVL = $ma;
     }
