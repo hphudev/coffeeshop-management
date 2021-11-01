@@ -83,7 +83,6 @@ class C_NhanVien
             }
         } else {
             $NhanVienList = $ModelNhanVien->get_AllNhanVien();
-
             include_once('../admin/staff.php');
         }
     }

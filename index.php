@@ -22,17 +22,7 @@
   <!-- #endregion -->
 
   <style>
-    @import url("https://fonts.googleapis.com/css2?family=Ephesis&display=swap");
-
-    body {
-      -ms-overflow-style: none;
-      /* IE and Edge */
-      scrollbar-width: none;
-    }
-
-    body::-webkit-scrollbar {
-      display: none;
-    }
+    
   </style>
 
   <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
