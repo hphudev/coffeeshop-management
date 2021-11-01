@@ -549,6 +549,7 @@ ALTER TABLE `tinhtrang`
 --
 ALTER TABLE `topping_lienket`
   ADD PRIMARY KEY (`MaMon`,`TenTopping`);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

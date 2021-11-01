@@ -14,7 +14,6 @@ class C_NhanVien
         } else {
             $ModelNhanVien = new Model_NhanVien();
             $NhanVienList = $ModelNhanVien->get_AllNhanVien();
-
             include_once('../admin/staff.php');
         }
     }

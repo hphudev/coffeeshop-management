@@ -12,10 +12,13 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <script src="../assets/js/core/jquery.min.js" type="text/javascript"></script>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script> -->
+    <link href="../admin/css/sale.css" rel="stylesheet" /> <!-- Fonts and icons -->
     <style>
         body {
             border: 2px solid wheat;
-            background-color: wheat;
+            background-color: white;
             overflow: hidden;
             -ms-overflow-style: none;
             /* IE and Edge */
@@ -195,18 +198,13 @@
             </div>
         </div>
     </div>
-    < !--#region-->
-
-        < !--Core JS Files-->
-
-            <script src="../assets_control/js/core/popper.min.js" type="text/javascript"></script>
-            <script src="../assets_control/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
-            <script src="../assets_control/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-            <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-            <script src="../assets_control/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
-            <!-- Datatables -->
-            <script src="../assets_control/js/plugins/jquery.dataTables.min.js"></script>
-            <!-- #endregion -->
+    <script src="../assets_control/js/core/popper.min.js" type="text/javascript"></script>
+    <script src="../assets_control/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
+    <script src="../assets_control/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
+    <script src="../assets_control/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
+    <!-- Datatables -->
+    <script src="../assets_control/js/plugins/jquery.dataTables.min.js"></script>
 </body>
 
 </html>
