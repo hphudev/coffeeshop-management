@@ -11,29 +11,7 @@
         });
     });
 
-    // $.ajax({
-    //     method: "POST",
-    //     data: {func: JSON.stringify("ok")},
-    //     url: "../models/tmp.php",
-    //     success: function(response){
-    //         console.log(response);
-    //     },
-    // });
-
-    // const xhttp = new XMLHttpRequest();
-    // xhttp.onload = function() {
-    //     console.log(this.responseText);
-    // }   
-    // xhttp.open("POST", "../models/tmp.php?tmp='asd'");
-    // xhttp.send(null);
-
-    // function findItem(e)
-    // {
-    //     if (e.keyCode == 13)
-    //     {
-    //         return false;
-    //     }
-    // }
+    
 
     function addNumItem(idItem)
     {
@@ -104,10 +82,6 @@
     }
 
     function sendJSON(value, method, link){
-        // let func = {};
-        // func.id = idItem;
-        // func.name = "addItem";
-        // console.log(func);
         $.ajax({
             method: method,
             url: link,
@@ -123,7 +97,14 @@
         let func = {};
         func.name = "showOption";
         func.id = $idItem;
-        sendJSON(func, "post", "#");
+        $.ajax({
+            method: "POST",
+            data: {func: JSON.stringify(func)},
+            url: "../models/M_BanHang.php",
+            success: function(response){
+                console.log(response);
+            },
+        });
     }
 </script>
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 31, 2021 lúc 10:45 AM
+-- Thời gian đã tạo: Th10 01, 2021 lúc 06:35 PM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 7.4.23
 
@@ -64,6 +64,20 @@ CREATE TABLE `ctkm_phantram` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `ct_datmon`
+--
+
+CREATE TABLE `ct_datmon` (
+  `MaDM` varchar(10) NOT NULL,
+  `MaMon` varchar(10) NOT NULL,
+  `TenDonVi` varchar(10) NOT NULL,
+  `SoLuong` int(11) NOT NULL,
+  `DonGia` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `ct_hoadon`
 --
 
@@ -97,6 +111,14 @@ CREATE TABLE `ct_mon` (
   `TenKichThuoc` varchar(100) CHARACTER SET utf8 NOT NULL,
   `DonGia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `ct_mon`
+--
+
+INSERT INTO `ct_mon` (`MaMon`, `TenKichThuoc`, `DonGia`) VALUES
+('MON001', 'L', 15000),
+('MON002', 'M', 20000);
 
 -- --------------------------------------------------------
 
@@ -136,6 +158,19 @@ CREATE TABLE `ct_phieuxuat` (
   `MaPX` varchar(10) NOT NULL,
   `MaNVL` varchar(10) NOT NULL,
   `SoLuong` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `datmon`
+--
+
+CREATE TABLE `datmon` (
+  `MaDM` varchar(10) NOT NULL,
+  `SoBan` int(11) NOT NULL DEFAULT -1,
+  `TongTien` int(11) NOT NULL,
+  `TinhTrang` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -382,24 +417,36 @@ CREATE TABLE `tinhtrang` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `topping_lienket`
+-- Cấu trúc bảng cho bảng `topping_dm`
 --
 
-CREATE TABLE `topping_lienket` (
-  `MaMon` varchar(10) CHARACTER SET utf8 NOT NULL,
-  `TenTopping` varchar(10) CHARACTER SET utf8 NOT NULL
+CREATE TABLE `topping_dm` (
+  `MaMon` varchar(10) NOT NULL,
+  `MaDM` varchar(10) NOT NULL,
+  `TenDonVi` varchar(10) NOT NULL,
+  `TenTopping` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `taikhoan`
+-- Cấu trúc bảng cho bảng `topping_lienket`
 --
 
-CREATE TABLE `taikhoan` (
-  `MaTK` varchar(10) NOT NULL,
-  `MatKhau` varchar(20) NOT NULL,
+CREATE TABLE `topping_lienket` (
+  `MaMon` varchar(10) CHARACTER SET utf8 NOT NULL,
+  `TenTopping` varchar(100) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `topping_lienket`
+--
+
+INSERT INTO `topping_lienket` (`MaMon`, `TenTopping`) VALUES
+('MON001', 'Thạch dừa'),
+('MON001', 'Trân Châu'),
+('MON002', 'Rau câu'),
+('MON002', 'Thạch Trái');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -422,6 +469,12 @@ ALTER TABLE `ctkm_mon`
 --
 ALTER TABLE `ctkm_phantram`
   ADD PRIMARY KEY (`MaCTKM`);
+
+--
+-- Chỉ mục cho bảng `ct_datmon`
+--
+ALTER TABLE `ct_datmon`
+  ADD PRIMARY KEY (`MaDM`,`MaMon`);
 
 --
 -- Chỉ mục cho bảng `ct_hoadon`
@@ -458,6 +511,12 @@ ALTER TABLE `ct_phieunhap`
 --
 ALTER TABLE `ct_phieuxuat`
   ADD PRIMARY KEY (`MaPX`,`MaNVL`);
+
+--
+-- Chỉ mục cho bảng `datmon`
+--
+ALTER TABLE `datmon`
+  ADD PRIMARY KEY (`MaDM`);
 
 --
 -- Chỉ mục cho bảng `donvitinh`
@@ -556,14 +615,16 @@ ALTER TABLE `tinhtrang`
   ADD PRIMARY KEY (`MaTT`);
 
 --
+-- Chỉ mục cho bảng `topping_dm`
+--
+ALTER TABLE `topping_dm`
+  ADD PRIMARY KEY (`MaMon`,`MaDM`,`TenDonVi`,`TenTopping`);
+
+--
 -- Chỉ mục cho bảng `topping_lienket`
 --
 ALTER TABLE `topping_lienket`
   ADD PRIMARY KEY (`MaMon`,`TenTopping`);
-<<<<<<< HEAD
-=======
-
->>>>>>> 1f8195abcc36d0d4b78fa3b37b523aeeacfbdfb0
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

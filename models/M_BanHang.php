@@ -1,6 +1,7 @@
 <?php
     include 'E_Mon.php';
     include 'E_ChiTietMon.php';
+    include "E_Topping.php";
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -89,15 +90,13 @@
         public static function getDeltailItemFromServer($idItem)
         {
             include '../configs/config.php';
-            $sql = 'SELECT * FROM ct_mon where (ct_mon.MaMon = \' ' . $idItem . '\')';
+            $sql = "SELECT * FROM ct_mon where MaMON = '" . $idItem . "'";
             $result = $conn->query($sql);
             $detailItem;
             if ($result->num_rows > 0)
             {
-                while ($row = $result->fetch_assoc()) 
-                {
-                    $detailItem = new ChiTietMon($row);
-                }
+                $row = $result->fetch_assoc(); 
+                $detailItem = new ChiTietMon($row);
             }
             return $detailItem;
         }
@@ -105,7 +104,7 @@
         public static function getToppingListFromServer($idItem)
         {
             include '../configs/config.php';
-            $sql = 'SELECT * FROM topping_lienket (topping_lienket.MaMon = \' ' . $idItem . '\')';
+            $sql = "SELECT * FROM topping_lienket where MaMon = '" . $idItem ."'";
             $result = $conn->query($sql);
             $toppingList = array();
             if ($result->num_rows > 0)
@@ -131,9 +130,10 @@
                     }
         }
 
-        function showOption($idItem)
+        public static function showOption($idItem)
         {
-            
+            self::getDeltailItemFromServer($idItem);
+            self::getToppingListFromServer($idItem);
         }
     }
     $modelSale = new Model_Sale();
