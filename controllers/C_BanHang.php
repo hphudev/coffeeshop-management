@@ -1,5 +1,3 @@
-
-
 <script type="text/javascript">
 
      $(document).ready(function () {
@@ -11,18 +9,32 @@
                     return false;
             }
         });
-        $().change(function(event){
-
-        });
     });
 
-    function findItem(e)
-    {
-        if (e.keyCode == 13)
-        {
-            return false;
-        }
-    }
+    // $.ajax({
+    //     method: "POST",
+    //     data: {func: JSON.stringify("ok")},
+    //     url: "../models/tmp.php",
+    //     success: function(response){
+    //         console.log(response);
+    //     },
+    // });
+
+    const xhttp = new XMLHttpRequest();
+    xhttp.onload = function() {
+        console.log(this.responseText);
+    }   
+    xhttp.open("POST", "../models/tmp.php?tmp='asd'");
+    xhttp.send(null);
+
+    // function findItem(e)
+    // {
+    //     if (e.keyCode == 13)
+    //     {
+    //         return false;
+    //     }
+    // }
+
     function addNumItem(idItem)
     {
         // alert(idCard);
@@ -101,9 +113,17 @@
             url: link,
             data: {func: JSON.stringify(value)},
             success: function (res) {
-                // console.log(res);
+                //console.log(res);
             }
         });
+    }
+
+    function showOptionTable($idItem)
+    {
+        let func = {};
+        func.name = "showOption";
+        func.id = $idItem;
+        sendJSON(func, "post", "#");
     }
 </script>
 
@@ -111,8 +131,6 @@
     include '../models/M_BanHang.php';
     include '../models/M_General_CMD.php';
 
-    // session_unset();
-    // session_start();
     if (1 == 2)
         die("Bạn không có quyền truy cập, ok?");
     
@@ -120,19 +138,12 @@
     {
         public function __construct()
         {
-            // if (is_null(self::$modelSale))
-            //     self::$modelSale = new Model_Sale();
         }
-        // public function staticModelSale() {
-        //     return self::$modelSale;
-        // }
-        
     }
-    // $controlSalePage = new C_BanHang();
-    // $controlSalePage->loadMenuItem(); 
+
     $modelSale->sortItemListByNumChoice();
     $itemList = $modelSale->getItemListFromLocal();
-    include_once('../admin/sale.php');
+    include('../admin/sale.php');
     for ($i = 0; $i < count($itemList); $i++)
     {
         $num = $modelSale->getNumChoiceItem($itemList[$i]->get_MaMon());

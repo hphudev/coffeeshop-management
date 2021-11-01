@@ -35,10 +35,8 @@
                 <img class="card-img-top" src="https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg" alt="Card image" style="min-width:200px; max-width:300px")>
                 <div class="card-body">
                     <?php
-                        echo '<h3 class="card-title mt-1">' . $idItem . '</h3>';
+                        echo '<h3 class="card-title mt-1">' . $itemList[$i]->get_TenMon() . '</h3>';
                         echo '<p class="card-text">' . $itemList[$i]->get_MoTa() . '</p>';
-                        // echo '<a href="#" class="card-link">Card link</a>';
-                        // echo '<a href="#" class="card-link">Another link</a>';
                     ?>
                     <div class="d-flex justify-content-around">
                         <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger d-none" onclick="minusNumItem('<?php echo $idItem?>')">
@@ -58,8 +56,7 @@
                         </button>
                         
                     </div>
-                    <a href="" class="btn btn-primary" style="width: 100%;">Tùy chọn</a>
-                    
+                    <button class="btn btn-info btn-round" style="width: 100%;" data-toggle="modal" data-target="#optionModal" onclick="showOptionTable('<?php echo $idItem?>');">Tùy chọn</button>
                 </div>
             </div>
             </div>
@@ -73,7 +70,7 @@
     Login<i class="material-icons">assignment</i>
 
 </button>
-<div class="modal fade" id="loginModal" tabindex="-1" role="">
+<div class="modal fade" id="optionModal" tabindex="-1" role="">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="card card-signup card-plain">
@@ -86,56 +83,32 @@
                   </div>
                 </div>
                 <div class="modal-body">
-                    <h5>Tùy chọn kích thước</h5>
-                    <div class="form-check form-check-radio">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
-                            Size M
-                            <span class="circle">
-                                <span class="check"></span>
-                            </span>
-                        </label>
-                    </div>
-                    <div class="form-check form-check-radio">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" checked />
-                            Size L
-                            <span class="circle">
-                                <span class="check"></span>
-                            </span>
-                        </label>
-                    </div>
-
-                    <div class="form-check form-check-radio disabled">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="radio" name="exampleRadios1" id="exampleRadios1" value="option1" disabled />
-                            Size XL
-                            <span class="circle">
-                                <span class="check"></span>
-                            </span>
-                        </label>
-                    </div>
-                    <hr>
-                    <h5 >Tùy chọn Topping</h5>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" />
-                            Trân châu đen/trắng
-                            <span class="form-check-sign">
-                                <span class="check"></span>
-                            </span>
-                        </label>
-                    </div>
-
-                    <div class="form-check disabled">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" disabled />
-                            Hạt thủy tinh
-                            <span class="form-check-sign">
-                                <span class="check"></span>
-                            </span>
-                        </label>
-                    </div>
+                        <h5>Tùy chọn kích thước</h5>
+                        <div class="optionSize">
+                            <div id="sizeTenKichThuoc" class="form-check form-check-radio">
+                                <label class="form-check-label o-size">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
+                                    Size M
+                                    <span class="circle">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    
+                    <hr> 
+                        <h5 >Tùy chọn Topping</h5>
+                        <div class="optionTopping">
+                            <div class="form-check">
+                                <label class="form-check-label o-topping">
+                                    <input class="form-check-input" type="checkbox" value="" />
+                                    Trân châu đen/trắng
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <a href="#pablo" class="btn btn-primary btn-link btn-wd btn-lg">Get Started</a>

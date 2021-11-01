@@ -1,5 +1,6 @@
 <?php
     include 'E_Mon.php';
+    include 'E_ChiTietMon.php';
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -85,6 +86,39 @@
             return $itemList;
         }
 
+        public static function getDeltailItemFromServer($idItem)
+        {
+            include '../configs/config.php';
+            $sql = 'SELECT * FROM ct_mon where (ct_mon.MaMon = \' ' . $idItem . '\')';
+            $result = $conn->query($sql);
+            $detailItem;
+            if ($result->num_rows > 0)
+            {
+                while ($row = $result->fetch_assoc()) 
+                {
+                    $detailItem = new ChiTietMon($row);
+                }
+            }
+            return $detailItem;
+        }
+
+        public static function getToppingListFromServer($idItem)
+        {
+            include '../configs/config.php';
+            $sql = 'SELECT * FROM topping_lienket (topping_lienket.MaMon = \' ' . $idItem . '\')';
+            $result = $conn->query($sql);
+            $toppingList = array();
+            if ($result->num_rows > 0)
+            {
+                while ($row = $result->fetch_assoc()) 
+                {
+                    $topping = new Topping($row);
+                    array_push($toppingList, $topping);
+                }
+            }
+            return $toppingList;
+        }
+
         function sortItemListByNumChoice()
         {
             for ($i = 0; $i < count($this->itemListModel); $i++)
@@ -96,6 +130,11 @@
                         $this->itemListModel[$j] = $tmp;
                     }
         }
+
+        function showOption($idItem)
+        {
+            
+        }
     }
     $modelSale = new Model_Sale();
 
@@ -104,12 +143,15 @@
         $emp1 = json_decode($_POST['func']);
         if (json_last_error() == JSON_ERROR_NONE)
         {
+            //$_POST['res'] = "ok";
             if ($emp1->name == "addItem")
                 $modelSale->increaseItemChoice($emp1->id);
             if ($emp1->name == "minusItem")
                 $modelSale->decreaseItemChoice($emp1->id);
             if ($emp1->name == "session_unset")
                 session_unset();
+            if ($emp1->name == "showOption")    
+                $modelSale->showOption($emp1->id);
         }
     }    
 ?> 
