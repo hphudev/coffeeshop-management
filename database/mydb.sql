@@ -376,9 +376,8 @@ CREATE TABLE `topping_lienket` (
 --
 
 CREATE TABLE `taikhoan` (
-  `MaTaiKhoan` varchar(10) NOT NULL,
+  `MaTK` varchar(10) NOT NULL,
   `MatKhau` varchar(20) NOT NULL,
-  `MaNV` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -509,7 +508,7 @@ ALTER TABLE `topping_lienket`
 -- Chỉ mục cho bảng `taikhoan`
 --
 ALTER TABLE `taikhoan`
-  ADD PRIMARY KEY (`MaTaiKhoan`);
+  ADD PRIMARY KEY (`MaTK`);
 
 COMMIT;
 

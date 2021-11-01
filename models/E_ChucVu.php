@@ -5,6 +5,20 @@ class ChucVu
     private $TenCV;
     private $MucTroCap;
 
+    function __construct()
+    {
+        $this->MaCV;
+        $this->TenCV;
+        $this->MucTroCap;
+    }
+
+    public function clone($row)
+    {
+        $this->MaCV = $row['MaCV'];
+        $this->TenCV = $row['TenCV'];
+        $this->MucTroCap = $row['TroCap'];
+    }
+
     function set_MaCV($MaCV)
     {
         $this->MaCV = $MaCV;

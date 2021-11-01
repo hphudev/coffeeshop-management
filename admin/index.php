@@ -7,11 +7,12 @@
 
     <!-- CSS Files -->
     <link href="../assets_control/css/material-dashboard.min.css?v=2.1.2" rel="stylesheet" /> <!-- Fonts and icons -->
-    
+
     <!-- Fonts and icons -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <script src="../assets/js/core/jquery.min.js" type="text/javascript"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             border: 2px solid wheat;
@@ -186,6 +187,9 @@
                         case 'financial':
                             include './financial.php';
                             break;
+                        case 'title':
+                            include '../controllers/C_ChucVu.php';
+                            break;
                         default:
                             include './home.php';
                             break;
@@ -206,6 +210,8 @@
             <script src="../assets_control/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
             <!-- Datatables -->
             <script src="../assets_control/js/plugins/jquery.dataTables.min.js"></script>
+            <!-- Alert -->
+            <!-- <script src="../assets_control/js/plugins/sweetalert2.js"></script> -->
             <!-- #endregion -->
 </body>
 
