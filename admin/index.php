@@ -7,11 +7,12 @@
 
     <!-- CSS Files -->
     <link href="../assets_control/css/material-dashboard.min.css?v=2.1.2" rel="stylesheet" /> <!-- Fonts and icons -->
-    
+
     <!-- Fonts and icons -->
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <script src="../assets/js/core/jquery.min.js" type="text/javascript"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script> -->
     <link href="../admin/css/sale.css" rel="stylesheet" /> <!-- Fonts and icons -->
@@ -189,6 +190,9 @@
                         case 'financial':
                             include './financial.php';
                             break;
+                        case 'title':
+                            include '../controllers/C_ChucVu.php';
+                            break;
                         default:
                             include './home.php';
                             break;
@@ -198,6 +202,7 @@
             </div>
         </div>
     </div>
+
     <script src="../assets_control/js/core/popper.min.js" type="text/javascript"></script>
     <script src="../assets_control/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
     <script src="../assets_control/js/plugins/perfect-scrollbar.jquery.min.js"></script>

@@ -1,5 +1,6 @@
 <?php
-// include '../models/ChucVu.php';
+include '../models/M_ChucVu.php';
+include '../models/M_TaiKhoan.php';
 class NhanVien
 {
     private $MaNV;
@@ -11,21 +12,44 @@ class NhanVien
     private $SDT;
     private $DiaChi;
     private $NgayVaoLam;
-    private $MaCV;
+    private $ChucVu;
     private $Luong;
+    private $TaiKhoan;
 
-    public function __construct($row)
+    public function __construct()
+    {
+        $this->MaNV =
+            $this->HoTenDem =
+            $this->Ten =
+            $this->NgaySinh =
+            $this->GioiTinh =
+            $this->CMND =
+            $this->SDT =
+            $this->DiaChi =
+            $this->NgayVaoLam =
+            $this->ChucVu =
+            $this->Luong = null;
+        $this->TaiKhoan = new TaiKhoan();
+    }
+
+    public function clone($row)
     {
         $this->MaNV = $row['MaNV'];
-        $this->HoTenDem = $row['HoTen'];
-        $this->Ten = $row['HoTen'];
-        $this->NgaySinh = $row['NgaySinh'];
+        $names = explode(' ', $row['HoTen']);
+        $this->Ten = array_pop($names);
+        $this->HoTenDem =  implode(" ", $names);
+        $this->NgaySinh =  strtotime($row['NgaySinh']);
         $this->GioiTinh = $row['GioiTinh'];
         $this->CMND = $row['CMND'];
+        $this->SDT = $row['SDT'];
         $this->DiaChi = $row['DiaChi'];
-        $this->NgayVaoLam = $row['NgayVaoLam'];
-        $this->MaCV = $row['MaCV'];
+        $this->NgayVaoLam = strtotime($row['NgayVaoLam']);
         $this->Luong = $row['Luong'];
+
+        $Model_ChucVu = new Model_ChucVu();
+        $this->ChucVu = $Model_ChucVu->get_ChucVuDetails($row['MaCV']);
+        $Model_TaiKhoan = new Model_TaiKhoan();
+        $this->TaiKhoan = $Model_TaiKhoan->get_TaiKhoanDetails($row['MaTK']);
     }
 
     function set_MaNV($MaNV)
@@ -100,13 +124,13 @@ class NhanVien
     {
         return $this->NgayVaoLam;
     }
-    function set_MaCV($MaCV)
+    function set_ChucVu($ChucVu)
     {
-        $this->MaCV = $MaCV;
+        $this->ChucVu = $ChucVu;
     }
-    function get_MaCV()
+    function get_ChucVu()
     {
-        return $this->MaCV;
+        return $this->ChucVu;
     }
     function set_Luong($Luong)
     {
@@ -115,5 +139,13 @@ class NhanVien
     function get_Luong()
     {
         return $this->Luong;
+    }
+    function set_TaiKhoan($TaiKhoan)
+    {
+        $this->TaiKhoan = $TaiKhoan;
+    }
+    function get_TaiKhoan()
+    {
+        return $this->TaiKhoan;
     }
 }

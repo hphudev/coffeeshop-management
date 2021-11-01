@@ -1,37 +1,71 @@
 <?php
-include './E_ChucVu.php';
+include 'E_ChucVu.php';
 class Model_ChucVu
 {
     public function __construct()
     {
     }
 
-    public function get_AllNhanVien()
+    public function get__AllChucVu()
     {
         include '../configs/config.php';
-        $sql = 'SELECT * FROM nhanvien';
+        $sql = 'SELECT * FROM chucvu';
         $result = $conn->query($sql);
-        $NhanVienList = array();
+        $ChucVuList = array();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $NhanVien = new NhanVien($row);
-                array_push($NhanVienList, $NhanVien);
+                $ChucVu = new ChucVu();
+                $ChucVu->clone($row);
+                array_push($ChucVuList, $ChucVu);
             }
-            return $NhanVienList;
+            $conn->close();
+            return $ChucVuList;
         }
     }
 
-    public function get_NhanVienDetails($id)
+    public function get_ChucVuDetails($id)
     {
         include '../configs/config.php';
-        $sql = 'SELECT * FROM nhanvien WHERE MaNV="' . $id . '"';
+        $sql = 'SELECT * FROM chucvu WHERE MaCV="' . $id . '"';
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $NhanVien = new NhanVien($row);
+                $ChucVu = new ChucVu();
+                $ChucVu->clone($row);
                 $conn->close();
-                return $NhanVien;
+                return $ChucVu;
             }
+        }
+    }
+
+    public function get_ChucVuByName($name)
+    {
+        include '../configs/config.php';
+        $sql = 'SELECT * FROM chucvu WHERE TenCV="' . $name . '"';
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $ChucVu = new ChucVu();
+                $ChucVu->clone($row);
+                $conn->close();
+                return $ChucVu;
+            }
+        }
+    }
+
+    public function add_ChucVu($ChucVu)
+    {
+        include '../configs/config.php';
+        $sql = "INSERT INTO `chucvu`(`MaCV`,`TenCV`, `TroCap`) 
+                VALUES 
+                ('" . $ChucVu->get_MaCV() . "',
+                '" . $ChucVu->get_TenCV() . "',
+                '" . $ChucVu->get_MucTroCap() . "')";
+
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
