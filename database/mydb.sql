@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 01, 2021 lúc 06:35 PM
+-- Thời gian đã tạo: Th10 02, 2021 lúc 03:51 AM
 -- Phiên bản máy phục vụ: 10.4.21-MariaDB
 -- Phiên bản PHP: 7.4.23
 
@@ -394,6 +394,17 @@ CREATE TABLE `phieuxuat` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `quyen`
+--
+
+CREATE TABLE `quyen` (
+  `MaCV` varchar(10) NOT NULL,
+  `TenQuyen` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `taikhoan`
 --
 
@@ -601,6 +612,12 @@ ALTER TABLE `phieunhap`
 --
 ALTER TABLE `phieuxuat`
   ADD PRIMARY KEY (`MaPX`);
+
+--
+-- Chỉ mục cho bảng `quyen`
+--
+ALTER TABLE `quyen`
+  ADD PRIMARY KEY (`MaCV`,`TenQuyen`);
 
 --
 -- Chỉ mục cho bảng `taikhoan`
