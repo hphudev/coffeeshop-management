@@ -428,6 +428,18 @@ CREATE TABLE `tinhtrang` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `nhacungcap`
+--
+
+CREATE TABLE `nhacungcap` (
+  `MaNCC` varchar(10) NOT NULL,
+  `TenNCC` varchar(50) NOT NULL,
+  `SDT` varchar(11) NOT NULL 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `topping_dm`
 --
 
@@ -630,6 +642,12 @@ ALTER TABLE `taikhoan`
 --
 ALTER TABLE `tinhtrang`
   ADD PRIMARY KEY (`MaTT`);
+
+--
+-- Chỉ mục cho bảng `nhacungcap`
+--
+ALTER TABLE `nhacungcap`
+  ADD PRIMARY KEY (`MaNCC`);
 
 --
 -- Chỉ mục cho bảng `topping_dm`
