@@ -121,7 +121,7 @@
         {
         }
     }
-
+    
     $modelSale->sortItemListByNumChoice();
     $itemList = $modelSale->getItemListFromLocal();
     include('../admin/sale.php');

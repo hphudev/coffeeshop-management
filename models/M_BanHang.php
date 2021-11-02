@@ -132,12 +132,12 @@
 
         public static function showOption($idItem)
         {
-            self::getDeltailItemFromServer($idItem);
-            self::getToppingListFromServer($idItem);
+            //echo json_encode(self::getDeltailItemFromServer($idItem));
+            //echo json_encode(self::getToppingListFromServer($idItem));
         }
     }
+    
     $modelSale = new Model_Sale();
-
     if (isset($_POST['func']))
     {
         $emp1 = json_decode($_POST['func']);

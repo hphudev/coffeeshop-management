@@ -35,7 +35,7 @@
                 <img class="card-img-top" src="https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg" alt="Card image" style="min-width:200px; max-width:300px")>
                 <div class="card-body">
                     <?php
-                        echo '<h3 class="card-title mt-1">' . $itemList[$i]->get_TenMon() . '</h3>';
+                        echo '<h3 class="card-title mt-1">' . strval($itemList[$i]->get_TenMon()) . ' sữa</h3>';
                         echo '<p class="card-text">' . $itemList[$i]->get_MoTa() . '</p>';
                     ?>
                     <div class="d-flex justify-content-around">
@@ -111,7 +111,7 @@
                         </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <a href="#pablo" class="btn btn-primary btn-link btn-wd btn-lg">Get Started</a>
+                    <a href="#pablo" class="btn btn-success btn-link btn-wd btn-lg">Xong</a>
                 </div>
             </div>
         </div>
