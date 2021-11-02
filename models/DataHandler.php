@@ -1,6 +1,5 @@
-//Các bạn chỉnh các tham số của hàm ConnectDatabase trong hàm khởi tạo cho phù hợp với máy tính của mình nha
-
 <?php
+
 class DataHandler
 {
 	private $connection;
@@ -12,7 +11,8 @@ class DataHandler
     
 	public function __construct()
 	{
-		$this->connection = $this->ConnectDatabase('127.0.0.1', 'sa', '1', 'CoffeeShopManagement') or die('Lỗi kết nối đến csdl.');
+		// Các bạn chỉnh các tham số của hàm ConnectDatabase trong hàm khởi tạo cho phù hợp với máy tính của mình nha
+		$this->connection = $this->ConnectDatabase('127.0.0.1', 'root', '27112001', 'CoffeeShop') or die('Lỗi kết nối đến csdl.');
 		$this->connection->query("SET NAMES 'utf8mb4'");
 		$this->connection->query("SET CHARACTER SET utf8mb4");
 		$this->connection->query("SET SESSION collation_connection = 'utf8mb4_unicode_ci'");
@@ -84,4 +84,6 @@ class DataHandler
 	    $this->CloseConnection();
 	}
 }
+
+new DataHandler();
 ?>

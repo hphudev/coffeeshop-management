@@ -45,9 +45,9 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=statistic">
+                        <a class="nav-link" href="index.php?page=manage-customer_s-info">
                             <i class="material-icons">insert_chart_outlined</i>
-                            <p>THỐNG KÊ</p>
+                            <p>QUẢN LÝ KHÁCH HÀNG</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -75,7 +75,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=financial">
+                        <a class="nav-link" href="index.php?page=manage-financial">
                             <i class="material-icons">attach_money</i>
                             <p>QUẢN LÝ TÀI CHÍNH</p>
                         </a>
@@ -102,7 +102,7 @@
             fixed-top">
                 <div class="container-fluid">
                     <div class="navbar-wrapper">
-                        <a class="navbar-brand" href="javascript:;">Quản lý nhân sự</a>
+                        <a class="navbar-brand" href="javascript:;">&nbsp</a>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="sr-only">Toggle navigation</span>
@@ -170,8 +170,14 @@
                 if (isset($_REQUEST['page'])) {
                     $page = $_REQUEST['page'];
                     switch ($page) {
-                        case 'statistic':
-                            include './statistic.php';
+                        case 'manage-customer_s-info':
+                            include 'customer/manage-customer_s-info.php';
+                            break;
+                        case 'add-customer_s-info':
+                            include 'customer/add-customer_s-info.php';
+                            break;
+                        case 'change-customer_s-info':
+                            include 'customer/change-customer_s-info.php';
                             break;
                         case 'staff':
                             include '../controllers/C_NhanVien.php';
@@ -188,8 +194,8 @@
                         case 'werehouse':
                             include '../controllers/C_NguyenVatLieu.php';
                             break;
-                        case 'financial':
-                            include './financial.php';
+                        case 'manage-financial':
+                            include './manage-financial.php';
                             break;
                         case 'title':
                             include '../controllers/C_ChucVu.php';
