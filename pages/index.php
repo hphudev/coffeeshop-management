@@ -96,7 +96,7 @@ if (($_SESSION["id"] == "")) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link logout" href="#">
+                        <a class="nav-link logout" href="../index.php">
                             <i class="material-icons">logout</i>
                             <p>ĐĂNG XUẤT</p>
                         </a>
@@ -218,25 +218,6 @@ if (($_SESSION["id"] == "")) {
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $('.logout').click(function() {
-                var xmlhttp = new XMLHttpRequest();
-                var url = "../../coffeeshopmanagement/controllers/C_TaiKhoan.php?logout";
-
-                xmlhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        if (this.responseText == 'success') {
-                            window.location.reload()
-                        }
-                    }
-                };
-                xmlhttp.open("GET", url, true);
-                xmlhttp.send();
-            })
-        })
-    </script>
 
     <script src="../assets_control/js/core/popper.min.js" type="text/javascript"></script>
     <script src="../assets_control/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>

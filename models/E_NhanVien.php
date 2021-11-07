@@ -49,7 +49,7 @@ class NhanVien
         $Model_ChucVu = new Model_ChucVu();
         $this->ChucVu = $Model_ChucVu->get_ChucVuDetails($row['MaCV']);
         $Model_TaiKhoan = new Model_TaiKhoan();
-        $this->TaiKhoan = $Model_TaiKhoan->get_TaiKhoanDetails($row['MaTK']);
+        $this->TaiKhoan = $Model_TaiKhoan->get_TaiKhoanDetails($row['MaNV']);
     }
 
     function set_MaNV($MaNV)

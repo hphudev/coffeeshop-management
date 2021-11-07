@@ -1,243 +1,4 @@
 <div class="container-fluid">
-    <!-- <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header card-header-success card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">assignment</i>
-                    </div>
-                    <h2 class="card-title">Danh sách chức vụ</h2>
-                </div>
-                <div class="card-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="table-responsive">
-                                    <table id="" class="table table-hover">
-                                        <thead class="text-success">
-                                            <th>Mã chức vụ</th>
-                                            <th>Tên chức vụ</th>
-                                            <th>Mức trợ cấp</th>
-                                            <th class="text-right">Thao tác</th>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-
-                                            for ($i = 0; $i < count($ChucVuList); $i++) {
-                                                echo "<tr>";
-                                                echo "<td>" . $ChucVuList[$i]->get_MaCV() . "</td>";
-                                                echo "<td>" . $ChucVuList[$i]->get_TenCV() . "</td>";
-                                                echo "<td>" . $ChucVuList[$i]->get_MucTroCap() . "</td>";
-
-                                            ?>
-                                                <td class="td-actions text-right">
-                                                    <button <?php
-                                                            echo 'id="' .  $ChucVuList[$i]->get_MaCV() . '"'
-                                                            ?> type="button" rel="tooltip" class="btn btn-Edit-CV btn-link btn-warning btn-just-icon" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa thông tin">
-                                                        <i class="material-icons">edit</i>
-                                                    </button>
-                                                    <button <?php
-                                                            echo 'id="' .  $ChucVuList[$i]->get_MaCV() . '"'
-                                                            ?> id="" type="button" rel="tooltip" class="btn btn-Delete-CV btn-link btn-danger btn-just-icon" data-toggle="tooltip" data-placement="top" title="Xóa nhân viên">
-                                                        <i class="material-icons">close</i>
-                                                    </button>
-                                                </td>
-
-                                            <?php
-                                                echo "</tr>";
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header card-header-success card-header-icon">
-                    <div class="card-icon">
-                        <i class="material-icons">assignment</i>
-                    </div>
-                    <h2 class="card-title">Chi tiết bảng phân quyền</h2>
-                </div>
-                <div class="card-body">
-                    <div class="container-fluid">
-                        <h4>
-                            THỐNG KÊ
-                        </h4>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Xem thông tin thống kê
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Tạo thống kê/báo cáo
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <h4>
-                            NHÂN VIÊN
-                        </h4>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Xem thông tin nhân viên
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Chỉnh sửa/thêm/xóa thông tin nhân viên
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Xem thông tin chức vụ/ bảng phân quyền
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" disabled>
-                                            Chỉnh sửa/thêm/xóa thông tin chức vụ
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h4>
-                            BÁN HÀNG
-                        </h4>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Xem thông tin món
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Chỉnh sửa/thêm/xóa thông tin món
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Thực hiện order món
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Thực hiện báo cáo doanh thu theo món
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <h4>
-                            KHO
-                        </h4>
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Xem thông tin kho
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input class="form-check-input" type="checkbox" value="">
-                                            Tạo báo cáo kho
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -364,7 +125,6 @@
                                 </thead>
                                 <tbody>
                                     <?php
-
                                     for ($i = 0; $i < count($ChucVuList); $i++) {
                                         echo "<tr>";
                                         echo "<td>" . $ChucVuList[$i]->get_MaCV() . "</td>";
@@ -375,212 +135,226 @@
                                             <button type="button" rel="tooltip" class="btn btnEditCV btn-link btn-warning btn-just-icon" data-placement="top" title="Chỉnh sửa thông tin" data-toggle="modal" data-target="#addCVModel">
                                                 <i class="material-icons">edit</i>
                                             </button>
+                                            <button type="button" rel="tooltip" class="btn btnDeleteCV btn-link btn-danger btn-just-icon" data-placement="top" title="Xóa chức vụ">
+                                                <i class="material-icons">close</i>
+                                            </button>
                                         </td>
-
                                     <?php
                                         echo "</tr>";
                                     }
-
                                     ?>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="tab-pane" id="messages">
 
+                        <div class="tab-pane" id="messages">
                             <div class="container-fluid">
+                                <div>
+                                    <button id="btnEditPQ" type="button" rel="tooltip" class="btn btn-warning">
+                                        <i class="material-icons">edit</i>
+                                        Chỉnh sửa
+                                    </button>
+                                    <button id="btnSaveEditPQ" type="button" rel="tooltip" class="btn btn-success invisible">
+                                        <i class="material-icons">save</i>
+                                        Lưu chỉnh sửa
+                                    </button>
+                                    <button id="btnCancelEditPQ" type="button" rel="tooltip" class="btn btn-danger invisible">
+                                        <i class="material-icons">cancel</i>
+                                        Hủy bỏ
+                                    </button>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label for="inputState">Lựa chọn chức vụ</label>
-                                            <select id="inputState" class="form-control">
-                                                <option selected>Choose...</option>
-                                                <?php
-                                                for ($i = 0; $i < count($ChucVuList); $i++) {
-                                                    echo '<option';
-                                                    echo ' value="' . $ChucVuList[$i]->get_TenCV();
-                                                    echo '">' . $ChucVuList[$i]->get_TenCV() . '</option>';
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h4>
-                                            THỐNG KÊ
-                                        </h4>
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Xem thông tin thống kê
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Tạo thống kê/báo cáo
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-
+                                            <div class="dropdown">
+                                                <button id="btnSelectCVPQ" class="btn  btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Lựa chọn chức vụ
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <?php
+                                                    for ($i = 0; $i < count($ChucVuList); $i++) {
+                                                        echo '<a class="dropdown-item"';
+                                                        echo "id=" . $ChucVuList[$i]->get_MaCV() . ">";
+                                                        echo  $ChucVuList[$i]->get_TenCV() . '</a>';
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <h4>
-                                            NHÂN VIÊN
-                                        </h4>
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Xem thông tin nhân viên
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h4>
+                                                THỐNG KÊ
+                                            </h4>
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="thongke0" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Xem thông tin thống kê
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Chỉnh sửa/thêm/xóa thông tin nhân viên
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Xem thông tin chức vụ/ bảng phân quyền
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" disabled>
-                                                            Chỉnh sửa/thêm/xóa thông tin chức vụ
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="thongke1" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Tạo thống kê/báo cáo
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
+                                        <div class="col-md-6">
+                                            <h4>
+                                                BÁN HÀNG
+                                            </h4>
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="mon0" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Xem thông tin món
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="mon1" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Chỉnh sửa/thêm/xóa thông tin món
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <h4>
-                                            BÁN HÀNG
-                                        </h4>
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Xem thông tin món
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Chỉnh sửa/thêm/xóa thông tin món
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="mon2" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Thực hiện báo cáo doanh thu theo món
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Thực hiện báo cáo doanh thu theo món
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Thực hiện order món
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="mon3" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Thực hiện order món
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <h4>
-                                            KHO
-                                        </h4>
-                                        <div class="container-fluid">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Xem thông tin kho
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
+                                        <div class="col-md-6">
+                                            <h4>
+                                                NHÂN SỰ
+                                            </h4>
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="nhansu0" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Xem thông tin nhân viên
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="nhansu1" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Chỉnh sửa/thêm/xóa thông tin nhân viên
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input class="form-check-input" type="checkbox" value="">
-                                                            Tạo báo cáo kho
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="nhansu2" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Xem thông tin chức vụ/ bảng phân quyền
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="nhansu3" class="form-check-input" type="checkbox" disabled>
+                                                                Chỉnh sửa/thêm/xóa thông tin chức vụ
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h4>
+                                                KHO
+                                            </h4>
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="kho0" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Xem thông tin kho
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input id="kho1" class="form-check-input" type="checkbox" value="" disabled>
+                                                                Tạo báo cáo kho
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -814,6 +588,7 @@
 
 <script>
     $(document).ready(function() {
+        // Table Nhan vien
         var tableNV = $('#tableNV').DataTable({
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
@@ -976,6 +751,8 @@
             }
         }
 
+
+        // Table Chuc Vu
         var tableType = $('#tableType').DataTable({
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
@@ -997,9 +774,9 @@
             $('#inputMucTroCap').attr('value', $columns[2].innerHTML)
         });
 
-        $(".btn-Delete-CV").click(function() {
+        $(".btnDeleteCV").click(function() {
             Swal.fire({
-                title: 'Xóa nhân viên?',
+                title: 'Xóa chức vụ?',
                 text: "Bạn không thể hoàn tác thao tác này, tiếp tục?",
                 icon: 'warning',
                 showCancelButton: true,
@@ -1030,7 +807,6 @@
                             }
                         }
                     };
-
                     xmlhttp.open("GET", url, true);
                     xmlhttp.send();
                 }
@@ -1039,17 +815,16 @@
 
         $('#btnConfirmAddCV').click(function() {
             if ($(this).hasClass('edit')) {
-                alert("Edit")
+                deleteCV()
             } else {
-                alert("Add")
                 checkCVInfomation()
             }
         });
 
         function checkCVInfomation() {
-            if ($('#inputMaChucVu').val() == " " ||
-                $('#inputTenChucVu').val() == " " ||
-                $('#inputMucTroCap').val() == " ") {
+            if (
+                $('#inputTenChucVu').val() == "" ||
+                $('#inputMucTroCap').val() == "") {
                 Swal.fire(
                     'Thất bại!',
                     'Vui lòng nhập đầy đủ thông tin',
@@ -1075,7 +850,11 @@
                             'error'
                         )
                     } else {
-                        addChucVu()
+                        if ($('#btnConfirmAddCV').hasClass('edit')) {
+                            editChucVu()
+                        } else {
+                            addChucVu()
+                        }
                     }
                 }
             };
@@ -1085,7 +864,7 @@
         }
 
         function checkMucTroCap() {
-            var TroCap = $('#inputNgaySinh').val();
+            var TroCap = $('#inputMucTroCap').val();
             if (TroCap < 0) {
                 Swal.fire(
                     'Thất bại!',
@@ -1095,6 +874,7 @@
                 return false
             } else
                 return true
+
         }
 
         function addChucVu() {
@@ -1124,5 +904,155 @@
             xmlhttp.open("GET", url, true);
             xmlhttp.send();
         }
+
+        function editChucVu() {
+            var xmlhttp = new XMLHttpRequest();
+            var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?update=" + $('#inputMaChucVu').val() +
+                "&TenCV=" + $('#inputTenChucVu').val() +
+                "&TroCap=" + $('#inputMucTroCap').val();
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.responseText == 'success') {
+                        Swal.fire(
+                            'Thành công!',
+                            'Thông tin chức vụ đã được chỉnh sửa',
+                            'success'
+                        )
+                    } else {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+                    }
+                }
+            };
+
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
+
+        function deleteCV() {
+            var xmlhttp = new XMLHttpRequest();
+            var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?delete=" + $('#inputMaChucVu').val();
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.responseText == 'error') {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Đã có lỗi xảy ra, vui lòng thử lại!',
+                            'error'
+                        )
+                    } else {
+                        checkCVInfomation()
+                    }
+                }
+            };
+
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
+
+
+        // Bang phan quyen
+        $('.dropdown-item').click(function() {
+            if ($('#btnEditPQ').prop('disabled') == true) {
+                Swal.fire(
+                    'Lưu ý!',
+                    'Vui lòng lưu lại chỉnh sửa hiện tại!',
+                    'warning'
+                )
+            } else {
+                $('.form-check-input').prop('checked', false);
+                $('#btnSelectCVPQ').html($(this).text())
+                var xmlhttp = new XMLHttpRequest();
+                var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?phanquyen=" +
+                    $(this).attr('id')
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if (this.responseText == 'error') {
+                            Swal.fire(
+                                'Thất bại!',
+                                'Đã xảy ra lỗi. Vui lòng thử lại',
+                                'error'
+                            )
+                        } else {
+                            var PhanQuyenList = this.responseText.split("</br>")
+                            PhanQuyenList.forEach(element => {
+                                $("#" + element).prop('checked', true);
+                            });
+                        }
+                    }
+                };
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
+            }
+        })
+        $('#btnEditPQ').click(function() {
+            if ($('#chucVuSelect').val() != "Lựa chọn...") {
+                $('.form-check-input').prop('disabled', false)
+                $(this).prop('disabled', true)
+                $('#btnSaveEditPQ').removeClass('invisible')
+                $('#btnCancelEditPQ').removeClass('invisible')
+            } else {
+                Swal.fire(
+                    'Thất lại!',
+                    'Vui lòng chọn chức vụ cần chỉnh sửa',
+                    'warning'
+                )
+            }
+        })
+        $('#btnSaveEditPQ').click(function() {
+            $('.form-check-input').prop('disabled', true)
+            $(this).addClass('invisible')
+            $('#btnEditPQ').prop('disabled', false)
+            $('#btnCancelEditPQ').addClass('invisible')
+
+            var dsQuyen = ""
+
+            $('.form-check-input:checked').each(function() {
+                if ($(this).attr('id') != "") {
+                    dsQuyen += $(this).attr('id')
+                    dsQuyen += "-"
+                }
+            })
+
+            var xmlhttp = new XMLHttpRequest();
+            var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?id=" + $('#chucVuSelect').val() + "&updatePQ=" + dsQuyen;
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.responseText == 'success') {
+                        Swal.fire(
+                            'Thành công!',
+                            'Thông tin phân quyền đã được lưu lại',
+                            'success'
+                        )
+                    } else {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+                    }
+                }
+            };
+
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        })
+        $('#btnCancelEditPQ').click(function() {
+            $('.form-check-input').prop('disabled', true)
+            $(this).addClass('invisible')
+            $('#btnEditPQ').prop('disabled', false)
+            $('#btnSaveEditPQ').addClass('invisible')
+            Swal.fire(
+                'Lưu ý!',
+                'Thông tin chỉnh sửa đã không được lưu',
+                'warning'
+            )
+        })
     });
 </script>

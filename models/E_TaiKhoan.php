@@ -1,19 +1,31 @@
 <?php
 class TaiKhoan
 {
+    private $MaNV;
     private $MaTK;
     private $MatKhau;
 
     function __construct()
     {
-        $this->MaTK =
+        $this->MaNV =
+            $this->MaTK =
             $this->MatKhau = null;
     }
 
     function clone($row)
     {
-        $this->MaTK = $row['MaTK'];
+        $this->MaNV = $row['MaNV'];
+        $this->MaTK = $row['MaTaiKhoan'];
         $this->MatKhau = $row['MatKhau'];
+    }
+
+    function set_MaNV($MaNV)
+    {
+        $this->MaNV = $MaNV;
+    }
+    function get_MaNV()
+    {
+        return $this->MaNV;
     }
 
     function set_MaTK($MaTK)

@@ -9,6 +9,7 @@ class C_NhanVien
         $ModelNhanVien = new Model_NhanVien();
         $ModelChucVu = new Model_ChucVu();
         $ChucVuList = $ModelChucVu->get__AllChucVu();
+        $PhanQuyenList = array();
 
         if (isset($_GET['id'])) {
             $NhanVienID = $_GET['id'];
