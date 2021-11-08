@@ -9,7 +9,7 @@ class C_NhanVien
         $ModelNhanVien = new Model_NhanVien();
         $ModelChucVu = new Model_ChucVu();
         $ChucVuList = $ModelChucVu->get__AllChucVu();
-        $PhanQuyenList = array();
+        $ModelPhanQuyen = new Model_PhanQuyen();
 
         if (isset($_GET['id'])) {
             $NhanVienID = $_GET['id'];
@@ -83,8 +83,12 @@ class C_NhanVien
                 include_once '../admin/staff/info.php';
             }
         } else {
-            $NhanVienList = $ModelNhanVien->get_AllNhanVien();
-            include_once('../admin/staff.php');
+            if ($ModelPhanQuyen->check_PhanQuyenType($_SESSION['maCV'], "nhansu")) {
+                $NhanVienList = $ModelNhanVien->get_AllNhanVien();
+                include_once('../admin/staff.php');
+            } else {
+                echo "Bạn không có quyền truy cập mục này";
+            }
         }
     }
 }

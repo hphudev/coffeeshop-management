@@ -43,4 +43,24 @@ class Model_PhanQuyen
             return false;
         }
     }
+    public function check_PhanQuyenType($id, $type)
+    {
+        include '../configs/config.php';
+        $sql = 'SELECT * FROM quyen WHERE MaCV="' . $id . '" AND TenQuyen LIKE "' . $type . '%"';
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            return true;
+        } else
+            return false;
+    }
+    public function check_PhanQuyen($id, $TenQuyen)
+    {
+        include '../configs/config.php';
+        $sql = 'SELECT * FROM quyen WHERE MaCV="' . $id . '" AND TenQuyen="' . $TenQuyen . '"';
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            return true;
+        } else
+            return false;
+    }
 }

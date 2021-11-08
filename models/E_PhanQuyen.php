@@ -7,7 +7,7 @@ class PhanQuyen
     function __construct()
     {
         $this->MaCV =
-            $this->TenQuyen = null;
+            $this->TenQuyen = "";
     }
 
     function clone($row)

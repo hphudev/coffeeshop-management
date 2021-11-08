@@ -1,6 +1,5 @@
 <?php
-include '../models/M_TaiKhoan.php';
-include '../models/M_PhanQuyen.php';
+include '../models/M_NhanVien.php';
 class C_TaiKhoan
 {
     public function invoke()
@@ -19,9 +18,8 @@ class C_TaiKhoan
             } else {
                 session_start();
                 $_SESSION["id"] = $loginResult;
-                $NhanVien = $ModelNhanVien->get_NhanVienDetails($loginResult);
-                $_SESSION["nhanvien"] = $NhanVien;
-                require_once './admin/index.php';
+                $_SESSION["maCV"] = $ModelNhanVien->get_NhanVienDetails($loginResult)->get_ChucVu()->get_MaCV();
+                require_once '../admin/index.php';
             }
         }
         if (isset($_GET['logout'])) {

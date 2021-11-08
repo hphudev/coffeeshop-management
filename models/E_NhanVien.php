@@ -27,9 +27,9 @@ class NhanVien
             $this->SDT =
             $this->DiaChi =
             $this->NgayVaoLam =
-            $this->ChucVu =
             $this->Luong = null;
         $this->TaiKhoan = new TaiKhoan();
+        $this->ChucVu = new ChucVu();
     }
 
     public function clone($row)

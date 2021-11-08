@@ -49,4 +49,12 @@ class ChucVu
     {
         return $this->MucTroCap;
     }
+    function set_PhanQuyenList($PhanQuyenList)
+    {
+        $this->PhanQuyenList = $PhanQuyenList;
+    }
+    function get_PhanQuyenList()
+    {
+        return $this->PhanQuyenList;
+    }
 }
