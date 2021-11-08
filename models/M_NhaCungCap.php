@@ -1,5 +1,5 @@
 <?php
-include 'NhaCungCap.php';
+include 'E_NhaCungCap.php';
 
 class Model_NhaCungCap
 {

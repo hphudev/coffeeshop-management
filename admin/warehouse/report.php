@@ -1,6 +1,5 @@
 <?php
 include '../models/M_NhanVien.php';
-include '../models/M_NhaCungCap.php';
 
 $ModelNhanVien = new Model_NhanVien();
 $NhanVienList = $ModelNhanVien->get_AllNhanVien();
@@ -9,17 +8,6 @@ function getTenNV($NhanVienList, $maNV)
     for ($i = 0; $i < count($NhanVienList); $i++) {
         if ($NhanVienList[$i]->get_MaNV() == $maNV) {
             return $NhanVienList[$i]->get_Ten();
-        }
-    }
-}
-
-$ModelNhaCungCap = new Model_NhaCungCap();
-$NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
-function getTenNCC($NhaCungCapList, $maNCC)
-{
-    for ($i = 0; $i < count($NhaCungCapList); $i++) {
-        if ($NhaCungCapList[$i]->get_MaNCC() == $maNCC) {
-            return $NhaCungCapList[$i]->get_TenNCC();
         }
     }
 }
@@ -143,13 +131,13 @@ function getTenNCC($NhaCungCapList, $maNCC)
 
 <div class="container-fluid">
     <div class="flex-sp-bet below-menu-icon col-sm-12 col-md-12 col-lg-12 col-xl-12">
-        <h3 class="d-none d-sm-none d-md-none d-lg-block d-xl-block"><strong>KHO / PHIẾU NHẬP</strong></h3>
+        <h3 class="d-none d-sm-none d-md-none d-lg-block d-xl-block"><strong>KHO / PHIẾU KIỂM</strong></h3>
 
         <div class="buttons-group">
             <div class="btn btn-material">Nguyên vật liệu</div>
-            <div class="btn btn-success">Nhập kho</div>
+            <div class="btn btn-receipt">Nhập kho</div>
             <div class="btn btn-export">Xuất kho</div>
-            <div class="btn btn-report">Kiểm kho</div>
+            <div class="btn btn-success">Kiểm kho</div>
             <div class="btn btn-expand">Mở rộng</div>
         </div>
     </div>
@@ -162,13 +150,13 @@ function getTenNCC($NhaCungCapList, $maNCC)
             <div class="card">
                 <div class="card-header card-header-text card-header-success">
                     <div class="card-text">
-                        <h4 class="card-title">Phiếu nhập</h4>
+                        <h4 class="card-title">Phiếu kiểm</h4>
                     </div>
                 </div>
                 <div class="card-body content-in-card">
                     <button class="btn btn-success btn-add" data-toggle="modal" data-target="#myModal">
                         <i class="material-icons">add</i>
-                        Thêm phiếu nhập
+                        Thêm phiếu kiểm
                     </button>
 
                     <div class="table-responsive">
@@ -176,37 +164,37 @@ function getTenNCC($NhaCungCapList, $maNCC)
                             <thead>
                                 <tr role="row">
                                     <th class='text-center text-success'>STT</th>
-                                    <th class='text-center text-success'>Mã PN</th>
+                                    <th class='text-center text-success'>Mã PK</th>
                                     <th class='text-center text-success'>Ngày lập</th>
-                                    <th class='text-center text-success'>Nhà cung cấp</th>
-                                    <th class='text-center text-success'>Tổng tiền</th>
+                                    <th class='text-center text-success'>Nhân viên kiểm</th>
+                                    <th class='text-center text-success'>Nhân viên phụ kiểm</th>
                                     <th class='text-center text-success'>Thao tác</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
                                     <th class='text-center'>STT</th>
-                                    <th class='text-center'>Mã PN</th>
+                                    <th class='text-center'>Mã PK</th>
                                     <th class='text-center'>Ngày lập</th>
-                                    <th class='text-center'>Nhà cung cấp</th>
-                                    <th class='text-center'>Tổng tiền</th>
+                                    <th class='text-center'>Nhân viên kiểm</th>
+                                    <th class='text-center'>Nhân viên phụ kiểm</th>
                                     <th class='text-center'>Thao tác</th>
                                 </tr>
                             </tfoot>
                             <tbody>
                                <?php
-                               if ($PhieuNhapList)
-                               {
-                                    if (count($PhieuNhapList) > 0) {
+                                if ($PhieuKiemList)
+                                {
+                                    if (count($PhieuKiemList) > 0) {
                                         // output data of each row
-                                        for ($i = 0; $i < count($PhieuNhapList); $i++)
+                                        for ($i = 0; $i < count($PhieuKiemList); $i++)
                                         {
                                             echo "<tr role='row' class='odd'>";
                                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
-                                            echo "<td class='text-center pn-id'>" . $PhieuNhapList[$i]->get_MaPN() . "</td>";
-                                            echo "<td class='text-center'>" . $PhieuNhapList[$i]->get_NgayLap() . "</td>";
-                                            echo "<td class='text-center supplier'>" . getTenNCC($NhaCungCapList, $PhieuNhapList[$i]->get_MaNCC()) . "</td>";
-                                            echo "<td class='text-center total-amount'>" . $PhieuNhapList[$i]->get_TongTien() . "</td>";
+                                            echo "<td class='text-center pk-id'>" . $PhieuKiemList[$i]->get_MaPK() . "</td>";
+                                            echo "<td class='text-center'>" . $PhieuKiemList[$i]->get_ThoiGian() . "</td>";
+                                            echo "<td class='text-center main-staff'>" . getTenNV($NhanVienList, $PhieuKiemList[$i]->get_MaNVKiem()) . "</td>";
+                                            echo "<td class='text-center sup-staff'>" . getTenNV($NhanVienList, $PhieuKiemList[$i]->get_MaNVPK()) . "</td>";
                                             echo '<td class="td-actions text-center">
                                                     <button type="button" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">info</i>
@@ -291,27 +279,21 @@ function getTenNCC($NhaCungCapList, $maNCC)
             </div>
         </div> -->
 
-        <!-- hidden table lưu thông tin phiếu nhập -->
-        <table class="d-none d-sm-none d-md-none d-lg-none d-xl-none">
-            <tbody>
-                <?php
-                if ($PhieuNhapList)
-                {
-                    if (count($PhieuNhapList) > 0) {
-                        // output data of each row
-                        for ($i = 0; $i < count($PhieuNhapList); $i++)
-                        {
-                            echo "<td class='staff-name-src'>" . getTenNV($NhanVienList, $PhieuNhapList[$i]->get_MaNVNhap()) . "</td>";
-                            echo "<td class='shipper-name-src'>" . $PhieuNhapList[$i]->get_TenNguoiGiao() . "</td>";
-                            echo "<td class='pay-amount-src'>" . $PhieuNhapList[$i]->get_TienThanhToan() . "</td>";
-                            echo "<td class='debt-amount-src'>" . $PhieuNhapList[$i]->get_TienNo() . "</td>";
-                            echo "<td class='note-src'>" . $PhieuNhapList[$i]->get_GhiChu() . "</td>";
-                        }
+        <!-- hidden notes -->
+        <div class="d-none d-sm-none d-md-none d-lg-none d-xl-none">
+            <?php
+            if ($PhieuKiemList)
+            {
+                if (count($PhieuKiemList) > 0) {
+                    // output data of each row
+                    for ($i = 0; $i < count($PhieuKiemList); $i++)
+                    {
+                        echo "<p class='note'>" . $PhieuKiemList[$i]->get_GhiChu() . "</p>";
                     }
                 }
-                ?>
-            </tbody>
-        </table>
+            }    
+            ?>
+        </div>
     </div>
 </div>
 
@@ -320,9 +302,9 @@ function getTenNCC($NhaCungCapList, $maNCC)
   <div class="modal-dialog" role="document">
     <div class="modal-content">
         <div class="modal-header">
-            <h5><strong class="modal-title">Thêm phiếu nhập</strong></h5>
+            <h5><strong class="modal-title">Thêm phiếu kiểm</strong></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true">&times;</span>
             </button>
         </div>
 
@@ -330,16 +312,16 @@ function getTenNCC($NhaCungCapList, $maNCC)
             <form id="addForm" class="form" method="post">
                 <div class="form-group bmd-form-group">
                     <div class="fields-group">
-                        <p class="input-label text-left">Nhân viên nhập: </p>
+                        <p class="input-label text-left">Nhân viên kiểm: </p>
                         <div class="dropdown input-value">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="material-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="staff-val">Chọn nhân viên</span>
+                                <span id="main-staff-val">Chọn nhân viên</span>
                             </button>   
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <?php
                                 if ($NhanVienList && count($NhanVienList) > 0) {
                                     for ($i = 0; $i < count($NhanVienList); $i++) {
-                                        echo "<p class='dropdown-item staff-opt'>" . $NhanVienList[$i]->get_Ten(). "</p>";
+                                        echo "<p class='dropdown-item main-staff-opt'>" . $NhanVienList[$i]->get_Ten(). "</p>";
                                     }
                                 }
                                 ?>
@@ -350,16 +332,16 @@ function getTenNCC($NhaCungCapList, $maNCC)
 
                 <div class="form-group bmd-form-group">
                     <div class="fields-group">
-                        <p class="input-label text-left">Nhà cung cấp: </p>
+                        <p class="input-label text-left">Nhân viên phụ kiểm: </p>
                         <div class="dropdown input-value">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="material-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span id="supplier-val">Chọn NCC</span>
+                                <span id="sup-staff-val">Chọn nhân viên</span>
                             </button>   
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <?php
-                                if ($NhaCungCapList && count($NhaCungCapList) > 0) {
-                                    for ($i = 0; $i < count($NhaCungCapList); $i++) {
-                                        echo "<p class='dropdown-item supplier-opt'>" . $NhaCungCapList[$i]->get_TenNCC(). "</p>";
+                                if ($NhanVienList && count($NhanVienList) > 0) {
+                                    for ($i = 0; $i < count($NhanVienList); $i++) {
+                                        echo "<p class='dropdown-item sup-staff-opt'>" . $NhanVienList[$i]->get_Ten(). "</p>";
                                     }
                                 }
                                 ?>
@@ -370,36 +352,8 @@ function getTenNCC($NhaCungCapList, $maNCC)
 
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
-                        <p class="input-label text-left">Tên người giao: </p>
-                        <input id="shipper-val" type="text" class="form-control input-value" placeholder="Tên người giao">
-                    </div>
-                </div>
-
-                <div class="form-group bmd-form-group">
-                    <div class="fields-group align-items-center">
-                        <p class="input-label text-left">Tổng tiền: </p>
-                        <input id="total-amount-val" disabled type="number" class="form-control input-value" placeholder="0">
-                    </div>
-                </div>
-
-                <div class="form-group bmd-form-group">
-                    <div class="fields-group align-items-center">
-                        <p class="input-label text-left">Tiền thanh toán: </p>
-                        <input id="pay-amount-val" type="number" class="form-control input-value" placeholder="Tiền thanh toán">
-                    </div>
-                </div>
-
-                <div class="form-group bmd-form-group">
-                    <div class="fields-group align-items-center">
-                        <p class="input-label text-left">Tiền nợ: </p>
-                        <input id="debt-amount-val" type="number" class="form-control input-value" placeholder="Tiền nợ">
-                    </div>
-                </div>
-
-                <div class="form-group bmd-form-group">
-                    <div class="fields-group align-items-center">
                         <p class="input-label text-left">Ghi chú: </p>
-                        <input id="note-val" type="text" class="form-control input-value" placeholder="Ghi chú">
+                        <input id="note-val" type="text" class="form-control input-value" placeholder="Nhập ghi chú">
                     </div>
                 </div>
             </form>
@@ -424,92 +378,81 @@ function getTenNCC($NhaCungCapList, $maNCC)
             }
         });
 
-        //Buttons các mục của kho
-        //nguyên vật liệu
-        $(".btn-material").on("click", function() {
-            window.location.href = "../admin/index.php?page=werehouse";
-        });
-
         //mở rộng
         $(".btn-expand").on("click", function() {
             window.location.href = "../admin/index.php?page=werehouse&expand";
         });
 
-        //xuất kho
+        //nhập kho
+        $(".btn-receipt").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse&receipt";
+        });
+
+        //nvl
         $(".btn-export").on("click", function() {
             window.location.href = "../admin/index.php?page=werehouse&export";
         });
 
-        //kiểm kho
-        $(".btn-report").on("click", function() {
-            window.location.href = "../admin/index.php?page=werehouse&report";
+        //nvl
+        $(".btn-material").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse";
         });
 
-        //Add và edit phiếu nhập
-        // view phiếu nhập detail
+        //Init dropdown in modal
+        // dropdown nhân viên
+        $(".main-staff-opt").each(function(index) {
+            $(this).on("click", function() {
+                $("#main-staff-val").text($($(".main-staff-opt").get(index)).text());
+            });
+        });
+
+        // dropdown nhân viên
+        $(".sup-staff-opt").each(function(index) {
+            $(this).on("click", function() {
+                $("#sup-staff-val").text($($(".sup-staff-opt").get(index)).text());
+            });
+        });
+
+         //Add và edit phiếu xuất
+        // view phiếu xuất detail
         $(".btn-view-detail").each(function(index) {
             $(this).on("click", function() {
-                window.location.href = "../admin/index.php?page=werehouse&receipt&id=" + $($(".pn-id").get(index)).text();
+                window.location.href = "../admin/index.php?page=werehouse&report&id=" + $($(".pk-id").get(index)).text();
             });
         })
 
-        // add phiếu nhập
+        // add phiếu xuất
         $(".btn-add").each(function(index) {
             $(this).on("click", function() {
-                $("#staff-val").text("Chọn nhân viên");
-                $("#supplier-val").text("Chọn NCC");
-                $("#shipper-val").val("");
-                $("#total-amount-val").val("");
-                $("#pay-amount-val").val("");
-                $("#debt-amount-val").val("");
+                $("#main-staff-val").text("Chọn nhân viên");
+                $("#sup-staff-val").text("Chọn nhân viên");
                 $("#note-val").val("");
 
-                $(".modal-title").text("Thêm phiếu nhập");
+                $(".modal-title").text("Thêm phiếu kiểm");
                 action_type = "add";
                 obj_id = "";
             });
         })
 
-        // edit phiếu nhập
+        // edit phiếu xuất
         $(".btn-edit").each(function(index) {
             $(this).on("click", function() {
-                $("#staff-val").text($($(".staff-name-src").get(index)).text());
-                $("#supplier-val").text($($(".supplier").get(index)).text());
-                $("#shipper-val").val($($(".shipper-name-src").get(index)).text());
-                $("#total-amount-val").val($($(".total-amount").get(index)).text());
-                $("#pay-amount-val").val($($(".pay-amount-src").get(index)).text());
-                $("#debt-amount-val").val($($(".debt-amount-src").get(index)).text());
-                $("#note-val").val($($(".note-src").get(index)).text());
+                $("#main-staff-val").text($($(".main-staff").get(index)).text());
+                $("#sup-staff-val").text($($(".sup-staff").get(index)).text());
+                $("#note-val").val($($(".note").get(index)).text());
 
-                $(".modal-title").text("Chỉnh sửa phiếu nhập");
+                $(".modal-title").text("Chỉnh sửa phiếu kiểm");
                 action_type = "edit";
-                obj_id = $($(".pn-id").get(index)).text();
+                obj_id = $($(".pk-id").get(index)).text();
             });
         })
-
-
-        //Init dropdown in modal
-        // dropdown nhân viên
-        $(".staff-opt").each(function(index) {
-            $(this).on("click", function() {
-                $("#staff-val").text($($(".staff-opt").get(index)).text());
-            });
-        });
-
-        // dropdown ncc
-        $(".supplier-opt").each(function(index) {
-            $(this).on("click", function() {
-                $("#supplier-val").text($($(".supplier-opt").get(index)).text());
-            });
-        });
     });
 
     function checkInput() {
-        if ($("#staff-val").text() == "Chọn nhân viên" || $("#supplier-val").text() == "Chọn NCC" ||
-            $("#shipper-val").val() == "" || $("#pay-amount-val").val() == "" ||
-            $("#debt-amount-val").val() == "" || $("#note-val").val() == "") {
+        if ($("#main-staff-val").text() == "Chọn nhân viên" || $("#sup-staff-val").text() == "Chọn nhân viên"
+            || $("#note-val").val() == "") {
                 return false;
-        }
+            }
         return true;
     }
 </script>
@@ -524,16 +467,12 @@ function getTenNCC($NhaCungCapList, $maNCC)
                 // Ajax config
                 $.ajax({
                     type: "POST",
-                    url: '../controllers/C_PhieuNhap.php',
+                    url: '../controllers/C_PhieuKiem.php',
                     data: {
                         action: action_type,
-                        pn_id: obj_id,
-                        staff_name: $("#staff-val").text(),
-                        supplier_name: $("#supplier-val").text(),
-                        shipper: $("#shipper-val").val(),
-                        //total_amount: $("#total-amount-val").val(),
-                        pay_amount: $("#pay-amount-val").val(),
-                        debt_amount: $("#debt-amount-val").val(),
+                        pk_id: obj_id,
+                        main_staff_name: $("#main-staff-val").text(),
+                        sup_staff_name: $("#sup-staff-val").text(),
                         note: $("#note-val").val()
                     },
                     beforeSend: function () {

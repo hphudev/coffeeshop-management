@@ -1,5 +1,5 @@
 <?php
-include 'LoaiNguyenVatLieu.php';
+include 'E_LoaiNguyenVatLieu.php';
 
 class Model_LoaiNguyenVatLieu
 {

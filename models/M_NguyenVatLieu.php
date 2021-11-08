@@ -1,5 +1,5 @@
 <?php
-include 'NguyenVatLieu.php';
+include 'E_NguyenVatLieu.php';
 
 class Model_NguyenVatLieu
 {

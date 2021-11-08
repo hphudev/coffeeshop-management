@@ -6,7 +6,6 @@ include '../models/M_TinhTrang.php';
 
 $ModelDonViTinh = new Model_DonViTinh();
 $DonViTinhList = $ModelDonViTinh->get_AllDonViTinh();
-
 function getTenDVT($DonViTinhList, $maDVT)
 {
     for ($i = 0; $i < count($DonViTinhList); $i++) {
@@ -18,7 +17,6 @@ function getTenDVT($DonViTinhList, $maDVT)
 
 $ModelLoaiNguyenVatLieu = new Model_LoaiNguyenVatLieu();
 $LoaiNguyenVatLieuList = $ModelLoaiNguyenVatLieu->get_AllLoaiNguyenVatLieu();
-
 function getTenLoaiNVL($LoaiNguyenVatLieuList, $maLNVL)
 {
     for ($i = 0; $i < count($LoaiNguyenVatLieuList); $i++) {
@@ -30,7 +28,6 @@ function getTenLoaiNVL($LoaiNguyenVatLieuList, $maLNVL)
 
 $ModelNhaCungCap = new Model_NhaCungCap();
 $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
-
 function getTenNCC($NhaCungCapList, $maNCC)
 {
     for ($i = 0; $i < count($NhaCungCapList); $i++) {
@@ -42,7 +39,6 @@ function getTenNCC($NhaCungCapList, $maNCC)
 
 $ModelTinhTrang = new Model_TinhTrang();
 $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
-
 function getTenTT($TinhTrangList, $maTT)
 {
     for ($i = 0; $i < count($TinhTrangList); $i++) {
@@ -184,7 +180,7 @@ function getTenTT($TinhTrangList, $maTT)
     }
 </style>
 
-<div class="container">
+<div class="container-fluid">
     <div class="below-menu-icon flex-sp-bet col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <h3 class="d-none d-sm-none d-md-none d-lg-block d-xl-block"><strong>KHO</strong></h3>
 
@@ -201,9 +197,13 @@ function getTenTT($TinhTrangList, $maTT)
 
     <div class="content mt-24">
         <div class="summary border-box flex-sp-bet">
-            <p class="pd-8 centerlize">Tổng số lượng nguyên vật liệu: <strong><?php echo count($NguyenVatLieuList)?></strong></p>
-            <p class="pd-8 centerlize">Tổng loại nguyên vật liệu: <strong><?php echo count($LoaiNguyenVatLieuList)?></strong></p>
-            <p class="pd-8 centerlize">Tổng loại nguyên vật liệu: <strong><?php echo count($NguyenVatLieuList)?></strong></p>
+            <?php
+                if ($NguyenVatLieuList && count($NguyenVatLieuList) > 0) {
+                    echo '<p class="pd-8 centerlize">Tổng số lượng nguyên vật liệu: <strong>'. count($NguyenVatLieuList) . '</strong></p>';
+                    echo '<p class="pd-8 centerlize">Tổng số loại nguyên vật liệu: <strong>'. count($LoaiNguyenVatLieuList) . '</strong></p>';
+                    echo '<p class="pd-8 centerlize">Tổng số lượng nguyên vật liệu: <strong>'. count($NguyenVatLieuList) . '</strong></p>';
+                }
+            ?>
         </div>
     </div>
 
@@ -251,31 +251,33 @@ function getTenTT($TinhTrangList, $maTT)
                 </tfoot>
                 <tbody>
                     <?php
-                    if (count($NguyenVatLieuList) > 0) {
-                    // output data of each row
-                    for ($i = 0; $i < count($NguyenVatLieuList); $i++) {
-                        echo "<tr role='row' class='odd'>";
-                        echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
-                        echo "<td class='text-center material-id'>" . $NguyenVatLieuList[$i]->get_MaNVL() . "</td>";
-                        echo "<td class='text-center material-name'><strong>" . $NguyenVatLieuList[$i]->get_TenNVL() . "</strong></td>";
-                        echo "<td class='text-center material-type'>" . getTenLoaiNVL($LoaiNguyenVatLieuList, $NguyenVatLieuList[$i]->get_MaLoaiNVL()) . "</td>";
-                        echo "<td class='text-center material-unit'>" . getTenDVT($DonViTinhList, $NguyenVatLieuList[$i]->get_MaDVT()) . "</td>";
-                        echo "<td class='text-center material-quantity'>" . $NguyenVatLieuList[$i]->get_SoLuongTon() . "</td>";
-                        echo "<td class='text-center material-unitprice'>" . $NguyenVatLieuList[$i]->get_DonGiaNhap() . "</td>";
-                        echo "<td class='text-center material-supplier'>" . getTenNCC($NhaCungCapList, $NguyenVatLieuList[$i]->get_MaNhaCungCap()) . "</td>";
-                        echo "<td class='text-center material-status'>" . getTenTT($TinhTrangList, $NguyenVatLieuList[$i]->get_MaTinhTrang()) . "</td>";
-                        echo '<td class="td-actions text-right">
-                                <button type="button" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
-                                    <i class="material-icons">edit</i>
-                                </button>
-                                <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
-                                    <i class="material-icons">close</i>
-                                </button>
-                            </td>';
-                        echo "</tr>";
-                    }
-                    } else {
-                    echo "Dữ liệu trống!";
+                    if ($NguyenVatLieuList) {
+                        if (count($NguyenVatLieuList) > 0) {
+                        // output data of each row
+                        for ($i = 0; $i < count($NguyenVatLieuList); $i++) {
+                            echo "<tr role='row' class='odd'>";
+                            echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                            echo "<td class='text-center material-id'>" . $NguyenVatLieuList[$i]->get_MaNVL() . "</td>";
+                            echo "<td class='text-center material-name'><strong>" . $NguyenVatLieuList[$i]->get_TenNVL() . "</strong></td>";
+                            echo "<td class='text-center material-type'>" . getTenLoaiNVL($LoaiNguyenVatLieuList, $NguyenVatLieuList[$i]->get_MaLoaiNVL()) . "</td>";
+                            echo "<td class='text-center material-unit'>" . getTenDVT($DonViTinhList, $NguyenVatLieuList[$i]->get_MaDVT()) . "</td>";
+                            echo "<td class='text-center material-quantity'>" . $NguyenVatLieuList[$i]->get_SoLuongTon() . "</td>";
+                            echo "<td class='text-center material-unitprice'>" . $NguyenVatLieuList[$i]->get_DonGiaNhap() . "</td>";
+                            echo "<td class='text-center material-supplier'>" . getTenNCC($NhaCungCapList, $NguyenVatLieuList[$i]->get_MaNhaCungCap()) . "</td>";
+                            echo "<td class='text-center material-status'>" . getTenTT($TinhTrangList, $NguyenVatLieuList[$i]->get_MaTinhTrang()) . "</td>";
+                            echo '<td class="td-actions text-right">
+                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
+                                        <i class="material-icons">close</i>
+                                    </button>
+                                </td>';
+                            echo "</tr>";
+                        }
+                        } else {
+                        echo "Dữ liệu trống!";
+                        }
                     }
                     ?>
                 </tbody>
@@ -315,8 +317,10 @@ function getTenTT($TinhTrangList, $maTT)
                             </button>   
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <?php
-                                for ($i = 0; $i < count($LoaiNguyenVatLieuList); $i++) {
-                                    echo "<p class='dropdown-item mater-type-opt'>" . $LoaiNguyenVatLieuList[$i]->get_TenLoaiNVL(). "</p>";
+                                if ($LoaiNguyenVatLieuList && count($LoaiNguyenVatLieuList) > 0) {
+                                    for ($i = 0; $i < count($LoaiNguyenVatLieuList); $i++) {
+                                        echo "<p class='dropdown-item mater-type-opt'>" . $LoaiNguyenVatLieuList[$i]->get_TenLoaiNVL(). "</p>";
+                                    }
                                 }
                                 ?>
                             </div>
@@ -333,8 +337,10 @@ function getTenTT($TinhTrangList, $maTT)
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <?php
-                                for ($i = 0; $i < count($DonViTinhList); $i++) {
-                                    echo "<p class='dropdown-item mater-unit-opt'>" . $DonViTinhList[$i]->get_TenDVT(). "</p>";
+                                if ($DonViTinhList && count($DonViTinhList) > 0) {
+                                    for ($i = 0; $i < count($DonViTinhList); $i++) {
+                                        echo "<p class='dropdown-item mater-unit-opt'>" . $DonViTinhList[$i]->get_TenDVT(). "</p>";
+                                    }
                                 }
                                 ?>
                             </div>
@@ -365,8 +371,10 @@ function getTenTT($TinhTrangList, $maTT)
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <?php
-                                for ($i = 0; $i < count($NhaCungCapList); $i++) {
-                                    echo "<p class='dropdown-item mater-supplier-opt'>" . $NhaCungCapList[$i]->get_TenNCC(). "</p>";
+                                if ($NhaCungCapList && count($NhaCungCapList) > 0) {
+                                    for ($i = 0; $i < count($NhaCungCapList); $i++) {
+                                        echo "<p class='dropdown-item mater-supplier-opt'>" . $NhaCungCapList[$i]->get_TenNCC(). "</p>";
+                                    }
                                 }
                                 ?>
                             </div>
@@ -383,8 +391,10 @@ function getTenTT($TinhTrangList, $maTT)
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <?php
-                                for ($i = 0; $i < count($TinhTrangList); $i++) {
-                                    echo "<p class='dropdown-item mater-status-opt'>" . $TinhTrangList[$i]->get_TenTinhTrang(). "</p>";
+                                if ($TinhTrangList && count($TinhTrangList) > 0) {
+                                    for ($i = 0; $i < count($TinhTrangList); $i++) {
+                                        echo "<p class='dropdown-item mater-status-opt'>" . $TinhTrangList[$i]->get_TenTinhTrang(). "</p>";
+                                    }
                                 }
                                 ?>
                             </div>
@@ -426,6 +436,11 @@ function getTenTT($TinhTrangList, $maTT)
         //xuất kho
         $(".btn-export").on("click", function() {
             window.location.href = "../admin/index.php?page=werehouse&export";
+        });
+
+        //kiểm kho
+        $(".btn-report").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse&report";
         });
 
         //add nvl
@@ -494,15 +509,11 @@ function getTenTT($TinhTrangList, $maTT)
     function checkInput() {
         if ($("#material-name-val").val() == "" ||  $("#material-type-val").text() == "Chọn loại" ||
             $("#material-unit-val").text() == "Chọn ĐVT" ||
-            $("#material-quantity-val").val() == "" ||
-            $("#material-unitprice-val").val() == "" || 
             $("#material-supplier-val").text() == "Chọn NCC" ||
             $("#material-status-val").text() == "Chọn tình trạng") {
                 console.log($("#material-name-val").val());
                 console.log($("#material-type-val").text());
                 console.log($("#material-unit-val").text());
-                console.log($("#material-quantity-val").val());
-                console.log($("#material-unitprice-val").val());
                 console.log($("#material-supplier-val").text());
                 console.log($("#material-status-val").text());
                 return false;

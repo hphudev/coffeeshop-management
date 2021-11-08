@@ -1,5 +1,5 @@
 <?php
-include 'TinhTrang.php';
+include 'E_TinhTrang.php';
 
 class Model_TinhTrang
 {

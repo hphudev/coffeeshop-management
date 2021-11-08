@@ -1,5 +1,5 @@
 <?php
-include 'PhieuNhap.php';
+include 'E_PhieuNhap.php';
 
 class Model_PhieuNhap
 {

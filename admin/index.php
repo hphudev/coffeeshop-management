@@ -245,6 +245,8 @@ if (($_SESSION["id"] == "")) {
     <script src="../assets_control/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
     <!-- Datatables -->
     <script src="../assets_control/js/plugins/jquery.dataTables.min.js"></script>
+    <!-- SelectPicker -->
+    <!-- <script src="../assets_control/js/plugins/bootstrap-selectpicker.js"></script> -->
 </body>
 
 </html>

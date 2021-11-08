@@ -128,6 +128,10 @@ class C_NguyenVatLieu
         {
             include 'C_PhieuXuat.php';
         }
+        elseif (isset($_GET['report']))
+        {
+            include 'C_PhieuKiem.php';
+        }
         else
         {
             $ModelNguyenVatLieu = new Model_NguyenVatLieu();

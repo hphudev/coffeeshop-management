@@ -3,9 +3,18 @@ class PhieuKiemKho
 {
     private $MaPK;
     private $MaNVKiem;
-    private $MaNVDK;
+    private $MaNVPK;
     private $GhiChu;
     private $ThoiGian;
+
+    public function __construct($row)
+    {
+        $this->MaPK = $row['MaPK'];
+        $this->MaNVKiem = $row['MaNVKiem'];
+        $this->MaNVPK = $row['MaNVPhuKiem'];
+        $this->ThoiGian = $row['NgayLap'];
+        $this->GhiChu = $row['GhiChu'];
+    }
 
     function set_MaPK($MaPK)
     {
@@ -23,13 +32,13 @@ class PhieuKiemKho
     {
         return $this->MaNVKiem;
     }
-    function set_MaNVDK($MaNVDK)
+    function set_MaNVPK($MaNVPK)
     {
-        $this->MaNVDK = $MaNVDK;
+        $this->MaNVPK = $MaNVPK;
     }
-    function get_MaNVDK()
+    function get_MaNVPK()
     {
-        return $this->MaNVDK;
+        return $this->MaNVPK;
     }
     function set_GhiChu($GhiChu)
     {
@@ -57,6 +66,16 @@ class CT_PhieuKiem
     private $MaTT;
     private $SLBaoCao;
     private $SLThucTe;
+
+    public function __construct($row)
+    {
+        $this->MaPK = $row['MaPK'];
+        $this->MaNVL = $row['MaNVL'];
+        $this->MaTT = $row['MaTT'];
+        $this->SLBaoCao = $row['SoLuongBaoCao'];
+        $this->SLThucTe = $row['SoLuongThucTe'];
+        $this->GhiChu = $row['GhiChu'];
+    }
 
     function set_MaPK($MaPK)
     {
