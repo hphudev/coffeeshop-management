@@ -27,7 +27,7 @@ class Model_TaiKhoan
         include '../configs/config.php';
         $sql = 'SELECT * FROM taikhoan WHERE MaTK="' . $id . '"';
         $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
+        if ($result) {
             while ($row = $result->fetch_assoc()) {
                 $TaiKhoan = new TaiKhoan();
                 $TaiKhoan->clone($row);

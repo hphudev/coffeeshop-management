@@ -191,7 +191,7 @@ function getTenNV($NhanVienList, $maNV)
                                         {
                                             echo "<tr role='row' class='odd'>";
                                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
-                                            echo "<td class='text-center pn-id'>" . $PhieuXuatList[$i]->get_MaPX() . "</td>";
+                                            echo "<td class='text-center px-id'>" . $PhieuXuatList[$i]->get_MaPX() . "</td>";
                                             echo "<td class='text-center'>" . $PhieuXuatList[$i]->get_NgayLap() . "</td>";
                                             echo "<td class='text-center wh-staff'>" . getTenNV($NhanVienList, $PhieuXuatList[$i]->get_MaNVXuat()) . "</td>";
                                             echo "<td class='text-center iss-staff'>" . getTenNV($NhanVienList, $PhieuXuatList[$i]->get_MaNVNhan()) . "</td>";
@@ -319,8 +319,10 @@ function getTenNV($NhanVienList, $maNV)
                             </button>   
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <?php
-                                for ($i = 0; $i < count($NhanVienList); $i++) {
-                                    echo "<p class='dropdown-item wh-staff-opt'>" . $NhanVienList[$i]->get_Ten(). "</p>";
+                                if ($NhanVienList && count($NhanVienList) > 0) {
+                                    for ($i = 0; $i < count($NhanVienList); $i++) {
+                                        echo "<p class='dropdown-item wh-staff-opt'>" . $NhanVienList[$i]->get_Ten(). "</p>";
+                                    }
                                 }
                                 ?>
                             </div>
@@ -337,8 +339,10 @@ function getTenNV($NhanVienList, $maNV)
                             </button>   
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <?php
-                                for ($i = 0; $i < count($NhanVienList); $i++) {
-                                    echo "<p class='dropdown-item iss-staff-opt'>" . $NhanVienList[$i]->get_Ten(). "</p>";
+                                if ($NhanVienList && count($NhanVienList) > 0) {
+                                    for ($i = 0; $i < count($NhanVienList); $i++) {
+                                        echo "<p class='dropdown-item iss-staff-opt'>" . $NhanVienList[$i]->get_Ten(). "</p>";
+                                    }
                                 }
                                 ?>
                             </div>
@@ -389,6 +393,11 @@ function getTenNV($NhanVienList, $maNV)
             window.location.href = "../admin/index.php?page=werehouse";
         });
 
+        //kiểm kho
+        $(".btn-report").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse&report";
+        });
+
         //Init dropdown in modal
         // dropdown nhân viên
         $(".wh-staff-opt").each(function(index) {
@@ -408,7 +417,7 @@ function getTenNV($NhanVienList, $maNV)
         // view phiếu xuất detail
         $(".btn-view-detail").each(function(index) {
             $(this).on("click", function() {
-                window.location.href = "../admin/index.php?page=werehouse&export&id=" + $($(".pn-id").get(index)).text();
+                window.location.href = "../admin/index.php?page=werehouse&export&id=" + $($(".px-id").get(index)).text();
             });
         })
 
@@ -416,7 +425,7 @@ function getTenNV($NhanVienList, $maNV)
         $(".btn-add").each(function(index) {
             $(this).on("click", function() {
                 $("#wh-staff-val").text("Chọn nhân viên");
-                $("#iss-staff-val").text("Chọn NCC");
+                $("#iss-staff-val").text("Chọn nhân viên");
                 $("#note-val").val("");
 
                 $(".modal-title").text("Thêm phiếu xuất");
@@ -434,7 +443,7 @@ function getTenNV($NhanVienList, $maNV)
 
                 $(".modal-title").text("Chỉnh sửa phiếu xuất");
                 action_type = "edit";
-                obj_id = $($(".pn-id").get(index)).text();
+                obj_id = $($(".px-id").get(index)).text();
             });
         })
     });

@@ -56,10 +56,17 @@ class PhieuXuat {
     }
 }
 
-class ChiTietPhieuXuat {
+class CT_PhieuXuat {
     private $MaPX;
     private $MaNVL;
     private $SoLuong;
+
+    public function __construct($row)
+    {
+        $this->MaPX = $row['MaPX'];
+        $this->MaNVL = $row['MaNVL'];
+        $this->SoLuong = $row['SoLuong'];
+    }
 
     function set_MaPX($ma) {
         $this->MaPX = $ma;

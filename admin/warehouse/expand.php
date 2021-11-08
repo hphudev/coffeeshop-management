@@ -165,7 +165,7 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                             </tfoot>
                             <tbody>
                                 <?php
-                                if (count($DonViTinhList) > 0) {
+                                if ($DonViTinhList && count($DonViTinhList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($DonViTinhList); $i++) {
                                     echo "<tr role='row' class='odd'>";
@@ -227,7 +227,7 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                             </tfoot>
                             <tbody>
                                 <?php
-                                if (count($LoaiNguyenVatLieuList) > 0) {
+                                if ($LoaiNguyenVatLieuList && count($LoaiNguyenVatLieuList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($LoaiNguyenVatLieuList); $i++) {
                                     echo "<tr role='row' class='odd'>";
@@ -289,7 +289,7 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                             </tfoot>
                             <tbody>
                                 <?php
-                                if (count($NhaCungCapList) > 0) {
+                                if ($NhaCungCapList && count($NhaCungCapList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($NhaCungCapList); $i++) {
                                     echo "<tr role='row' class='odd'>";
@@ -372,6 +372,16 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
         //nhập kho
         $(".btn-import").on("click", function() {
             window.location.href = "../admin/index.php?page=werehouse&receipt";
+        });
+
+        //xuất kho
+        $(".btn-export").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse&export";
+        });
+
+        //kiểm kho
+        $(".btn-report").on("click", function() {
+            window.location.href = "../admin/index.php?page=werehouse&report";
         });
 
         //add đvt
