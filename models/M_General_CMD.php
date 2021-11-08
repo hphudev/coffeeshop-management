@@ -18,10 +18,46 @@
             }
             return 0;
         }
+
         public static function AutoGetID($table, $prefix)
         {
             $num = General_CMD::countRowInTable($table);
             return (string)$prefix . strval($num);
         }
+
+        public static function convertToAssociateArray_DetailItemObject($data)
+        {
+            $res = array('MaMon' => $data->get_MaMon(), 'TenKichThuoc' => $data->get_TenKichThuoc(), 'DonGia' => $data->get_DonGia());
+            return $res;
+        }
+
+        public static function convertToAssociateArray_ToppingObject($data)
+        {
+            $res = array('MaMon' => $data->get_MaMon(), 'TenTopping' => $data->get_TenTopping());
+            return $res;
+        }
+
+        public static function convertToAssociateArray_DetailItemListObject($data)
+        {
+            $res = array();
+            for ($i = 0; $i < count($data); $i++)
+            {
+                $tmp = General_CMD::convertToAssociateArray_DetailItemObject($data[$i]);
+                array_push($res, $tmp);
+            }
+            return $res;
+        }
+
+        public static function convertToAssociateArray_ToppingListObject($data)
+        {
+            $res = array();
+            for ($i = 0; $i < count($data); $i++)
+            {
+                $tmp = General_CMD::convertToAssociateArray_ToppingObject($data[$i]);
+                array_push($res, $tmp);
+            }
+            return $res;
+        }
+
     }
 ?>
