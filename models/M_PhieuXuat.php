@@ -1,5 +1,5 @@
 <?php
-include 'PhieuXuatKho.php';
+include 'E_PhieuXuatKho.php';
 
 class Model_PhieuXuat
 {

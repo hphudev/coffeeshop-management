@@ -129,7 +129,7 @@ function getTenNV($NhanVienList, $maNV)
     }
 </style>
 
-<div class="container">
+<div class="container-fluid">
     <div class="flex-sp-bet below-menu-icon col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <h3 class="d-none d-sm-none d-md-none d-lg-block d-xl-block"><strong>KHO / PHIẾU KIỂM</strong></h3>
 

@@ -166,7 +166,7 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
     }
 </style>
 
-<div class="container">
+<div class="container-fluid">
     <div class="sections-container">
         <!-- chi tiết phiếu kiểm -->
         <div class="col-lg-12 col-xl-12 col-md-12 col-sm-12">

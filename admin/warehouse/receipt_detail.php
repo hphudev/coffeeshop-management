@@ -165,7 +165,7 @@ function getTenNCC($NhaCungCapList, $maNCC)
     }
 </style>
 
-<div class="container">
+<div class="container-fluid">
     <div class="sections-container">
         <!-- chi tiết phiếu nhập -->
         <div class="col-lg-8 col-xl-8 col-md-8 col-sm-12">

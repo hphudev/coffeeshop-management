@@ -180,7 +180,7 @@ function getTenTT($TinhTrangList, $maTT)
     }
 </style>
 
-<div class="container">
+<div class="container-fluid">
     <div class="below-menu-icon flex-sp-bet col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <h3 class="d-none d-sm-none d-md-none d-lg-block d-xl-block"><strong>KHO</strong></h3>
 
