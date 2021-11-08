@@ -5,20 +5,20 @@
 		<title>Quản lý thông tin khách hàng</title>
 		<meta name="description" content="Website quản lý quán cà phê"/>
 		<meta name="author" content="TvT"/>
-		<link type="text/css" rel="stylesheet" href="css/normalize.css"/>
-		<link type="text/css" rel="stylesheet" href="css/style.css"/>
+		<link type="text/css" rel="stylesheet" href="../css/normalize.css"/>
+		<link type="text/css" rel="stylesheet" href="../css/style.css"/>
 	</head>
 	
 	<body>
 		<div class="content">
-			<div class="header coloredControl" id="lHeader">
+			<div class="header coloredControl whiteText" id="lHeader">
 				<h1><strong>Thông tin khách hàng</strong></h1>
 			</div>
 
 			<div class="searchEngine seperator">
 				<div class="myTextBox" id="tbSearch">
 					<form>
-						Họ và tên khách hàng: <input type="text">
+						<strong>Họ và tên khách hàng:</strong> <input type="text">
 					</form>
 				</div>
 
@@ -31,7 +31,7 @@
 				<div class="table">
 					<ul>
 						<li>
-							<div class="row" id="firstRow">
+							<div class="row whiteText" id="firstRow">
 								<div class="cell" id="1" onclick="Click(1)">STT</div>
 								<div class="cell" id="2">Họ và tên</div>
 								<div class="cell" id="3">Loại thành viên</div>
@@ -48,7 +48,7 @@
 						<li>
 						
 						<?php
-							include "../models/DataHandler.php";
+							include "../../models/DataHandler.php";
 							$dataHandler = new DataHandler();
 							$data = $dataHandler->ReadData("KHACHHANG KH, LOAITHANHVIEN LTV", "HoTen, TenLoaiTV, NgayDangKy, TongChi", "KH.MaLoaiTV = LTV.MaLoaiTV");
 							$count = 1;							

@@ -13,8 +13,8 @@ body
 	margin: 0;
 	padding: 0;
 	text-align: center;
-	background-color: black;
-	color: white;
+	background-color: white;
+	color: black;
 }
 
 .myButton
@@ -28,6 +28,7 @@ body
 #lHeader
 {
 	margin: 0 0 3em;
+	background-color: #9900FF;
 }
 
 #bAdd, #bChange, #bDelete
@@ -65,7 +66,7 @@ body
 
 .coloredControl
 {
-	background-color: #CC0000;
+	background-color: #00CC00;
 }
 
 .header
@@ -139,7 +140,7 @@ body
 
 #firstRow .cell
 {
-	background-color: #660000;
+	background-color: #6600FF;
 }
 
 #tbName, #tbPhoneNumber, #tbSex
@@ -155,4 +156,9 @@ body
 #tbSex
 {
 	margin-left: 0.6%;
+}
+
+.whiteText
+{
+	color: white;
 }
