@@ -1,4 +1,9 @@
-<?php session_start(); ?>
+<?php
+session_start();
+if (($_SESSION["id"] == "")) {
+    header('Location: ' . '../index.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -18,9 +23,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script> -->
     <link href="../admin/css/sale.css" rel="stylesheet" /> <!-- Fonts and icons -->
     <style>
-        *{
-            font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         body {
             border: 2px solid wheat;
             background-color: white;
@@ -90,7 +96,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../index.html">
+                        <a class="nav-link logout" href="#">
                             <i class="material-icons">logout</i>
                             <p>ĐĂNG XUẤT</p>
                         </a>
@@ -212,6 +218,25 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('.logout').click(function() {
+                var xmlhttp = new XMLHttpRequest();
+                var url = "../../coffeeshopmanagement/controllers/C_TaiKhoan.php?logout";
+
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if (this.responseText == 'success') {
+                            window.location.reload()
+                        }
+                    }
+                };
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
+            })
+        })
+    </script>
 
     <script src="../assets_control/js/core/popper.min.js" type="text/javascript"></script>
     <script src="../assets_control/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>

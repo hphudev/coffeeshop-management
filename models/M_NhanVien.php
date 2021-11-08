@@ -42,6 +42,7 @@ class Model_NhanVien
     {
         include '../configs/config.php';
 
+
         $sql = "UPDATE `nhanvien` 
                 SET `HoTen`='" . $NhanVien->get_HoTenDem() . " " . $NhanVien->get_Ten() . "',
                     `NgaySinh`='" . date('Y-m-d H:i:s', $NhanVien->get_NgaySinh()) . "',
@@ -51,10 +52,8 @@ class Model_NhanVien
                     `DiaChi`='" . $NhanVien->get_DiaChi() . "',
                     `NgayVaoLam`='" . date('Y-m-d H:i:s', $NhanVien->get_NgayVaoLam()) . "',
                     `MaCV`='" . $NhanVien->get_ChucVu()->get_MaCV() . "',
-                    `Luong`='" . $NhanVien->get_Luong() . "',
-                    `MaTK`='" . $NhanVien->get_TaiKhoan()->get_MaTK() . "' 
+                    `Luong`='" . $NhanVien->get_Luong() . "'
                 WHERE `MaNV`='" . $NhanVien->get_MaNV() . "'";
-
         if ($conn->query($sql) === TRUE) {
             return true;
         } else {
@@ -76,8 +75,7 @@ class Model_NhanVien
                 '" . $NhanVien->get_DiaChi() . "',
                 '" . date('Y-m-d H:i:s', $NhanVien->get_NgayVaoLam()) . "',
                 '" . $NhanVien->get_ChucVu()->get_MaCV() . "',
-                '" . $NhanVien->get_Luong() . "',
-                '" . $NhanVien->get_TaiKhoan()->get_MaTK() . "')";
+                '" . $NhanVien->get_Luong() . "')";
 
         if ($conn->query($sql) === TRUE) {
             return true;
@@ -99,4 +97,3 @@ class Model_NhanVien
         }
     }
 }
-
