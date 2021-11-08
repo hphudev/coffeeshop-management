@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (isset($_SESSION['id'])) {
+  if ($_SESSION['id'] != null)
+    header('Location: ' . '/coffeeshopmanagement/admin/index.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,10 +26,11 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-W8fXfP3gkOKtndU4JGtKDvXbO53Wy8SZCQHczT5FMiiqmQfUpWbYdTil/SxwZgAN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
   <script src="assets/js/core/jquery.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- #endregion -->
 
   <style>
-    
+
   </style>
 
   <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
@@ -218,16 +226,37 @@
       $('#btnLogin').click(function() {
         checkUserInfo();
       })
+
+      function checkUserInfo() {
+        var username = $('#inputUsername').val();
+        var password = $('#inputPassword').val();
+
+        var xmlhttp = new XMLHttpRequest();
+        var url = "../../coffeeshopmanagement/controllers/C_TaiKhoan.php?login&id=" + username + '&password=' + password;
+        xmlhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            if (this.responseText == 'notfound') {
+              Swal.fire(
+                'Thất bại!',
+                'Không tìm thấy tài khoản. vui lòng thử lại',
+                'error'
+              )
+            } else if (this.responseText == 'wrongpassword') {
+              Swal.fire(
+                'Thất bại!',
+                'Sai mật khẩu. Vui lòng thử lại',
+                'error'
+              )
+            } else {
+              window.location.href = '/coffeeshopmanagement/admin/index.php';
+            }
+          }
+        };
+
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+      }
     })
-
-    function checkUserInfo() {
-      var username = $('#inputUsername').val();
-      var password = $('#inputPassword').val();
-
-      <?php
-
-      ?>
-    }
   </script>
   <!--   Core JS Files   -->
 

@@ -6,7 +6,7 @@ class Model_TaiKhoan
     {
     }
 
-    public function get__AllChucVu()
+    public function get__AllTaiKhoan()
     {
         include '../configs/config.php';
         $sql = 'SELECT * FROM taikhoan';
@@ -25,7 +25,7 @@ class Model_TaiKhoan
     public function get_TaiKhoanDetails($id)
     {
         include '../configs/config.php';
-        $sql = 'SELECT * FROM taikhoan WHERE MaTK="' . $id . '"';
+        $sql = 'SELECT * FROM taikhoan WHERE MaNV="' . $id . '"';
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -34,6 +34,27 @@ class Model_TaiKhoan
                 $conn->close();
                 return $TaiKhoan;
             }
+        }
+    }
+
+    public function login($TaiKhoan)
+    {
+        include '../configs/config.php';
+        $sql = "SELECT * FROM `taikhoan` WHERE MaTaiKhoan='" . $TaiKhoan->get_MaTK() . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $temp = new TaiKhoan();
+                $temp->clone($row);
+                $conn->close();
+                if ($TaiKhoan->get_MatKhau() != $temp->get_MatKhau()) {
+                    return "wrongpassword";
+                } else {
+                    return $temp->get_MaNV();
+                }
+            }
+        } else {
+            return null;
         }
     }
 }

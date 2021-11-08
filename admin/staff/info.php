@@ -198,11 +198,19 @@
 <script>
     $(document).ready(function() {
         $('#btnEditPersonalInfo').click(function() {
-            $(this).removeClass('btn-warning')
-            $(this).prop("disabled", true)
-            $('.personal_info').prop("disabled", false)
-            $('#btnSavePersonalInfo').removeClass('invisible')
-            $('#btnCancelEditPersonalInfo').removeClass('invisible')
+            if (checkPhanQuyen()) {
+                $(this).removeClass('btn-warning')
+                $(this).prop("disabled", true)
+                $('.personal_info').prop("disabled", false)
+                $('#btnSavePersonalInfo').removeClass('invisible')
+                $('#btnCancelEditPersonalInfo').removeClass('invisible')
+            } else {
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện chức năng này',
+                    'error'
+                )
+            }
         });
 
         $('#btnSavePersonalInfo').click(function() {
@@ -257,11 +265,19 @@
         });
 
         $('#btnEditWorkInfo').click(function() {
-            $(this).removeClass('btn-warning')
-            $(this).prop("disabled", true)
-            $('.work_info').prop("disabled", false)
-            $('#btnSaveWorkInfo').removeClass('invisible')
-            $('#btnCancelEditWorkInfo').removeClass('invisible')
+            if (checkPhanQuyen()) {
+                $(this).removeClass('btn-warning')
+                $(this).prop("disabled", true)
+                $('.work_info').prop("disabled", false)
+                $('#btnSaveWorkInfo').removeClass('invisible')
+                $('#btnCancelEditWorkInfo').removeClass('invisible')
+            } else {
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện chức năng này',
+                    'error'
+                )
+            }
         });
 
         $('#btnSaveWorkInfo').click(function() {
@@ -312,5 +328,23 @@
             $('#btnEditWorkInfo').addClass('btn-warning')
             $('#btnSaveWorkInfo').addClass('invisible')
         });
+
+        function checkPhanQuyen() {
+            var xmlhttp = new XMLHttpRequest();
+            var url = "../../coffeeshopmanagement/controllers/C_PhanQuyen.php?check&quyen=nhansu1";
+
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    if (this.responseText == 'true') {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            };
+
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+        }
     })
 </script>

@@ -61,7 +61,35 @@ class Model_ChucVu
                 ('" . $ChucVu->get_MaCV() . "',
                 '" . $ChucVu->get_TenCV() . "',
                 '" . $ChucVu->get_MucTroCap() . "')";
+        echo $sql;
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
+    public function update_ChucVu($ChucVu)
+    {
+        include '../configs/config.php';
+        $sql = "INSERT INTO `chucvu`(`MaCV`,`TenCV`, `TroCap`) 
+                VALUES ('" . $ChucVu->get_MaCV() . "',
+                        '" . $ChucVu->get_TenCV() . "',
+                        '" . $ChucVu->get_MucTroCap() . "')";
+
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function delete_ChucVu($id)
+    {
+        include '../configs/config.php';
+        $sql = "DELETE FROM `chucvu` 
+                WHERE MaCV='" . $id . "'";
+        echo $sql;
         if ($conn->query($sql) === TRUE) {
             return true;
         } else {
