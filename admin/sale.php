@@ -24,44 +24,47 @@
 </div>
 
 <!--#region 2 - danh sách món -->
-<div class="row menu">
-    <?php
-        for ($i = 0; $i < count($itemList); $i++)
-        {
-            // https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg
-            $idItem = $itemList[$i]->get_MaMon();
-            ?>
-            <div id= <?php echo '"' . $itemList[$i]->get_MaMon() . '"'?> class="col item">
-                <div class="card d-flex flex-row flex-wrap align-items-center justify-content-center pl-3" style="min-width:220px; max-width: 500px;">
-                    <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="min-width:220px; max-width:250px; min-height: 220px; max-height: 220px; border-radius: 6px;")>
-                    <div class="card-body d-flex flex-column align-items-center justify-content-center"> 
-                        <?php
-                            echo '<h3 class="card-title mt-1">' . $itemList[$i]->get_TenMon() . '</h3>';
-                            echo '<p class="card-text">' . $itemList[$i]->get_MoTa() . '</p>';
-                        ?>
-                        
-                        <div class="">
-                            <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none" onclick="oneItemOff('<?php echo $idItem?>')">
-                                <span class="material-icons">
-                                    remove
-                                </span>
-                            </button>
-                            <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success" onclick="oneMoreItem('<?php echo $idItem?>')">
-                                <span class="material-icons">
-                                    add
-                                </span>
-                                <span id="badge<?php echo $idItem ?>" class="badge badge-danger d-none" style="font-size: 13px;">0</span>
-                            </button>
-                        </div>
-                        <button id="btnShowOptionItemList<?php echo $idItem?>" class="btn btn-info d-none" style="min-width:200px; bolder-radius: 30px 30px 0 0;" data-toggle="modal" data-target="#optionModal" onclick="showOptionTable('<?php echo $idItem?>');">Tùy chọn</button>
-                        <button id="btnAddItemToBill<?php echo $idItem?>" class="btn btn-warning d-none" style="min-width: 200px;" data-toggle="modal" data-target="" onclick="addItemToBill('<?php echo $idItem ?>')">Thêm vào BILL</button>
+<?php
+    for ($i = 0; $i < count($itemList); $i++)
+    {
+        // https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg
+        $idItem = $itemList[$i]->get_MaMon();
+        if ($i % 3 == 0)
+            echo '<div class="row menu">';
+        ?>
+        <div id= <?php echo '"' . $itemList[$i]->get_MaMon() . '"'?> class="col item">
+            <div class="card d-flex flex-row flex-wrap align-items-center justify-content-center pl-3" style="min-width:220px; max-width: 500px;">
+                <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="min-width:220px; max-width:250px; min-height: 220px; max-height: 220px; border-radius: 6px;")>
+                <div class="card-body d-flex flex-column align-items-center justify-content-center"> 
+                    <?php
+                        echo '<h3 class="card-title mt-1">' . $itemList[$i]->get_TenMon() . '</h3>';
+                        echo '<p class="card-text">' . $itemList[$i]->get_MoTa() . '</p>';
+                    ?>
+                    
+                    <div class="">
+                        <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none" onclick="oneItemOff('<?php echo $idItem?>')">
+                            <span class="material-icons">
+                                remove
+                            </span>
+                        </button>
+                        <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success" onclick="oneMoreItem('<?php echo $idItem?>')">
+                            <span class="material-icons">
+                                add
+                            </span>
+                            <span id="badge<?php echo $idItem ?>" class="badge badge-danger d-none" style="font-size: 13px;">0</span>
+                        </button>
                     </div>
+                    <button id="btnShowOptionItemList<?php echo $idItem?>" class="btn btn-info d-none" style="min-width:200px; bolder-radius: 30px 30px 0 0;" data-toggle="modal" data-target="#optionModal" onclick="showOptionTable('<?php echo $idItem?>');">Tùy chọn</button>
+                    <button id="btnAddItemToBill<?php echo $idItem?>" class="btn btn-warning d-none" style="min-width: 200px;" data-toggle="modal" data-target="" onclick="addItemToBill('<?php echo $idItem ?>')">Thêm vào BILL</button>
                 </div>
             </div>
-    <?php
-        }
-    ?>
-</div>   
+        </div>
+        <?php
+            if ($i % 3 == 2)
+                echo '</div>';
+            }
+        ?>
+  
 
 <!-- region 3 - bảng tùy chọn-->
 <!-- <button class="btn btn-round" data-toggle="modal" data-target="#bill">

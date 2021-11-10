@@ -2,7 +2,7 @@
 class Mon {
     private $MaMon;
     private $MaLoaiMon;
-    private $MaTinhTrang;
+    private $SoLuong;
     private $MaNVL;
     private $MaDVT;
     private $TenMon;
@@ -18,7 +18,7 @@ class Mon {
         $this->set_MaMon($row['MaMon']);
         $this->set_TenMon($row['TenMon']);
         $this->set_MaLoaiMon($row['MaLoaiMon']);
-        $this->set_MaTinhTrang($row['MaTT']);
+        $this->set_SoLuong($row['SoLuong']);
         $this->set_MaDVT($row['MaDVT']);
         $this->set_HinhAnh($row['HinhAnh']);
         $this->set_MoTa($row['MoTa']);
@@ -43,12 +43,12 @@ class Mon {
         return $this->MaLoaiMon;
     }
 
-    function set_MaTinhTrang($ma) {
-        $this->MaTinhTrang = $ma;
+    function set_SoLuong($soluong) {
+        $this->SoLuong = $soluong;
     }
 
-    function get_MaTinhTrang() {
-        return $this->MaTinhTrang;
+    function get_SoLuong() {
+        return $this->SoLuong;
     }
 
     function set_MaNVL($ma) {
