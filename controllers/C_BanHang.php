@@ -24,6 +24,17 @@
     }
 
      $(document).ready(function () {
+
+        $('[name="orderType"]').on('change', function(){
+            if ($(this).val() === "yes")
+            {
+                console.log("yes");
+                $("#tableNumber").collapse('show');
+            }
+            else
+                $("#tableNumber").collapse('hide');
+
+        });
         $('#tbFindItem').keydown(function(event){
             console.log("ok");
             if (event.keyCode == 13)
@@ -532,6 +543,20 @@
         sessionStorage.setItem('bill', bill);
     }
 
+
+    function editDeleteItem(index)
+    {
+        let bill = JSON.parse(sessionStorage.getItem('bill'));
+        if (!confirm("Bạn có muốn hủy món " + bill[index].name + " hay không?"))
+        {
+            return;
+        }
+        document.getElementsByClassName('row-bill_' + index.toString())[0].remove();
+        bill.splice(index, 1);
+        bill = JSON.stringify(bill);
+        sessionStorage.setItem('bill', bill);
+    }
+
     function showBill()
     {
         document.getElementById('contentOrder').innerHTML = "";
@@ -564,7 +589,7 @@
                                                 '<p class="card-description">' + 
                                                     'Số lượng: ' + '<span class="text-info">' + bill[i].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[i].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[i].toppingList + '</span>' + 
                                                 '</p>' +
-                                                '<a href="#pablo" class="btn btn-white btn-round text-dark mr-1">XÓA</a>' +
+                                                "<a href='#pablo' class='btn btn-white btn-round text-dark mr-1' onclick='editDeleteItem(" + i +")'>XÓA</a>" +
                                                 "<a href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" + //mã hóa json truyền vào hàm trong js sẽ chuyển thành object
                                                 "<a href='#pablo' class='btn btn-danger btn-round text-white mr-1' onclick='editMinusItem(" + i + ")'>GIẢM</a>" +
                                                 "<a href='#pablo' class='btn btn-success btn-round text-white mr-1' onclick='editAddItem(" + i + ")'>TĂNG</a>" +

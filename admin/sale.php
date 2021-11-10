@@ -28,11 +28,12 @@
     <?php
         for ($i = 0; $i < count($itemList); $i++)
         {
+            // https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg
             $idItem = $itemList[$i]->get_MaMon();
             ?>
             <div id= <?php echo '"' . $itemList[$i]->get_MaMon() . '"'?> class="col item">
                 <div class="card d-flex flex-row flex-wrap align-items-center justify-content-center pl-3" style="min-width:220px; max-width: 500px;">
-                    <img class="card-img-left" src="https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg" alt="Card image" style="min-width:220px; max-width:150px; min-height: 200px; max-height: 220px; border-radius: 6px;")>
+                    <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="min-width:220px; max-width:250px; min-height: 220px; max-height: 220px; border-radius: 6px;")>
                     <div class="card-body d-flex flex-column align-items-center justify-content-center"> 
                         <?php
                             echo '<h3 class="card-title mt-1">' . $itemList[$i]->get_TenMon() . '</h3>';
@@ -63,10 +64,10 @@
 </div>   
 
 <!-- region 3 - bảng tùy chọn-->
-<button class="btn btn-round" data-toggle="modal" data-target="#bill">
+<!-- <button class="btn btn-round" data-toggle="modal" data-target="#bill">
     Login<i class="material-icons">assignment</i>
 
-</button>
+</button> -->
 
 <div class="modal fade modal-dialog-scrollable" id="bill" tabindex="-1" role="">
     <div class="modal-dialog" role="document">
@@ -81,7 +82,39 @@
                   </div>
                 </div>
                 <div class="modal-body">
+                    <div class="row ml-3">
+                        <h5>Hình thức order</h5>
+                        <div class="ml-4">
+                            <div class="form-check form-check-radio">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="orderType" id="orderTypeHome" value="no" checked>
+                                        Mang về
+                                    <span class="circle">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            <div >
+                                <div class="form-check form-check-radio">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="orderType" id="orderTypeTable" value="yes"> 
+                                            Tại bàn
+                                        <span class="circle">
+                                            <span class="check"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="collapseOne ml-3 collapse hide" id="tableNumber">
+                                    <div>
+                                        <input id="" class="form-control"  type="text" value = "" placeholder="Nhập số bàn">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
                     <div id="contentOrder">
+                        
                         <div class="row">
                                 <div class="card card-pricing bg-dark mr-3 ml-3 pl-3 pr-3">
                                         <div class="card-body">
@@ -139,12 +172,12 @@
     </div>
 </div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
   Launch demo modal
-</button>
+</button> -->
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -162,7 +195,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 <div class="modal fade" id="optionModal" tabindex="-1" role="">
     <div class="modal-dialog" role="document">

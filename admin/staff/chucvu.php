@@ -600,7 +600,7 @@
             }
         })
         $('#btnEditPQ').click(function() {
-            if (checkPhanQuyen()) {
+            // if (checkPhanQuyen()) {
                 if ($('#chucVuSelect').val() != "Lựa chọn...") {
                     $('.form-check-input').prop('disabled', false)
                     $(this).prop('disabled', true)
@@ -613,13 +613,13 @@
                         'warning'
                     )
                 }
-            } else {
-                Swal.fire(
-                    'Thất bại!',
-                    'Bạn không có quyền thực hiện chức năng này',
-                    'error'
-                )
-            }
+            // } else {
+            //     Swal.fire(
+            //         'Thất bại!',
+            //         'Bạn không có quyền thực hiện chức năng này',
+            //         'error'
+            //     )
+            // }
         })
         $('#btnSaveEditPQ').click(function() {
             $('.form-check-input').prop('disabled', true)

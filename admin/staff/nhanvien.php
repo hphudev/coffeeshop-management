@@ -252,15 +252,15 @@
         });
 
         $("#btnAddNV").click(function() {
-            if (checkPhanQuyen()) {
-                $("#addNVModel").modal('show')
-            } else {
-                Swal.fire(
-                    'Thất bại!',
-                    'Bạn không có quyền thực hiện chức năng này',
-                    'error'
-                )
-            }
+            // if (checkPhanQuyen()) {
+                $("#addNVModel").modal('show');
+            // } else {
+            //     Swal.fire(
+            //         'Thất bại!',
+            //         'Bạn không có quyền thực hiện chức năng này',
+            //         'error'
+            //     )
+            // }
         })
 
         $(".btn-View-NV").click(function() {
