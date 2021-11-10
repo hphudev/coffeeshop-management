@@ -11,7 +11,7 @@
 	
 	<body>
 		<div class="content">
-			<div class="header coloredControl" id="lHeader">
+			<div class="header coloredControl whiteText" id="lHeader">
 				<h1><strong>Báo cáo doanh thu<strong></h1>
 			</div>
 
@@ -31,7 +31,7 @@
 				<div class="table">
 					<ul>
 						<li>
-							<div class="row" id="firstRow">
+							<div class="row whiteText" id="firstRow">
 								<div class="cell">STT</div>
 								<div class="cell">Ngày</div>
 								<div class="cell">Số khách hàng</div>
