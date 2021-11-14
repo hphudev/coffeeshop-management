@@ -27,6 +27,9 @@ if (($_SESSION["id"] == "")) {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        html{
+            box-sizing: border-box;
+        }
         body {
             border: 2px solid wheat;
             background-color: white;
@@ -43,61 +46,60 @@ if (($_SESSION["id"] == "")) {
 </head>
 
 <body>
-
-    <div class="wrapper">
-        <div class="sidebar" data-color="orange" data-background-color="black" data-image="../assets_control/img/sidebar-1.jpg">
+    <div class="wrapper" style="background-image: linear-gradient(0, rgba(255, 174, 5, 0.8), rgba(255,255,255,0.9));">
+        <div class="sidebar" data-color="orange" data-background-color="light" data-image="../assets_control/img/sidebar-1.jpg">
             <div class="logo">
-                <a href="index.php?page=home" class="simple-text logo-normal">
+                <a href="index.php?page=home" class="simple-text logo-normal bg-dark text-light">
                     Coffee family
                 </a>
             </div>
             <div class="sidebar-wrapper">
-                <ul class="nav">
+                <ul class="nav" style="font-weight: 500;">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=manage-customer_s-info">
-                            <i class="material-icons">insert_chart_outlined</i>
+                        <a class="nav-link" href="index.php?page=manage-customer_s-info" style="">
+                            <i class="material-icons" style="color: orange">insert_chart_outlined</i>
                             <p>QUẢN LÝ KHÁCH HÀNG</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=sale">
-                            <i class="material-icons">storefront</i>
+                            <i class="material-icons" style="color: orange">storefront</i>
                             <p>BÁN HÀNG</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=table">
-                            <i class="material-icons">table_rows </i>
+                            <i class="material-icons" style="color: orange">table_rows </i>
                             <p>QUẢN LÝ BÀN</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=staff">
-                            <i class="material-icons">groups</i>
+                            <i class="material-icons" style="color: orange">groups</i>
                             <p>QUẢN LÝ NHÂN SỰ</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=werehouse">
-                            <i class="material-icons">sticky_note_2</i>
+                            <i class="material-icons" style="color: orange">sticky_note_2</i>
                             <p>QUẢN LÝ KHO</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=manage-financial">
-                            <i class="material-icons">attach_money</i>
+                            <i class="material-icons" style="color: orange">attach_money</i>
                             <p>QUẢN LÝ TÀI CHÍNH</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=account">
-                            <i class="material-icons">perm_contact_calendar</i>
+                            <i class="material-icons" style="color: orange">perm_contact_calendar</i>
                             <p>TÀI KHOẢN CỦA BẠN</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link logout" href="#">
-                            <i class="material-icons">logout</i>
+                            <i class="material-icons" style="color: orange">logout</i>
                             <p>ĐĂNG XUẤT</p>
                         </a>
                     </li>

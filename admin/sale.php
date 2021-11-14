@@ -18,40 +18,39 @@
                         <i class="material-icons">search</i>
                     </span>
                 </div>
-                <input id="tbFindItem" class="form-control"  type="text" value = "" >
+                <input id="tbFindItem" class="form-control"  type="text" value = "" style="">
         </div>
     </form>
 </div>
 
 <!--#region 2 - danh sách món -->
+<div class="row menu">
 <?php
     for ($i = 0; $i < count($itemList); $i++)
     {
         // https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg
         $idItem = $itemList[$i]->get_MaMon();
         if ($i % 3 == 0)
-            echo '<div class="row menu">';
         ?>
-        <div id= <?php echo '"' . $itemList[$i]->get_MaMon() . '"'?> class="col item">
-            <div class="card d-flex flex-row flex-wrap align-items-center justify-content-center pl-3" style="min-width:220px; max-width: 500px;">
-                <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="min-width:220px; max-width:250px; min-height: 220px; max-height: 220px; border-radius: 6px;")>
-                <div class="card-body d-flex flex-column align-items-center justify-content-center"> 
+        <div id= <?php echo '"' . $itemList[$i]->get_MaMon() . '"'?> class="col-sm-6 item">
+            <div class="card d-flex flex-row flex-wrap align-items-center justify-content-center pl-1" style="max-width:80%; max-height: 100%; padding: 0px">
+                <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="max-width: 200px; height: 200px;min-width: 100px; min-height: 100px; border-radius: 6px; padding: 0; margin: 2px")>
+                <div class="card-body d-flex flex-column align-items-center justify-content-center" style="padding:0; margin: 0"> 
                     <?php
                         echo '<h3 class="card-title mt-1">' . $itemList[$i]->get_TenMon() . '</h3>';
-                        echo '<p class="card-text">' . $itemList[$i]->get_MoTa() . '</p>';
+                        echo '<p class="card-text"> Mô tả: ' . $itemList[$i]->get_MoTa() . '</p>';
                     ?>
-                    
                     <div class="">
-                        <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none" onclick="oneItemOff('<?php echo $idItem?>')">
+                        <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none p-2" onclick="oneItemOff('<?php echo $idItem?>')">
                             <span class="material-icons">
                                 remove
                             </span>
                         </button>
-                        <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success" onclick="oneMoreItem('<?php echo $idItem?>')">
-                            <span class="material-icons">
+                        <span id="badge<?php echo $idItem ?>" class="badge badge-light d-none" style="font-size: 13px; width:60px; height: 25px; border: 1px solid orange">0</span>
+                        <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success p-2" onclick="oneMoreItem('<?php echo $idItem?>')">
+                            <span class="material-icons" style="">
                                 add
                             </span>
-                            <span id="badge<?php echo $idItem ?>" class="badge badge-danger d-none" style="font-size: 13px;">0</span>
                         </button>
                     </div>
                     <button id="btnShowOptionItemList<?php echo $idItem?>" class="btn btn-info d-none" style="min-width:200px; bolder-radius: 30px 30px 0 0;" data-toggle="modal" data-target="#optionModal" onclick="showOptionTable('<?php echo $idItem?>');">Tùy chọn</button>
@@ -59,11 +58,8 @@
                 </div>
             </div>
         </div>
-        <?php
-            if ($i % 3 == 2)
-                echo '</div>';
-            }
-        ?>
+    <?php }?>
+</div>
   
 
 <!-- region 3 - bảng tùy chọn-->
@@ -85,7 +81,7 @@
                   </div>
                 </div>
                 <div class="modal-body">
-                    <div class="row ml-3">
+                    <!-- <div class="row ml-3">
                         <h5>Hình thức order</h5>
                         <div class="ml-4">
                             <div class="form-check form-check-radio">
@@ -115,7 +111,7 @@
                             </div>
                             
                         </div>
-                    </div>
+                    </div> -->
                     <div id="contentOrder">
                         
                         <div class="row">
@@ -168,7 +164,7 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" onclick="" data-toggle="modal" data-target="#optionModal">GỬi ĐẾN NHÀ BẾP</a>
+                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" onclick="" data-toggle="modal" data-target="#optionModal">THANH TOÁN</a>
                 </div>
             </div>
         </div>
