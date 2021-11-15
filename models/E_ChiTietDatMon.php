@@ -1,5 +1,5 @@
 <?php
-    class DatMon{
+    class CT_DatMon{
         private $MaDM;
         private $MaMon;
         private $TenDonVi;
@@ -64,4 +64,3 @@
             return $this->DonGia;
         }
     }
-?>
