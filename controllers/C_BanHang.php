@@ -473,7 +473,18 @@
         bill.push(value);
         sessionStorage.setItem('bill', JSON.stringify(bill));
         sessionStorage.removeItem('order' + $idItem);
-        location.reload();
+        let timerInterval
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '',
+            showConfirmButton: false,
+            timer: 700
+            }).then(()=>{
+                location.reload();
+            });
+        // setTimeout(() => {
+        // }, 1000);
         // console.log(JSON.parse(sessionStorage.getItem('bill')));    
         // console.log(sessionStorage.getItem('order' + $idItem));
     }
@@ -508,8 +519,14 @@
         let bill = JSON.parse(sessionStorage.getItem('bill'));
         bill[serial].num++;
         let elementBill = document.getElementById('bill_' + serial.toString());
-        elementBill.getElementsByClassName('card-title')[0].innerHTML = bill[serial].name + ' (' + convertNumToStringHaveDot(bill[serial].price * bill[serial].num) + ' vnđ)';
-        elementBill.getElementsByClassName('card-description')[0].innerHTML = 'Số lượng: ' + '<span class="text-info">' + bill[serial].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[serial].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[serial].toppingList + '</span>';
+        let elementChild = elementBill.getElementsByClassName('des'); 
+        // console.log(elementChild);
+        // elementChild[0].innerHTML = bill[serial].size
+        elementChild[1].innerHTML = bill[serial].num;
+        // elementChild[2].innerHTML = bill[serial].price;
+        // elementChild[3].innerHTML = bill[serial].toppingList;
+        elementChild[4].innerHTML = convertNumToStringHaveDot(bill[serial].price * bill[serial].num);
+        // elementBill.getElementsByClassName('card-description')[0].innerHTML = 'Số lượng: ' + '<span class="text-info">' + bill[serial].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[serial].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[serial].toppingList + '</span>';
         bill = JSON.stringify(bill);
         sessionStorage.setItem('bill', bill);
     }
@@ -536,9 +553,13 @@
             return;
         }
         let elementBill = document.getElementById('bill_' + serial.toString());
-        elementBill.getElementsByClassName('card-title')[0].innerHTML = bill[serial].name + ' (' + convertNumToStringHaveDot(bill[serial].price * bill[serial].num) + ' vnđ)';
-        elementBill.getElementsByClassName('card-description')[0].innerHTML = 'Số lượng: ' + '<span class="text-info">' + bill[serial].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[serial].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[serial].toppingList + '</span>';
-        console.log(bill);
+        let elementChild = elementBill.getElementsByClassName('des'); 
+        // console.log(elementChild);
+        // elementChild[0].innerHTML = bill[serial].size
+        elementChild[1].innerHTML = bill[serial].num;
+        // elementChild[2].innerHTML = bill[serial].price;
+        // elementChild[3].innerHTML = bill[serial].toppingList;
+        elementChild[4].innerHTML = convertNumToStringHaveDot(bill[serial].price * bill[serial].num);
         bill = JSON.stringify(bill);
         sessionStorage.setItem('bill', bill);
     }
@@ -551,7 +572,8 @@
         {
             return;
         }
-        document.getElementsByClassName('row-bill_' + index.toString())[0].remove();
+        let element = document.getElementById('bill_' + index.toString());
+        element.remove();
         bill.splice(index, 1);
         bill = JSON.stringify(bill);
         sessionStorage.setItem('bill', bill);
@@ -565,8 +587,24 @@
         let bill = JSON.parse(sessionStorage.getItem('bill'));
         console.log(bill);
         let elementContentBill = document.getElementById('contentOrder');
+        elementContentBill.innerHTML = "";
+        let html = '';
+        // let html = '<table class="table" style=" overflow: scroll;">' +
+        //                             '<thead >' +
+        //                                 '<tr >' +
+        //                                     '<th scope="col" style="font-weight: 500;">STT</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Tên món</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Kích thước</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Số lượng</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Đơn giá</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Topping</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Thành tiền</th>' +
+        //                                 '</tr>' +
+        //                             '</thead>' +
+        //                             '<tbody>';
         for (let i = 0; i < bill.length; i++)
         {
+            console.log(html);
             let func = {};
             func.name = "getItemName";
             func.id = bill[i].id;
@@ -578,33 +616,60 @@
                     bill[i].name = JSON.parse(response);
                     sessionStorage.setItem('bill', JSON.stringify(bill));
                     //let stringBill = JSON.stringify(bill[i]).toString();
-                    console.log(JSON.stringify(bill[i]));
-                    let html = '<div class="row row-bill_' + i.toString() + '">' + 
-                                    '<div class="card card-pricing bg-dark mr-3 ml-3 pl-3 pr-3">' + 
-                                            '<div class="card-body" id="bill_' + i.toString() +'">' +
-                                                '<div class="card-icon">' +
-                                                    '<i class="material-icons">business</i>' +
-                                                '</div>' +
-                                                '<h3 class="card-title">' + bill[i].name + ' (' + convertNumToStringHaveDot(bill[i].price * bill[i].num) + ' vnđ)' + '</h3>' + 
-                                                '<p class="card-description">' + 
-                                                    'Số lượng: ' + '<span class="text-info">' + bill[i].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[i].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[i].toppingList + '</span>' + 
-                                                '</p>' +
-                                                "<a href='#pablo' class='btn btn-white btn-round text-dark mr-1' onclick='editDeleteItem(" + i +")'>XÓA</a>" +
-                                                "<a href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" + //mã hóa json truyền vào hàm trong js sẽ chuyển thành object
-                                                "<a href='#pablo' class='btn btn-danger btn-round text-white mr-1' onclick='editMinusItem(" + i + ")'>GIẢM</a>" +
-                                                "<a href='#pablo' class='btn btn-success btn-round text-white mr-1' onclick='editAddItem(" + i + ")'>TĂNG</a>" +
-                                            '</div>' +
-                                    '</div>' +
-                                '</div>';
-            let newcontent = document.createElement('div');
-            newcontent.innerHTML = html;
-            while (newcontent.firstChild)
-            {
-                elementContentBill.appendChild(newcontent.firstChild);
-            }
+                    console.log(bill[i].size);
+                    html = 
+                                        '<tr id="bill_' + i.toString() + '">' +
+                                        '<th cope="row">' + (Number(i) + 1) +'</th>' +
+                                        '<td> <p style="width: 150px">' + bill[i].name + 'aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb</p></td>' +
+                                        '<td> <p class="des" style="width: 50px">' + bill[i].size + '</p></td>' +
+                                        '<td> <p class="des" style="width: 20px">' + bill[i].num + '</p></td>' +
+                                        '<td> <p class="des" style="width: 50px">' + bill[i].price + '</p></td>' +
+                                        '<td> <p class="des" style="width: 50px">' + bill[i].num * bill[i].price + '</p></td>' +
+                                        '<td> <p class="des" style="width: 100px">' + bill[i].toppingList + '</p></td>' +
+                                        '<td style="width: 70px">' +
+                                        "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" +
+                                        '</td>' +
+                                        '<td style="width: 70px">' +
+                                        "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-warning btn-round text-white mr-1' onclick='editMinusItem(" + i + ")'>GIẢM</a>" +
+                                        '</td>' +
+                                        '<td style="width: 70px">' +
+                                        "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-success btn-round text-white mr-1' onclick='editAddItem(" + i + ")'>TĂNG</a>" +
+                                        '</td>' +
+                                        '<td style="width: 70px">' +
+                                        "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-danger btn-round text-white mr-1' onclick='editDeleteItem(" + i +")'>XÓA</a>" +
+                                        '</td>' +
+                                        '</tr>';
+                    elementContentBill.innerHTML += html;
+                    
+                    // console.log(html);
+                    // let html = '<div class="row row-bill_' + i.toString() + '">' + 
+                    //                 '<div class="card card-pricing bg-dark mr-3 ml-3 pl-3 pr-3">' + 
+                    //                         '<div class="card-body" id="bill_' + i.toString() +'">' +
+                    //                             '<div class="card-icon">' +
+                    //                                 '<i class="material-icons">business</i>' +
+                    //                             '</div>' +
+                    //                             '<h3 class="card-title">' + bill[i].name + ' (' + convertNumToStringHaveDot(bill[i].price * bill[i].num) + ' vnđ)' + '</h3>' + 
+                    //                             '<p class="card-description">' + 
+                    //                                 'Số lượng: ' + '<span class="text-info">' + bill[i].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[i].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[i].toppingList + '</span>' + 
+                    //                             '</p>' +
+                    //                             "<a href='#pablo' class='btn btn-white btn-round text-dark mr-1' onclick='editDeleteItem(" + i +")'>XÓA</a>" +
+                    //                             "<a href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" + //mã hóa json truyền vào hàm trong js sẽ chuyển thành object
+                    //                             "<a href='#pablo' class='btn btn-danger btn-round text-white mr-1' onclick='editMinusItem(" + i + ")'>GIẢM</a>" +
+                    //                             "<a href='#pablo' class='btn btn-success btn-round text-white mr-1' onclick='editAddItem(" + i + ")'>TĂNG</a>" +
+                    //                         '</div>' +
+                    //                 '</div>' +
+                    //             '</div>';
+            // let newcontent = document.createElement('div');
+            // newcontent.innerHTML = html;
+            // while (newcontent.firstChild)
+            // {
+            //     elementContentBill.appendChild(newcontent.firstChild);
+            // }
                 }
             });     
         }
+        console.log(html);
+
     }
 </script>
 

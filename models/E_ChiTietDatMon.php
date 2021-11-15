@@ -1,5 +1,5 @@
 <?php
-    class DatMon{
+    class ChiTietDatMon{
         private $MaDM;
         private $MaMon;
         private $TenDonVi;

@@ -24,30 +24,49 @@
 </div>
 
 <!--#region 2 - danh sách món -->
-<div class="row menu">
+<div class="row menu" style="width: fit-content;">
 <?php
     for ($i = 0; $i < count($itemList); $i++)
     {
+        
         // https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg
         $idItem = $itemList[$i]->get_MaMon();
-        if ($i % 3 == 0)
+        // if ($i % 3 == 0)
         ?>
-        <div id= <?php echo '"' . $itemList[$i]->get_MaMon() . '"'?> class="col-sm-6 item">
-            <div class="card d-flex flex-row flex-wrap align-items-center justify-content-center pl-1" style="max-width:80%; max-height: 100%; padding: 0px">
-                <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="max-width: 200px; height: 200px;min-width: 100px; min-height: 100px; border-radius: 6px; padding: 0; margin: 2px")>
-                <div class="card-body d-flex flex-column align-items-center justify-content-center" style="padding:0; margin: 0"> 
+        <div id= <?php echo '"' . $itemList[$i]->get_MaMon() . '"'?> class="col item">
+            <div class="card align-items-top justify-content-center" style="width: 250px; padding: 0px; border-radius: 10px">
+                <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="width: 100%; height: 150px; border-radius: 10px 10px 0 0;")>
+                <div class="card-body d-flex flex-column align-items-top justify-content-top"> 
                     <?php
-                        echo '<h3 class="card-title mt-1">' . $itemList[$i]->get_TenMon() . '</h3>';
-                        echo '<p class="card-text"> Mô tả: ' . $itemList[$i]->get_MoTa() . '</p>';
+                        echo '
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col">
+                                        <h class="card-title" style="font-weight: 500; font-size: 20px">' . $itemList[$i]->get_TenMon() . '</h>
+                                    </div>
+                                    <div class="col" style="text-align: right">
+                                        <span class="material-icons text-info"">
+                                            info
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>';
+                        // echo '
+                        //     <div class="row">
+                        //         <div class="col">
+                        //             <p class="card-text" style="width: 100%"> Mô tả: ' . $itemList[$i]->get_MoTa() . 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+                        //         </div>
+                        //     </div>';
+                        // echo '<p class="card-text"> Mô tả: ' . $itemList[$i]->get_MoTa() . '</p>';
                     ?>
-                    <div class="">
-                        <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none p-2" onclick="oneItemOff('<?php echo $idItem?>')">
+                    <div style="text-align: center;">
+                        <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none  pt-2 pb-2 pl-3 pr-3" onclick="oneItemOff('<?php echo $idItem?>')">
                             <span class="material-icons">
                                 remove
                             </span>
                         </button>
                         <span id="badge<?php echo $idItem ?>" class="badge badge-light d-none" style="font-size: 13px; width:60px; height: 25px; border: 1px solid orange">0</span>
-                        <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success p-2" onclick="oneMoreItem('<?php echo $idItem?>')">
+                        <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success pt-2 pb-2 pl-3 pr-3" onclick="oneMoreItem('<?php echo $idItem?>')">
                             <span class="material-icons" style="">
                                 add
                             </span>
@@ -70,7 +89,7 @@
 
 <div class="modal fade modal-dialog-scrollable" id="bill" tabindex="-1" role="">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 95vw; left: 50%; top:50%; transform: translateX(-50%)">
             <div class="card card-signup card-plain">
                 <div class="modal-header">
                   <div class="card-header card-header-danger text-center w-100">
@@ -80,7 +99,7 @@
                     <h4 class="card-title">ORDER</h4>
                   </div>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="width: 100%">
                     <!-- <div class="row ml-3">
                         <h5>Hình thức order</h5>
                         <div class="ml-4">
@@ -112,7 +131,26 @@
                             
                         </div>
                     </div> -->
-                    <div id="contentOrder">
+                    <table class="table" style=" overflow: scroll;">
+                        <thead>
+                            <tr>
+                                <th scope="col" style="font-weight: 500; width: 50px">STT</th>
+                                <th scope="col" style="font-weight: 500; width: 150px">Tên món</th>
+                                <th scope="col" style="font-weight: 500; width: 80px">Kích thước</th>
+                                <th scope="col" style="font-weight: 500; width: 70px">Số lượng</th>
+                                <th scope="col" style="font-weight: 500; width: 70px">Đơn giá</th>
+                                <th scope="col" style="font-weight: 500; width: 80px">Thành tiền</th>
+                                <th scope="col" style="font-weight: 500; width: 200px">Topping</th>
+                                <th scope="col" style="font-weight: 500; width: 50px">Tùy chọn</th>
+                                <th scope="col" style="font-weight: 500; width: 50px">Giảm</th>
+                                <th scope="col" style="font-weight: 500; width: 50px">Tăng</th>
+                                <th scope="col" style="font-weight: 500; width: 50px">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contentOrder" style="overflow-x: hidden;">
+                        </tbody>
+                    </table>
+                    <!-- <div  style="width: 100%;">
                         
                         <div class="row">
                                 <div class="card card-pricing bg-dark mr-3 ml-3 pl-3 pr-3">
@@ -161,7 +199,7 @@
                                         </div>
                                 </div>
                             </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="modal-footer justify-content-center">
                     <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" onclick="" data-toggle="modal" data-target="#optionModal">THANH TOÁN</a>
