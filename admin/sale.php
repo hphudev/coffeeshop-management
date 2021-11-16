@@ -5,7 +5,7 @@
         <div class="row row-header">
             <button type="button" class="col btn btn-warning" data-toggle="modal" data-target="#bill" onclick="showBill();">Xem ORDER</button>
             <button type="button" class="col btn btn-info">
-                Thông báo <span class="badge badge-danger ml-2" style="font-size: 13px;">4</span>
+                XEm BILL <span class="badge badge-danger ml-2" style="font-size: 13px;">4</span>
             </button>
             <button id="btnReloadBill" type="button" class="col btn btn-danger" onclick="reloadPage();">Làm mới Bill</button>
             <button id="btnReloadPage" type="button" class="col btn btn-primary" onclick="location.reload();">Tải lại trang</button>
@@ -133,7 +133,7 @@
                     </div> -->
                     <table class="table" style=" overflow: scroll;">
                         <thead>
-                            <tr>
+                            <tr style=" overflow: scroll;">
                                 <th scope="col" style="font-weight: 500; width: 50px">STT</th>
                                 <th scope="col" style="font-weight: 500; width: 150px">Tên món</th>
                                 <th scope="col" style="font-weight: 500; width: 80px">Kích thước</th>
@@ -202,7 +202,7 @@
                     </div> -->
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" onclick="" data-toggle="modal" data-target="#optionModal">THANH TOÁN</a>
+                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" style="font-weight: 500;" onclick="payOrder();" data-toggle="modal" >THANH TOÁN</a>
                 </div>
             </div>
         </div>

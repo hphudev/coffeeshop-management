@@ -76,6 +76,103 @@
         });
     });
 
+
+
+    function payOrder()
+    {
+        // if (sessionStorage`)
+        let bill = JSON.parse(sessionStorage.getItem('bill'));
+        if (bill === null || bill.length == 0)
+        {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Order không có món',
+                showConfirmButton: true,
+                timer: 2000
+            });
+            return;
+        }
+        else
+            Swal.fire({
+                icon: 'info',
+                title: 'Đang xuất order',
+                text: 'Hệ thống đang gửi order lên nhà bếp và in phiếu',
+                showConfirmButton: false,
+                allowOutsideClick: false
+                // timer: 800
+            });
+        Swal.showLoading();
+        setTimeout(() => {
+            let func = {};
+            // func.id = "MON001";
+            func.name = "saveOrder";
+            func.data = JSON.parse(sessionStorage.getItem('bill'));
+            console.log(func);
+            $.ajax({
+                type: "POST",
+                data: {func: JSON.stringify(func)},
+                url: "../models/M_BanHang.php",
+                // dataType: "json",
+                timeout: 5000,
+                success: function (response) {
+                    Swal.close();
+                    console.log(response);
+                    if (true)
+                    {
+                        Swal.fire({
+                            title: 'Order thành công',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 700
+                        });
+                    }
+                    else
+                    {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể xuất order',
+                            text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
+                            showConfirmButton: true,
+                            timer: 3000 
+                        });
+                    }
+                    
+                },
+                error: function(xmlhttprequest, textstatus, message) {
+                    if(textstatus==="timeout") {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Thời gian phản hồi quá lâu',
+                            text: 'Không thể order vì có sự cố máy chủ', 
+                            showConfirmButton: true,
+                            timer: 3000 
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể xuất order',
+                            text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
+                            showConfirmButton: true,
+                            timer: 3000 
+                        });
+                    }
+                }
+            });
+            // func = {};
+            // func.name = "getItemName";
+            // func.id = "MON001";
+            // $.ajax({
+            //     type: "POST",
+            //     url: "../models/M_BanHang.php",
+            //     data: {func: JSON.stringify(func)},
+            //     success: function (response) {
+            //         console.log(response);
+            //     }
+            // });
+        }, 1200);
+       
+    }
+
     function saveWork()
     {
         let idItem = sessionStorage.getItem("idItemOptionTable");
@@ -139,6 +236,25 @@
             }
         }
         sessionStorage.setItem('bill', JSON.stringify(bill));
+        let elementBill = document.getElementById('bill_' + index.toString());
+        let elementChild = elementBill.getElementsByClassName('des'); 
+        // console.log(elementChild);
+        elementChild[0].innerHTML = bill[index].size;
+        elementChild[2].innerHTML = bill[index].price;
+        // elementChild[1].innerHTML = bill[serial].num;
+        elementChild[4].innerHTML = bill[index].toppingList;
+        // console.log(elementChild[3].textContent);
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '',
+            showConfirmButton: false,
+            timer: 700
+            }).then(()=>{
+                // location.reload();
+                console.log("ok");
+            });
+        elementChild[3].innerHTML = convertNumToStringHaveDot(bill[index].price * bill[index].num);
         //console.log(value);
         // console.log(sessionStorage.getItem(idItemSession));
         // sessionStorage.setItem(idItemSession, JSON.stringify(value));
@@ -285,9 +401,15 @@
         if (confirm("Bạn chưa lưu công việc? Bạn có muốn làm mới trang không?"))
         {
             sessionStorage.clear();
-            setTimeout(() => {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                timer: 900,
+                showConfirmButton: false
+            }).then(()=>{
                 location.reload();
-            }, 300); 
+            }
+            );
         }
     }
 
@@ -473,7 +595,6 @@
         bill.push(value);
         sessionStorage.setItem('bill', JSON.stringify(bill));
         sessionStorage.removeItem('order' + $idItem);
-        let timerInterval
         Swal.fire({
             position: 'center',
             icon: 'success',
@@ -525,7 +646,7 @@
         elementChild[1].innerHTML = bill[serial].num;
         // elementChild[2].innerHTML = bill[serial].price;
         // elementChild[3].innerHTML = bill[serial].toppingList;
-        elementChild[4].innerHTML = convertNumToStringHaveDot(bill[serial].price * bill[serial].num);
+        elementChild[3].innerHTML = convertNumToStringHaveDot(bill[serial].price * bill[serial].num);
         // elementBill.getElementsByClassName('card-description')[0].innerHTML = 'Số lượng: ' + '<span class="text-info">' + bill[serial].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[serial].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[serial].toppingList + '</span>';
         bill = JSON.stringify(bill);
         sessionStorage.setItem('bill', bill);
@@ -559,7 +680,7 @@
         elementChild[1].innerHTML = bill[serial].num;
         // elementChild[2].innerHTML = bill[serial].price;
         // elementChild[3].innerHTML = bill[serial].toppingList;
-        elementChild[4].innerHTML = convertNumToStringHaveDot(bill[serial].price * bill[serial].num);
+        elementChild[3].innerHTML = convertNumToStringHaveDot(bill[serial].price * bill[serial].num);
         bill = JSON.stringify(bill);
         sessionStorage.setItem('bill', bill);
     }
@@ -577,6 +698,13 @@
         bill.splice(index, 1);
         bill = JSON.stringify(bill);
         sessionStorage.setItem('bill', bill);
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 700
+        });
+        showBill();
     }
 
     function showBill()
@@ -618,14 +746,14 @@
                     //let stringBill = JSON.stringify(bill[i]).toString();
                     console.log(bill[i].size);
                     html = 
-                                        '<tr id="bill_' + i.toString() + '">' +
+                                        '<tr id="bill_' + i.toString() + '" style=" overflow: scroll;">' +
                                         '<th cope="row">' + (Number(i) + 1) +'</th>' +
                                         '<td> <p style="width: 150px">' + bill[i].name + 'aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb</p></td>' +
                                         '<td> <p class="des" style="width: 50px">' + bill[i].size + '</p></td>' +
                                         '<td> <p class="des" style="width: 20px">' + bill[i].num + '</p></td>' +
                                         '<td> <p class="des" style="width: 50px">' + bill[i].price + '</p></td>' +
                                         '<td> <p class="des" style="width: 50px">' + bill[i].num * bill[i].price + '</p></td>' +
-                                        '<td> <p class="des" style="width: 100px">' + bill[i].toppingList + '</p></td>' +
+                                        '<td> <p class="des" style="width: 200px">' + bill[i].toppingList + '</p></td>' +
                                         '<td style="width: 70px">' +
                                         "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" +
                                         '</td>' +

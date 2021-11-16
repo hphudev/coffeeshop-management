@@ -33,8 +33,9 @@ if (($_SESSION["id"] == "")) {
         body {
             border: 2px solid wheat;
             background-color: white;
-            overflow: hidden;
-            -ms-overflow-style: none;
+            overflow-x: scroll;
+            /* overflow: hidden; */
+            /* -ms-overflow-style: none; */
             /* IE and Edge */
             scrollbar-width: none;
         }
