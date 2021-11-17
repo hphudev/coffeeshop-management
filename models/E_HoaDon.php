@@ -2,7 +2,7 @@
 include 'E_ChiTietHoaDon.php';
 class HoaDon
 {
-    private $MaNV;
+    private $MaHD;
     private $MaKH;
     private $MaNVLap;
     private $NgayLap;
@@ -16,12 +16,13 @@ class HoaDon
 
     function __construct()
     {
-        $this->MaNV =
+        $this->MaHD =
             $this->MaKH =
             $this->MaNVLap =
-            $this->NgayLap =
-            $this->NgayThanhToan =
             $this->GhiChu = "";
+
+        $this->NgayLap =
+            $this->NgayThanhToan = new DateTime('now');
 
         $this->TongTienTT =
             $this->TongTienKH =
@@ -33,7 +34,7 @@ class HoaDon
 
     function clone($row)
     {
-        $this->MaNV = $row['MaNV'];
+        $this->MaHD = $row['MaHD'];
         $this->MaKH = $row['MaKH'];
         $this->MaNVLap = $row['MaNVLap'];
         $this->NgayLap = $row['NgayLap'];
@@ -46,13 +47,13 @@ class HoaDon
         $this->ChiTietHoaDon = $row['ChiTietHoaDon'];
     }
 
-    function get_MaNV()
+    function get_MaHD()
     {
-        return $this->MaNV;
+        return $this->MaHD;
     }
-    function set_MaNV($MaNV)
+    function set_MaHD($MaHD)
     {
-        $this->MaNV = $MaNV;
+        $this->MaHD = $MaHD;
     }
     function get_MaKH()
     {

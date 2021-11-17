@@ -1,8 +1,6 @@
 <?php
 class ChiTietHoaDon
 {
-    private $MaCTHD;
-    private $MaHD;
     private $MaMon;
     private $SoLuong;
     private $TenDonVi;
@@ -11,9 +9,7 @@ class ChiTietHoaDon
 
     public function __construct()
     {
-        $this->MaCTHD =
-            $this->MaHD =
-            $this->MaMon =
+        $this->MaMon =
             $this->TenDonVi = "";
 
         $this->SoLuong =
@@ -23,32 +19,11 @@ class ChiTietHoaDon
 
     public function clone($row)
     {
-        $this->MaCTHD = $row['MaCTHD'];
-        $this->MaHD = $row['MaHD'];
         $this->MaMon = $row['MaMon'];
         $this->SoLuong = $row['SoLuong'];
         $this->TenDonVi = $row['TenDonVi'];
         $this->DonGia = $row['DonGia'];
         $this->ThanhTien = $row['ThanhTien'];
-    }
-
-    function set_MaCTHD($macthd)
-    {
-        $this->MaCTHD = $macthd;
-    }
-
-    function get_MaCTHD()
-    {
-        return $this->MaCTHD;
-    }
-    function set_MaHD($mahd)
-    {
-        $this->MaHD = $mahd;
-    }
-
-    function get_MaHD()
-    {
-        return $this->MaHD;
     }
     function set_MaMon($mamon)
     {

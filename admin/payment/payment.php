@@ -56,6 +56,32 @@
     .guest {
         cursor: pointer;
     }
+
+    #section-to-print {
+        display: none;
+    }
+
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        body {
+            margin: 0mm 0mm 0mm 0mm;
+        }
+
+        #section-to-print,
+        #section-to-print * {
+            visibility: visible;
+        }
+
+        #section-to-print {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    }
 </style>
 
 <div class="modal fade" id="thanhtoanModel" role="dialog" aria-labelledby="thanhtoanModel" aria-hidden="true">
@@ -112,7 +138,7 @@
                                 </h4>
                             </div>
                             <div class="col-md-6 text-right">
-                                <h4 class="font-weight-bold">
+                                <h4 id="date" class="font-weight-bold">
                                     <?php
                                     echo date_format(new DateTime('now'), "d/m/Y G:i")
                                     ?>
@@ -143,7 +169,7 @@
                                 <i class="material-icons guest">help</i>
                             </div>
                             <div class="col-md-6 text-right">
-                                <h4 class="font-weight-bold">
+                                <h4 id="customer" class="font-weight-bold">
                                     Danh
                                 </h4>
                             </div>
@@ -232,6 +258,10 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="section-to-print">
+
 </div>
 
 <script>
@@ -373,25 +403,18 @@
                 type: "POST",
                 url: "/coffeeshopmanagement/controllers/C_HoaDon.php",
                 data: {
-                    action: "add",
-                    id: promotionCode,
+                    action: 'hoadon',
+                    date: $('#date').val(),
+                    customer: 'kh001',
+                    discount: discount_v,
+                    pay: pay_v,
+                    payed: payed_v,
+                    excess: excess_v,
                 },
                 beforeSend: function() {},
                 success: function(response) {
-                    var title = "";
-                    if (response == "error") {
-                        title = `Mã giảm giá không hợp lệ!`
-                    } else if (response == "expired") {
-                        title = `Mã giảm giá đã hết hạn!`
-                    } else if (response == "runout") {
-                        title = `Mã giảm giá đã hết lượt sử dụng`
-                    } else {
-                        title = `Áp dụng thành công!`
-                        updateDiscount(response)
-                    }
-                    Swal.fire({
-                        title: title,
-                    })
+                    $('#section-to-print').html(response)
+                    window.print()
                 },
                 complete: function() {},
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -451,7 +474,7 @@
         })
 
         $("#confirmPay").click(function() {
-            checkBillInfo()
+            checkBillInfo();
         })
     })
 </script>
