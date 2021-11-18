@@ -47,4 +47,24 @@
                 return 0;
             }
         }
+
+        public function deleteChiTietMon($MaMon)
+        {
+            include '../configs/config.php';
+
+            $sql = "DELETE FROM
+                            ct_mon
+                    WHERE
+                            MaMon='" . $MaMon . "'";
+            $result = $conn->query($sql);
+            
+            if ($result)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }

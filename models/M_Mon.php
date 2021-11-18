@@ -73,6 +73,63 @@
             }
         }
 
+        public function updateMon($mon, $sizeArr, $priceArr)
+        {
+            include '../configs/config.php';
+            include 'M_ChiTietMon.php';
+
+            $ModelCTMon = new Model_ChiTietMon();
+
+            if ($mon->get_HinhAnh() != '')
+            {
+                $sql = "UPDATE
+                        mon
+                    SET
+                        TenMon='" . $mon->get_TenMon() . "', MaLoaiMon='". $mon->get_MaLoaiMon() . 
+                        "', MaDVT='". $mon->get_MaDVT() . "', HinhAnh='". $mon->get_HinhAnh() . "', MoTa='". 
+                        $mon->get_MoTa() . "', GhiChu='" . $mon->get_GhiChu() . "', NgayChinhSuaLanCuoi='".
+                        $mon->get_NgayChinhSuaLanCuoi() . "' WHERE MaMon='" . $mon->get_MaMon() . "'";
+            }
+            else
+            {
+                $sql = "UPDATE
+                        mon
+                    SET
+                        TenMon='" . $mon->get_TenMon() . "', MaLoaiMon='". $mon->get_MaLoaiMon() . 
+                        "', MaDVT='". $mon->get_MaDVT() . "', MoTa='". 
+                        $mon->get_MoTa() . "', GhiChu='" . $mon->get_GhiChu() . "', NgayChinhSuaLanCuoi='".
+                        $mon->get_NgayChinhSuaLanCuoi() . "' WHERE MaMon='" . $mon->get_MaMon() . "'";
+            }
+            
+            $result = $conn->query($sql);
+            if ($result)
+            {
+                if (count($sizeArr)==0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    if ($ModelCTMon->deleteChiTietMon($mon->get_MaMon()) == 1)
+                    {
+                        if ($ModelCTMon->addChiTietMon($mon->get_MaMon(), $sizeArr, $priceArr) == 1)
+                        {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                    else {
+                        return 0;
+                    }
+                }
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         public function generate_MaMon()
         {
             include 'M_General_CMD.php';

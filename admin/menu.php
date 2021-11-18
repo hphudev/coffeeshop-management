@@ -49,6 +49,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         justify-content: space-between;
     }
 
+    .col-group,
     .buttons-group,
     .fields-group,
     .flex-sp-bet {
@@ -58,6 +59,11 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
     .fields-group {
         align-items: center;
         justify-content: space-evenly;
+    }
+
+    .col-group {
+        align-items: center;
+        flex-direction: column;
     }
 
     .line-break {
@@ -89,7 +95,11 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
 
     .input-value {
         width: 65%;
-    }   
+    }
+
+    .full-w {
+        width: 100%;
+    }
 
     .modal-body{
         max-height: calc(100vh - 200px);
@@ -249,6 +259,15 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
             }
             ?>
         </div>
+
+        <!-- hidden check quyền -->
+        <?php
+            if ($ModelPhanQuyen->check_PhanQuyen($_SESSION['maCV'], "mon1")) {
+                echo "<p id='quyen' class='d-none d-sm-none d-md-none d-lg-none d-xl-none'>mon1</p>";
+            } else {
+                echo "<p id='quyen' class='d-none d-sm-none d-md-none d-lg-none d-xl-none'>mon0</p>";
+            }
+        ?>
     </div>
 </div>
 
@@ -275,7 +294,18 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Hình ảnh: </p>
-                        <img id="img-val" class="input-value" src="https://file.hstatic.net/200000286789/article/cafe-sua-1280x1000-be0b_0132690fe1e740ce8ece2e1526322851_1024x1024.jpg" style="border-radius: 6px;"/>
+                        <div class="col-group input-value">
+                            <img id="img-val" class="full-w" src="https://file.hstatic.net/200000286789/article/cafe-sua-1280x1000-be0b_0132690fe1e740ce8ece2e1526322851_1024x1024.jpg" style="border-radius: 6px;"/>
+                            
+                            <div class="img-picker fileinput fileinput-new full-w text-center" data-provides="fileinput">
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                <div>
+                                    <span class="btn btn-primary btn-file"><span class="fileinput-new"><span class="material-icons">image</span> Chọn ảnh</span>
+                                    <span class="fileinput-exists">Thay đổi</span><input id="photo" type="file" name="file"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <img id="img-val" class="input-value" src="https://file.hstatic.net/200000286789/article/cafe-sua-1280x1000-be0b_0132690fe1e740ce8ece2e1526322851_1024x1024.jpg" style="border-radius: 6px;"/>
                         
                         <div class="img-picker fileinput fileinput-new input-value text-center" data-provides="fileinput">
                             <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
@@ -283,7 +313,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                 <span class="btn btn-primary btn-file"><span class="fileinput-new"><span class="material-icons">image</span> Chọn ảnh</span>
                                 <span class="fileinput-exists">Thay đổi</span><input id="photo" type="file" name="file"></span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
 
@@ -477,63 +507,128 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
 
     //Nút xem thông tin
     $(".btn-view-detail").each(function(index) {
-        $(this).on("click", function() {
-            $("#img-val").show();
-            $(".img-picker").hide();
-            $(".add-size-box").hide();
+        $(this).on("click", function(e) {
+            if (checkQuyenMon()) {
+                $("#img-val").show();
+                $(".img-picker").hide();
+                $(".add-size-box").hide();
 
-            mon_id = $($(".m-id").get(index)).text();
-            $("#name-val").val($($(".name").get(index)).text());
-            $("#img-val").attr('src', $($(".img").get(index)).attr('src'));
-            $("#type-val").text($($(".type-name").get(index)).text());
-            $("#unit-val").text($($(".unit").get(index)).text());
-            $("#description-val").val($($(".description").get(index)).text());
-            $("#note-val").val($($(".note").get(index)).text());
-            $("#add-date").text($($(".add-date-info").get(index)).text());
-            $("#last-mod-date").text($($(".last-mod-date-info").get(index)).text());
-            $(".add-date-div").show();
-            $(".last-mod-date-div").show();
+                mon_id = $($(".m-id").get(index)).text();
+                $("#name-val").val($($(".name").get(index)).text());
+                $("#img-val").attr('src', $($(".img").get(index)).attr('src'));
+                $("#type-val").text($($(".type-name").get(index)).text());
+                $("#unit-val").text($($(".unit").get(index)).text());
+                $("#description-val").val($($(".description").get(index)).text());
+                $("#note-val").val($($(".note").get(index)).text());
+                $("#add-date").text($($(".add-date-info").get(index)).text());
+                $("#last-mod-date").text($($(".last-mod-date-info").get(index)).text());
+                $(".add-date-div").show();
+                $(".last-mod-date-div").show();
 
-            $("#sizeTable > tbody").empty();
-            initSizeAndPriceTable();
+                $("#sizeTable > tbody").empty();
+                initSizeAndPriceTable();
 
-            $(".modal-title").text("Thông tin món");
-            $("#saveData").hide();
+                $(".modal-title").text("Thông tin món");
+                $("#saveData").hide();
+            } else {
+                e.stopPropagation();
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện thao tác này!',
+                    'error'
+                )
+            }
+        });
+    });
+
+    //Nút edit thông tin
+    $(".btn-edit-data").each(function(index) {
+        $(this).on("click", function(e) {
+            if (checkQuyenMon()) {
+                $("#img-val").hide();
+                $(".img-picker").show();
+                $(".add-size-box").show();
+                $("#btnRemoveAllRow").removeClass("disabledbutton");
+
+                mon_id = $($(".m-id").get(index)).text();
+                $("#name-val").val($($(".name").get(index)).text());
+                $("#img-val").attr('src', $($(".img").get(index)).attr('src'));
+                $("#type-val").text($($(".type-name").get(index)).text());
+                $("#unit-val").text($($(".unit").get(index)).text());
+                $("#description-val").val($($(".description").get(index)).text());
+                $("#note-val").val($($(".note").get(index)).text());
+                $("#add-date").text($($(".add-date-info").get(index)).text());
+                $("#last-mod-date").text($($(".last-mod-date-info").get(index)).text());
+                $(".add-date-div").show();
+                $(".last-mod-date-div").show();
+
+                $("#sizeTable > tbody").empty();
+                initSizeAndPriceTable();
+
+                action = "edit";
+                $(".modal-title").text("Chỉnh sửa thông tin món");
+                $("#saveData").show();
+            } else {
+                e.stopPropagation();
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện thao tác này!',
+                    'error'
+                )
+            }
         });
     });
 
     //Nút thêm món
     $(".btn-add").each(function(index) {
-        $(this).on("click", function() {
-            $("#img-val").hide();
-            $(".img-picker").show();
-            $(".add-size-box").show();
+        $(this).on("click", function(e) {
+            if (checkQuyenMon()) {
+                $("#img-val").hide();
+                $(".img-picker").show();
+                $(".add-size-box").show();
 
-            $("#name-val").val("");
-            $("#type-val").text("Chọn loại món");
-            $("#unit-val").text("Chọn ĐVT");
-            $("#description-val").val("");
-            $("#note-val").val("");
-            $(".add-date-div").hide();
-            $(".last-mod-date-div").hide();
-            $(".sizeRow").remove();
+                $("#name-val").val("");
+                $("#type-val").text("Chọn loại món");
+                $("#unit-val").text("Chọn ĐVT");
+                $("#description-val").val("");
+                $("#note-val").val("");
+                $(".add-date-div").hide();
+                $(".last-mod-date-div").hide();
+                $(".sizeRow").remove();
 
-            action = "add";
-            $(".modal-title").text("Thêm món");
-            $("#saveData").show();
+                action = "add";
+                $(".modal-title").text("Thêm món");
+                $("#saveData").show();
 
-            sizeRowArr = [];
-            priceRowArr = [];
+                sizeRowArr = [];
+                priceRowArr = [];
+            } else {
+                e.stopPropagation();
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện thao tác này!',
+                    'error'
+                )
+            }
         });
     });
 
     //Nút thêm số lượng
     $(".btn-add-quantity").each(function(index) {
-        $(this).on("click", function() {
-            $('#add-quantity-title').text("Thêm số lượng > " + $($(".name").get(index)).text());
-            $('#quantity-val').val('');
-            mon_id = $($(".m-id").get(index)).text();
-            add_quantity_index = index;
+        $(this).on("click", function(e) {
+            if (checkQuyenMon()) {
+                $('#add-quantity-title').text("Thêm số lượng > " + $($(".name").get(index)).text());
+                $('#quantity-val').val('');
+                mon_id = $($(".m-id").get(index)).text();
+                add_quantity_index = index;
+            } else {
+                e.stopPropagation();
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện thao tác này!',
+                    'error'
+                )
+            }
         });
     });
 
@@ -559,6 +654,9 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
             if ($($(".m-id-ct").get(i)).text() == mon_id) {
                 arrSize.push($($(".size-ct").get(i)).text());
                 arrPrice.push($($(".price-ct").get(i)).text());
+
+                sizeRowArr.push($($(".size-ct").get(i)).text());
+                priceRowArr.push($($(".price-ct").get(i)).text());
             }
         }
 
@@ -651,7 +749,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
             $("#btnAddSizeRow").click();
             $("#size-val").focus();
         }
-    });  
+    });
 
     //Hàm thêm phẩy cho tiền
     $.fn.digits = function() { 
@@ -662,11 +760,25 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
 
     $(".money").digits();
 
+    function checkQuyenMon() {
+        if ($("#quyen").text()==="mon1") {
+            return true;
+        }
+        return false;
+    }
+
     function checkInput() {
-        if ($("#name-val").val() == "" || $("#type-val").text() == "Chọn loại món" ||
-            $("#unit-val").text() == "Chọn ĐVT" || $("#description-val").val() == "" ||
-            sizeRowArr.length < 1 || document.getElementById("photo").value == "") {
-                return false;
+        if (action=="add") {
+            if ($("#name-val").val() == "" || $("#type-val").text() == "Chọn loại món" ||
+                $("#unit-val").text() == "Chọn ĐVT" || $("#description-val").val() == "" ||
+                sizeRowArr.length < 1 || document.getElementById("photo").value == "") {
+                    return false;
+            }
+        } else {
+            if ($("#name-val").val() == "" || $("#type-val").text() == "Chọn loại món" ||
+                $("#unit-val").text() == "Chọn ĐVT" || $("#description-val").val() == "") {
+                    return false;
+            }
         }
         return true;
     }
@@ -688,12 +800,15 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 var formData        = new FormData();
 
                 formData.append('action', action);
+                formData.append('id', mon_id);
                 formData.append('name', $("#name-val").val());
                 formData.append('type', $("#type-val").text());
                 formData.append('unit', $("#unit-val").text());
                 formData.append('description', $("#description-val").val());
                 formData.append('note', $("#note-val").val());
-                formData.append('file', $('input[type=file]')[0].files[0]);
+                if (document.getElementById("photo").value != "") {
+                    formData.append('file', $('input[type=file]')[0].files[0]);
+                }
                 formData.append('size', JSON.stringify(sizeRowArr));
                 formData.append('price', JSON.stringify(priceRowArr));
 

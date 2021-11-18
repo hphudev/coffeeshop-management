@@ -154,7 +154,7 @@
                                                     <div class="form-check">
                                                         <label class="form-check-label">
                                                             <input id="mon1" class="form-check-input" type="checkbox" value="" disabled>
-                                                            Chỉnh sửa/thêm/xóa thông tin món
+                                                            Thực hiện các thao tác với món
                                                             <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                             </span>
