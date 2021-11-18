@@ -67,8 +67,8 @@ if (($_SESSION["id"] == "")) {
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php?page=table">
-                            <i class="material-icons">table_rows </i>
-                            <p>QUẢN LÝ BÀN</p>
+                            <i class="material-icons">coffee </i>
+                            <p>QUẢN LÝ MÓN</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -198,7 +198,7 @@ if (($_SESSION["id"] == "")) {
                             include '../controllers/C_BanHang.php';
                             break;
                         case 'table':
-                            include './table.php';
+                            include '../controllers/C_Mon.php';
                             break;
                         case 'werehouse':
                             include '../controllers/C_NguyenVatLieu.php';

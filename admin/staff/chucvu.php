@@ -254,7 +254,7 @@
                                                     <div class="form-check">
                                                         <label class="form-check-label">
                                                             <input id="kho0" class="form-check-input" type="checkbox" value="" disabled>
-                                                            Xem thông tin kho
+                                                            Xem danh sách nguyên vật liệu
                                                             <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                             </span>
@@ -265,7 +265,7 @@
                                                     <div class="form-check">
                                                         <label class="form-check-label">
                                                             <input id="kho1" class="form-check-input" type="checkbox" value="" disabled>
-                                                            Tạo báo cáo kho
+                                                            Thực hiện các thao tác trong kho
                                                             <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                             </span>

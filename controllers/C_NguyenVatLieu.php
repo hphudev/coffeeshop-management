@@ -1,10 +1,13 @@
 <?php
-include '../models/M_NguyenVatLieu.php';
+include_once '../models/M_NguyenVatLieu.php';
+include_once '../models/M_ChucVu.php';
 
 class C_NguyenVatLieu
 {
     public function invoke()
     {
+        $ModelPhanQuyen = new Model_PhanQuyen();
+
         if (isset($_GET['expand']))
         {
             // $MaNVL = $_GET['expand'];
@@ -134,10 +137,15 @@ class C_NguyenVatLieu
         }
         else
         {
-            $ModelNguyenVatLieu = new Model_NguyenVatLieu();
-            $NguyenVatLieuList = $ModelNguyenVatLieu->get_AllNguyenVatLieu();
+            if ($ModelPhanQuyen->check_PhanQuyen($_SESSION['maCV'], "kho0")) {
+                $ModelNguyenVatLieu = new Model_NguyenVatLieu();
+                $NguyenVatLieuList = $ModelNguyenVatLieu->get_AllNguyenVatLieu();
 
-            include_once('../admin/werehouse.php');
+                include_once('../admin/werehouse.php');
+            }
+            else {
+                echo "Bạn không có quyền truy cập mục này";
+            }
         }
     }
 }

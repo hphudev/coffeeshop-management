@@ -136,9 +136,31 @@ class Model_CT_PhieuNhap
                                             FROM nguyenvatlieu
                                             WHERE MaNVL='" . $pn->get_MaNVL() . "') + " . $pn->get_SoLuong() .
                             " WHERE MaNVL='" . $pn->get_MaNVL() . "'";
+            $sqlupdateDonGiaNVL = "UPDATE
+                                        `nguyenvatlieu` nvl
+                                    SET
+                                        `DonGiaNhap` =" . $pn->get_DonGiaNhap() . " " . 
+                                    "WHERE
+                                        MaNVL = '" . $pn->get_MaNVL() . "' AND NOT EXISTS(
+                                        SELECT
+                                            *
+                                        FROM
+                                            `phieunhap` pn
+                                        WHERE
+                                            NgayLap > (SELECT NgayLap FROM `phieunhap` WHERE MaPN='" . $pn->get_MaPN() . "')
+                                            AND EXISTS(
+                                                        SELECT
+                                                            *
+                                                        FROM
+                                                            `ct_phieunhap` ct
+                                                        WHERE
+                                                            ct.MaPN = pn.MaPN AND ct.MaNVL=nvl.MaNVL
+                                                    )
+                                    )";
             $updatePN = $conn->query($sqlUpdatePN);
             $updateNVL = $conn->query($sqlUpdateNVL);
-            if ($updatePN && $updateNVL)
+            $updateDonGia = $conn->query($sqlupdateDonGiaNVL);
+            if ($updatePN && $updateNVL && $updateDonGia)
             {
                 return 1;
             }
@@ -191,9 +213,32 @@ class Model_CT_PhieuNhap
                                             FROM nguyenvatlieu
                                             WHERE MaNVL='" . $pn->get_MaNVL() . "') + " . $pn->get_SoLuong() . " - " . $old_quantity .
                             " WHERE MaNVL='" . $pn->get_MaNVL() . "'";
+
+            $sqlupdateDonGiaNVL = "UPDATE
+                                        `nguyenvatlieu` nvl
+                                    SET
+                                        `DonGiaNhap` =" . $pn->get_DonGiaNhap() . " " . 
+                                    "WHERE
+                                        MaNVL = '" . $pn->get_MaNVL() . "' AND NOT EXISTS(
+                                        SELECT
+                                            *
+                                        FROM
+                                            `phieunhap` pn
+                                        WHERE
+                                            NgayLap > (SELECT NgayLap FROM `phieunhap` WHERE MaPN='" . $pn->get_MaPN() . "')
+                                            AND EXISTS(
+                                                        SELECT
+                                                            *
+                                                        FROM
+                                                            `ct_phieunhap` ct
+                                                        WHERE
+                                                            ct.MaPN = pn.MaPN AND ct.MaNVL=nvl.MaNVL
+                                                    )
+                                    )";
             $updatePN = $conn->query($sql2);
             $updateNVL = $conn->query($sqlUpdateNVL);
-            if ($updatePN && $updateNVL)
+            $updateDonGia = $conn->query($sqlupdateDonGiaNVL);
+            if ($updatePN && $updateNVL && $updateDonGia)
             {
                 return 1;
             }

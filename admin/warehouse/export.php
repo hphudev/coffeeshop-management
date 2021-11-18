@@ -484,12 +484,22 @@ function getTenNV($NhanVienList, $maNV)
     
                         if (jsonData.success == "1")
                         {
-                            if(!alert($(".modal-title").text() + ' thành công!')) {
-                                window.location.reload();
-                            }
+                            Swal.fire(
+                                'Thành công!',
+                                'Thao tác thành công!',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
                         }
                         else {
-                            alert('Thao tác thất bại!');
+                            Swal.fire(
+                                'Thất bại!',
+                                'Vui lòng kiểm tra lại!',
+                                'error'
+                            )
                         }
                     },
                     complete: function() {
@@ -501,7 +511,11 @@ function getTenNV($NhanVienList, $maNV)
                 });
             }
             else {
-                alert('Vui lòng nhập đủ dữ liệu!');
+                Swal.fire(
+                    'Thất bại!',
+                    'Vui lòng nhập đủ dữ liệu!',
+                    'error'
+                )
                 // $(".alert").addClass("open");
             }
   		});

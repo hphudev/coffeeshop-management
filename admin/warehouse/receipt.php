@@ -206,7 +206,7 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                             echo "<td class='text-center pn-id'>" . $PhieuNhapList[$i]->get_MaPN() . "</td>";
                                             echo "<td class='text-center'>" . $PhieuNhapList[$i]->get_NgayLap() . "</td>";
                                             echo "<td class='text-center supplier'>" . getTenNCC($NhaCungCapList, $PhieuNhapList[$i]->get_MaNCC()) . "</td>";
-                                            echo "<td class='text-center total-amount'>" . $PhieuNhapList[$i]->get_TongTien() . "</td>";
+                                            echo "<td class='text-center total-amount money'>" . $PhieuNhapList[$i]->get_TongTien() . "</td>";
                                             echo '<td class="td-actions text-center">
                                                     <button type="button" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">info</i>
@@ -303,6 +303,7 @@ function getTenNCC($NhaCungCapList, $maNCC)
                         {
                             echo "<td class='staff-name-src'>" . getTenNV($NhanVienList, $PhieuNhapList[$i]->get_MaNVNhap()) . "</td>";
                             echo "<td class='shipper-name-src'>" . $PhieuNhapList[$i]->get_TenNguoiGiao() . "</td>";
+                            echo "<td class='total-amount'>" . $PhieuNhapList[$i]->get_TongTien() . "</td>";
                             echo "<td class='pay-amount-src'>" . $PhieuNhapList[$i]->get_TienThanhToan() . "</td>";
                             echo "<td class='debt-amount-src'>" . $PhieuNhapList[$i]->get_TienNo() . "</td>";
                             echo "<td class='note-src'>" . $PhieuNhapList[$i]->get_GhiChu() . "</td>";
@@ -375,12 +376,12 @@ function getTenNCC($NhaCungCapList, $maNCC)
                     </div>
                 </div>
 
-                <div class="form-group bmd-form-group">
+                <!-- <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Tổng tiền: </p>
                         <input id="total-amount-val" disabled type="number" class="form-control input-value" placeholder="0">
                     </div>
-                </div>
+                </div> -->
 
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
@@ -504,6 +505,14 @@ function getTenNCC($NhaCungCapList, $maNCC)
         });
     });
 
+    $.fn.digits = function() { 
+        return this.each(function(){ 
+            $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
+        });
+    }
+
+    $(".money").digits();
+
     function checkInput() {
         if ($("#staff-val").text() == "Chọn nhân viên" || $("#supplier-val").text() == "Chọn NCC" ||
             $("#shipper-val").val() == "" || $("#pay-amount-val").val() == "" ||
@@ -545,12 +554,22 @@ function getTenNCC($NhaCungCapList, $maNCC)
     
                         if (jsonData.success == "1")
                         {
-                            if(!alert($(".modal-title").text() + ' thành công!')) {
-                                window.location.reload();
-                            }
+                            Swal.fire(
+                                'Thành công!',
+                                'Thao tác thành công!',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
                         }
                         else {
-                            alert('Thao tác thất bại!');
+                            Swal.fire(
+                                'Thất bại!',
+                                'Vui lòng kiểm tra lại!',
+                                'error'
+                            )
                         }
                     },
                     complete: function() {
@@ -562,7 +581,11 @@ function getTenNCC($NhaCungCapList, $maNCC)
                 });
             }
             else {
-                alert('Vui lòng nhập đủ dữ liệu!');
+                Swal.fire(
+                    'Thất bại!',
+                    'Vui lòng nhập đủ dữ liệu!',
+                    'error'
+                )
                 // $(".alert").addClass("open");
             }
   		});

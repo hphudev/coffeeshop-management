@@ -522,12 +522,22 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
 
                     if (jsonData.success == "1")
                     {
-                        if(!alert('Thao tác thành công!')) {
-                            window.location.reload();
-                        }
+                        Swal.fire(
+                                'Thành công!',
+                                'Đã xóa nguyên vật liệu',
+                                'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        })
                     }
                     else {
-                        alert('Thao tác thất bại!');
+                        Swal.fire(
+                            'Thất bại!',
+                            'Vui lòng kiểm tra lại!',
+                            'error'
+                        )
                     }
                 },
                 complete: function() {
@@ -566,12 +576,22 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
 
                         if (jsonData.success == "1")
                         {
-                            if(!alert('Thao tác thành công!')) {
-                                window.location.reload();
-                            }
+                            Swal.fire(
+                                'Thành công!',
+                                'Thông tin đã được chỉnh sửa',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
                         }
                         else {
-                            alert('Thao tác thất bại!');
+                            Swal.fire(
+                                'Thất bại!',
+                                'Vui lòng kiểm tra lại!',
+                                'error'
+                            )
                         }
                     },
                     complete: function() {
@@ -583,7 +603,12 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                 });
             }
             else {
-                alert("Vui lòng kiểm tra lại dữ liệu!");
+                //alert("Vui lòng kiểm tra lại dữ liệu!");
+                Swal.fire(
+                        'Thất bại!',
+                        'Vui lòng kiểm tra lại dữ liệu!',
+                        'error'
+                )
             }
   		});
 
@@ -609,12 +634,22 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
 
                     if (jsonData.success == "1")
                     {
-                        if(!alert('Xóa nguyên vật liệu thành công!')) {
-                            window.location.reload();
-                        }
+                        Swal.fire(
+                                'Thành công!',
+                                'Đã xóa nguyên vật liệu',
+                                'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        })
                     }
                     else {
-                        alert('Thao tác thất bại!');
+                        Swal.fire(
+                            'Thất bại!',
+                            'Vui lòng kiểm tra lại!',
+                            'error'
+                        )
                     }
                 },
                 complete: function() {

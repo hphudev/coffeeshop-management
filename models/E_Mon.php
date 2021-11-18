@@ -3,7 +3,6 @@ class Mon {
     private $MaMon;
     private $MaLoaiMon;
     private $SoLuong;
-    private $MaNVL;
     private $MaDVT;
     private $TenMon;
     private $HinhAnh;
@@ -23,8 +22,8 @@ class Mon {
         $this->set_HinhAnh($row['HinhAnh']);
         $this->set_MoTa($row['MoTa']);
         $this->set_GhiChu($row['GhiChu']);
-        $this->get_NgayThem($row['NgayThem']);
-        $this->get_NgayChinhSuaLanCuoi($row['NgayChinhSuaLanCuoi']);
+        $this->set_NgayThem($row['NgayThem']);
+        $this->set_NgayChinhSuaLanCuoi($row['NgayChinhSuaLanCuoi']);
     }
 
     function set_MaMon($ma) {
