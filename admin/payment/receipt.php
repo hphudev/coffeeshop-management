@@ -31,6 +31,14 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
+                    Mã hóa đơn
+                </div>
+                <div class="col-md-6">
+                    <?php
+                    echo $HoaDon->get_MaHD();
+                    ?>
+                </div>
+                <div class="col-md-6">
                     Ngày thanh toán:
                 </div>
                 <div class="col-md-6">

@@ -174,6 +174,20 @@
                                 </h4>
                             </div>
                         </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <h4>
+                                    Số bàn
+                                </h4>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <h4 id="table" class="font-weight-bold">
+                                    <?php
+                                    echo $DatMon->get_Soban();
+                                    ?>
+                                </h4>
+                            </div>
+                        </div>
                         <hr />
                         <h3>THÔNG TIN THANH TOÁN</h3>
                         <div class="row mt-3">
