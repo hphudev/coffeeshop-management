@@ -4,8 +4,8 @@
     <div class="container-fluid mt3">
         <div class="row row-header">
             <button type="button" class="col btn btn-warning" data-toggle="modal" data-target="#bill" onclick="showBill();">Xem ORDER</button>
-            <button type="button" class="col btn btn-info">
-                XEm BILL <span class="badge badge-danger ml-2" style="font-size: 13px;">4</span>
+            <button type="button" class="col btn btn-info" data-toggle="modal" data-target="#billBlender" onclick="loadBlender('');">
+                PHỤC VỤ <span id="badgeOrderFinish" class="badge badge-danger ml-2" style="font-size: 13px;" ></span>
             </button>
             <button id="btnReloadBill" type="button" class="col btn btn-danger" onclick="reloadPage();">Làm mới Bill</button>
             <button id="btnReloadPage" type="button" class="col btn btn-primary" onclick="location.reload();">Tải lại trang</button>
@@ -204,6 +204,80 @@
                 <div class="modal-footer justify-content-center">
                     <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" style="font-weight: 500;" onclick="payOrder();" data-toggle="modal" >THANH TOÁN</a>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-dialog-scrollable" id="billBlender" tabindex="-1" role="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 75vw; left: 50%; top:50%; transform: translateX(-50%)">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                  <div class="card-header card-header-info text-center w-100">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                      <i class="material-icons">clear</i>
+                    </button>
+                    <h4 class="card-title">PHỤC VỤ ORDER </h4>
+                    <div class="mb-3" style="display: flex; flex-direction: column">
+                        <label for="exampleFormControlInput1" class="form-label bg-danger" style="color: white; border-radius: 5px; width: 10%; text-align: center">Tìm kiếm Order</label>
+                        <input id="tbFindOrder" type="number" class="form-control" style="border: 1px solid red ;background-color: white; border-radius: 5px; color: black; font-weight: 500; padding-left: 10px; font-size: 20px; width: 30%" placeholder="Nhập số thứ tự Order">
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <div id="blenderCustomer" class="container-fluid" style="text-align: center;">
+                        <!-- <div id="row" class="row blenderOrders" style="">
+                            <div id="accordion" role="tablist">
+                                <div class="card card-collapse" style="width: 75vw; text-align: center;">
+                                    <div class="card-header" style="background-color:tomato;" role="tab" id="heading">
+                                        <h5 class="mb-0" style="font-size: 20px; font-weight: 500;">
+                                            <a id="title" class="text-light" data-toggle="collapse" href="#collapse" aria-expanded="true" aria-controls="collapse" style="display: flex;">
+                                                Order <br>
+                                                <i class="material-icons">keyboard_arrow_down</i>
+                                                <div style="display: flex; margin-left: 70%; ">
+                                                    <button id="btnCall" type="button" rel="tooltip" class="btn btn-simple" style=" font-weight: 700; background-color: white; color: black" >
+                                                        PHỤC VỤ KHÁCH HÀNG 
+                                                        <i class="material-icons">person</i>
+                                                    </button>
+                                                </div>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="text-align: center;">
+                                        <div class="card-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="font-weight: 500;">STT</th>
+                                                        <th style="width: 300px; font-weight: 500;">Tên món</th>
+                                                        <th style="width: 300px; font-weight: 500;">Số lượng</th>
+                                                        <th style="width: 300px; font-weight: 500;">Kích cỡ</th>
+                                                        <th style="max-width: 100px; font-weight: 500;">Topping</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="content">
+                                                        <tr>
+                                                            <td class="text-center" style="width: 50px;">dasd</td>
+                                                            <td>dadsa</td>
+                                                            <td>dada</td>
+                                                            <td>dads</td>
+                                                            <td style="max-width: 400px;">
+                                                                sdasdasdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+                                                            </td>
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <div class="modal-footer justify-content-center">
+                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" style="font-weight: 500;" onclick="payOrder();" data-toggle="modal" >THANH TOÁN</a>
+                </div> -->
             </div>
         </div>
     </div>
