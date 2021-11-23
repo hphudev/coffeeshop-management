@@ -3,7 +3,6 @@ class Mon {
     private $MaMon;
     private $MaLoaiMon;
     private $SoLuong;
-    private $MaNVL;
     private $MaDVT;
     private $TenMon;
     private $HinhAnh;
@@ -53,14 +52,6 @@ class Mon {
 
     function get_SoLuong() {
         return $this->SoLuong;
-    }
-
-    function set_MaNVL($ma) {
-        $this->MaNVL = $ma;
-    }
-
-    function get_MaNVL() {
-        return $this->MaNVL;
     }
 
     function set_MaDVT($ma) {

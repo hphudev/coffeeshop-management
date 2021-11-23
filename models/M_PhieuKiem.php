@@ -77,6 +77,22 @@ class Model_PhieuKiem
         }
     }
 
+    public function delete_PhieuKiem($id) {
+        include '../configs/config.php';
+        $sql = 'DELETE FROM phieukiem WHERE MaPK="' . $id . '"';
+        $result = $conn->query($sql);
+        
+        if ($result) {
+            $sql = "DELETE FROM ct_phieukiem WHERE MaPK='" . $id . "'";
+            $result = $conn->query($sql);
+            if ($result) {
+                return 1;
+            }
+            return 0;
+        }
+        return 0;
+    }
+
     public function generate_MaPhieuKiem()
     {
         include 'M_General_CMD.php';

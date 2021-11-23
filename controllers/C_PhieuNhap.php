@@ -11,7 +11,7 @@ class C_PhieuNhap
             {
                 $ModelPhieuNhap = new Model_PhieuNhap();
                 $PhieuNhapList = $ModelPhieuNhap->get_AllPhieuNhap();
-
+                
                 include_once('../admin/warehouse/receipt.php');
             }
             else

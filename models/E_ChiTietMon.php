@@ -3,6 +3,7 @@ class ChiTietMon {
     private $MaMon;
     private $TenKichThuoc;
     private $DonGia;
+    
     public function __construct($row)
     {
         $this->MaMon = $row['MaMon'];

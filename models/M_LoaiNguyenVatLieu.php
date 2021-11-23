@@ -68,6 +68,24 @@ class Model_LoaiNguyenVatLieu
         }
     }
 
+    public function delete_LoaiNVL($MaLoaiNVL)
+    {
+        include '../configs/config.php';
+        $sql = "SELECT * FROM nguyenvatlieu WHERE MaLoaiNVL='" . $MaLoaiNVL . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows == 0)
+        {
+            $sql = "DELETE FROM loai_nguyenvatlieu WHERE MaLoaiNVL='" . $MaLoaiNVL . "'";
+            $result = $conn->query($sql);
+            if ($result)
+            {
+                return 1;
+            }
+            return 0;
+        }
+        return 0;
+    }
+
     public function generate_MaLoaiNVL()
     {
         include 'M_General_CMD.php';

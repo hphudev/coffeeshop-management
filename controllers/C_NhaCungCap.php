@@ -5,7 +5,7 @@ class C_NhaCungCap
 {
     public function invoke()
     {
-        if (isset($_POST['name']) && isset($_POST['action']))
+        if (isset($_POST['action']))
         {
             $ModelNCC = new Model_NhaCungCap();
 
@@ -37,6 +37,18 @@ class C_NhaCungCap
                 
                 $NCC = new NhaCungCap($data);
                 if ($ModelNCC->update_NhaCungCap($NCC) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
+                }
+            }
+            elseif ($_POST['action'] == "delete")
+            {
+                if ($ModelNCC->delete_NCC($_POST['supplier_id']) == 1)
                 {
                     $arr = array('success'=>'1');
                     echo json_encode($arr);

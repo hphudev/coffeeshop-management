@@ -1,5 +1,5 @@
 <?php
-include '../models/M_ChucVu.php';
+include_once '../models/M_ChucVu.php';
 include '../models/M_TaiKhoan.php';
 class NhanVien
 {

@@ -68,6 +68,30 @@ class Model_DonViTinh
         }
     }
 
+    public function delete_DonViTinh($MaDVT)
+    {
+        include '../configs/config.php';
+        $sql = "SELECT * FROM nguyenvatlieu WHERE MaDVT='" . $MaDVT . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows == 0)
+        {
+            $sql = "SELECT * FROM mon WHERE MaDVT='" . $MaDVT . "'";
+            $result = $conn->query($sql);
+            if ($result->num_rows == 0)
+            {
+                $sql = "DELETE FROM donvitinh WHERE MaDVT='" . $MaDVT . "'";
+                $result = $conn->query($sql);
+                if ($result)
+                {
+                    return 1;
+                }
+                return 0;
+            }
+            return 0;
+        }
+        return 0;
+    }
+
     public function generate_MaDonViTinh()
     {
         include 'M_General_CMD.php';

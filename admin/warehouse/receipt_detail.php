@@ -180,9 +180,9 @@ function getTenNCC($NhaCungCapList, $maNCC)
                         <p class="pd-8 col-lg-6 col-xl-6">Nhân viên nhập: <strong><?php echo getTenNV($NhanVienList, $PhieuNhap->get_MaNVNhap()) ?></strong></p>
                         <p class="pd-8 col-lg-6 col-xl-6">Tên người giao: <strong><?php echo $PhieuNhap->get_TenNguoiGiao() ?></strong></p>
                         <p class="pd-8 col-lg-6 col-xl-6">Nhà cung cấp: <strong><?php echo getTenNCC($NhaCungCapList, $PhieuNhap->get_MaNCC()) ?></strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tổng tiền: <strong><?php echo $PhieuNhap->get_TongTien() ?></strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tiền thanh toán: <strong><?php echo $PhieuNhap->get_TienThanhToan() ?></strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tiền nợ: <strong><?php echo $PhieuNhap->get_TienNo() ?></strong></p>
+                        <p class="pd-8 col-lg-6 col-xl-6 money">Tổng tiền: <strong><?php echo $PhieuNhap->get_TongTien() ?></strong></p>
+                        <p class="pd-8 col-lg-6 col-xl-6 money">Tiền thanh toán: <strong><?php echo $PhieuNhap->get_TienThanhToan() ?></strong></p>
+                        <p class="pd-8 col-lg-6 col-xl-6 money">Tiền nợ: <strong><?php echo $PhieuNhap->get_TienNo() ?></strong></p>
                         <p class="pd-8 col-lg-6 col-xl-6">Ghi chú: <strong><?php echo $PhieuNhap->get_GhiChu() ?></strong></p>
                     </div>
 
@@ -234,11 +234,12 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                                     <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
-                                                        <i class="material-icons">close</i>
-                                                    </button>
                                                 </td>';
                                             echo "</tr>";
+
+                                            // <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
+                                            //     <i class="material-icons">close</i>
+                                            // </button>
                                         }
                                     }
                                     else
@@ -257,7 +258,7 @@ function getTenNCC($NhaCungCapList, $maNCC)
     </div>
 </div>
 
-<!-- Add đơn vị tính/ loại NVL/ ncc modal -->
+<!-- Add modal -->
 <div class="modal modal-width-sm fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -281,7 +282,9 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                 <?php
                                 if ($NVLList && count($NVLList) > 0) {
                                     for ($i = 0; $i < count($NVLList); $i++) {
-                                        echo "<p class='dropdown-item mater-opt'>" . $NVLList[$i]->get_TenNVL(). "</p>";
+                                        if ($NVLList[$i]->get_MaNhaCungCap() == $PhieuNhap->get_MaNCC()) {
+                                            echo "<p class='dropdown-item mater-opt'>" . $NVLList[$i]->get_TenNVL(). "</p>";
+                                        }
                                     }
                                 }
                                 ?>
@@ -371,6 +374,14 @@ function getTenNCC($NhaCungCapList, $maNCC)
         })
     });
 
+    $.fn.digits = function() { 
+        return this.each(function(){ 
+            $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
+        });
+    }
+
+    $(".money").digits();
+
     function checkInput() {
         if ($("#mater-val").text() == "Tên nguyên vật liệu" || $("#quantity-val").val() == "" ||
             $("#unitprice-val").val() == "") {
@@ -408,12 +419,22 @@ function getTenNCC($NhaCungCapList, $maNCC)
     
                         if (jsonData.success == "1")
                         {
-                            if(!alert($(".modal-title").text() + ' thành công!')) {
-                                window.location.reload();
-                            }
+                            Swal.fire(
+                                'Thành công!',
+                                'Thao tác thành công!',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
                         }
                         else {
-                            alert('Thao tác thất bại!');
+                                Swal.fire(
+                                'Thất bại!',
+                                'Vui lòng kiểm tra lại!',
+                                'error'
+                            )
                         }
                     },
                     complete: function() {
@@ -425,7 +446,11 @@ function getTenNCC($NhaCungCapList, $maNCC)
                 });
             }
             else {
-                alert('Vui lòng nhập đủ dữ liệu!');
+                Swal.fire(
+                    'Thất bại!',
+                    'Vui lòng nhập đủ dữ liệu!',
+                    'error'
+                )
                 // $(".alert").addClass("open");
             }
   		});

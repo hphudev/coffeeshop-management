@@ -71,6 +71,12 @@ if (($_SESSION["id"] == "")) {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="index.php?page=table">
+                            <i class="material-icons" style="color: orange">coffee </i>
+                            <p>QUẢN LÝ MÓN</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="index.php?page=blender">
                             <i class="material-icons" style="color: orange">blender </i>
                             <p>QUẦY PHA CHẾ</p>
@@ -201,6 +207,9 @@ if (($_SESSION["id"] == "")) {
                             break;
                         case 'sale':
                             include '../controllers/C_BanHang.php';
+                            break;
+                        case 'table':
+                            include '../controllers/C_Mon.php';
                             break;
                         case 'blender':
                             include '../controllers/C_Blender.php';
