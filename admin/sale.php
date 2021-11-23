@@ -1,6 +1,7 @@
 
 <!-- region 1 - danh sách điều khiển -->
 <div>
+    <h3 style="font-weight: 400;">BÁN HÀNG</h3>
     <div class="container-fluid mt3">
         <div class="row row-header">
             <button type="button" class="col btn btn-warning" data-toggle="modal" data-target="#bill" onclick="showBill();">Xem ORDER</button>

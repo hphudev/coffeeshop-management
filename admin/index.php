@@ -19,9 +19,11 @@ if (($_SESSION["id"] == "")) {
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <script src="../assets/js/core/jquery.min.js" type="text/javascript"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script> -->
     <link href="../admin/css/sale.css" rel="stylesheet" /> <!-- Fonts and icons -->
+    <!-- <link rel="stylesheet" href="> -->
     <style>
         * {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -207,7 +209,7 @@ if (($_SESSION["id"] == "")) {
                             include '../controllers/C_NguyenVatLieu.php';
                             break;
                         case 'manage-financial':
-                            include './manage-financial.php';
+                            include '../controllers/C_QuanLyTaiChinh.php';
                             break;
                         case 'title':
                             include '../controllers/C_ChucVu.php';
@@ -248,6 +250,7 @@ if (($_SESSION["id"] == "")) {
     <script src="../assets_control/js/material-dashboard.js?v=2.1.2" type="text/javascript"></script>
     <!-- Datatables -->
     <script src="../assets_control/js/plugins/jquery.dataTables.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script> -->
     <!-- SelectPicker -->
     <!-- <script src="../assets_control/js/plugins/bootstrap-selectpicker.js"></script> -->
 </body>
