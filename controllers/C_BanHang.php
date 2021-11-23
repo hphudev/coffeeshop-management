@@ -118,25 +118,25 @@
                     //console.log(response);
                     sessionStorage.removeItem('bill');
                     $("#bill").modal('hide');
-                    if (true)
-                    {
-                        Swal.fire({
-                            title: 'Thanh toán thành công',
-                            icon: 'success',
-                            showConfirmButton: false,
-                            timer: 700
-                        });
-                    }
-                    else
-                    {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Không thể thanh toán',
-                            text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
-                            showConfirmButton: true,
-                            timer: 3000 
-                        });
-                    }
+                    // if (true)
+                    // {
+                    //     Swal.fire({
+                    //         title: 'Thanh toán thành công',
+                    //         icon: 'success',
+                    //         showConfirmButton: false,
+                    //         timer: 700
+                    //     });
+                    // }
+                    // else
+                    // {
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Không thể thanh toán',
+                    //         text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
+                    //         showConfirmButton: true,
+                    //         timer: 3000 
+                    //     });
+                    // }
                     
                 },
                 error: function(xmlhttprequest, textstatus, message) {
