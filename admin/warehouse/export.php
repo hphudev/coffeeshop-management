@@ -202,7 +202,7 @@ function getTenNV($NhanVienList, $maNV)
                                                     <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
+                                                    <button type="button" rel="tooltip" class="btn btn-danger btn-delete-ep">
                                                         <i class="material-icons">close</i>
                                                     </button>
                                                 </td>';
@@ -448,6 +448,68 @@ function getTenNV($NhanVienList, $maNV)
         })
     });
 
+    //Nút xóa phiếu xuất
+    $(".btn-delete-ep").each(function(index) {
+        $(this).on("click", function() {
+            Swal.fire({
+                title: 'Xóa phiếu xuất',
+                text: 'Thao tác này sẽ xóa phiếu xuất, chi tiết phiếu xuất và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                showDenyButton: true,
+                confirmButtonText: 'Hủy',
+                denyButtonText: `Xóa`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                } else if (result.isDenied) {
+                    action_type = "delete";
+                    obj_id = $($(".px-id").get(index)).text();
+                    
+                    // Ajax config
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/C_PhieuXuat.php',
+                        data: {
+                            action: action_type,
+                            px_id: obj_id,
+                        },
+                        beforeSend: function () {
+                            
+                        },
+                        success: function (response) {
+                            var jsonData = JSON.parse(response);
+
+                            if (jsonData.success == "1")
+                            {
+                                Swal.fire(
+                                    'Thành công!',
+                                    'Đã xóa phiếu xuất',
+                                    'success'
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                            else {
+                                Swal.fire(
+                                    'Thất bại!',
+                                    'Vui lòng kiểm tra lại!',
+                                    'error'
+                                )
+                            }
+                        },
+                        complete: function() {
+                        
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                    });
+                }
+            })
+        })
+    });
+
     function checkInput() {
         if ($("#wh-staff-val").text() == "Chọn nhân viên" || $("#iss-staff-val").text() == "Chọn nhân viên"
             || $("#note-val").val() == "") {
@@ -484,12 +546,22 @@ function getTenNV($NhanVienList, $maNV)
     
                         if (jsonData.success == "1")
                         {
-                            if(!alert($(".modal-title").text() + ' thành công!')) {
-                                window.location.reload();
-                            }
+                            Swal.fire(
+                                'Thành công!',
+                                'Thao tác thành công!',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
                         }
                         else {
-                            alert('Thao tác thất bại!');
+                            Swal.fire(
+                                'Thất bại!',
+                                'Vui lòng kiểm tra lại!',
+                                'error'
+                            )
                         }
                     },
                     complete: function() {
@@ -501,7 +573,11 @@ function getTenNV($NhanVienList, $maNV)
                 });
             }
             else {
-                alert('Vui lòng nhập đủ dữ liệu!');
+                Swal.fire(
+                    'Thất bại!',
+                    'Vui lòng nhập đủ dữ liệu!',
+                    'error'
+                )
                 // $(".alert").addClass("open");
             }
   		});

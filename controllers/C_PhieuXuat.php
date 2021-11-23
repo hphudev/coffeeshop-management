@@ -106,6 +106,18 @@ class C_PhieuXuat
                     echo json_encode(array('success' =>'0'));
                 }
             }
+            if ($_POST['action'] == "delete" && isset($_POST['px_id']))
+            {
+                if ($ModelPhieuXuat->delete_PhieuXuat($_POST['px_id']) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
+                }
+            }
         }
     }
 }

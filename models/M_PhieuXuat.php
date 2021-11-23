@@ -68,6 +68,44 @@ class Model_PhieuXuat
         }
     }
 
+    public function delete_PhieuXuat($id)
+    {
+        include '../configs/config.php';
+        $successCount = 0;
+        $ModelCTPhieuXuat = new Model_CT_PhieuXuat();
+        $ListCTPhieuXuat = $ModelCTPhieuXuat->get_CT_PhieuXuatDetails($id);
+
+        for ($i = 0; $i < count($ListCTPhieuXuat); $i++)
+        {
+            $data = array(
+                "MaPX"=>$ListCTPhieuXuat[$i]->get_MaPX(),
+                "MaNVL"=>$ListCTPhieuXuat[$i]->get_MaNVL(),
+                "SoLuong"=>0,
+            );
+    
+            $CTPX = new CT_PhieuXuat($data);
+            
+            if ($ModelCTPhieuXuat->update_CT_PhieuXuat($CTPX) == 1)
+            {
+                $successCount++;
+            }
+        }
+
+        $sql = "DELETE FROM ct_phieuxuat WHERE MaPX='" . $id . "'";
+        $result = $conn->query($sql);
+        if ($result)
+        {
+            $sql = "DELETE FROM phieuxuat WHERE MaPX='" . $id . "'";
+            $result = $conn->query($sql);
+            if ($result)
+            {
+                return 1;
+            }
+            return 0;
+        }
+        return 0;
+    }
+
     public function generate_MaPhieuXuat()
     {
         include 'M_General_CMD.php';
@@ -144,57 +182,39 @@ class Model_CT_PhieuXuat
 
     public function update_CT_PhieuXuat($px)
     {
-        // include '../configs/config.php';
-        // $old_material_total_price = 0;
-        // $old_quantity = 0;
-        // //get old receipt total amount
-        // $sqlOldCTPN = "SELECT * 
-        //             FROM ct_phieunhap
-        //             WHERE MaPN='" . $px->get_MaPN() . "' AND MaNVL='" . $px->get_MaNVL() . "'";
-        // $result = $conn->query($sqlOldCTPN);
-        // if ($result->num_rows > 0)
-        // {
-        //     $data = mysqli_fetch_assoc($result);
-        //     $oldCTPN = new CT_PhieuNhap($data);
-        //     $old_material_total_price = $oldCTPN->get_SoLuong() * $oldCTPN->get_DonGiaNhap();
-        //     $old_quantity = $oldCTPN->get_SoLuong();
-        // }
+        include '../configs/config.php';
+        $old_quantity = 0;
+        //Get old quantity
+        $sql = "SELECT * FROM ct_phieuxuat " .
+                " WHERE MaPX='" . $px->get_MaPX() . "' AND MaNVL='" . $px->get_MaNVL() . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0)
+        {
+            $data = mysqli_fetch_assoc($result);
+            $CTPX = new CT_PhieuXuat($data);
+            $old_quantity = $CTPX->get_SoLuong();
+        } else {
+            return 0;
+        }
 
-        // //update CTPN
-        // $material_total_price = $px->get_SoLuong() * $px->get_DonGiaNhap();
-        // $sql = "UPDATE ct_phieunhap
-        //         SET SoLuong=" . $px->get_SoLuong() . ", DonGia=" . $px->get_DonGiaNhap() .
-        //         " WHERE MaPN='" . $px->get_MaPN() . "' AND MaNVL='" . $px->get_MaNVL() . "'";
-        // $result = $conn->query($sql);
-        // if ($result)
-        // {
-        //     //update PN
-        //     $sql2 = "UPDATE phieunhap
-        //             SET TongTien=(SELECT TongTien
-        //                           FROM phieunhap
-        //                           WHERE MaPN='" . $px->get_MaPN() . "') + " . $material_total_price . " - " . $old_material_total_price .
-        //             " WHERE MaPN='" . $px->get_MaPN() . "'";
-        //     //update NVL
-        //     $sqlUpdateNVL = "UPDATE nguyenvatlieu
-        //                     SET SoLuongTon=(SELECT SoLuongTon
-        //                                     FROM nguyenvatlieu
-        //                                     WHERE MaNVL='" . $px->get_MaNVL() . "') + " . $px->get_SoLuong() . " - " . $old_quantity .
-        //                     " WHERE MaNVL='" . $px->get_MaNVL() . "'";
-        //     $updatePN = $conn->query($sql2);
-        //     $updateNVL = $conn->query($sqlUpdateNVL);
-        //     if ($updatePN && $updateNVL)
-        //     {
-        //         return 1;
-        //     }
-        //     else
-        //     {
-        //         return 0;
-        //     }
-        // }
-        // else
-        // {
-        //     return 0;
-        // }
+        //update CTPX
+        $sql = "UPDATE ct_phieuxuat
+                SET SoLuong=" . $px->get_SoLuong() .
+                " WHERE MaPX='" . $px->get_MaPX() . "' AND MaNVL='" . $px->get_MaNVL() . "'";
+        $result = $conn->query($sql);
+        if ($result)
+        {
+            $old_quantity = $px->get_SoLuong() - $old_quantity;
+            $sql = "UPDATE nguyenvatlieu
+                    SET SoLuongTon=SoLuongTon - " . $old_quantity .
+                    " WHERE MaNVL='" . $px->get_MaNVL() . "'";
+            $result = $conn->query($sql);
+            if ($result) {
+                return 1;
+            }
+            return 0;
+        }
+        return 0;
     }
 
     public function delete_CT_PhieuXuat($px)

@@ -213,10 +213,6 @@ function getTenTT($TinhTrangList, $maTT)
                 <i class="material-icons">add</i>
                 Thêm NVL
             </button>
-            <!-- <button class="btn btn-info btn-expand">
-                <i class="material-icons">more_horiz</i>
-                Mở rộng
-            </button> -->
         </div>
 
         <div class="table-responsive">
@@ -262,18 +258,18 @@ function getTenTT($TinhTrangList, $maTT)
                             echo "<td class='text-center material-type'>" . getTenLoaiNVL($LoaiNguyenVatLieuList, $NguyenVatLieuList[$i]->get_MaLoaiNVL()) . "</td>";
                             echo "<td class='text-center material-unit'>" . getTenDVT($DonViTinhList, $NguyenVatLieuList[$i]->get_MaDVT()) . "</td>";
                             echo "<td class='text-center material-quantity'>" . $NguyenVatLieuList[$i]->get_SoLuongTon() . "</td>";
-                            echo "<td class='text-center material-unitprice'>" . $NguyenVatLieuList[$i]->get_DonGiaNhap() . "</td>";
+                            echo "<td class='text-center material-unitprice money'>" . $NguyenVatLieuList[$i]->get_DonGiaNhap() . "</td>";
                             echo "<td class='text-center material-supplier'>" . getTenNCC($NhaCungCapList, $NguyenVatLieuList[$i]->get_MaNhaCungCap()) . "</td>";
                             echo "<td class='text-center material-status'>" . getTenTT($TinhTrangList, $NguyenVatLieuList[$i]->get_MaTinhTrang()) . "</td>";
-                            echo '<td class="td-actions text-right">
+                            echo '<td class="td-actions text-center">
                                     <button type="button" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
-                                        <i class="material-icons">close</i>
-                                    </button>
                                 </td>';
                             echo "</tr>";
+                            // <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
+                            //             <i class="material-icons">close</i>
+                            //         </button>
                         }
                         } else {
                         echo "Dữ liệu trống!";
@@ -284,6 +280,15 @@ function getTenTT($TinhTrangList, $maTT)
             </table>
         </div>
     </div>
+
+    <!-- hidden check quyền -->
+    <?php
+        if ($ModelPhanQuyen->check_PhanQuyen($_SESSION['maCV'], "kho1")) {
+            echo "<p id='quyen' class='d-none d-sm-none d-md-none d-lg-none d-xl-none'>kho1</p>";
+        } else {
+            echo "<p id='quyen' class='d-none d-sm-none d-md-none d-lg-none d-xl-none'>kho0</p>";
+        }
+    ?>
 </div>
 
 <!-- Add material modal -->
@@ -348,7 +353,7 @@ function getTenTT($TinhTrangList, $maTT)
                     </div>
                 </div>
 
-                <div class="form-group bmd-form-group">
+                <!-- <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Số lượng: </p>
                         <input disabled id="material-quantity-val" type="number" class="form-control input-value" placeholder="0">
@@ -358,9 +363,9 @@ function getTenTT($TinhTrangList, $maTT)
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Đơn giá nhập: </p>
-                        <input id="material-unitprice-val" disabled type="number" class="form-control input-value" placeholder="0">
+                        <input disabled id="material-unitprice-val" type="number" class="form-control input-value" placeholder="0">
                     </div>
-                </div>
+                </div> -->
 
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
@@ -425,53 +430,102 @@ function getTenTT($TinhTrangList, $maTT)
 
         //mở rộng
         $(".btn-expand").on("click", function() {
-            window.location.href = "../admin/index.php?page=werehouse&expand";
+            if (checkQuyenKho()) {
+                window.location.href = "../admin/index.php?page=werehouse&expand";
+            } else {
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện thao tác này!',
+                    'error'
+                )
+            }
         });
 
         //nhập kho
         $(".btn-import").on("click", function() {
-            window.location.href = "../admin/index.php?page=werehouse&receipt";
+            if (checkQuyenKho()) {
+                window.location.href = "../admin/index.php?page=werehouse&receipt";
+            } else {
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện thao tác này!',
+                    'error'
+                )
+            }
         });
 
         //xuất kho
         $(".btn-export").on("click", function() {
-            window.location.href = "../admin/index.php?page=werehouse&export";
+            if (checkQuyenKho()) {
+                window.location.href = "../admin/index.php?page=werehouse&export";
+            } else {
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện thao tác này!',
+                    'error'
+                )
+            }
         });
 
         //kiểm kho
         $(".btn-report").on("click", function() {
-            window.location.href = "../admin/index.php?page=werehouse&report";
+            if (checkQuyenKho()) {
+                window.location.href = "../admin/index.php?page=werehouse&report";
+            } else {
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện thao tác này!',
+                    'error'
+                )
+            }
         });
 
         //add nvl
-        $(".btn-add-material").on("click", function() {
-            submit_type = "add-material";
-            $(".modal-title").text("Thêm nguyên vật liệu");
-            $("#material-name-val").val("");
-            $("#material-type-val").text("Chọn loại");
-            $("#material-unit-val").text("Chọn ĐVT");
-            //$("#material-quantity-val").val("");
-            //$("#material-unitprice-val").val("");
-            $("#material-supplier-val").text("Chọn NCC");
-            $("#material-status-val").text("Chọn tình trạng");
+        $(".btn-add-material").on("click", function(e) {
+            if (checkQuyenKho()) {
+                submit_type = "add-material";
+                $(".modal-title").text("Thêm nguyên vật liệu");
+                $("#material-name-val").val("");
+                $("#material-type-val").text("Chọn loại");
+                $("#material-unit-val").text("Chọn ĐVT");
+                //$("#material-quantity-val").val("");
+                //$("#material-unitprice-val").val("");
+                $("#material-supplier-val").text("Chọn NCC");
+                $("#material-status-val").text("Chọn tình trạng");
+            } else {
+                e.stopPropagation();
+                Swal.fire(
+                    'Thất bại!',
+                    'Bạn không có quyền thực hiện thao tác này!',
+                    'error'
+                )
+            }
         });
 
         //edit thông tin nvl
         $(".btn-edit-data").each(function(index) {
-            $(this).on("click", function() {
-                nvl_id = $($(".material-id").get(index)).text();
-                console.log(nvl_id);
+            $(this).on("click", function(e) {
+                if (checkQuyenKho()) {
+                    nvl_id = $($(".material-id").get(index)).text();
+                    console.log(nvl_id);
 
-                submit_type = "edit-material";
-                $(".modal-title").text("Chỉnh sửa nguyên vật liệu");
-                $("#material-name-val").val($($(".material-name").get(index)).text());
-                $("#material-type-val").text($($(".material-type").get(index)).text());
-                $("#material-unit-val").text($($(".material-unit").get(index)).text());
-                $("#material-quantity-val").val($($(".material-quantity").get(index)).text());
-                $("#material-unitprice-val").removeAttr("disabled");
-                $("#material-unitprice-val").val($($(".material-unitprice").get(index)).text());
-                $("#material-supplier-val").text($($(".material-supplier").get(index)).text());
-                $("#material-status-val").text($($(".material-status").get(index)).text());
+                    submit_type = "edit-material";
+                    $(".modal-title").text("Chỉnh sửa nguyên vật liệu");
+                    $("#material-name-val").val($($(".material-name").get(index)).text());
+                    $("#material-type-val").text($($(".material-type").get(index)).text());
+                    $("#material-unit-val").text($($(".material-unit").get(index)).text());
+                    $("#material-quantity-val").val($($(".material-quantity").get(index)).text());
+                    $("#material-unitprice-val").val($($(".material-unitprice").get(index)).text());
+                    $("#material-supplier-val").text($($(".material-supplier").get(index)).text());
+                    $("#material-status-val").text($($(".material-status").get(index)).text());
+                } else {
+                    e.stopPropagation();
+                    Swal.fire(
+                        'Thất bại!',
+                        'Bạn không có quyền thực hiện thao tác này!',
+                        'error'
+                    )
+                }
             });
         });
 
@@ -506,6 +560,23 @@ function getTenTT($TinhTrangList, $maTT)
         });
     });
 
+    $.fn.digits = function() { 
+        return this.each(function(){ 
+            $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
+        });
+    }
+
+    $(".money").digits();
+
+    $(".material-quantity").digits();
+
+    function checkQuyenKho() {
+        if ($("#quyen").text()==="kho1") {
+            return true;
+        }
+        return false;
+    }
+
     function checkInput() {
         if ($("#material-name-val").val() == "" ||  $("#material-type-val").text() == "Chọn loại" ||
             $("#material-unit-val").text() == "Chọn ĐVT" ||
@@ -539,8 +610,8 @@ function getTenTT($TinhTrangList, $maTT)
                         name: $("#material-name-val").val(),
                         type: $("#material-type-val").text(),
                         unit: $("#material-unit-val").text(),
-                        quantity: $("#material-quantity-val").val(),
-                        unitprice: $("#material-unitprice-val").val(),
+                        // quantity: $("#material-quantity-val").val(),
+                        // unitprice: $("#material-unitprice-val").val(),
                         supplier: $("#material-supplier-val").text(),
                         status: $("#material-status-val").text()
                     },
@@ -553,12 +624,22 @@ function getTenTT($TinhTrangList, $maTT)
     
                         if (jsonData.success == "1")
                         {
-                            if(!alert($(".modal-title").text() + ' thành công!')) {
-                                window.location.reload();
-                            }
+                            Swal.fire(
+                                'Thành công!',
+                                'Thao tác thành công!',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
                         }
                         else {
-                            alert('Thao tác thất bại!');
+                            Swal.fire(
+                                'Thất bại!',
+                                'Vui lòng kiểm tra lại!',
+                                'error'
+                            )
                         }
                     },
                     complete: function() {
@@ -570,7 +651,11 @@ function getTenTT($TinhTrangList, $maTT)
                 });
             }
             else {
-                alert('Vui lòng nhập đủ dữ liệu!');
+                Swal.fire(
+                    'Thất bại!',
+                    'Vui lòng nhập đủ dữ liệu!',
+                    'error'
+                )
                 // $(".alert").addClass("open");
             }
   		});

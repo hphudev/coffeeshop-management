@@ -3,7 +3,6 @@ class Mon {
     private $MaMon;
     private $MaLoaiMon;
     private $SoLuong;
-    private $MaNVL;
     private $MaDVT;
     private $TenMon;
     private $HinhAnh;
@@ -13,6 +12,8 @@ class Mon {
     private $MoTa;
     private $GhiChu;
     private $NgayChinhSuaLanCuoi;
+    private $TinhTrang;
+    private $SoLanDung;
 
     public function __construct($row){
         $this->set_MaMon($row['MaMon']);
@@ -23,8 +24,10 @@ class Mon {
         $this->set_HinhAnh($row['HinhAnh']);
         $this->set_MoTa($row['MoTa']);
         $this->set_GhiChu($row['GhiChu']);
-        $this->get_NgayThem($row['NgayThem']);
-        $this->get_NgayChinhSuaLanCuoi($row['NgayChinhSuaLanCuoi']);
+        $this->set_NgayThem($row['NgayThem']);
+        $this->set_NgayChinhSuaLanCuoi($row['NgayChinhSuaLanCuoi']);
+        $this->set_TinhTrang($row['TinhTrang']);
+        $this->set_SoLanDung($row['SoLanDung']);
     }
 
     function set_MaMon($ma) {
@@ -49,14 +52,6 @@ class Mon {
 
     function get_SoLuong() {
         return $this->SoLuong;
-    }
-
-    function set_MaNVL($ma) {
-        $this->MaNVL = $ma;
-    }
-
-    function get_MaNVL() {
-        return $this->MaNVL;
     }
 
     function set_MaDVT($ma) {
@@ -129,6 +124,26 @@ class Mon {
 
     function get_GhiChu() {
         return $this->GhiChu;
+    }
+
+    function set_TinhTrang($TinhTrang)
+    {
+        $this->TinhTrang = $TinhTrang;
+    }
+
+    function get_TinhTrang()
+    {
+        return $this->TinhTrang;
+    }
+
+    function set_SoLanDung($SoLanDung)
+    {
+        $this->SoLanDung = $SoLanDung;
+    }
+
+    function get_SoLanDung()
+    {
+        return $this->SoLanDung;
     }
 }
 ?>

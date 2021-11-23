@@ -223,6 +223,15 @@ if (isset($_SESSION['id'])) {
 
   <script>
     $(document).ready(function() {
+      //Enter on password input
+      $('#inputPassword').keypress(function (e) {
+          var key = e.which;
+          if(key == 13)  // the enter key code
+          {
+            $('#btnLogin').click();
+          }
+      });  
+
       $('#btnLogin').click(function() {
         checkUserInfo();
       })

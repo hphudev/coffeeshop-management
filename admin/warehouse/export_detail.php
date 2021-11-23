@@ -464,12 +464,22 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
     
                         if (jsonData.success == "1")
                         {
-                            if(!alert('Thao tác thành công!')) {
-                                window.location.reload();
-                            }
+                            Swal.fire(
+                                'Thành công!',
+                                'Thao tác thành công!',
+                                'success'
+                            ).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            })
                         }
                         else {
-                            alert('Thao tác thất bại!');
+                            Swal.fire(
+                                'Thất bại!',
+                                'Vui lòng kiểm tra lại!',
+                                'error'
+                            )
                         }
                     },
                     complete: function() {
@@ -482,11 +492,19 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
             }
             else {
                 if (!checkValidQuantity()) {
-                    alert('Có vấn đề với số lượng!');
+                    Swal.fire(
+                        'Thất bại!',
+                        'Có vấn đề với số lượng!',
+                        'error'
+                    )
                     // $(".alert").addClass("open");
                 }
                 else {
-                    alert('Vui lòng nhập đủ dữ liệu!');
+                    Swal.fire(
+                        'Thất bại!',
+                        'Vui lòng nhập đủ dữ liệu!',
+                        'error'
+                    )
                 }
             }
   		});
@@ -514,12 +532,22 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
 
                     if (jsonData.success == "1")
                     {
-                        if(!alert('Xóa nguyên vật liệu thành công!')) {
-                            window.location.reload();
-                        }
+                        Swal.fire(
+                            'Thành công!',
+                            'Thao tác thành công!',
+                            'success'
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        })
                     }
                     else {
-                        alert('Thao tác thất bại!');
+                        Swal.fire(
+                            'Thất bại!',
+                            'Vui lòng kiểm tra lại!',
+                            'error'
+                        )
                     }
                 },
                 complete: function() {

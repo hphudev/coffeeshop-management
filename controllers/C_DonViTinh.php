@@ -5,7 +5,7 @@ class C_DonViTinh
 {
     public function invoke()
     {
-        if (isset($_POST['name']) && isset($_POST['action']))
+        if (isset($_POST['action']))
         {
             $ModelDonViTinh = new Model_DonViTinh();
 
@@ -37,6 +37,18 @@ class C_DonViTinh
                 
                 $DVT = new DonViTinh($data);
                 if ($ModelDonViTinh->update_DonViTinh($DVT) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
+                }
+            }
+            elseif ($_POST['action'] == "delete")
+            {
+                if ($ModelDonViTinh->delete_DonViTinh($_POST['unit_id']) == 1)
                 {
                     $arr = array('success'=>'1');
                     echo json_encode($arr);

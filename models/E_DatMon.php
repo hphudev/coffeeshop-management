@@ -50,4 +50,9 @@
         {
             return $this->TinhTrang;
         }
+
+        function toJson()
+        {
+            return array();
+        }
     }
