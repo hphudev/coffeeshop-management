@@ -2,6 +2,8 @@
 include '../models/M_KhachHang.php';
 include '../models/M_KhuyenMai.php';
 include '../models/M_General_CMD.php';
+include '../models/M_PhanQuyen.php';
+
 
 class C_KhachHang
 {
@@ -11,6 +13,8 @@ class C_KhachHang
         $ModelKhuyenMai = new Model_KhuyenMai();
         $General = new General_CMD();
         $DSKhachHang = $ModelKhachHang->get_AllKhachHang();
+        $DSLoaiKH = $ModelKhachHang->get_AllHangTV();
+
         if (isset($_GET['page'])) {
             if ($_GET['page'] == 'customer') {
                 include_once '../admin/customer.php';
@@ -60,7 +64,18 @@ class C_KhachHang
                 $KhachHang->set_NgayDK(date('Y-m-d H:i:s', strtotime($_POST['ngaydk'])));
                 $KhachHang->set_LoaiTV($ModelKhachHang->get_LoaiTVByName($_POST['loaitv']));
 
-                if ($ModelKhachHang->add_KhachHang($KhachHang)) {
+                if ($ModelKhachHang->find_KHBySDT($KhachHang->get_SDT()) == null) {
+                    if ($ModelKhachHang->add_KhachHang($KhachHang)) {
+                        echo "success";
+                    } else {
+                        echo "error";
+                    }
+                } else {
+                    echo "phone";
+                }
+            }
+            if ($_POST['action'] == 'delete') {
+                if ($ModelKhachHang->delete_KhachHang($_POST['id'])) {
                     echo "success";
                 } else {
                     echo "error";
@@ -86,7 +101,19 @@ class C_KhachHang
                 $LoaiTV->set_DiemLenHang($_POST['diemlenhang']);
                 $LoaiTV->set_TyLeTichDiem($_POST['tyletichluy']);
                 $LoaiTV->set_HangTV($_POST['hangtv']);
-                if ($ModelKhachHang->add_LoaiTV($LoaiTV)) {
+
+                if ($ModelKhachHang->get_LoaiTVByName($LoaiTV->get_TenLoaiTV()) == null) {
+                    if ($ModelKhachHang->add_LoaiTV($LoaiTV)) {
+                        echo "success";
+                    } else {
+                        echo "error";
+                    }
+                } else {
+                    echo "exist";
+                }
+            }
+            if ($_POST['action'] == 'deleteHangTV') {
+                if ($ModelKhachHang->delete_LoaiTV($_POST['id'])) {
                     echo "success";
                 } else {
                     echo "error";

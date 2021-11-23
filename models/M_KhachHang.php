@@ -55,6 +55,17 @@ class Model_KhachHang
             return false;
         }
     }
+    public function delete_KhachHang($id)
+    {
+        include '../configs/config.php';
+        $sql = 'DELETE FROM khachhang WHERE MaKH="' . $id . '"';
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function update_KhachHang($KhachHang)
     {
         include '../configs/config.php';
@@ -141,6 +152,16 @@ class Model_KhachHang
             . 'DiemLenHang="' .  $LoaiTV->get_DiemLenHang() . '", '
             . 'HangThanhVien="' .  $LoaiTV->get_HangTV() . '"'
             . 'WHERE MaLoaiTV="' . $LoaiTV->get_MaLoaiTV() . '" ';
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public function delete_LoaiTV($id)
+    {
+        include '../configs/config.php';
+        $sql = 'DELETE FROM loaithanhvien WHERE MaLoaiTV="' . $id . '"';
         if ($conn->query($sql) === TRUE) {
             return true;
         } else {

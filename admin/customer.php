@@ -26,20 +26,23 @@
 
 <script>
     $(document).ready(function() {
-        firstInit();
 
-        function firstInit() {
+        async function checkQuanQuyen(PhanQuyen) {
             $.ajax({
                 type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
+                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
                 data: {
-                    action: 'khachhang',
+                    phanquyen: PhanQuyen,
                 },
                 beforeSend: function() {
 
                 },
                 success: function(response) {
-                    $('.khachhang_content').html(response)
+                    if (response == "true") {
+                        return true;
+                    } else {
+                        return false;
+                    }
                 },
                 complete: function() {},
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -58,49 +61,93 @@
                 clicked.removeClass('btn-default')
             }
         }
+
         $('#btnDSKH').click(function() {
-            changeTab($(this))
-            firstInit()
+            if (checkQuanQuyen('khachhang0')) {
+                changeTab($(this))
+                $.ajax({
+                    type: "POST",
+                    url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
+                    data: {
+                        action: 'khachhang',
+                    },
+                    beforeSend: function() {
+
+                    },
+                    success: function(response) {
+                        $('.khachhang_content').html(response)
+                    },
+                    complete: function() {},
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                })
+            } else {
+                Swal.fire(
+                    "Thất bại!",
+                    "Bạn không có quyền truy cập mục này!",
+                    "warning"
+                )
+            }
         })
         $('#btnHangTV').click(function() {
-            changeTab($(this))
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
-                data: {
-                    action: 'hangthanhvien',
-                },
-                beforeSend: function() {
+            if (checkQuanQuyen('khachhang1')) {
+                changeTab($(this))
+                $.ajax({
+                    type: "POST",
+                    url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
+                    data: {
+                        action: 'hangthanhvien',
+                    },
+                    beforeSend: function() {
 
-                },
-                success: function(response) {
-                    $('.khachhang_content').html(response)
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
+                    },
+                    success: function(response) {
+                        $('.khachhang_content').html(response)
+                    },
+                    complete: function() {},
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                })
+            } else {
+                Swal.fire(
+                    "Thất bại!",
+                    "Bạn không có quyền truy cập mục này!",
+                    "warning"
+                )
+            }
+
         })
         $('#btnDSKM').click(function() {
-            changeTab($(this))
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
-                data: {
-                    action: 'khuyenmai',
-                },
-                beforeSend: function() {
+            if (checkQuanQuyen('khachhang2')) {
+                changeTab($(this))
+                $.ajax({
+                    type: "POST",
+                    url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
+                    data: {
+                        action: 'khuyenmai',
+                    },
+                    beforeSend: function() {
 
-                },
-                success: function(response) {
-                    $('.khachhang_content').html(response)
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
+                    },
+                    success: function(response) {
+                        $('.khachhang_content').html(response)
+                    },
+                    complete: function() {},
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(errorThrown);
+                    }
+                })
+            } else {
+                Swal.fire(
+                    "Thất bại!",
+                    "Bạn không có quyền truy cập mục này!",
+                    "warning"
+                )
+            }
+
         })
+        $('#btnDSKH').click()
     })
 </script>

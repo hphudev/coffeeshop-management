@@ -200,13 +200,58 @@
                     // Swal.fire({
                     //     title: response,
                     // })
-                    if (response.includes("success"))
+                    if (response.includes("success")) {
                         Swal.fire(
                             'Thành công!',
-                            'Thông tin khách hàng đã được cập nhật',
+                            'Thông tin hạng thành viên đã được thêm',
                             'success'
                         )
-                    else
+                        $('#btnHangTV').click()
+                    } else if (response.includes("exist")) {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Tên hạng thành viên đã tồn tại!',
+                            'error'
+                        )
+                    } else
+                        Swal.fire(
+                            'Thất bại!',
+                            '.Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+                },
+                complete: function() {
+                    modal.modal('hide')
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
+        }
+
+        function deleteHangTV(id) {
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
+                data: {
+                    action: "deleteHangTV",
+                    id: id
+                },
+                beforeSend: function() {
+
+                },
+                success: function(response) {
+                    // Swal.fire({
+                    //     title: response,
+                    // })
+                    if (response.includes("success")) {
+                        Swal.fire(
+                            'Thành công!',
+                            'Thông tin hạng thành viên đã được xóa',
+                            'success'
+                        )
+                        $('#btnHangTV').click()
+                    } else
                         Swal.fire(
                             'Thất bại!',
                             '.Đã xảy ra lỗi. Vui lòng thử lại',
@@ -247,6 +292,7 @@
         })
 
         $('.btnDeleteRank').click(function() {
+            var $row = $(this).closest('tr')
             Swal.fire({
                 title: 'Bạn có chắc chắn muốn xóa khách hàng?',
                 text: "Việc làm này sẽ không thể hoàn tác!",
@@ -258,11 +304,7 @@
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire(
-                        'Thành công',
-                        'Thông tin khách hàng đã được xóa khỏi hệ thống',
-                        'success'
-                    )
+                    deleteHangTV($row.find('.maloaitv').html())
                 }
             })
         })

@@ -99,28 +99,22 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Họ và tên
-                                        </label>
-                                        <input id="inputHoTen" type="text" class="form-control personal_info" value=" ">
-                                    </div>
+                                    <label class="bmd-label-floating">Họ và tên
+                                    </label>
+                                    <input id="inputHoTen" type="text" class="form-control personal_info" value=" ">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class=" col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Số điện thoại</label>
-                                        <input id="inputSDT" type="number" class="form-control personal_info" value="0">
-                                    </div>
+                                    <label class="bmd-label-floating">Số điện thoại</label>
+                                    <input id="inputSDT" type="number" class="form-control personal_info" value="0">
                                 </div>
                                 <div class=" col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Ngày đăng ký</label>
-                                        <input id="inputNgayDK" type="datetime-local" class="form-control personal_info" value="<?php
-                                                                                                                                $now = new DateTime('now');
-                                                                                                                                echo $now->format("Y-m-d\TH:i")
-                                                                                                                                ?>">
-                                    </div>
+                                    <label class="bmd-label-floating">Ngày đăng ký</label>
+                                    <input id="inputNgayDK" type="datetime-local" class="form-control personal_info" value="<?php
+                                                                                                                            $now = new DateTime('now');
+                                                                                                                            echo $now->format("Y-m-d\TH:i")
+                                                                                                                            ?>">
                                 </div>
                             </div>
                             <div class="row">
@@ -150,9 +144,11 @@
                                                     <span id="inputLoaiTV">Chọn loại thành viên</span>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <p class='dropdown-item mater-rank-opt'>Vàng</p>
-                                                    <p class='dropdown-item mater-rank-opt'>Bạc</p>
-                                                    <p class='dropdown-item mater-rank-opt'>Đồng</p>
+                                                    <?php
+                                                    for ($i = 0; $i < count($DSLoaiKH); $i++) {
+                                                        echo " <p class='dropdown-item mater-rank-opt'>" . $DSLoaiKH[$i]->get_TenLoaiTV() .  "</p>";
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -161,20 +157,16 @@
                             </div>
                             <div class="row">
                                 <div class=" col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">
-                                            Điểm thành viên
-                                        </label>
-                                        <input id="inputDiemTV" type="number" class="form-control personal_info" value="0">
-                                    </div>
+                                    <label class="bmd-label-floating">
+                                        Điểm thành viên
+                                    </label>
+                                    <input id="inputDiemTV" type="number" class="form-control personal_info" value="0">
                                 </div>
                                 <div class=" col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">
-                                            Tổng chi
-                                        </label>
-                                        <input id="inputTongChi" type="number" class="form-control personal_info" value="0">
-                                    </div>
+                                    <label class="bmd-label-floating">
+                                        Tổng chi
+                                    </label>
+                                    <input id="inputTongChi" type="number" class="form-control personal_info" value="0">
                                 </div>
                             </div>
                         </div>
@@ -260,6 +252,19 @@
             })
         }
 
+        function checkInfo() {
+            if ($('#inputHoTen').val() == "" ||
+                $('#inputSDT').val() == "" ||
+                $('#inputNgayDK').val() == "" ||
+                $('#inputGioiTinh').text() == "" ||
+                $('#inputLoaiTV').text() == "" ||
+                $('#inputDiemTV').val() == "" ||
+                $('#inputTongChi').val() == "") {
+                return false;
+            }
+            return true;
+        }
+
         function addKH() {
             $.ajax({
                 type: "POST",
@@ -281,26 +286,73 @@
                     // Swal.fire({
                     //     title: response,
                     // })
-                    if (response.includes("success"))
+                    if (response.includes("success")) {
                         Swal.fire(
                             'Thành công!',
                             'Thông tin khách hàng đã được cập nhật',
                             'success'
                         )
-                    else
+                        modal.modal('hide')
+                        $('#btnDSKH').click()
+                    } else if (response.includes("phone")) {
                         Swal.fire(
                             'Thất bại!',
-                            '.Đã xảy ra lỗi. Vui lòng thử lại',
+                            'Số điện thoại đã được sử dụng!',
                             'error'
                         )
+                    } else {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+                    }
                 },
-                complete: function() {
-                    modal.modal('hide')
-                },
+                complete: function() {},
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     alert(errorThrown);
                 }
             })
+        }
+
+        function deleteKH(id) {
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
+                data: {
+                    action: "delete",
+                    id: id,
+                },
+                beforeSend: function() {
+
+                },
+                success: function(response) {
+                    // Swal.fire({
+                    //     title: response
+                    // })
+                    if (response.includes("success")) {
+                        Swal.fire(
+                            'Thành công!',
+                            'Thông tin khách hàng đã được xóa',
+                            'success'
+                        )
+                        modal.modal('hide')
+                        $('#btnDSKH').click()
+                    } else {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+                    }
+                },
+                complete: function() {},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
+            $('#btnDSKH').click()
+
         }
 
         $(".mater-gender-opt").each(function(index) {
@@ -328,6 +380,7 @@
         })
 
         $('.btnDeleteKH').click(function() {
+            var $row = $(this).closest('tr')
             Swal.fire({
                 title: 'Bạn có chắc chắn muốn xóa khách hàng?',
                 text: "Việc làm này sẽ không thể hoàn tác!",
@@ -339,21 +392,27 @@
                 cancelButtonText: 'Hủy'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire(
-                        'Thành công',
-                        'Thông tin khách hàng đã được xóa khỏi hệ thống',
-                        'success'
-                    )
+                    deleteKH($row.find('.makh').html())
                 }
+
             })
         })
 
+
         $("#btnConfirm").click(function() {
-            if ($(this).hasClass('view')) {
-                updateKH()
+            if (checkInfo()) {
+                if ($(this).hasClass('view')) {
+                    updateKH()
+                } else {
+                    alert("add")
+                    addKH()
+                }
             } else {
-                alert("add")
-                addKH()
+                Swal.fire(
+                    "Thất bại",
+                    "Vui lòng nhập đủ thông tin!",
+                    "warning"
+                )
             }
         })
     })

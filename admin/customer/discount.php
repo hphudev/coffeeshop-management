@@ -436,7 +436,7 @@
                     }
                 },
                 complete: function() {
-                    modal.modal('hide')
+                    modal2.modal('hide')
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     alert(errorThrown);

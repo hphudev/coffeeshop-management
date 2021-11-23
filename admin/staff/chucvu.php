@@ -161,9 +161,6 @@
                                                         </label>
                                                     </div>
                                                 </div>
-
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-check">
                                                         <label class="form-check-label">
@@ -601,18 +598,18 @@
         })
         $('#btnEditPQ').click(function() {
             // if (checkPhanQuyen()) {
-                if ($('#chucVuSelect').val() != "Lựa chọn...") {
-                    $('.form-check-input').prop('disabled', false)
-                    $(this).prop('disabled', true)
-                    $('#btnSaveEditPQ').removeClass('invisible')
-                    $('#btnCancelEditPQ').removeClass('invisible')
-                } else {
-                    Swal.fire(
-                        'Thất lại!',
-                        'Vui lòng chọn chức vụ cần chỉnh sửa',
-                        'warning'
-                    )
-                }
+            if ($('#chucVuSelect').val() != "Lựa chọn...") {
+                $('.form-check-input').prop('disabled', false)
+                $(this).prop('disabled', true)
+                $('#btnSaveEditPQ').removeClass('invisible')
+                $('#btnCancelEditPQ').removeClass('invisible')
+            } else {
+                Swal.fire(
+                    'Thất lại!',
+                    'Vui lòng chọn chức vụ cần chỉnh sửa',
+                    'warning'
+                )
+            }
             // } else {
             //     Swal.fire(
             //         'Thất bại!',
