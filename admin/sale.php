@@ -4,8 +4,8 @@
     <div class="container-fluid mt3">
         <div class="row row-header">
             <button type="button" class="col btn btn-warning" data-toggle="modal" data-target="#bill" onclick="showBill();">Xem ORDER</button>
-            <button type="button" class="col btn btn-info">
-                Thông báo <span class="badge badge-danger ml-2" style="font-size: 13px;">4</span>
+            <button type="button" class="col btn btn-info" data-toggle="modal" data-target="#billBlender" onclick="loadBlender('');">
+                PHỤC VỤ <span id="badgeOrderFinish" class="badge badge-danger ml-2" style="font-size: 13px;" ></span>
             </button>
             <button id="btnReloadBill" type="button" class="col btn btn-danger" onclick="reloadPage();">Làm mới Bill</button>
             <button id="btnReloadPage" type="button" class="col btn btn-primary" onclick="location.reload();">Tải lại trang</button>
@@ -18,40 +18,58 @@
                         <i class="material-icons">search</i>
                     </span>
                 </div>
-                <input id="tbFindItem" class="form-control"  type="text" value = "" >
+                <input id="tbFindItem" class="form-control"  type="text" value = "" style="">
         </div>
     </form>
 </div>
 
 <!--#region 2 - danh sách món -->
+<div class="row menu" style="width: fit-content;">
 <?php
     for ($i = 0; $i < count($itemList); $i++)
     {
+        
         // https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg
         $idItem = $itemList[$i]->get_MaMon();
-        if ($i % 3 == 0)
-            echo '<div class="row menu">';
+        // if ($i % 3 == 0)
         ?>
         <div id= <?php echo '"' . $itemList[$i]->get_MaMon() . '"'?> class="col item">
-            <div class="card d-flex flex-row flex-wrap align-items-center justify-content-center pl-3" style="min-width:220px; max-width: 500px;">
-                <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="min-width:220px; max-width:250px; min-height: 220px; max-height: 220px; border-radius: 6px;")>
-                <div class="card-body d-flex flex-column align-items-center justify-content-center"> 
+            <div class="card align-items-top justify-content-center" style="width: 250px; padding: 0px; border-radius: 10px">
+                <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="width: 100%; height: 150px; border-radius: 10px 10px 0 0;")>
+                <div class="card-body d-flex flex-column align-items-top justify-content-top"> 
                     <?php
-                        echo '<h3 class="card-title mt-1">' . $itemList[$i]->get_TenMon() . '</h3>';
-                        echo '<p class="card-text">' . $itemList[$i]->get_MoTa() . '</p>';
+                        echo '
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col">
+                                        <h class="card-title" style="font-weight: 500; font-size: 20px">' . $itemList[$i]->get_TenMon() . '</h>
+                                    </div>
+                                    <div class="col" style="text-align: right">
+                                        <span class="material-icons text-info"">
+                                            info
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>';
+                        // echo '
+                        //     <div class="row">
+                        //         <div class="col">
+                        //             <p class="card-text" style="width: 100%"> Mô tả: ' . $itemList[$i]->get_MoTa() . 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+                        //         </div>
+                        //     </div>';
+                        // echo '<p class="card-text"> Mô tả: ' . $itemList[$i]->get_MoTa() . '</p>';
                     ?>
-                    
-                    <div class="">
-                        <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none" onclick="oneItemOff('<?php echo $idItem?>')">
+                    <div style="text-align: center;">
+                        <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none  pt-2 pb-2 pl-3 pr-3" onclick="oneItemOff('<?php echo $idItem?>')">
                             <span class="material-icons">
                                 remove
                             </span>
                         </button>
-                        <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success" onclick="oneMoreItem('<?php echo $idItem?>')">
-                            <span class="material-icons">
+                        <span id="badge<?php echo $idItem ?>" class="badge badge-light d-none" style="font-size: 13px; width:60px; height: 25px; border: 1px solid orange">0</span>
+                        <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success pt-2 pb-2 pl-3 pr-3" onclick="oneMoreItem('<?php echo $idItem?>')">
+                            <span class="material-icons" style="">
                                 add
                             </span>
-                            <span id="badge<?php echo $idItem ?>" class="badge badge-danger d-none" style="font-size: 13px;">0</span>
                         </button>
                     </div>
                     <button id="btnShowOptionItemList<?php echo $idItem?>" class="btn btn-info d-none" style="min-width:200px; bolder-radius: 30px 30px 0 0;" data-toggle="modal" data-target="#optionModal" onclick="showOptionTable('<?php echo $idItem?>');">Tùy chọn</button>
@@ -59,11 +77,8 @@
                 </div>
             </div>
         </div>
-        <?php
-            if ($i % 3 == 2)
-                echo '</div>';
-            }
-        ?>
+    <?php }?>
+</div>
   
 
 <!-- region 3 - bảng tùy chọn-->
@@ -74,7 +89,7 @@
 
 <div class="modal fade modal-dialog-scrollable" id="bill" tabindex="-1" role="">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" style="width: 95vw; left: 50%; top:50%; transform: translateX(-50%)">
             <div class="card card-signup card-plain">
                 <div class="modal-header">
                   <div class="card-header card-header-danger text-center w-100">
@@ -84,8 +99,8 @@
                     <h4 class="card-title">ORDER</h4>
                   </div>
                 </div>
-                <div class="modal-body">
-                    <div class="row ml-3">
+                <div class="modal-body" style="width: 100%">
+                    <!-- <div class="row ml-3">
                         <h5>Hình thức order</h5>
                         <div class="ml-4">
                             <div class="form-check form-check-radio">
@@ -115,8 +130,27 @@
                             </div>
                             
                         </div>
-                    </div>
-                    <div id="contentOrder">
+                    </div> -->
+                    <table class="table" style=" overflow: scroll;">
+                        <thead>
+                            <tr style=" overflow: scroll;">
+                                <th scope="col" style="font-weight: 500; width: 50px">STT</th>
+                                <th scope="col" style="font-weight: 500; width: 150px">Tên món</th>
+                                <th scope="col" style="font-weight: 500; width: 80px">Kích thước</th>
+                                <th scope="col" style="font-weight: 500; width: 70px">Số lượng</th>
+                                <th scope="col" style="font-weight: 500; width: 70px">Đơn giá</th>
+                                <th scope="col" style="font-weight: 500; width: 80px">Thành tiền</th>
+                                <th scope="col" style="font-weight: 500; width: 200px">Topping</th>
+                                <th scope="col" style="font-weight: 500; width: 50px">Tùy chọn</th>
+                                <th scope="col" style="font-weight: 500; width: 50px">Giảm</th>
+                                <th scope="col" style="font-weight: 500; width: 50px">Tăng</th>
+                                <th scope="col" style="font-weight: 500; width: 50px">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contentOrder" style="overflow-x: hidden;">
+                        </tbody>
+                    </table>
+                    <!-- <div  style="width: 100%;">
                         
                         <div class="row">
                                 <div class="card card-pricing bg-dark mr-3 ml-3 pl-3 pr-3">
@@ -165,11 +199,85 @@
                                         </div>
                                 </div>
                             </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" onclick="" data-toggle="modal" data-target="#optionModal">GỬi ĐẾN NHÀ BẾP</a>
+                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" style="font-weight: 500;" onclick="payOrder();" data-toggle="modal" >THANH TOÁN</a>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade modal-dialog-scrollable" id="billBlender" tabindex="-1" role="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 75vw; left: 50%; top:50%; transform: translateX(-50%)">
+            <div class="card card-signup card-plain">
+                <div class="modal-header">
+                  <div class="card-header card-header-info text-center w-100">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                      <i class="material-icons">clear</i>
+                    </button>
+                    <h4 class="card-title">PHỤC VỤ ORDER </h4>
+                    <div class="mb-3" style="display: flex; flex-direction: column">
+                        <label for="exampleFormControlInput1" class="form-label bg-danger" style="color: white; border-radius: 5px; width: 10%; text-align: center">Tìm kiếm Order</label>
+                        <input id="tbFindOrder" type="number" class="form-control" style="border: 1px solid red ;background-color: white; border-radius: 5px; color: black; font-weight: 500; padding-left: 10px; font-size: 20px; width: 30%" placeholder="Nhập số thứ tự Order">
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="modal-body" style="text-align: center;">
+                    <div id="blenderCustomer" class="container-fluid" style="text-align: center;">
+                        <!-- <div id="row" class="row blenderOrders" style="">
+                            <div id="accordion" role="tablist">
+                                <div class="card card-collapse" style="width: 75vw; text-align: center;">
+                                    <div class="card-header" style="background-color:tomato;" role="tab" id="heading">
+                                        <h5 class="mb-0" style="font-size: 20px; font-weight: 500;">
+                                            <a id="title" class="text-light" data-toggle="collapse" href="#collapse" aria-expanded="true" aria-controls="collapse" style="display: flex;">
+                                                Order <br>
+                                                <i class="material-icons">keyboard_arrow_down</i>
+                                                <div style="display: flex; margin-left: 70%; ">
+                                                    <button id="btnCall" type="button" rel="tooltip" class="btn btn-simple" style=" font-weight: 700; background-color: white; color: black" >
+                                                        PHỤC VỤ KHÁCH HÀNG 
+                                                        <i class="material-icons">person</i>
+                                                    </button>
+                                                </div>
+                                            </a>
+                                        </h5>
+                                    </div>
+                                    <div id="collapse" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion" style="text-align: center;">
+                                        <div class="card-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="font-weight: 500;">STT</th>
+                                                        <th style="width: 300px; font-weight: 500;">Tên món</th>
+                                                        <th style="width: 300px; font-weight: 500;">Số lượng</th>
+                                                        <th style="width: 300px; font-weight: 500;">Kích cỡ</th>
+                                                        <th style="max-width: 100px; font-weight: 500;">Topping</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="content">
+                                                        <tr>
+                                                            <td class="text-center" style="width: 50px;">dasd</td>
+                                                            <td>dadsa</td>
+                                                            <td>dada</td>
+                                                            <td>dads</td>
+                                                            <td style="max-width: 400px;">
+                                                                sdasdasdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+                                                            </td>
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <div class="modal-footer justify-content-center">
+                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" style="font-weight: 500;" onclick="payOrder();" data-toggle="modal" >THANH TOÁN</a>
+                </div> -->
             </div>
         </div>
     </div>

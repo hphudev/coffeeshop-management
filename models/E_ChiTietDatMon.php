@@ -1,5 +1,6 @@
 <?php
-    class DatMon{
+    class ChiTietDatMon{
+        private $MaCTDM;
         private $MaDM;
         private $MaMon;
         private $TenDonVi;
@@ -8,11 +9,21 @@
 
         public function __construct($row)
         {
+            $this->MaCTDM = $row['MaCTDM'];
             $this->MaDM = $row['MaDM'];
             $this->MaMon = $row['MaMon'];
             $this->TenDonVi = $row['TenDonVi'];
             $this->SoLuong = $row['SoLuong'];
             $this->DonGia = $row['DonGia'];
+        }
+
+        function set_MaCTDM($mactdm)
+        {
+            $this->MaCTDM = $mactdm;
+        }
+        function get_MaCTDM()
+        {
+            return $this->MaCTDM;
         }
 
         function set_MaDM($madm)

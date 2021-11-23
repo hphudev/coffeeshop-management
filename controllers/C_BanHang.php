@@ -23,7 +23,7 @@
         return (valueA.includes(valueB) || check);
     }
 
-     $(document).ready(function () {
+    $(document).ready(function () {
 
         $('[name="orderType"]').on('change', function(){
             if ($(this).val() === "yes")
@@ -45,6 +45,7 @@
         });
 
         $('#tbFindItem').on('input',function(e){
+            // console.log("vào");
             let value = $('#tbFindItem').val();
             let itemList = $('.item');
             // console.log(value);
@@ -76,6 +77,103 @@
         });
     });
 
+    function payOrder()
+    {
+        // if (sessionStorage`)
+        let bill = JSON.parse(sessionStorage.getItem('bill'));
+        if (bill === null || bill.length == 0)
+        {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Order không có món',
+                showConfirmButton: true,
+                timer: 2000
+            });
+            return;
+        }
+        else
+            Swal.fire({
+                icon: 'info',
+                title: 'Đang thanh toán',
+                text: 'Hệ thống đang gửi order lên nhà bếp và in phiếu thanh toán',
+                showConfirmButton: false,
+                allowOutsideClick: false
+                // timer: 800
+            });
+        Swal.showLoading();
+        setTimeout(() => {
+            let func = {};
+            // func.id = "MON001";
+            func.name = "saveOrder";
+            func.data = JSON.parse(sessionStorage.getItem('bill'));
+            console.log(func);
+            $.ajax({
+                type: "POST",
+                data: {func: JSON.stringify(func)},
+                url: "../models/M_BanHang.php",
+                // dataType: "json",
+                timeout: 5000,
+                success: function (response) {
+                    Swal.close();
+                    //console.log(response);
+                    sessionStorage.removeItem('bill');
+                    $("#bill").modal('hide');
+                    if (true)
+                    {
+                        Swal.fire({
+                            title: 'Thanh toán thành công',
+                            icon: 'success',
+                            showConfirmButton: false,
+                            timer: 700
+                        });
+                    }
+                    else
+                    {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể thanh toán',
+                            text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
+                            showConfirmButton: true,
+                            timer: 3000 
+                        });
+                    }
+                    
+                },
+                error: function(xmlhttprequest, textstatus, message) {
+                    if(textstatus==="timeout") {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Thời gian phản hồi quá lâu',
+                            text: 'Không thể thanh toán vì có sự cố máy chủ', 
+                            showConfirmButton: true,
+                            timer: 3000 
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Không thể thanh toán',
+                            text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
+                            showConfirmButton: true,
+                            timer: 3000 
+                        });
+                    }
+                }
+            });
+            // func = {};
+            // func.name = "getItemName";
+            // func.id = "MON001";
+            // $.ajax({
+            //     type: "POST",
+            //     url: "../models/M_BanHang.php",
+            //     data: {func: JSON.stringify(func)},
+            //     success: function (response) {
+            //         console.log(response);
+            //     }
+            // });
+        }, 1200);
+       
+    }
+
     function saveWork()
     {
         let idItem = sessionStorage.getItem("idItemOptionTable");
@@ -87,6 +185,7 @@
         let value = JSON.parse(sessionStorage.getItem(idItemSession));
         let infoDetailItem = JSON.parse(sessionStorage.getItem('infoDetail' + idItem));
         console.log('osize ' + oSize.length);
+        // console.log(value);  
         for (let i = 0; i < oSize.length; i++)
         {
             if (oSize[i].checked)
@@ -104,6 +203,7 @@
             }
         }
         console.log(value);
+        console.log(infoDetailItem);
         console.log(sessionStorage.getItem(idItemSession));
         sessionStorage.setItem(idItemSession, JSON.stringify(value));
         console.log(sessionStorage.getItem(idItemSession));
@@ -139,6 +239,25 @@
             }
         }
         sessionStorage.setItem('bill', JSON.stringify(bill));
+        let elementBill = document.getElementById('bill_' + index.toString());
+        let elementChild = elementBill.getElementsByClassName('des'); 
+        // console.log(elementChild);
+        elementChild[0].innerHTML = bill[index].size;
+        elementChild[2].innerHTML = bill[index].price;
+        // elementChild[1].innerHTML = bill[serial].num;
+        elementChild[4].innerHTML = bill[index].toppingList;
+        // console.log(elementChild[3].textContent);
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '',
+            showConfirmButton: false,
+            timer: 700
+            }).then(()=>{
+                // location.reload();
+                console.log("ok");
+            });
+        elementChild[3].innerHTML = convertNumToStringHaveDot(bill[index].price * bill[index].num);
         //console.log(value);
         // console.log(sessionStorage.getItem(idItemSession));
         // sessionStorage.setItem(idItemSession, JSON.stringify(value));
@@ -203,6 +322,10 @@
         // else
         //     sessionStorage.setItem(idBadge, Number(sessionStorage.getItem(idBadge)) + 1);
         elementBadge.innerHTML = JSON.parse(sessionStorage.getItem(idItemSession)).num; 
+        showOptionTable(idItem);
+        setTimeout(() => {
+            saveWork();
+        }, 500);
     }
 
     function oneItemOff(idItem)
@@ -285,9 +408,15 @@
         if (confirm("Bạn chưa lưu công việc? Bạn có muốn làm mới trang không?"))
         {
             sessionStorage.clear();
-            setTimeout(() => {
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                timer: 900,
+                showConfirmButton: false
+            }).then(()=>{
                 location.reload();
-            }, 300); 
+            }
+            );
         }
     }
 
@@ -334,18 +463,43 @@
         func.id = $idItem;
         func.data = sessionStorage.getItem('order' + $idItem);
         sessionStorage.setItem('idItemOptionTable', $idItem);
+        console.log("data: " + JSON.stringify(func));
         $.ajax({
             method: "POST",
             data: {func: JSON.stringify(func)},
             url: "../models/M_BanHang.php",
             success: function(response){
+                console.log("response: " + response);
                 sessionStorage.setItem('infoDetail' + $idItem, response);
                 $res = JSON.parse(response);
                 console.log($res);
                 document.getElementById('optionSize').innerHTML = "";
+                let check = false;
                 for (let i = 0; i < $res[0].length; i++)
                 {
-                    $html = '<div class="form-check form-check-radio">' +
+                    if (insertCheckStateInOptionSize($res[0][i].TenKichThuoc, sessionStorage.getItem('order' + $idItem)) == "checked")
+                    {
+                        check = true;
+                    }
+                }
+                console.log('show' + check.toString() + $res[0].length.toString());
+                for (let i = 0; i < $res[0].length; i++)
+                {
+                    if (i==0 && check==false)
+                    {
+                        $html = '<div class="form-check form-check-radio">' +
+                                '<label class="form-check-label text-dark label-size">' + 
+                                    '<input class="form-check-input o-size" type="radio" name="exampleRadio" value="option1" checked/>' +
+                                    $res[0][i].TenKichThuoc +
+                                    '<span class="circle">' +
+                                        '<span class="check"></span>' +
+                                    '</span>' +
+                                '</label>' +
+                            '</div>';
+                    }
+                    else
+                    {
+                        $html = '<div class="form-check form-check-radio">' +
                                 '<label class="form-check-label text-dark label-size">' + 
                                     '<input class="form-check-input o-size" type="radio" name="exampleRadio" value="option1" ' + insertCheckStateInOptionSize($res[0][i].TenKichThuoc, sessionStorage.getItem('order' + $idItem)) +'/>' +
                                     $res[0][i].TenKichThuoc +
@@ -354,6 +508,8 @@
                                     '</span>' +
                                 '</label>' +
                             '</div>';
+                    }
+                    
                     let newcontent = document.createElement('div');
                     newcontent.innerHTML = $html;
                     while (newcontent.firstChild)
@@ -382,7 +538,7 @@
                     }
                 }
                 document.getElementById('AddOption').removeAttribute('onclick');
-                let tmp = saveWork();
+                // let tmp = saveWork();
                 document.getElementById('AddOption').setAttribute('onclick', "saveWork();");
             }
         });
@@ -473,7 +629,17 @@
         bill.push(value);
         sessionStorage.setItem('bill', JSON.stringify(bill));
         sessionStorage.removeItem('order' + $idItem);
-        location.reload();
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: '',
+            showConfirmButton: false,
+            timer: 700
+            }).then(()=>{
+                location.reload();
+            });
+        // setTimeout(() => {
+        // }, 1000);
         // console.log(JSON.parse(sessionStorage.getItem('bill')));    
         // console.log(sessionStorage.getItem('order' + $idItem));
     }
@@ -508,8 +674,14 @@
         let bill = JSON.parse(sessionStorage.getItem('bill'));
         bill[serial].num++;
         let elementBill = document.getElementById('bill_' + serial.toString());
-        elementBill.getElementsByClassName('card-title')[0].innerHTML = bill[serial].name + ' (' + convertNumToStringHaveDot(bill[serial].price * bill[serial].num) + ' vnđ)';
-        elementBill.getElementsByClassName('card-description')[0].innerHTML = 'Số lượng: ' + '<span class="text-info">' + bill[serial].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[serial].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[serial].toppingList + '</span>';
+        let elementChild = elementBill.getElementsByClassName('des'); 
+        // console.log(elementChild);
+        // elementChild[0].innerHTML = bill[serial].size
+        elementChild[1].innerHTML = bill[serial].num;
+        // elementChild[2].innerHTML = bill[serial].price;
+        // elementChild[3].innerHTML = bill[serial].toppingList;
+        elementChild[3].innerHTML = convertNumToStringHaveDot(bill[serial].price * bill[serial].num);
+        // elementBill.getElementsByClassName('card-description')[0].innerHTML = 'Số lượng: ' + '<span class="text-info">' + bill[serial].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[serial].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[serial].toppingList + '</span>';
         bill = JSON.stringify(bill);
         sessionStorage.setItem('bill', bill);
     }
@@ -536,9 +708,13 @@
             return;
         }
         let elementBill = document.getElementById('bill_' + serial.toString());
-        elementBill.getElementsByClassName('card-title')[0].innerHTML = bill[serial].name + ' (' + convertNumToStringHaveDot(bill[serial].price * bill[serial].num) + ' vnđ)';
-        elementBill.getElementsByClassName('card-description')[0].innerHTML = 'Số lượng: ' + '<span class="text-info">' + bill[serial].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[serial].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[serial].toppingList + '</span>';
-        console.log(bill);
+        let elementChild = elementBill.getElementsByClassName('des'); 
+        // console.log(elementChild);
+        // elementChild[0].innerHTML = bill[serial].size
+        elementChild[1].innerHTML = bill[serial].num;
+        // elementChild[2].innerHTML = bill[serial].price;
+        // elementChild[3].innerHTML = bill[serial].toppingList;
+        elementChild[3].innerHTML = convertNumToStringHaveDot(bill[serial].price * bill[serial].num);
         bill = JSON.stringify(bill);
         sessionStorage.setItem('bill', bill);
     }
@@ -551,10 +727,18 @@
         {
             return;
         }
-        document.getElementsByClassName('row-bill_' + index.toString())[0].remove();
+        let element = document.getElementById('bill_' + index.toString());
+        element.remove();
         bill.splice(index, 1);
         bill = JSON.stringify(bill);
         sessionStorage.setItem('bill', bill);
+        Swal.fire({
+            position: 'center',
+            icon: 'success',
+            showConfirmButton: false,
+            timer: 700
+        });
+        showBill();
     }
 
     function showBill()
@@ -565,8 +749,24 @@
         let bill = JSON.parse(sessionStorage.getItem('bill'));
         console.log(bill);
         let elementContentBill = document.getElementById('contentOrder');
+        elementContentBill.innerHTML = "";
+        let html = '';
+        // let html = '<table class="table" style=" overflow: scroll;">' +
+        //                             '<thead >' +
+        //                                 '<tr >' +
+        //                                     '<th scope="col" style="font-weight: 500;">STT</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Tên món</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Kích thước</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Số lượng</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Đơn giá</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Topping</th>' +
+        //                                     '<th scope="col" style="font-weight: 500;">Thành tiền</th>' +
+        //                                 '</tr>' +
+        //                             '</thead>' +
+        //                             '<tbody>';
         for (let i = 0; i < bill.length; i++)
         {
+            console.log(html);
             let func = {};
             func.name = "getItemName";
             func.id = bill[i].id;
@@ -575,41 +775,192 @@
                 url: "../models/M_BanHang.php",
                 data: {func: JSON.stringify(func)},
                 success: function (response) {
-                    bill[i].name = JSON.parse(response);
-                    sessionStorage.setItem('bill', JSON.stringify(bill));
-                    //let stringBill = JSON.stringify(bill[i]).toString();
-                    console.log(JSON.stringify(bill[i]));
-                    let html = '<div class="row row-bill_' + i.toString() + '">' + 
-                                    '<div class="card card-pricing bg-dark mr-3 ml-3 pl-3 pr-3">' + 
-                                            '<div class="card-body" id="bill_' + i.toString() +'">' +
-                                                '<div class="card-icon">' +
-                                                    '<i class="material-icons">business</i>' +
-                                                '</div>' +
-                                                '<h3 class="card-title">' + bill[i].name + ' (' + convertNumToStringHaveDot(bill[i].price * bill[i].num) + ' vnđ)' + '</h3>' + 
-                                                '<p class="card-description">' + 
-                                                    'Số lượng: ' + '<span class="text-info">' + bill[i].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[i].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[i].toppingList + '</span>' + 
-                                                '</p>' +
-                                                "<a href='#pablo' class='btn btn-white btn-round text-dark mr-1' onclick='editDeleteItem(" + i +")'>XÓA</a>" +
-                                                "<a href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" + //mã hóa json truyền vào hàm trong js sẽ chuyển thành object
-                                                "<a href='#pablo' class='btn btn-danger btn-round text-white mr-1' onclick='editMinusItem(" + i + ")'>GIẢM</a>" +
-                                                "<a href='#pablo' class='btn btn-success btn-round text-white mr-1' onclick='editAddItem(" + i + ")'>TĂNG</a>" +
-                                            '</div>' +
-                                    '</div>' +
-                                '</div>';
-            let newcontent = document.createElement('div');
-            newcontent.innerHTML = html;
-            while (newcontent.firstChild)
-            {
-                elementContentBill.appendChild(newcontent.firstChild);
-            }
+                    setTimeout(() => {
+                        bill[i].name = JSON.parse(response);
+                        sessionStorage.setItem('bill', JSON.stringify(bill));
+                        //let stringBill = JSON.stringify(bill[i]).toString();
+                        console.log(bill[i].size);
+                        html = 
+                                            '<tr id="bill_' + i.toString() + '" style=" overflow: scroll;">' +
+                                            '<th cope="row">' + (Number(i) + 1) +'</th>' +
+                                            '<td> <p style="width: 150px">' + bill[i].name + 'aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb</p></td>' +
+                                            '<td> <p class="des" style="width: 50px">' + bill[i].size + '</p></td>' +
+                                            '<td> <p class="des" style="width: 20px">' + bill[i].num + '</p></td>' +
+                                            '<td> <p class="des" style="width: 50px">' + bill[i].price + '</p></td>' +
+                                            '<td> <p class="des" style="width: 50px">' + bill[i].num * bill[i].price + '</p></td>' +
+                                            '<td> <p class="des" style="width: 200px">' + bill[i].toppingList + '</p></td>' +
+                                            '<td style="width: 70px">' +
+                                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" +
+                                            '</td>' +
+                                            '<td style="width: 70px">' +
+                                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-warning btn-round text-white mr-1' onclick='editMinusItem(" + i + ")'>GIẢM</a>" +
+                                            '</td>' +
+                                            '<td style="width: 70px">' +
+                                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-success btn-round text-white mr-1' onclick='editAddItem(" + i + ")'>TĂNG</a>" +
+                                            '</td>' +
+                                            '<td style="width: 70px">' +
+                                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-danger btn-round text-white mr-1' onclick='editDeleteItem(" + i +")'>XÓA</a>" +
+                                            '</td>' +
+                                            '</tr>';
+                        elementContentBill.innerHTML += html;
+                    }, 350);
+                    
+                    // console.log(html);
+                    // let html = '<div class="row row-bill_' + i.toString() + '">' + 
+                    //                 '<div class="card card-pricing bg-dark mr-3 ml-3 pl-3 pr-3">' + 
+                    //                         '<div class="card-body" id="bill_' + i.toString() +'">' +
+                    //                             '<div class="card-icon">' +
+                    //                                 '<i class="material-icons">business</i>' +
+                    //                             '</div>' +
+                    //                             '<h3 class="card-title">' + bill[i].name + ' (' + convertNumToStringHaveDot(bill[i].price * bill[i].num) + ' vnđ)' + '</h3>' + 
+                    //                             '<p class="card-description">' + 
+                    //                                 'Số lượng: ' + '<span class="text-info">' + bill[i].num + '</span>' + '; Size: ' + '<span class="text-info">' +  bill[i].size + '</span>' +'; Topping: ' + '<span class="text-info">' + bill[i].toppingList + '</span>' + 
+                    //                             '</p>' +
+                    //                             "<a href='#pablo' class='btn btn-white btn-round text-dark mr-1' onclick='editDeleteItem(" + i +")'>XÓA</a>" +
+                    //                             "<a href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" + //mã hóa json truyền vào hàm trong js sẽ chuyển thành object
+                    //                             "<a href='#pablo' class='btn btn-danger btn-round text-white mr-1' onclick='editMinusItem(" + i + ")'>GIẢM</a>" +
+                    //                             "<a href='#pablo' class='btn btn-success btn-round text-white mr-1' onclick='editAddItem(" + i + ")'>TĂNG</a>" +
+                    //                         '</div>' +
+                    //                 '</div>' +
+                    //             '</div>';
+            // let newcontent = document.createElement('div');
+            // newcontent.innerHTML = html;
+            // while (newcontent.firstChild)
+            // {
+            //     elementContentBill.appendChild(newcontent.firstChild);
+            // }
                 }
             });     
         }
+        console.log(html);
+
+    }
+
+    function deleteOrder(MaDM)
+    {
+        let func = {};
+        func.name = 'deleteOrder';
+        func.MaDM = MaDM;
+        // console.log(order.toString());
+        $.ajax({
+            type: "POST",
+            url: "../models/M_BanHang.php",
+            data: {func: JSON.stringify(func)},
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Đang cập nhật tình trạng phục vụ',
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    timer: 750
+                });
+                Swal.showLoading();
+                loadBlender('');
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('#tbFindOrder').on('input', function(){
+            loadBlender($(this).val());
+        });
+    });
+
+    var timerOrder = setInterval(() => {
+        // console.log($('#tbFindOrder').val() == '');
+        if (!$('#billBlender').is(':visible') || ($('#badgeOrderFinish').text() == '0'))
+        {
+            // console.log('vào');
+            loadBlender('');
+        }
+    }, 1000);
+
+    function loadBlender(stringToFind)
+    {
+        let func = {};
+        func.name = 'getOrders';
+        $.ajax({
+            type: "POST",
+            url: "../models/M_Blender.php",
+            data: {func: JSON.stringify(func)},
+            success: function (response) {
+                let data = JSON.parse(response);
+                // console.log(JSON.parse(response));    
+                document.getElementById('blenderCustomer').innerHTML = '';
+                let countOrderFinish = 0;
+                for (let i = 0; i < data.length; i++)
+                {
+                    if (stringToFind != '' && !checkSameName(data[i][0]['SoBan'], stringToFind))
+                        continue;
+                    if (data[i][0]['TinhTrang'] != 'phuc vu')
+                        continue;
+                    countOrderFinish++;
+                    let html = '<div id="row' + data[i][0]['MaDM'] +'" class="row blenderOrders" style="margin: 0">' +
+                                    '<div id="accordion' + data[i][0]['MaDM'] +'" role="tablist">' +
+                                        '<div class="card card-collapse" style="width: 70vw; text-align: center;">' +
+                                            '<div class="card-header bg-light border-primary" style=" background-color: white" role="tab" id="heading">' +
+                                                '<h5 class="mb-0" style="font-size: 20px; font-weight: 500;">' +
+                                                    '<a id="title" data-toggle="collapse" href="#collapse' + data[i][0]['MaDM'] +'" aria-expanded="true" aria-controls="collapse" style="display: flex; color: black">' +
+                                                        'Order <br>' + data[i][0]['SoBan'] +
+                                                        '<i class="material-icons">keyboard_arrow_down</i>' +
+                                                        '<div style="display: flex; margin-left: 80%; ">' +
+                                                            '<button type="button" rel="tooltip" class="btn btn-simple btn-warning" style=" font-weight: 700; background-color: white; color: black" onclick="deleteOrder(\'' + data[i][0]['MaDM'] + '\')"> ' +
+                                                                'PHỤC VỤ' + 
+                                                                '<i class="material-icons">person</i>' +
+                                                            '</button>' +
+                                                        '</div>' +
+                                                    '</a>' +
+                                                '</h5>' +
+                                            '</div>' +
+                                            '<div id="collapse' + data[i][0]['MaDM'] +'" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion' + data[i][0]['MaDM'] +'" style="text-align: center;">' +
+                                                '<div class="card-body">' +
+                                                    '<table class="table">' +
+                                                        '<thead>' +
+                                                            '<tr>' +
+                                                                '<th class="text-center" style="font-weight: 500;">STT</th>' +
+                                                                '<th style="width: 300px; font-weight: 500;">Tên món</th>'+
+                                                                '<th style="width: 300px; font-weight: 500;">Số lượng</th>' +
+                                                                '<th style="width: 300px; font-weight: 500;">Kích cỡ</th>' +
+                                                                '<th style="max-width: 100px; font-weight: 500;">Topping</th>' +
+                                                            '</tr>' +
+                                                        '</thead>' +
+                                                        '<tbody id="content">';
+                                                        for (let j = 0; j < data[i][1].length; j++)
+                                                        {
+                                                            html +=
+                                                                '<tr>' +
+                                                                    '<td class="text-center" style="width: 50px;">' + (j + 1) +'</td>' +
+                                                                    '<td>'+ data[i][1][j][0]['TenMon'] + '</td>' +
+                                                                    '<td>' + data[i][1][j][0]['SoLuong'] + '</td>' +
+                                                                    '<td>' + data[i][1][j][0]['TenDonVi'] + '</td>' + 
+                                                                    '<td style="max-width: 400px;">' +
+                                                                        data[i][1][j][1] +
+                                                                    '</td>' +
+                                                                '</tr>'
+                                                        }
+                                                        '</tbody>' +
+                                                    '</table>' +
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>';
+                    document.getElementById('blenderCustomer').innerHTML += html;
+                }    
+                document.getElementById('badgeOrderFinish').innerHTML = countOrderFinish;
+                return true;
+            },
+            error(jq, text, err)
+            {
+                return false;
+            }
+        });
     }
 </script>
 
 <?php
     include_once '../models/M_BanHang.php';
+    include_once '../models/M_Blender.php';
     //include '../models/M_General_CMD.php';
 
     if (1 == 2)
