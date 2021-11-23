@@ -120,7 +120,6 @@
                         </button>
                     </div>
                 </div>
-
                 <div class="card-body">
                     <form>
                         <div class="row">
@@ -141,7 +140,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class=" row">
+                        <div class="row">
                             <div class=" col-md-5">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Lương</label>
@@ -169,7 +168,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group bmd-form-group">

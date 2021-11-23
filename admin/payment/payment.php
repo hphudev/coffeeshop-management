@@ -169,8 +169,8 @@
                                 <i class="material-icons guest">help</i>
                             </div>
                             <div class="col-md-6 text-right">
-                                <h4 id="customer" class="font-weight-bold">
-                                    Danh
+                                <h4 id="" class="font-weight-bold customer">
+                                    null
                                 </h4>
                             </div>
                         </div>
@@ -214,7 +214,7 @@
                                 <i class="material-icons promotion">help</i>
                             </div>
                             <div class="col-md-6 text-right">
-                                <h4 id="discount" class="font-weight-bold">
+                                <h4 id="" class="font-weight-bold discount">
                                     0
                                 </h4>
                             </div>
@@ -286,7 +286,7 @@
         var total_v = Number($("#total").html())
         var excess = $("#excess")
         var excess_v = 0;
-        var discount = $("#discount")
+        var discount = $(".discount")
         var discount_v = 0
         var pay = $("#pay")
         var pay_v = total_v - discount_v
@@ -356,9 +356,10 @@
             return parseFloat(s.replace(/,/g, ''))
         }
 
-        function updateDiscount(amount) {
+        function updateDiscount(code, amount) {
             discount_v = toInt(amount)
             discount.html(toMoney(discount_v))
+            discount.attr('id', code)
             pay_v = total_v - discount_v;
             pay.html(toMoney(pay_v))
             calculateExcess()
@@ -374,8 +375,11 @@
                 },
                 beforeSend: function() {},
                 success: function(response) {
+                    // Swal.fire({
+                    //     title: response,
+                    // })
                     var title = "";
-                    if (response == "error") {
+                    if (response.includes("error")) {
                         title = `Mã giảm giá không hợp lệ!`
                     } else if (response == "expired") {
                         title = `Mã giảm giá đã hết hạn!`
@@ -383,7 +387,8 @@
                         title = `Mã giảm giá đã hết lượt sử dụng`
                     } else {
                         title = `Áp dụng thành công!`
-                        updateDiscount(response)
+                        $arr = response.split("\n")
+                        updateDiscount($arr[0], $arr[1])
                     }
                     Swal.fire({
                         title: title,
@@ -397,7 +402,32 @@
         }
 
         function checkGuest(guestNumber) {
-            // Check Khach hang info here
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
+                data: {
+                    action: "findKH",
+                    sdt: guestNumber,
+                },
+                beforeSend: function() {},
+                success: function(response) {
+                    if (response == 'error') {
+                        Swal.fire(
+                            "Thất bại",
+                            "Không tìm thấy khách hàng",
+                            "error"
+                        )
+                    } else {
+                        $arr = response.split("\n")
+                        $('.customer').html($arr[0])
+                        $('.customer').attr('id', $arr[1])
+                    }
+                },
+                complete: function() {},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
         }
 
         function checkBillInfo() {
@@ -418,8 +448,10 @@
                 url: "/coffeeshopmanagement/controllers/C_HoaDon.php",
                 data: {
                     action: 'hoadon',
+                    order: 'dm001',
+                    discount_id: $('.discount').attr('id'),
                     date: $('#date').val(),
-                    customer: 'kh001',
+                    customer: $('.customer').attr('id'),
                     discount: discount_v,
                     pay: pay_v,
                     payed: payed_v,
@@ -466,7 +498,7 @@
                     if (isNaN(result.value))
                         checkPromotion(result.value)
                     else
-                        updateDiscount(result.value)
+                        updateDiscount("null", result.value)
                 }
             })
         })

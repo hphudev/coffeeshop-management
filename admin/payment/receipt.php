@@ -1,7 +1,6 @@
-<style>
-</style>
 
 <div class="container receipt">
+    <!-- Thong tin quan -->
     <div class="row">
         <div class="col-md-6">
             <h3 class="text-center font-weight-bold">
@@ -20,6 +19,7 @@
             <hr />
         </div>
     </div>
+    <!-- Thong tin hoa don -->
     <div class="row">
         <div class="col-md-6">
             <div class="row">
@@ -63,12 +63,15 @@
                     Khách hàng:
                 </div>
                 <div class="col-md-6">
-                    null
+                    <?php
+                    echo $KH->get_HoTen()
+                    ?>
                 </div>
             </div>
 
         </div>
     </div>
+    <!-- Chi tiet hoa don -->
     <div class="row">
         <div class="col-md-6">
             <table id="tableNV" class="table table-hover ">
@@ -93,6 +96,7 @@
             </table>
         </div>
     </div>
+    <!-- Tong hop -->
     <div class="row">
         <div class="col-md-6">
             <div class="row">

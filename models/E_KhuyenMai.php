@@ -2,6 +2,7 @@
 class KhuyenMai
 {
     private $MaKM;
+    private $Code;
     private $TenKM;
     private $ThoiGianBD;
     private $ThoiGianKT;
@@ -13,6 +14,7 @@ class KhuyenMai
     function __construct()
     {
         $this->MaKM =
+            $this->Code =
             $this->TenKM = "";
 
         $this->SoLuong =
@@ -21,29 +23,40 @@ class KhuyenMai
             $this->TienHDToiThieu = 0;
 
         $this->ThoiGianBD =
-            $this->ThoiGianKT = new DateTime();
+            $this->ThoiGianKT = 0;
     }
 
     function clone($row)
     {
         $this->MaKM = $row['MaKM'];
+        $this->Code = $row['Code'];
         $this->TenKM = $row['TenKM'];
-        //$this->ThoiGianBD = $row['ThoiGianBatDau'];
-        //$this->ThoiGianKT = $row['ThoiGianKetThuc'];
+        $this->ThoiGianBD = strtotime($row['ThoiGianBatDau']);
+        $this->ThoiGianKT = strtotime($row['ThoiGianKetThuc']);
         $this->SoLuong = $row['SoLuongPhatHanh'];
         $this->PhanTramKM = $row['PhanTramKM'];
         $this->TienKMToiDa = $row['TienKMToiDa'];
         $this->TienHDToiThieu = $row['TienHDToiThieu'];
     }
 
-    function set_MaKM($ma)
+    function set_MaKM($MaKM)
     {
-        $this->MaKM = $ma;
+        $this->MaKM = $MaKM;
     }
 
     function get_MaKM()
     {
         return $this->MaKM;
+    }
+
+    function set_Code($Code)
+    {
+        $this->Code = $Code;
+    }
+
+    function get_Code()
+    {
+        return $this->Code;
     }
 
     function set_TenKM($ten)

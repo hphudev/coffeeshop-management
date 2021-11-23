@@ -4,6 +4,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        
         $("#test").click(function() {
             $.ajax({
                 type: "POST",

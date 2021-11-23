@@ -4,6 +4,8 @@ include '../models/M_Mon.php';
 include '../models/M_NhanVien.php';
 include '../models/M_KhuyenMai.php';
 include '../models/M_General_CMD.php';
+include '../models/M_KhachHang.php';
+
 
 class C_HoaDon
 {
@@ -15,6 +17,8 @@ class C_HoaDon
         $ModelNhanVien = new Model_NhanVien();
         $ModelKhuyenMai = new Model_KhuyenMai();
         $ModelGeneral = new General_CMD();
+        $ModelKhachHang = new Model_KhachHang();
+
         if ($_POST['action'] == 'pay') {
             $goiMonId = $_POST['id'];
             $DatMon = $ModelHoaDon->get_DatMon($goiMonId);
@@ -29,18 +33,19 @@ class C_HoaDon
                 echo "error";
             } else {
                 $today = new DateTime('now');
-                if ($KhuyenMai->get_ThoiGianKT()->format("Y-m-d") < $today->format("Y-m-d")) {
+                if (date("Y-m-d", $KhuyenMai->get_ThoiGianKT()) < $today->format("Y-m-d")) {
                     echo "expired";
                 } else if ($KhuyenMai->get_SoLuong() < 0) {
                     echo "runout";
                 } else {
+                    echo $KhuyenMai->get_MaKM();
+                    echo "\n";
                     echo $KhuyenMai->get_TienKMToiDa();
                 }
-                //echo date_format($KhuyenMai->get_ThoiGianBD(), "DD/MM")
-                //echo $KhuyenMai->get_ThoiGianBD();
             }
         }
         if ($_POST['action'] == 'hoadon') {
+            // Cap nhat thong tin hoa don
             $HoaDon = new HoaDon();
             $HoaDon->set_MaHD($ModelGeneral->AutoGetID('hoadon', 'hd'));
             $HoaDon->set_MaNVLap($_SESSION['id']);
@@ -50,8 +55,24 @@ class C_HoaDon
             $HoaDon->set_TienKhuyenMai($_POST['discount']);
             $HoaDon->set_TongTienKH($_POST['payed']);
             $HoaDon->set_TienTraLai($_POST['excess']);
-            $HoaDon->set_ChiTietHoaDon($ModelHoaDon->get_HoaDonByDatMon('dm001'));
-            //$ModelHoaDon->add_HoaDon($HoaDon);
+            $HoaDon->set_ChiTietHoaDon($ModelHoaDon->get_HoaDonByDatMon($_POST['order']));
+            // $ModelHoaDon->add_HoaDon($HoaDon);
+            // Cap nhat thong tin khach hang
+            $KH = new KhachHang();
+            if ($_POST['customer'] != "") {
+                $KH = $ModelKhachHang->get_KhachHangDetails($_POST['customer']);
+                $KH->set_DiemTV($KH->get_DiemTV() + ($HoaDon->get_TongTienTT() / 1000) * $KH->get_LoaiTV()->get_TyLeTichDiem());
+                $KH->set_TongChi($KH->get_TongChi() + $HoaDon->get_TongTienTT());
+                $ModelKhachHang->update_KhachHang($KH);
+            }
+            // Cap nhap thong tin ma khuyen mai
+            if ($_POST['discount_id'] != "") {
+                $KhuyenMai = $ModelKhuyenMai->get_KhuyenMai($_POST['discount_id']);
+                $KhuyenMai->set_SoLuong($KhuyenMai->get_SoLuong() - 1);
+                $ModelKhuyenMai->update_KhuyenMai($KhuyenMai);
+            }
+
+
             $NhanVienThuNgan = $ModelNhanVien->get_NhanVienDetails($HoaDon->get_MaNVLap());
             include_once '../admin/payment/receipt.php';
         }

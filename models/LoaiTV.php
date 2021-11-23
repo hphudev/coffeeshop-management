@@ -2,12 +2,42 @@
 class KhachHang
 {
     private $MaKH;
-    private $MaLoaiTV;
+    private $LoaiTV;
     private $HoTen;
     private $SDT;
-    private $DiaChi;
+    private $GioiTinh;
     private $DiemTV;
     private $TongChi;
+    private $NgayDK;
+
+    function __construct()
+    {
+        $this->MaKH =
+            $this->LoaiTV =
+            $this->HoTen =
+            $this->SDT =
+            $this->GioiTinh = "";
+
+        $this->DiemTV =
+            $this->TongChi =  0;
+
+
+        $this->NgayDK = 0;
+    }
+
+    function clone($row)
+    {
+        $this->MaKH = $row['MaKH'];
+        $this->HoTen = $row['HoTen'];
+        $this->GioiTinh = $row['GioiTinh'];
+        $this->SDT = $row['SDT'];
+        $this->DiemTV = $row['DiemTV'];
+        $this->TongChi = $row['TongChi'];
+        $this->NgayDK = strtotime($row['NgayDangKy']);
+
+        $ModelKH = new Model_KhachHang();
+        $this->LoaiTV = $ModelKH->get_LoaiTV($row['MaLoaiTV']);
+    }
 
     function set_MaKH($MaKH)
     {
@@ -17,13 +47,13 @@ class KhachHang
     {
         return $this->MaKH;
     }
-    function set_MaLoaiTV($MaLoaiTV)
+    function set_LoaiTV($LoaiTV)
     {
-        $this->MaLoaiTV = $MaLoaiTV;
+        $this->LoaiTV = $LoaiTV;
     }
-    function get_MaLoaiTV()
+    function get_LoaiTV()
     {
-        return $this->MaLoaiTV;
+        return $this->LoaiTV;
     }
     function set_HoTen($HoTen)
     {
@@ -33,6 +63,14 @@ class KhachHang
     {
         return $this->HoTen;
     }
+    function set_GioiTinh($GioiTinh)
+    {
+        $this->GioiTinh = $GioiTinh;
+    }
+    function get_GioiTinh()
+    {
+        return $this->GioiTinh;
+    }
     function set_SDT($SDT)
     {
         $this->SDT = $SDT;
@@ -41,13 +79,13 @@ class KhachHang
     {
         return $this->SDT;
     }
-    function set_DiaChi($DiaChi)
+    function set_NgayDK($NgayDK)
     {
-        $this->DiaChi = $DiaChi;
+        $this->NgayDK = $NgayDK;
     }
-    function get_DiaChi()
+    function get_NgayDK()
     {
-        return $this->DiaChi;
+        return $this->NgayDK;
     }
     function set_DiemTV($DiemTV)
     {
@@ -74,6 +112,24 @@ class LoaiTV
     private $DiemLenHang;
     private $TyLeTichDiem;
     private $HangTV;
+
+    function __construct()
+    {
+        $this->MaLoaiTV =
+            $this->TenLoaiTV = "";
+        $this->DiemLenHang =
+            $this->TyLeTichDiem =
+            $this->HangTV = 0;
+    }
+
+    function clone($row)
+    {
+        $this->MaLoaiTV = $row['MaLoaiTV'];
+        $this->TenLoaiTV = $row['TenLoaiTV'];
+        $this->DiemLenHang = $row['DiemLenHang'];
+        $this->TyLeTichDiem = $row['TiLeTichLuy'];
+        $this->HangTV = $row['HangThanhVien'];
+    }
 
     function set_MaLoaiTV($MaLoaiTV)
     {
