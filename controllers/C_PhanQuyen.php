@@ -14,6 +14,14 @@ class C_PhanQuyen
                 echo "false";
             }
         }
+
+        if (isset($_POST['phanquyen'])) {
+            if ($ModelPhanQuyen->check_PhanQuyen($_SESSION['maCV'], $_POST['phanquyen'])) {
+                echo "true";
+            } else {
+                echo "false";
+            }
+        }
     }
 }
 

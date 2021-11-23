@@ -1,7 +1,8 @@
 <?php
+include 'E_ChiTietHoaDon.php';
 class HoaDon
 {
-    private $MaNV;
+    private $MaHD;
     private $MaKH;
     private $MaNVLap;
     private $NgayLap;
@@ -11,14 +12,48 @@ class HoaDon
     private $TienKhuyenMai;
     private $TienTraLai;
     private $GhiChu;
+    private $ChiTietHoaDon;
 
-    function get_MaNV()
+    function __construct()
     {
-        return $this->MaNV;
+        $this->MaHD =
+            $this->MaKH =
+            $this->MaNVLap =
+            $this->GhiChu = "";
+
+        $this->NgayLap =
+            $this->NgayThanhToan = new DateTime('now');
+
+        $this->TongTienTT =
+            $this->TongTienKH =
+            $this->TienKhuyenMai =
+            $this->TienTraLai = 0;
+
+        $this->ChiTietHoaDon = array();
     }
-    function set_MaNV($MaNV)
+
+    function clone($row)
     {
-        $this->MaNV = $MaNV;
+        $this->MaHD = $row['MaHD'];
+        $this->MaKH = $row['MaKH'];
+        $this->MaNVLap = $row['MaNVLap'];
+        $this->NgayLap = $row['NgayLap'];
+        $this->NgayThanhToan = $row['NgayThanhToan'];
+        $this->TongTienTT = $row['TongTienTT'];
+        $this->TongTienKH = $row['TongTienKH'];
+        $this->TienKhuyenMai = $row['TienKhuyenMai'];
+        $this->TienTraLai = $row['TienTraLai'];
+        $this->GhiChu = $row['GhiChu'];
+        $this->ChiTietHoaDon = $row['ChiTietHoaDon'];
+    }
+
+    function get_MaHD()
+    {
+        return $this->MaHD;
+    }
+    function set_MaHD($MaHD)
+    {
+        $this->MaHD = $MaHD;
     }
     function get_MaKH()
     {
@@ -92,54 +127,12 @@ class HoaDon
     {
         return $this->GhiChu;
     }
-}
-
-class CT_HoaDon
-{
-    private $MaHD;
-    private $MaMon;
-    private $SoLuong;
-    private $DonGia;
-    private $ThanhTien;
-
-    function set_MaHD($MaHD)
+    function set_ChiTietHoaDon($ChiTietHoaDon)
     {
-        $this->MaHD = $MaHD;
+        $this->ChiTietHoaDon = $ChiTietHoaDon;
     }
-    function get_MaHD()
+    function get_ChiTietHoaDon()
     {
-        return $this->MaHD;
-    }
-    function set_MaMon($MaMon)
-    {
-        $this->MaMon = $MaMon;
-    }
-    function get_MaMon()
-    {
-        return $this->MaMon;
-    }
-    function set_SoLuong($SoLuong)
-    {
-        $this->SoLuong = $SoLuong;
-    }
-    function get_SoLuong()
-    {
-        return $this->SoLuong;
-    }
-    function set_DonGia($DonGia)
-    {
-        $this->DonGia = $DonGia;
-    }
-    function get_DonGia()
-    {
-        return $this->DonGia;
-    }
-    function set_ThanhTien($ThanhTien)
-    {
-        $this->ThanhTien = $ThanhTien;
-    }
-    function get_ThanhTien()
-    {
-        return $this->ThanhTien;
+        return $this->ChiTietHoaDon;
     }
 }

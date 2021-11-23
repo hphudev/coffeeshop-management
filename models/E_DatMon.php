@@ -1,5 +1,5 @@
 <?php
-    class DatMon{
+    class DatMon {
         private $MaDM;
         private $SoBan;
         private $TongTien;
@@ -56,4 +56,3 @@
             return array();
         }
     }
-?>

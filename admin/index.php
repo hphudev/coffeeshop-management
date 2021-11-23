@@ -29,9 +29,10 @@ if (($_SESSION["id"] == "")) {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        html{
+        html {
             box-sizing: border-box;
         }
+
         body {
             border: 2px solid wheat;
             background-color: white;
@@ -59,7 +60,7 @@ if (($_SESSION["id"] == "")) {
             <div class="sidebar-wrapper">
                 <ul class="nav" style="font-weight: 500;">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.php?page=manage-customer_s-info" style="">
+                        <a class="nav-link" href="index.php?page=customer">
                             <i class="material-icons" style="color: orange">insert_chart_outlined</i>
                             <p>QUẢN LÝ KHÁCH HÀNG</p>
                         </a>
@@ -190,14 +191,8 @@ if (($_SESSION["id"] == "")) {
                 if (isset($_REQUEST['page'])) {
                     $page = $_REQUEST['page'];
                     switch ($page) {
-                        case 'manage-customer_s-info':
-                            include 'customer/manage-customer_s-info.php';
-                            break;
-                        case 'add-customer_s-info':
-                            include 'customer/add-customer_s-info.php';
-                            break;
-                        case 'change-customer_s-info':
-                            include 'customer/change-customer_s-info.php';
+                        case 'customer':
+                            include '../controllers/C_KhachHang.php';
                             break;
                         case 'staff':
                             include '../controllers/C_NhanVien.php';
