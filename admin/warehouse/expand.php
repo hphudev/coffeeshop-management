@@ -176,7 +176,7 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                             <button type="button" rel="tooltip" class="btn btn-success btn-edit-unit" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
+                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-unit">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
@@ -238,7 +238,7 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                             <button type="button" rel="tooltip" class="btn btn-success btn-edit-type" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
+                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-mater-type">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
@@ -300,7 +300,7 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                             <button type="button" rel="tooltip" class="btn btn-success btn-edit-supplier" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
+                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-supplier">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
@@ -455,6 +455,192 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                 console.log(obj_id);
             });
         });
+    });
+
+    //Nút xóa đơn vị tính
+    $(".btn-delete-unit").each(function(index) {
+        $(this).on("click", function() {
+            Swal.fire({
+                title: 'Xóa đơn vị tính',
+                text: 'Thao tác này sẽ xóa đơn vị tính và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                showDenyButton: true,
+                confirmButtonText: 'Hủy',
+                denyButtonText: `Xóa`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                } else if (result.isDenied) {
+                    action_type = "delete";
+                    obj_id = $($(".unit-id").get(index)).text();
+                    
+                    // Ajax config
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/C_DonViTinh.php',
+                        data: {
+                            action: action_type,
+                            unit_id: obj_id,
+                        },
+                        beforeSend: function () {
+                            
+                        },
+                        success: function (response) {
+                            var jsonData = JSON.parse(response);
+
+                            if (jsonData.success == "1")
+                            {
+                                Swal.fire(
+                                    'Thành công!',
+                                    'Đã xóa đơn vị tính',
+                                    'success'
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                            else {
+                                Swal.fire(
+                                    'Thất bại!',
+                                    'Vui lòng kiểm tra lại!',
+                                    'error'
+                                )
+                            }
+                        },
+                        complete: function() {
+                        
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                    });
+                }
+            })
+        })
+    });
+
+    //Nút xóa nhà cung cấp
+    $(".btn-delete-supplier").each(function(index) {
+        $(this).on("click", function() {
+            Swal.fire({
+                title: 'Xóa nhà cung cấp',
+                text: 'Thao tác này sẽ xóa nhà cung cấp và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                showDenyButton: true,
+                confirmButtonText: 'Hủy',
+                denyButtonText: `Xóa`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                } else if (result.isDenied) {
+                    action_type = "delete";
+                    obj_id = $($(".supplier-id").get(index)).text();
+                    
+                    // Ajax config
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/C_NhaCungCap.php',
+                        data: {
+                            action: action_type,
+                            supplier_id: obj_id,
+                        },
+                        beforeSend: function () {
+                            
+                        },
+                        success: function (response) {
+                            var jsonData = JSON.parse(response);
+
+                            if (jsonData.success == "1")
+                            {
+                                Swal.fire(
+                                    'Thành công!',
+                                    'Đã xóa nhà cung cấp',
+                                    'success'
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                            else {
+                                Swal.fire(
+                                    'Thất bại!',
+                                    'Vui lòng kiểm tra lại!',
+                                    'error'
+                                )
+                            }
+                        },
+                        complete: function() {
+                        
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                    });
+                }
+            })
+        })
+    });
+
+    //Nút xóa loại ng.vật liệu
+    $(".btn-delete-mater-type").each(function(index) {
+        $(this).on("click", function() {
+            Swal.fire({
+                title: 'Xóa loại nguyên vật liệu',
+                text: 'Thao tác này sẽ xóa loại nguyên vật liệu và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                showDenyButton: true,
+                confirmButtonText: 'Hủy',
+                denyButtonText: `Xóa`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                } else if (result.isDenied) {
+                    action_type = "delete";
+                    obj_id = $($(".type-id").get(index)).text();
+                    
+                    // Ajax config
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/C_LoaiNguyenVatLieu.php',
+                        data: {
+                            action: action_type,
+                            type_id: obj_id,
+                        },
+                        beforeSend: function () {
+                            
+                        },
+                        success: function (response) {
+                            var jsonData = JSON.parse(response);
+
+                            if (jsonData.success == "1")
+                            {
+                                Swal.fire(
+                                    'Thành công!',
+                                    'Đã xóa loại nguyên vật liệu',
+                                    'success'
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                            else {
+                                Swal.fire(
+                                    'Thất bại!',
+                                    'Vui lòng kiểm tra lại!',
+                                    'error'
+                                )
+                            }
+                        },
+                        complete: function() {
+                        
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                    });
+                }
+            })
+        })
     });
 
     function checkInput() {

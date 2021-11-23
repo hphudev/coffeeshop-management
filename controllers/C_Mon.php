@@ -115,6 +115,8 @@ class C_Mon
                     "GhiChu"=>$_POST['note'],
                     "NgayThem"=>$mysql_date_now,
                     "NgayChinhSuaLanCuoi"=>$mysql_date_now,
+                    "TinhTrang"=>'true',
+                    "SoLanDung"=>0
                 );
                 
                 $Mon = new Mon($data);
@@ -130,7 +132,7 @@ class C_Mon
             }
             elseif ($_POST['action']=="edit" && isset($_POST['name']) && isset($_POST['type']) && isset($_POST['unit'])
                 && isset($_POST['description']) && isset($_POST['note']) && isset($_POST['size']) && isset($_POST['price'])
-                && isset($_POST['id']))
+                && isset($_POST['id']) && isset($_POST['status']))
             {
                 if (isset($_FILES['file']['error']))
                 {
@@ -223,6 +225,8 @@ class C_Mon
                     "GhiChu"=>$_POST['note'],
                     "NgayThem"=>$mysql_date_now,
                     "NgayChinhSuaLanCuoi"=>$mysql_date_now,
+                    "SoLanDung"=>0,
+                    "TinhTrang" => $_POST['status'] 
                 );
 
                 $Mon = new Mon($data);

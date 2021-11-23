@@ -102,6 +102,18 @@ class C_PhieuKiem
                     echo json_encode(array('success' =>'0'));
                 }
             }
+            if ($_POST['action'] == "delete" && isset($_POST['pk_id']))
+            {
+                if ($ModelPhieuKiem->delete_PhieuKiem($_POST['pk_id']) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
+                }
+            }
         }
     }
 }

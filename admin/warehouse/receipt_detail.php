@@ -234,11 +234,12 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                                     <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
-                                                        <i class="material-icons">close</i>
-                                                    </button>
                                                 </td>';
                                             echo "</tr>";
+
+                                            // <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
+                                            //     <i class="material-icons">close</i>
+                                            // </button>
                                         }
                                     }
                                     else

@@ -214,9 +214,6 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                                     <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
-                                                        <i class="material-icons">close</i>
-                                                    </button>
                                                 </td>';
                                             echo "</tr>";
                                         }
@@ -233,63 +230,6 @@ function getTenNCC($NhaCungCapList, $maNCC)
                 </div>
             </div>
         </div>
-
-        <!-- chi tiết phiếu nhập -->
-        <!-- <div class="col-lg-8 col-xl-8 col-md-8 col-sm-12">
-            <div class="card">
-                <div class="card-header card-header-text card-header-info">
-                    <div class="card-text">
-                        <h4 class="card-title">Chi tiết phiếu nhập <strong class="pn-id-view"></strong></h4>
-                    </div>
-                </div>
-                <div class="card-body content-in-card">
-                    <div class="detail-information">
-                        <p class="pd-8 col-lg-6 col-xl-6">Nhân viên nhập: <strong class="staff-name">Mai Công Danh</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tên người giao: <strong class="shipper-name-view">Shipper</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Nhà cung cấp: <strong class="supplier-name-view">Vinamilk Inc</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tổng tiền: <strong class="total-amount-view">8000000</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tiền thanh toán: <strong class="pay-amount-view">8000000</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tiền nợ: <strong class="debt-amount-view">0</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Ghi chú: <strong class="note-view">Giao hàng trễ</strong></p>
-                    </div>
-
-                    <button class="btn btn-info btn-add-mater-type" data-toggle="modal" data-target="#myModal">
-                        <i class="material-icons">add</i>
-                        Thêm nguyên vật liệu
-                    </button>
-
-                    <div class="table-responsive">
-                        <table id="datatablesType" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
-                            <thead>
-                                <tr role="row">
-                                    <th class='text-center text-info'>STT</th>
-                                    <th class='text-center text-info'>Mã NVL</th>
-                                    <th class='text-center text-info'>Tên nguyên vật liệu</th>
-                                    <th class='text-center text-info'>Đơn vị tính</th>
-                                    <th class='text-center text-info'>Số lượng</th>
-                                    <th class='text-center text-info'>Đơn giá</th>
-                                    <th class='text-center text-info'>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                <th class='text-center'>STT</th>
-                                    <th class='text-center'>Mã NVL</th>
-                                    <th class='text-center'>Tên nguyên vật liệu</th>
-                                    <th class='text-center'>Đơn vị tính</th>
-                                    <th class='text-center'>Số lượng</th>
-                                    <th class='text-center'>Đơn giá</th>
-                                    <th class='text-center'>Thao tác</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
         <!-- hidden table lưu thông tin phiếu nhập -->
         <table class="d-none d-sm-none d-md-none d-lg-none d-xl-none">

@@ -68,6 +68,30 @@ class Model_NhaCungCap
         }
     }
 
+    public function delete_NCC($MaNCC)
+    {
+        include '../configs/config.php';
+        $sql = "SELECT * FROM nguyenvatlieu WHERE MaNCC='" . $MaNCC . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows == 0)
+        {
+            $sql = "SELECT * FROM phieunhap WHERE MaNCC='" . $MaNCC . "'";
+            $result = $conn->query($sql);
+            if ($result->num_rows == 0)
+            {
+                $sql = "DELETE FROM nhacungcap WHERE MaNCC='" . $MaNCC . "'";
+                $result = $conn->query($sql);
+                if ($result)
+                {
+                    return 1;
+                }
+                return 0;
+            }
+            return 0;
+        }
+        return 0;
+    }
+
     public function generate_MaNCC()
     {
         include 'M_General_CMD.php';

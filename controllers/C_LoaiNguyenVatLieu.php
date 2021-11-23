@@ -5,7 +5,7 @@ class C_LoaiNguyenVatLieu
 {
     public function invoke()
     {
-        if (isset($_POST['name']) && isset($_POST['action']))
+        if (isset($_POST['action']))
         {
             $ModelLoaiNVL = new Model_LoaiNguyenVatLieu();
 
@@ -37,6 +37,18 @@ class C_LoaiNguyenVatLieu
                 
                 $LoaiNVL = new LoaiNguyenVatLieu($data);
                 if ($ModelLoaiNVL->update_LoaiNguyenVatLieu($LoaiNVL) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
+                }
+            }
+            elseif ($_POST['action'] == "delete")
+            {
+                if ($ModelLoaiNVL->delete_LoaiNVL($_POST['type_id']) == 1)
                 {
                     $arr = array('success'=>'1');
                     echo json_encode($arr);

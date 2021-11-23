@@ -179,6 +179,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                     <th class='text-center text-success'>Tên món</th>
                                     <th class='text-center text-success'>Loại món</th>
                                     <th class='text-center text-success'>Số lượng</th>
+                                    <th class='text-center text-success'>Tình trạng</th>
                                     <th class='text-center text-success'>Thao tác</th>
                                 </tr>
                             </thead>
@@ -190,6 +191,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                     <th class='text-center'>Tên món</th>
                                     <th class='text-center'>Loại món</th>
                                     <th class='text-center'>Số lượng</th>
+                                    <th class='text-center'>Tình trạng</th>
                                     <th class='text-center'>Thao tác</th>
                                 </tr>
                             </tfoot>
@@ -199,6 +201,12 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                 {
                                     for ($i = 0; $i < count($MonList); $i++)
                                     {
+                                        $status = 'Sẵn sàng';
+                                        if ($MonList[$i]->get_TinhTrang() == 'false')
+                                        {
+                                            $status = 'Không sẵn sàng';
+                                        }
+
                                         echo "<tr role='row' class='odd'>";
                                         echo "<td class='text-center'>". ($i + 1) ."</td>";
                                         echo "<td class='text-center m-id'>". $MonList[$i]->get_MaMon() ."</td>";
@@ -206,6 +214,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                         echo "<td class='text-center name'><strong>". $MonList[$i]->get_TenMon() ."</strong></td>";//https://file.hstatic.net/200000286789/article/cafe-sua-1280x1000-be0b_0132690fe1e740ce8ece2e1526322851_1024x1024.jpg
                                         echo "<td class='text-center type-name'>". getTenLM($LoaiMonList, $MonList[$i]->get_MaLoaiMon()) ."</td>";
                                         echo "<td class='text-center quantity'>". $MonList[$i]->get_SoLuong() ."</td>";
+                                        echo "<td class='text-center status'>". $status ."</td>";
                                         echo '<td class="td-actions text-center">
                                                 <button type="button" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
                                                     <i class="material-icons">info</i>
@@ -409,6 +418,18 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                     </div>
                 </div>
 
+                <div class="form-group bmd-form-group sts-div">
+                    <div class="fields-group align-items-center">
+                        <p class="input-label text-left">Tình trạng: </p>
+                        <div class="togglebutton input-value">
+                            <label>
+                                <input id="ckb-status" type="checkbox" checked="">
+                                <span class="toggle"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Mô tả: </p>
@@ -522,6 +543,12 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 $("#note-val").val($($(".note").get(index)).text());
                 $("#add-date").text($($(".add-date-info").get(index)).text());
                 $("#last-mod-date").text($($(".last-mod-date-info").get(index)).text());
+                $(".sts-div").show();
+                if ($($(".status").get(index)).text() == "Sẵn sàng") {
+                    $("#ckb-status").prop('checked', true);
+                } else {
+                    $("#ckb-status").prop('checked', false);
+                }
                 $(".add-date-div").show();
                 $(".last-mod-date-div").show();
 
@@ -559,9 +586,17 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 $("#note-val").val($($(".note").get(index)).text());
                 $("#add-date").text($($(".add-date-info").get(index)).text());
                 $("#last-mod-date").text($($(".last-mod-date-info").get(index)).text());
+                $(".sts-div").show();
+                if ($($(".status").get(index)).text() == "Sẵn sàng") {
+                    $("#ckb-status").prop('checked', true);
+                } else {
+                    $("#ckb-status").prop('checked', false);
+                }
                 $(".add-date-div").show();
                 $(".last-mod-date-div").show();
 
+                sizeRowArr = [];
+                priceRowArr = [];
                 $("#sizeTable > tbody").empty();
                 initSizeAndPriceTable();
 
@@ -592,6 +627,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 $("#unit-val").text("Chọn ĐVT");
                 $("#description-val").val("");
                 $("#note-val").val("");
+                $(".sts-div").hide();
                 $(".add-date-div").hide();
                 $(".last-mod-date-div").hide();
                 $(".sizeRow").remove();
@@ -630,6 +666,28 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 )
             }
         });
+    });
+
+    //Switch tình trạng món
+    $('#ckb-status').on('click', function() {
+        if (action == 'edit') {
+            if ($(this).is(':checked') == false) {
+                Swal.fire({
+                    title: 'Thay đổi tình trạng món',
+                    text: 'Thao tác này sẽ ẩn món khỏi menu bán hàng. Bạn vẫn muốn tiếp tục?',
+                    showDenyButton: true,
+                    confirmButtonText: 'Hủy',
+                    denyButtonText: `Chắc chắn`,
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $("#ckb-status").prop('checked', true);
+                    } else if (result.isDenied) {
+                        $("#ckb-status").prop('checked', false);
+                    }
+                })
+            }
+        }
     });
 
     //Dropdown loại món
@@ -784,7 +842,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
     }
 
     function checkAddQuantityInput() {
-        if ($("#quantity-val").val() == "" || parseInt($("#quantity-val").val()) <= 0) {
+        if ($("#quantity-val").val() == "" || parseInt($("#quantity-val").val()) == 0) {
                 return false;
         }
         return true;
@@ -804,6 +862,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 formData.append('name', $("#name-val").val());
                 formData.append('type', $("#type-val").text());
                 formData.append('unit', $("#unit-val").text());
+                formData.append('status', $("#ckb-status").is(':checked') ? 'true' : 'false');
                 formData.append('description', $("#description-val").val());
                 formData.append('note', $("#note-val").val());
                 if (document.getElementById("photo").value != "") {
