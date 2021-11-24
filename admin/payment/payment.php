@@ -177,7 +177,7 @@
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <h4>
-                                    Số bàn
+                                    Số thứ tự
                                 </h4>
                             </div>
                             <div class="col-md-6 text-right">
@@ -265,9 +265,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="row" invisible>
+                    <h5 <?php echo "id='" . $DatMon->get_MaDM() . "'" ?> class="madm">
+
+                    </h5>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button id="" type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+            <div class=" modal-footer">
+                <button id="cancelPay" type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
                 <button id="confirmPay" type="button" class="btn btn-success">Thanh toán</button>
             </div>
         </div>
@@ -439,6 +444,7 @@
                 )
             } else {
                 addBill()
+
             }
         }
 
@@ -448,7 +454,7 @@
                 url: "/coffeeshopmanagement/controllers/C_HoaDon.php",
                 data: {
                     action: 'hoadon',
-                    order: 'dm001',
+                    order: $('.madm').attr('id'),
                     discount_id: $('.discount').attr('id'),
                     date: $('#date').val(),
                     customer: $('.customer').attr('id'),
@@ -456,11 +462,16 @@
                     pay: pay_v,
                     payed: payed_v,
                     excess: excess_v,
+                    position: $('#table').html()
                 },
                 beforeSend: function() {},
                 success: function(response) {
+                    // Swal.fire({
+                    //     title: response,
+                    // })
                     $('#section-to-print').html(response)
                     window.print()
+                    $("#thanhtoanModel").modal('hide')
                 },
                 complete: function() {},
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -521,6 +532,10 @@
 
         $("#confirmPay").click(function() {
             checkBillInfo();
+        })
+
+        $('#cancelPay').click(function() {
+
         })
     })
 </script>

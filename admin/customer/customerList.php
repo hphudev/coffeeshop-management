@@ -42,31 +42,33 @@
                             </tfoot>
                             <tbody>
                                 <?php
-                                for ($i = 0; $i < count($DSKhachHang); $i++) {
-                                    echo "<tr class='text-center' id='" . $DSKhachHang[$i]->get_MaKH() . "'>";
-                                    echo "<td class='text-center makh' >" . $DSKhachHang[$i]->get_MaKH() . "</td>";
-                                    echo "<td class='text-center hoten' >" . $DSKhachHang[$i]->get_HoTen() . "</td>";
-                                    echo "<td class='text-center sdt' >" . $DSKhachHang[$i]->get_SDT() . "</td>";
-                                    echo "<td class='text-center gioitinh' >" . $DSKhachHang[$i]->get_GioiTinh() . "</td>";
-                                    echo "<td class='text-center loaitv' >" . $DSKhachHang[$i]->get_LoaiTV()->get_TenLoaiTV() . "</td>";
-                                    echo "<td class='text-center diemtv' >" . $DSKhachHang[$i]->get_DiemTV() . "</td>";
-                                    echo "<td id='" . date("Y-m-d\TH:i", $DSKhachHang[$i]->get_NgayDK()) . "' class='text-center ngaydk' >" . date('Y-m-d', $DSKhachHang[$i]->get_NgayDK()) . "</td>";
-                                    echo "<td class='text-center tongchi' >" . $DSKhachHang[$i]->get_TongChi() . "</td>";
+                                if (count($DSKhachHang) > 0) {
+                                    for ($i = 0; $i < count($DSKhachHang); $i++) {
+                                        echo "<tr class='text-center' id='" . $DSKhachHang[$i]->get_MaKH() . "'>";
+                                        echo "<td class='text-center makh' >" . $DSKhachHang[$i]->get_MaKH() . "</td>";
+                                        echo "<td class='text-center hoten' >" . $DSKhachHang[$i]->get_HoTen() . "</td>";
+                                        echo "<td class='text-center sdt' >" . $DSKhachHang[$i]->get_SDT() . "</td>";
+                                        echo "<td class='text-center gioitinh' >" . $DSKhachHang[$i]->get_GioiTinh() . "</td>";
+                                        echo "<td class='text-center loaitv' >" . $DSKhachHang[$i]->get_LoaiTV()->get_TenLoaiTV() . "</td>";
+                                        echo "<td class='text-center diemtv' >" . $DSKhachHang[$i]->get_DiemTV() . "</td>";
+                                        echo "<td id='" . date("Y-m-d\TH:i", $DSKhachHang[$i]->get_NgayDK()) . "' class='text-center ngaydk' >" . date('Y-m-d', $DSKhachHang[$i]->get_NgayDK()) . "</td>";
+                                        echo "<td class='text-center tongchi' >" . $DSKhachHang[$i]->get_TongChi() . "</td>";
                                 ?>
-                                    <td class="td-actions text-center">
-                                        <button <?php
-                                                echo 'id="' . $DSKhachHang[$i]->get_MaKH() . '"'
-                                                ?> type="button" rel="tooltip" class="btn btnEditKH btn-link btn-warning btn-just-icon" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa thông tin">
-                                            <i class="material-icons">edit</i>
-                                        </button>
-                                        <button <?php
-                                                echo 'id="' . $DSKhachHang[$i]->get_MaKH() . '"'
-                                                ?> type="button" rel="tooltip" class="btn btnDeleteKH btn-link btn-danger btn-just-icon" data-toggle="tooltip" data-placement="top" title="Xóa khách hàng">
-                                            <i class="material-icons">close</i>
-                                        </button>
-                                    </td>
+                                        <td class="td-actions text-center">
+                                            <button <?php
+                                                    echo 'id="' . $DSKhachHang[$i]->get_MaKH() . '"'
+                                                    ?> type="button" rel="tooltip" class="btn btnEditKH btn-link btn-warning btn-just-icon" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa thông tin">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <button <?php
+                                                    echo 'id="' . $DSKhachHang[$i]->get_MaKH() . '"'
+                                                    ?> type="button" rel="tooltip" class="btn btnDeleteKH btn-link btn-danger btn-just-icon" data-toggle="tooltip" data-placement="top" title="Xóa khách hàng">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>
                                 <?php
-                                    echo "</tr>";
+                                        echo "</tr>";
+                                    }
                                 }
                                 ?>
                             </tbody>
@@ -191,6 +193,7 @@
         });
 
         function initModalData($row) {
+            alert($row.find('.hoten').html())
             $('#inputHoTen').attr('value', $row.find('.hoten').html())
             $('#inputSDT').attr('value', $row.find('.sdt').html())
             $('#inputNgayDK').attr('value', $row.find('.ngaydk').attr('id'))
@@ -355,6 +358,34 @@
 
         }
 
+        function checkPhanQuyen(PhanQuyen, Callback) {
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
+                data: {
+                    phanquyen: PhanQuyen,
+                },
+                beforeSend: function() {
+
+                },
+                success: function(response) {
+                    if (response == "true") {
+                        Callback()
+                    } else {
+                        Swal.fire(
+                            "Thất bại",
+                            "Bạn không có quyền thực hiện chức năng này!",
+                            "warning"
+                        )
+                    }
+                },
+                complete: function() {},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
+        }
+
         $(".mater-gender-opt").each(function(index) {
             $(this).on("click", function() {
                 $("#inputGioiTinh").text($(this).text());
@@ -368,36 +399,41 @@
         });
 
         $('#btnAddKH').click(function() {
-            modal.modal('show')
-            clearModalData()
-        })
-
-        $('.btnEditKH').click(function() {
-            var $row = $(this).closest('tr')
-            $("#btnConfirm").addClass('view')
-            modal.modal('show')
-            initModalData($row)
-        })
-
-        $('.btnDeleteKH').click(function() {
-            var $row = $(this).closest('tr')
-            Swal.fire({
-                title: 'Bạn có chắc chắn muốn xóa khách hàng?',
-                text: "Việc làm này sẽ không thể hoàn tác!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Đồng ý',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    deleteKH($row.find('.makh').html())
-                }
-
+            checkPhanQuyen('khachhang1', function() {
+                modal.modal('show')
+                clearModalData()
             })
         })
 
+        $('.btnEditKH').click(function() {
+            checkPhanQuyen('khachhang1', function() {
+                var $row = $(this).closest('tr')
+                $("#btnConfirm").addClass('view')
+                modal.modal('show')
+                initModalData($row)
+            })
+        })
+
+        $('.btnDeleteKH').click(function() {
+            checkPhanQuyen('khachhang1', function() {
+                var $row = $(this).closest('tr')
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn xóa khách hàng?',
+                    text: "Việc làm này sẽ không thể hoàn tác!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Đồng ý',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteKH($row.find('.makh').html())
+                    }
+
+                })
+            })
+        })
 
         $("#btnConfirm").click(function() {
             if (checkInfo()) {

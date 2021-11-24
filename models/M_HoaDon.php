@@ -30,7 +30,7 @@ class Model_HoaDon
         $CTDatMon = array();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                array_push($CTDatMon, new CT_DatMon($row));
+                array_push($CTDatMon, new ChiTietDatMon($row));
             }
             return $CTDatMon;
         }

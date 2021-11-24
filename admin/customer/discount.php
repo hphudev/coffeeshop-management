@@ -412,28 +412,28 @@
 
                 },
                 success: function(response) {
-                    // Swal.fire({
-                    //     title: response,
-                    // })
-                    if (response.includes("success"))
-                        Swal.fire(
-                            'Thành công',
-                            'Mã khuyến mãi đã được tạo!',
-                            'success'
-                        )
-                    else if (response.includes("exist"))
-                        Swal.fire(
-                            'Thất bại!',
-                            'Mã khuyến mãi đã tồn tại!',
-                            'error'
-                        )
-                    else {
-                        Swal.fire(
-                            'Thất bại!',
-                            'Đã xảy ra lỗi. Vui lòng thử lại',
-                            'error'
-                        )
-                    }
+                    Swal.fire({
+                        title: response,
+                    })
+                    // if (response.includes("success"))
+                    //     Swal.fire(
+                    //         'Thành công',
+                    //         'Mã khuyến mãi đã được tạo!',
+                    //         'success'
+                    //     )
+                    // else if (response.includes("exist"))
+                    //     Swal.fire(
+                    //         'Thất bại!',
+                    //         'Mã khuyến mãi đã tồn tại!',
+                    //         'error'
+                    //     )
+                    // else {
+                    //     Swal.fire(
+                    //         'Thất bại!',
+                    //         'Đã xảy ra lỗi. Vui lòng thử lại',
+                    //         'error'
+                    //     )
+                    // }
                 },
                 complete: function() {
                     modal2.modal('hide')
@@ -482,6 +482,34 @@
                 }
             })
 
+        }
+
+        function checkPhanQuyen(PhanQuyen, Callback) {
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
+                data: {
+                    phanquyen: PhanQuyen,
+                },
+                beforeSend: function() {
+
+                },
+                success: function(response) {
+                    if (response == "true") {
+                        Callback()
+                    } else {
+                        Swal.fire(
+                            "Thất bại",
+                            "Bạn không có quyền thực hiện chức năng này!",
+                            "warning"
+                        )
+                    }
+                },
+                complete: function() {},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
         }
 
         $('#btnFindKHInfo').click(function() {
@@ -535,40 +563,49 @@
         })
 
         $('#btnAddKM').click(function() {
-            modal.modal('show')
-            clearModalData()
+            checkPhanQuyen('khachhang3', function() {
+                modal.modal('show')
+                clearModalData()
+            })
         })
 
         $('#btnExchangeKM').click(function() {
-            modal2.modal('show')
-            clearModalData()
+            checkPhanQuyen('khachhang4', function() {
+                modal2.modal('show')
+                clearModalData()
+            })
         })
 
         $('.btnEditKM').click(function() {
-            var $row = $(this).closest('tr')
-            $("#btnConfirm").addClass('view')
-            modal.modal('show')
-            selectedKMID = $row.attr('id');
-            initModalData($row)
+            checkPhanQuyen('khachhang3', function() {
+                var $row = $(this).closest('tr')
+                $("#btnConfirm").addClass('view')
+                modal.modal('show')
+                selectedKMID = $row.attr('id');
+                initModalData($row)
+            })
         })
 
         $('.btnDeleteKM').click(function() {
-            var $row = $(this).closest('tr')
-            selectedKMID = $row.attr('id');
-            Swal.fire({
-                title: 'Bạn có chắc chắn muốn xóa khuyến mãi?',
-                text: "Việc làm này sẽ không thể hoàn tác!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Đồng ý',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    deleteKM()
-                }
+            checkPhanQuyen('khachhang3', function() {
+                var $row = $(this).closest('tr')
+                selectedKMID = $row.attr('id');
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn xóa khuyến mãi?',
+                    text: "Việc làm này sẽ không thể hoàn tác!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Đồng ý',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteKM()
+                    }
+                })
             })
+
         })
 
         $("#btnConfirm").click(function() {
