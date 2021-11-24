@@ -2,7 +2,7 @@
 include '../models/M_DonViTinh.php';
 include '../models/M_LoaiNguyenVatLieu.php';
 include '../models/M_NhaCungCap.php';
-//include '../models/M_TinhTrang.php';
+include '../models/M_TinhTrang.php';
 
 $ModelDonViTinh = new Model_DonViTinh();
 $DonViTinhList = $ModelDonViTinh->get_AllDonViTinh();
@@ -13,8 +13,8 @@ $LoaiNguyenVatLieuList = $ModelLoaiNguyenVatLieu->get_AllLoaiNguyenVatLieu();
 $ModelNhaCungCap = new Model_NhaCungCap();
 $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
 
-// $ModelTinhTrang = new Model_TinhTrang();
-// $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
+$ModelTinhTrang = new Model_TinhTrang();
+$TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
 ?>
 
 <style>
@@ -255,6 +255,68 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
             </div>
         </div>
 
+        <!-- tình trạng -->
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-header card-header-text card-header-warning">
+                    <div class="card-text">
+                        <h4 class="card-title">Tình trạng</h4>
+                    </div>
+                </div>
+                <div class="card-body content-in-card">
+                    <button class="btn btn-warning btn-add-sts" data-toggle="modal" data-target="#myModal">
+                        <i class="material-icons">add</i>
+                        Thêm t. trạng
+                    </button>
+
+                    <div class="table-responsive">
+                        <table id="datatablesType" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class='text-center text-warning'>STT</th>
+                                    <th class='text-center text-warning'>Mã tình trạng</th>
+                                    <th class='text-center text-warning'>Tên tình trạng</th>
+                                    <th class='text-center text-warning'>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th class='text-center'>STT</th>
+                                    <th class='text-center'>Mã tình trạng</th>
+                                    <th class='text-center'>Tên tình trạng</th>
+                                    <th class='text-center'>Thao tác</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <?php
+                                if ($TinhTrangList && count($TinhTrangList) > 0) {
+                                // output data of each row
+                                for ($i = 0; $i < count($TinhTrangList); $i++) {
+                                    echo "<tr role='row' class='odd'>";
+                                    echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                                    echo "<td class='text-center sts-id'>" . $TinhTrangList[$i]->get_MaTinhTrang() . "</td>";
+                                    echo "<td class='text-center sts-name'>" . $TinhTrangList[$i]->get_TenTinhTrang() . "</td>";
+                                    echo '<td class="td-actions text-center">
+                                            <button type="button" rel="tooltip" class="btn btn-success btn-edit-sts" data-target="#myModal" data-toggle="modal">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-sts">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>';
+                                    echo "</tr>";
+                                }
+                                } else {
+                                echo "Dữ liệu trống!";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- nhà cung cấp -->
         <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
             <div class="card">
@@ -404,6 +466,16 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
             $("#obj-name-val").val("");
         });
 
+        //add tình trạng
+        $(".btn-add-sts").on("click", function() {
+            object = "status";
+            action_type = "add-sts";
+            path = "../controllers/C_TinhTrang.php";
+            $(".input-label").text("Tên tình trạng:");
+            $(".modal-title").text("Thêm tình trạng");
+            $("#obj-name-val").val("");
+        });
+
         //add ncc
         $(".btn-add-supplier").on("click", function() {
             object = "supplier";
@@ -438,6 +510,20 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                 $(".input-label").text("Tên loại ng. vật liệu:");
                 $(".modal-title").text("Chỉnh sửa loại nguyên vật liệu");
                 $("#obj-name-val").val($($(".type-name").get(index)).text());
+                console.log(obj_id);
+            });
+        });
+
+        //edit tình trạng
+        $(".btn-edit-sts").each(function(index) {
+            $(this).on("click", function() {
+                object = "status";
+                action_type = "edit-sts";
+                obj_id = $($(".sts-id").get(index)).text();
+                path = "../controllers/C_TinhTrang.php";
+                $(".input-label").text("Tên tình trạng:");
+                $(".modal-title").text("Chỉnh sửa tình trạng");
+                $("#obj-name-val").val($($(".sts-name").get(index)).text());
                 console.log(obj_id);
             });
         });
@@ -616,6 +702,68 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                 Swal.fire(
                                     'Thành công!',
                                     'Đã xóa loại nguyên vật liệu',
+                                    'success'
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                            else {
+                                Swal.fire(
+                                    'Thất bại!',
+                                    'Vui lòng kiểm tra lại!',
+                                    'error'
+                                )
+                            }
+                        },
+                        complete: function() {
+                        
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                    });
+                }
+            })
+        })
+    });
+
+    //Nút xóa tình trạng
+    $(".btn-delete-sts").each(function(index) {
+        $(this).on("click", function() {
+            Swal.fire({
+                title: 'Xóa tình trạng',
+                text: 'Thao tác này sẽ xóa tình trạng và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                showDenyButton: true,
+                confirmButtonText: 'Hủy',
+                denyButtonText: `Xóa`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                } else if (result.isDenied) {
+                    action_type = "delete";
+                    obj_id = $($(".sts-id").get(index)).text();
+                    
+                    // Ajax config
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/C_TinhTrang.php',
+                        data: {
+                            action: action_type,
+                            sts_id: obj_id,
+                        },
+                        beforeSend: function () {
+                            
+                        },
+                        success: function (response) {
+                            var jsonData = JSON.parse(response);
+
+                            if (jsonData.success == "1")
+                            {
+                                Swal.fire(
+                                    'Thành công!',
+                                    'Đã xóa tình trạng',
                                     'success'
                                 ).then((result) => {
                                     if (result.isConfirmed) {

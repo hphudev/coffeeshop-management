@@ -150,6 +150,11 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
 <div class="container-fluid">
     <div class="flex-sp-bet below-menu-icon col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <h3 class="d-none d-sm-none d-md-none d-lg-block d-xl-block"><strong>Quản lý món</strong></h3>
+
+        <div class="buttons-group">
+            <div class="btn btn-success">MENU</div>
+            <div class="btn btn-default btn-item-type">Loại món</div>
+        </div>
     </div>
 
     <div class="line-break"></div>
@@ -524,6 +529,19 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         $('.fileinput').fileinput();
 
         $("#btnRemoveAllRow").addClass("disabledbutton");
+    });
+
+    //Nút tab loại món
+    $(".btn-item-type").on("click", function() {
+        if (checkQuyenMon()) {
+            window.location.href = "../admin/index.php?page=table&item-type";
+        } else {
+            Swal.fire(
+                'Thất bại!',
+                'Bạn không có quyền thực hiện thao tác này!',
+                'error'
+            )
+        }
     });
 
     //Nút xem thông tin

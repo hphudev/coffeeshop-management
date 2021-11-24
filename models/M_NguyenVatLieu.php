@@ -57,8 +57,7 @@ class Model_NguyenVatLieu
     {
         include '../configs/config.php';
         $sql = "UPDATE nguyenvatlieu SET MaLoaiNVL='" . $nvl->get_MaLoaiNVL() . "', TenNVL='" . $nvl->get_TenNVL().
-                "', SoLuongTon=" . $nvl->get_SoLuongTon() . ", MaDVT='" . $nvl->get_MaDVT() .
-                "', DonGiaNhap=" . $nvl->get_DonGiaNhap(). ", MaNCC='" . $nvl->get_MaNhaCungCap() .
+                "', MaDVT='" . $nvl->get_MaDVT() . "', MaNCC='" . $nvl->get_MaNhaCungCap() .
                 "', MaTinhTrang='" . $nvl->get_MaTinhTrang() . "' WHERE MaNVL='" . $nvl->get_MaNVL() . "'";
         $result = $conn->query($sql);
         if ($result) {
@@ -67,6 +66,36 @@ class Model_NguyenVatLieu
         else {
             return 0;
         }
+    }
+
+    public function delete_NguyenVatLieu($MaNVL)
+    {
+        include '../configs/config.php';
+        $sql = "SELECT * FROM ct_phieunhap WHERE MaNVL='" . $MaNVL . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows == 0)
+        {
+            $sql = "SELECT * FROM ct_phieuxuat WHERE MaNVL='" . $MaNVL . "'";
+            $result = $conn->query($sql);
+            if ($result->num_rows == 0)
+            {
+                $sql = "SELECT * FROM ct_phieukiem WHERE MaNVL='" . $MaNVL . "'";
+                $result = $conn->query($sql);
+                if ($result->num_rows == 0)
+                {
+                    $sql = "DELETE FROM nguyenvatlieu WHERE MaNVL='" . $MaNVL . "'";
+                    $result = $conn->query($sql);
+                    if ($result)
+                    {
+                        return 1;
+                    }
+                    return 0;
+                }
+                return 0;
+            }
+            return 0;
+        }
+        return 0;
     }
 
     public function generate_MaNVL()

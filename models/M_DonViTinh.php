@@ -96,6 +96,6 @@ class Model_DonViTinh
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("donvitinh", "dvt");
+        return $general_cmd->AutoGetID("donvitinh", "DVT");
     }
 }

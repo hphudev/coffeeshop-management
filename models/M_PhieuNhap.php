@@ -75,7 +75,7 @@ class Model_PhieuNhap
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("phieunhap", "pn");
+        return $general_cmd->AutoGetID("phieunhap", "PN");
     }
 }
 

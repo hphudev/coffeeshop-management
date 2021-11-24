@@ -195,7 +195,7 @@ function getTenTT($TinhTrangList, $maTT)
 
     <div class="line-break"></div>
 
-    <div class="content mt-24">
+    <!-- <div class="content mt-24">
         <div class="summary border-box flex-sp-bet">
             <?php
                 if ($NguyenVatLieuList && count($NguyenVatLieuList) > 0) {
@@ -205,7 +205,7 @@ function getTenTT($TinhTrangList, $maTT)
                 }
             ?>
         </div>
-    </div>
+    </div> -->
 
     <div class="data-box border-box flex-sp-bet mt-24">
         <div class="buttons-group align-right">
@@ -265,14 +265,14 @@ function getTenTT($TinhTrangList, $maTT)
                                     <button type="button" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
                                         <i class="material-icons">edit</i>
                                     </button>
+                                    <button type="button" rel="tooltip" class="btn btn-danger btn-delete-mater">
+                                        <i class="material-icons">close</i>
+                                    </button>
                                 </td>';
                             echo "</tr>";
-                            // <button type="button" rel="tooltip" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Xóa">
-                            //             <i class="material-icons">close</i>
-                            //         </button>
                         }
                         } else {
-                        echo "Dữ liệu trống!";
+                            echo "Dữ liệu trống!";
                         }
                     }
                     ?>
@@ -527,6 +527,68 @@ function getTenTT($TinhTrangList, $maTT)
                     )
                 }
             });
+        });
+
+        //Nút xóa ng.vật liệu
+        $(".btn-delete-mater").each(function(index) {
+            $(this).on("click", function() {
+                Swal.fire({
+                    title: 'Xóa nguyên vật liệu',
+                    text: 'Thao tác này sẽ xóa nguyên vật liệu và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                    showDenyButton: true,
+                    confirmButtonText: 'Hủy',
+                    denyButtonText: `Xóa`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        
+                    } else if (result.isDenied) {
+                        action_type = "delete";
+                        obj_id = $($(".material-id").get(index)).text();
+                        
+                        // Ajax config
+                        $.ajax({
+                            type: "POST",
+                            url: '../controllers/C_NguyenVatLieu.php',
+                            data: {
+                                action: action_type,
+                                mater_id: obj_id,
+                            },
+                            beforeSend: function () {
+                                
+                            },
+                            success: function (response) {
+                                var jsonData = JSON.parse(response);
+
+                                if (jsonData.success == "1")
+                                {
+                                    Swal.fire(
+                                        'Thành công!',
+                                        'Đã xóa nguyên vật liệu',
+                                        'success'
+                                    ).then((result) => {
+                                        if (result.isConfirmed) {
+                                            location.reload();
+                                        }
+                                    })
+                                }
+                                else {
+                                    Swal.fire(
+                                        'Thất bại!',
+                                        'Vui lòng kiểm tra lại!',
+                                        'error'
+                                    )
+                                }
+                            },
+                            complete: function() {
+                            
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                alert(errorThrown);
+                            }
+                        });
+                    }
+                })
+            })
         });
 
         //dropdowns in add modal
