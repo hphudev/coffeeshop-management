@@ -11,7 +11,7 @@
             {
                 include_once("../configs/config.php");
             }
-            $sql = 'SELECT * FROM mon';
+            $sql = "SELECT * FROM mon WHERE TinhTrang = 'true'";
             $result = $conn->query($sql);
             $itemList = array();
             if ($result->num_rows > 0)
@@ -198,7 +198,8 @@
             // echo json_encode($madm);
             if (isset($madm))
             {
-                echo Model_Sale::insertDetailOrder($data, $madm);
+                Model_Sale::insertDetailOrder($data, $madm);
+                echo $madm;
             }
             else
                 echo false;
@@ -231,6 +232,24 @@
             return $result;
         }
 
+        public static function deleteOrderFail()
+        {
+            if (!@include("../configs/config.php"))
+                include_once("../configs/config.php");
+            $sql = "SELECT * FROM datmon WHERE TinhTrang = 'da gui'";
+            $result = $conn->query($sql);
+            if ($result->num_rows > 0)
+            {
+                while ($row = $result->fetch_assoc())
+                {
+                    Model_Sale::deleteOrder($row['MaDM']);
+                    Model_Sale::deleteDetailOrder($row['MaDM']);
+                    Model_Sale::deleteTopping($row['MaDM']);
+                }
+            }
+            // $result = $conn->query($sql);
+            return $result;
+        }
     }
 
 ?>

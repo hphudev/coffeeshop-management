@@ -80,98 +80,127 @@
     function payOrder()
     {
         // if (sessionStorage`)
-        let bill = JSON.parse(sessionStorage.getItem('bill'));
-        if (bill === null || bill.length == 0)
-        {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Order không có món',
-                showConfirmButton: true,
-                timer: 2000
-            });
-            return;
-        }
-        else
-            Swal.fire({
-                icon: 'info',
-                title: 'Đang thanh toán',
-                text: 'Hệ thống đang gửi order lên nhà bếp và in phiếu thanh toán',
-                showConfirmButton: false,
-                allowOutsideClick: false
-                // timer: 800
-            });
-        Swal.showLoading();
-        setTimeout(() => {
-            let func = {};
-            // func.id = "MON001";
-            func.name = "saveOrder";
-            func.data = JSON.parse(sessionStorage.getItem('bill'));
-            console.log(func);
-            $.ajax({
-                type: "POST",
-                data: {func: JSON.stringify(func)},
-                url: "../models/M_BanHang.php",
-                // dataType: "json",
-                timeout: 5000,
-                success: function (response) {
-                    Swal.close();
-                    //console.log(response);
-                    sessionStorage.removeItem('bill');
-                    $("#bill").modal('hide');
-                    // if (true)
-                    // {
-                    //     Swal.fire({
-                    //         title: 'Thanh toán thành công',
-                    //         icon: 'success',
-                    //         showConfirmButton: false,
-                    //         timer: 700
-                    //     });
-                    // }
-                    // else
-                    // {
-                    //     Swal.fire({
-                    //         icon: 'error',
-                    //         title: 'Không thể thanh toán',
-                    //         text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
-                    //         showConfirmButton: true,
-                    //         timer: 3000 
-                    //     });
-                    // }
-                    
-                },
-                error: function(xmlhttprequest, textstatus, message) {
-                    if(textstatus==="timeout") {
+        let func = {};
+        func.name = "checkRight";
+        func.id = "order1";
+        $.ajax({
+            type: "POST",
+            url: "../models/M_BanHang.php",
+            data: {func: JSON.stringify(func)},
+            success: function (response) {
+                response = JSON.parse(response);
+                if (response == false)
+                {
+                    console.log("ok");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Bạn chưa có quyền thực hiện chức năng thanh toán',
+                        timer: 2500
+                    })
+                    .then((result) =>{
+                        return;
+                    });
+                }
+                else
+                {
+                    console.log(response);
+                    //------------------------
+                    let bill = JSON.parse(sessionStorage.getItem('bill'));
+                    console.log(bill);
+                    if (bill === null || bill.length == 0)
+                    {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Thời gian phản hồi quá lâu',
-                            text: 'Không thể thanh toán vì có sự cố máy chủ', 
+                            title: 'Order không có món',
                             showConfirmButton: true,
-                            timer: 3000 
+                            timer: 2000
                         });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Không thể thanh toán',
-                            text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
-                            showConfirmButton: true,
-                            timer: 3000 
-                        });
+                        return;
                     }
+                    else
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Đang thanh toán',
+                            text: 'Hệ thống đang gửi order lên nhà bếp và in phiếu thanh toán',
+                            showConfirmButton: false,
+                            allowOutsideClick: false
+                            // timer: 800
+                        });
+                    Swal.showLoading();
+                    setTimeout(() => {
+                        let func = {};
+                        // func.id = "MON001";
+                        func.name = "saveOrder";
+                        func.data = JSON.parse(sessionStorage.getItem('bill'));
+                        console.log(func);
+                        $.ajax({
+                            type: "POST",
+                            data: {func: JSON.stringify(func)},
+                            url: "../models/M_BanHang.php",
+                            // dataType: "json",
+                            timeout: 5000,
+                            success: function (response) {
+                                Swal.close();
+                                console.log(response);
+                                $("#bill").modal('hide');
+                                // sessionStorage.removeItem('bill');
+                                // if (true)
+                                // {
+                                //     Swal.fire({
+                                //         title: 'Thanh toán thành công',
+                                //         icon: 'success',
+                                //         showConfirmButton: false,
+                                //         timer: 700
+                                //     });
+                                // }
+                                // else
+                                // {
+                                //     Swal.fire({
+                                //         icon: 'error',
+                                //         title: 'Không thể thanh toán',
+                                //         text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
+                                //         showConfirmButton: true,
+                                //         timer: 3000 
+                                //     });
+                                // }
+                                
+                            },
+                            error: function(xmlhttprequest, textstatus, message) {
+                                if(textstatus==="timeout") {
+                                    Swal.fire({
+                                        icon: 'warning',
+                                        title: 'Thời gian phản hồi quá lâu',
+                                        text: 'Không thể thanh toán vì có sự cố máy chủ', 
+                                        showConfirmButton: true,
+                                        timer: 3000 
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Không thể thanh toán',
+                                        text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
+                                        showConfirmButton: true,
+                                        timer: 3000 
+                                    });
+                                }
+                            }
+                        });
+                        // func = {};
+                        // func.name = "getItemName";
+                        // func.id = "MON001";
+                        // $.ajax({
+                        //     type: "POST",
+                        //     url: "../models/M_BanHang.php",
+                        //     data: {func: JSON.stringify(func)},
+                        //     success: function (response) {
+                        //         console.log(response);
+                        //     }
+                        // });
+                    }, 1200); 
                 }
-            });
-            // func = {};
-            // func.name = "getItemName";
-            // func.id = "MON001";
-            // $.ajax({
-            //     type: "POST",
-            //     url: "../models/M_BanHang.php",
-            //     data: {func: JSON.stringify(func)},
-            //     success: function (response) {
-            //         console.log(response);
-            //     }
-            // });
-        }, 1200);
-       
+                
+            }
+        });
     }
 
     function saveWork()
@@ -877,6 +906,20 @@
 
     function loadBlender(stringToFind)
     {
+        if ($('#billBlender').hasClass('show'))
+        {
+            let func = {};
+            func.name = 'checkRight';
+            func.id = 'order2';
+            $.ajax({
+                type: "POST",
+                url: "../models/M_BanHang.php",
+                data: {func: JSON.stringify(func)},
+                success: function (response) {
+                    $('#billBlender').modal('hide');
+                }
+            });
+        }
         let func = {};
         func.name = 'getOrders';
         $.ajax({
@@ -961,27 +1004,45 @@
 <?php
     include_once '../models/M_BanHang.php';
     include_once '../models/M_Blender.php';
+    include_once '../models/M_PhanQuyen.php';
     //include '../models/M_General_CMD.php';
+    // session_start();
 
-    if (1 == 2)
-        die("Bạn không có quyền truy cập, ok?");
-
-    //$modelSale->sortItemListByNumChoice();
-    $itemList = Model_Sale::getItemListFromServer();
-    echo
-    '  
-        <script type="text/javascript">
-            sessionStorage.setItem("itemList", ' . json_encode($itemList) .')
-        </script>
-    ';
-    include('../admin/sale.php');
-    for ($i = 0; $i < count($itemList); $i++)
+    $modelPQ = new Model_PhanQuyen();
+    if (!$modelPQ->check_PhanQuyen($_SESSION['maCV'], "order0"))
     {
-        echo 
-        '
+        echo '<div class="card" style="position: relative; max-width: 500px; max-height: 500px; margin-left: 50%; margin-top: 20%; transform: translate(-50%, -50%)">
+                <div class="card-body ">
+                    <h6 class="card-category text-danger">
+                        <i class="material-icons">gavel</i> Cảnh báo Phân quyền
+                    </h6>
+                    <h4 class="card-title">
+                        Bạn chưa có quyền truy cập vào chức năng này
+                    </h4>
+                </div>
+            </div>';
+    }
+    else
+    {
+        $itemList = Model_Sale::getItemListFromServer();
+        echo
+        '  
             <script type="text/javascript">
-                checkVisionBadge(\''. $itemList[$i]->get_MaMon() .'\');
+                sessionStorage.setItem("itemList", ' . json_encode($itemList) .')
             </script>
         ';
+        include('../admin/sale.php');
+        for ($i = 0; $i < count($itemList); $i++)
+        {
+            echo 
+            '
+                <script type="text/javascript">
+                    checkVisionBadge(\''. $itemList[$i]->get_MaMon() .'\');
+                </script>
+            ';
+        }
+        Model_Sale::deleteOrderFail();
     }
+    //$modelSale->sortItemListByNumChoice();
+    
 ?>

@@ -459,6 +459,7 @@
                 },
                 beforeSend: function() {},
                 success: function(response) {
+                    sessionStorage.removeItem('bill');
                     $('#section-to-print').html(response)
                     window.print()
                 },

@@ -1,4 +1,7 @@
 <?php
+    if (!@include("../models/M_PhanQuyen.php"))
+        include_once("../models/M_PhanQuyen.php");
+
     class General_CMD
     {
         public function __construct()
@@ -57,6 +60,12 @@
                 array_push($res, $tmp);
             }
             return $res;
+        }
+
+        public static function checkRight($maQuyen)
+        {
+            $modelPQ = new Model_PhanQuyen();
+            return $modelPQ->check_PhanQuyen($_SESSION['maCV'], $maQuyen);
         }
 
     }

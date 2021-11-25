@@ -1,10 +1,11 @@
 <?php
     include_once "../models/M_Action_BanHang.php";
     include_once "../models/M_Action_Blender.php";
+    include_once "../models/M_General_CMD.php";
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-   
+
     if (isset($_POST['func']))
     {
         $data = json_decode($_POST['func']);
@@ -36,6 +37,14 @@
                 {
                     Model_Sale::deleteTopping($detailOrder[$i][0]->get_MaCTDM());
                 }
+            }
+            if ($data->name == "deleteOrderFail")
+            {
+                Model_Sale::deleteOrderFail();
+            }
+            if ($data->name == "checkRight")
+            {
+                echo json_encode(General_CMD::checkRight($data->id));
             }
         }
     }    
