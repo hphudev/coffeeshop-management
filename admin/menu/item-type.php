@@ -125,13 +125,13 @@
     <div class="sections-container">
         <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
             <div class="card">
-                <div class="card-header card-header-text card-header-success">
+                <div class="card-header card-header-text card-header-info">
                     <div class="card-text">
                         <h4 class="card-title">Loại món</h4>
                     </div>
                 </div>
                 <div class="card-body content-in-card">
-                    <button class="btn btn-success btn-add-type" data-toggle="modal" data-target="#myModal">
+                    <button class="btn btn-info btn-add-type" data-toggle="modal" data-target="#myModal">
                         <i class="material-icons">add</i>
                         Thêm loại món
                     </button>
@@ -140,10 +140,10 @@
                         <table id="datatablesType" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
                             <thead>
                                 <tr role="row">
-                                    <th class='text-center text-success'>STT</th>
-                                    <th class='text-center text-success'>Mã loại món</th>
-                                    <th class='text-center text-success'>Tên loại món</th>
-                                    <th class='text-center text-success'>Thao tác</th>
+                                    <th class='text-center text-info'>STT</th>
+                                    <th class='text-center text-info'>Mã loại món</th>
+                                    <th class='text-center text-info'>Tên loại món</th>
+                                    <th class='text-center text-info'>Thao tác</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -159,15 +159,15 @@
                                 if ($LoaiMonList && count($LoaiMonList) > 0) {
                                     // output data of each row
                                     for ($i = 0; $i < count($LoaiMonList); $i++) {
-                                        echo "<tr role='row' class='odd'>";
+                                        echo "<tr role='row' class='odd' id='" . $LoaiMonList[$i]->get_MaLoaiMon() . "'>";
                                         echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                         echo "<td class='text-center type-id'>" . $LoaiMonList[$i]->get_MaLoaiMon() . "</td>";
                                         echo "<td class='text-center type-name'>" . $LoaiMonList[$i]->get_TenLoaiMon() . "</td>";
                                         echo '<td class="td-actions text-center">
-                                                <button type="button" rel="tooltip" class="btn btn-success btn-edit-type" data-target="#myModal" data-toggle="modal">
+                                                <button type="button" id="' . $LoaiMonList[$i]->get_MaLoaiMon() . '" rel="tooltip" class="btn btn-success btn-edit-type" data-target="#myModal" data-toggle="modal">
                                                     <i class="material-icons">edit</i>
                                                 </button>
-                                                <button type="button" rel="tooltip" class="btn btn-danger btn-delete-type">
+                                                <button type="button" id="' . $LoaiMonList[$i]->get_MaLoaiMon() . '" rel="tooltip" class="btn btn-danger btn-delete-type">
                                                     <i class="material-icons">close</i>
                                                 </button>
                                             </td>';
@@ -236,20 +236,21 @@
         window.location.href = "../admin/index.php?page=table";
     });
 
-    //add đvt
+    //add loại món
     $(".btn-add-type").on("click", function() {
         action_type = "add-type";
         $(".modal-title").text("Thêm loại món");
         $("#obj-name-val").val("");
     });
 
-    //edit đvt
+    //edit loại món
     $(".btn-edit-type").each(function(index) {
         $(this).on("click", function() {
-            obj_id = $($(".type-id").get(index)).text();
+            var $row = $(this).closest('tr');
+            obj_id = $row.attr('id');
             action_type = "edit-type";
             $(".modal-title").text("Chỉnh sửa loại món");
-            $("#obj-name-val").val($($(".type-name").get(index)).text());
+            $("#obj-name-val").val($row.find('.type-name').text());
         });
     });
 
@@ -266,8 +267,9 @@
                 if (result.isConfirmed) {
                     
                 } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
+                    obj_id = $row.attr('id');
                     action_type = "delete-type";
-                    obj_id = $($(".type-id").get(index)).text();
                     
                     // Ajax config
                     $.ajax({

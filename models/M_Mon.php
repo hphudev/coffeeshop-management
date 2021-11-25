@@ -44,11 +44,11 @@ class Model_Mon
 
         $sql = "INSERT INTO
                         mon (MaMon, TenMon, MaLoaiMon, SoLuong, MaDVT, HinhAnh, MoTa, GhiChu, NgayThem, NgayChinhSuaLanCuoi, TinhTrang)
-                    VALUES
-                        ('" . $mon->get_MaMon() . "', '" . $mon->get_TenMon() . "', '" . $mon->get_MaLoaiMon() . "', " .
-            $mon->get_SoLuong() . ", '" . $mon->get_MaDVT() . "', '" . $mon->get_HinhAnh() . "', '" .
-            $mon->get_MoTa() . "', '" . $mon->get_GhiChu() . "', '" . $mon->get_NgayThem() . "', '" .
-            $mon->get_NgayChinhSuaLanCuoi() . "', 'true')";
+                VALUES
+                    ('" . $mon->get_MaMon() . "', '" . $mon->get_TenMon() . "', '" . $mon->get_MaLoaiMon() . "', " .
+                $mon->get_SoLuong() . ", '" . $mon->get_MaDVT() . "', '" . $mon->get_HinhAnh() . "', '" .
+                $mon->get_MoTa() . "', '" . $mon->get_GhiChu() . "', '" . $mon->get_NgayThem() . "', '" .
+                $mon->get_NgayChinhSuaLanCuoi() . "', 'true')";
         $result = $conn->query($sql);
         if ($result) {
             if ($ModelCTMon->addChiTietMon($mon->get_MaMon(), $sizeArr, $priceArr) == 1) {

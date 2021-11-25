@@ -189,20 +189,20 @@ function getTenNV($NhanVienList, $maNV)
                                         // output data of each row
                                         for ($i = 0; $i < count($PhieuXuatList); $i++)
                                         {
-                                            echo "<tr role='row' class='odd'>";
+                                            echo "<tr role='row' class='odd' id='" . $PhieuXuatList[$i]->get_MaPX() . "'>";
                                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center px-id'>" . $PhieuXuatList[$i]->get_MaPX() . "</td>";
                                             echo "<td class='text-center'>" . $PhieuXuatList[$i]->get_NgayLap() . "</td>";
                                             echo "<td class='text-center wh-staff'>" . getTenNV($NhanVienList, $PhieuXuatList[$i]->get_MaNVXuat()) . "</td>";
                                             echo "<td class='text-center iss-staff'>" . getTenNV($NhanVienList, $PhieuXuatList[$i]->get_MaNVNhan()) . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $PhieuXuatList[$i]->get_MaPX() . '" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">info</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $PhieuXuatList[$i]->get_MaPX() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-danger btn-delete-ep">
+                                                    <button type="button" id="' . $PhieuXuatList[$i]->get_MaPX() . '" rel="tooltip" class="btn btn-danger btn-delete-ep">
                                                         <i class="material-icons">close</i>
                                                     </button>
                                                 </td>';
@@ -222,63 +222,6 @@ function getTenNV($NhanVienList, $maNV)
             </div>
         </div>
 
-        <!-- chi tiết phiếu nhập -->
-        <!-- <div class="col-lg-8 col-xl-8 col-md-8 col-sm-12">
-            <div class="card">
-                <div class="card-header card-header-text card-header-info">
-                    <div class="card-text">
-                        <h4 class="card-title">Chi tiết phiếu nhập <strong class="pn-id-view"></strong></h4>
-                    </div>
-                </div>
-                <div class="card-body content-in-card">
-                    <div class="detail-information">
-                        <p class="pd-8 col-lg-6 col-xl-6">Nhân viên nhập: <strong class="staff-name">Mai Công Danh</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tên người giao: <strong class="shipper-name-view">Shipper</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Nhà cung cấp: <strong class="supplier-name-view">Vinamilk Inc</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tổng tiền: <strong class="total-amount-view">8000000</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tiền thanh toán: <strong class="pay-amount-view">8000000</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Tiền nợ: <strong class="debt-amount-view">0</strong></p>
-                        <p class="pd-8 col-lg-6 col-xl-6">Ghi chú: <strong class="note-view">Giao hàng trễ</strong></p>
-                    </div>
-
-                    <button class="btn btn-info btn-add-mater-type" data-toggle="modal" data-target="#myModal">
-                        <i class="material-icons">add</i>
-                        Thêm nguyên vật liệu
-                    </button>
-
-                    <div class="table-responsive">
-                        <table id="datatablesType" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
-                            <thead>
-                                <tr role="row">
-                                    <th class='text-center text-info'>STT</th>
-                                    <th class='text-center text-info'>Mã NVL</th>
-                                    <th class='text-center text-info'>Tên nguyên vật liệu</th>
-                                    <th class='text-center text-info'>Đơn vị tính</th>
-                                    <th class='text-center text-info'>Số lượng</th>
-                                    <th class='text-center text-info'>Đơn giá</th>
-                                    <th class='text-center text-info'>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                <th class='text-center'>STT</th>
-                                    <th class='text-center'>Mã NVL</th>
-                                    <th class='text-center'>Tên nguyên vật liệu</th>
-                                    <th class='text-center'>Đơn vị tính</th>
-                                    <th class='text-center'>Số lượng</th>
-                                    <th class='text-center'>Đơn giá</th>
-                                    <th class='text-center'>Thao tác</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                                
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-
         <!-- hidden notes -->
         <div class="d-none d-sm-none d-md-none d-lg-none d-xl-none">
             <?php
@@ -288,7 +231,7 @@ function getTenNV($NhanVienList, $maNV)
                     // output data of each row
                     for ($i = 0; $i < count($PhieuXuatList); $i++)
                     {
-                        echo "<p class='note'>" . $PhieuXuatList[$i]->get_GhiChu() . "</p>";
+                        echo "<p class='note' id='" . $PhieuXuatList[$i]->get_MaPX() . "'>" . $PhieuXuatList[$i]->get_GhiChu() . "</p>";
                     }
                 }
             }    
@@ -378,6 +321,16 @@ function getTenNV($NhanVienList, $maNV)
             }
         });
 
+        function getHiddenNoteIndex() {
+            for (let i = 0; i < $(".note").length; i++)
+            {
+                if ($($(".note").get(i)).attr('id') == obj_id) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         //mở rộng
         $(".btn-expand").on("click", function() {
             window.location.href = "../admin/index.php?page=werehouse&expand";
@@ -417,7 +370,8 @@ function getTenNV($NhanVienList, $maNV)
         // view phiếu xuất detail
         $(".btn-view-detail").each(function(index) {
             $(this).on("click", function() {
-                window.location.href = "../admin/index.php?page=werehouse&export&id=" + $($(".px-id").get(index)).text();
+                var $row = $(this).closest('tr');
+                window.location.href = "../admin/index.php?page=werehouse&export&id=" + $row.attr('id');
             });
         })
 
@@ -437,77 +391,80 @@ function getTenNV($NhanVienList, $maNV)
         // edit phiếu xuất
         $(".btn-edit").each(function(index) {
             $(this).on("click", function() {
-                $("#wh-staff-val").text($($(".wh-staff").get(index)).text());
-                $("#iss-staff-val").text($($(".iss-staff").get(index)).text());
-                $("#note-val").val($($(".note").get(index)).text());
+                var $row = $(this).closest('tr');
+                action_type = "edit";
+                obj_id = $row.attr('id');
+
+                $("#wh-staff-val").text($row.find(".wh-staff").text());
+                $("#iss-staff-val").text($row.find(".iss-staff").text());
+                $("#note-val").val($($(".note").get(getHiddenNoteIndex())).text());
 
                 $(".modal-title").text("Chỉnh sửa phiếu xuất");
-                action_type = "edit";
-                obj_id = $($(".px-id").get(index)).text();
             });
         })
-    });
 
-    //Nút xóa phiếu xuất
-    $(".btn-delete-ep").each(function(index) {
-        $(this).on("click", function() {
-            Swal.fire({
-                title: 'Xóa phiếu xuất',
-                text: 'Thao tác này sẽ xóa phiếu xuất, chi tiết phiếu xuất và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
-                showDenyButton: true,
-                confirmButtonText: 'Hủy',
-                denyButtonText: `Xóa`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    
-                } else if (result.isDenied) {
-                    action_type = "delete";
-                    obj_id = $($(".px-id").get(index)).text();
-                    
-                    // Ajax config
-                    $.ajax({
-                        type: "POST",
-                        url: '../controllers/C_PhieuXuat.php',
-                        data: {
-                            action: action_type,
-                            px_id: obj_id,
-                        },
-                        beforeSend: function () {
-                            
-                        },
-                        success: function (response) {
-                            var jsonData = JSON.parse(response);
-
-                            if (jsonData.success == "1")
-                            {
-                                Swal.fire(
-                                    'Thành công!',
-                                    'Đã xóa phiếu xuất',
-                                    'success'
-                                ).then((result) => {
-                                    if (result.isConfirmed) {
-                                        location.reload();
-                                    }
-                                })
-                            }
-                            else {
-                                Swal.fire(
-                                    'Thất bại!',
-                                    'Vui lòng kiểm tra lại!',
-                                    'error'
-                                )
-                            }
-                        },
-                        complete: function() {
+        //Nút xóa phiếu xuất
+        $(".btn-delete-ep").each(function(index) {
+            $(this).on("click", function() {
+                Swal.fire({
+                    title: 'Xóa phiếu xuất',
+                    text: 'Thao tác này sẽ xóa phiếu xuất, chi tiết phiếu xuất và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                    showDenyButton: true,
+                    confirmButtonText: 'Hủy',
+                    denyButtonText: `Xóa`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
                         
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            alert(errorThrown);
-                        }
-                    });
-                }
+                    } else if (result.isDenied) {
+                        var $row = $(this).closest('tr');
+                        action_type = "delete";
+                        obj_id = $row.attr('id');
+                        
+                        // Ajax config
+                        $.ajax({
+                            type: "POST",
+                            url: '../controllers/C_PhieuXuat.php',
+                            data: {
+                                action: action_type,
+                                px_id: obj_id,
+                            },
+                            beforeSend: function () {
+                                
+                            },
+                            success: function (response) {
+                                var jsonData = JSON.parse(response);
+
+                                if (jsonData.success == "1")
+                                {
+                                    Swal.fire(
+                                        'Thành công!',
+                                        'Đã xóa phiếu xuất',
+                                        'success'
+                                    ).then((result) => {
+                                        if (result.isConfirmed) {
+                                            location.reload();
+                                        }
+                                    })
+                                }
+                                else {
+                                    Swal.fire(
+                                        'Thất bại!',
+                                        'Vui lòng kiểm tra lại!',
+                                        'error'
+                                    )
+                                }
+                            },
+                            complete: function() {
+                            
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                alert(errorThrown);
+                            }
+                        });
+                    }
+                })
             })
-        })
+        });
     });
 
     function checkInput() {

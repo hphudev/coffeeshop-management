@@ -204,17 +204,17 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                                         for ($i = 0; $i < count($CTPhieuXuat); $i++)
                                         {
                                             $NguyenVatLieu = $ModelNguyenVatLieu->get_NguyenVatLieuDetails($CTPhieuXuat[$i]->get_MaNVL());
-                                            echo "<tr role='row' class='odd'>";
+                                            echo "<tr role='row' class='odd' id='" . $CTPhieuXuat[$i]->get_MaNVL() . "'>";
                                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center mater-id'>" . $CTPhieuXuat[$i]->get_MaNVL() . "</td>";
                                             echo "<td class='text-center mater-name'>" . $NguyenVatLieu->get_TenNVL() . "</td>";
                                             echo "<td class='text-center'>" . getTenDVT($DonViTinhList, $NguyenVatLieu->get_MaDVT()) . "</td>";
                                             echo "<td class='text-center mater-quantity'>" . $CTPhieuXuat[$i]->get_SoLuong() . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $CTPhieuXuat[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-danger btn-delete" data-target="#myDeleteModal" data-toggle="modal" data-placement="top" title="Xóa">
+                                                    <button type="button" id="' . $CTPhieuXuat[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-danger btn-delete" data-target="#myDeleteModal" data-toggle="modal" data-placement="top" title="Xóa">
                                                         <i class="material-icons">close</i>
                                                     </button>
                                                 </td>';
@@ -372,27 +372,28 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
         // edit phiếu xuất
         $(".btn-edit").each(function(index) {
             $(this).on("click", function() {
-                $("#mater-val").text($($(".mater-name").get(index)).text());
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
+
+                $("#mater-val").text($row.find(".mater-name").text());
                 getMaterStockQuantity();
-                $("#quantity-val").val($($(".mater-quantity").get(index)).text());
-                $("#unitprice-val").val($($(".mater-unitprice").get(index)).text());
+                $("#quantity-val").val($row.find(".mater-quantity").text());
+                $("#unitprice-val").val($row.find(".mater-unitprice").text());
 
                 $(".modal-title").text("Chỉnh sửa nguyên vật liệu");
                 action_type = "edit";
-                obj_id = $($(".mater-id").get(index)).text();
-                console.log(obj_id);
             });
         })
 
         // xoá nvl
         $(".btn-delete").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 $(".modal-title").text("Xóa nguyên vật liệu");
 
                 action_type = "delete";
-                obj_id = $($(".mater-id").get(index)).text();
-                quantity_delete = $($(".mater-quantity").get(index)).text();
-                console.log(obj_id);
+                quantity_delete = $row.find(".mater-quantity").text();
             });
         })
 

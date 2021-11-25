@@ -251,7 +251,7 @@ function getTenTT($TinhTrangList, $maTT)
                         if (count($NguyenVatLieuList) > 0) {
                         // output data of each row
                         for ($i = 0; $i < count($NguyenVatLieuList); $i++) {
-                            echo "<tr role='row' class='odd'>";
+                            echo "<tr role='row' class='odd' id='" . $NguyenVatLieuList[$i]->get_MaNVL() . "'>";
                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                             echo "<td class='text-center material-id'>" . $NguyenVatLieuList[$i]->get_MaNVL() . "</td>";
                             echo "<td class='text-center material-name'><strong>" . $NguyenVatLieuList[$i]->get_TenNVL() . "</strong></td>";
@@ -262,10 +262,10 @@ function getTenTT($TinhTrangList, $maTT)
                             echo "<td class='text-center material-supplier'>" . getTenNCC($NhaCungCapList, $NguyenVatLieuList[$i]->get_MaNhaCungCap()) . "</td>";
                             echo "<td class='text-center material-status'>" . getTenTT($TinhTrangList, $NguyenVatLieuList[$i]->get_MaTinhTrang()) . "</td>";
                             echo '<td class="td-actions text-center">
-                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
+                                    <button type="button" id="' . $NguyenVatLieuList[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" rel="tooltip" class="btn btn-danger btn-delete-mater">
+                                    <button type="button" id="' . $NguyenVatLieuList[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-danger btn-delete-mater">
                                         <i class="material-icons">close</i>
                                     </button>
                                 </td>';
@@ -506,18 +506,16 @@ function getTenTT($TinhTrangList, $maTT)
         $(".btn-edit-data").each(function(index) {
             $(this).on("click", function(e) {
                 if (checkQuyenKho()) {
-                    nvl_id = $($(".material-id").get(index)).text();
-                    console.log(nvl_id);
+                    var $row = $(this).closest('tr');
+                    nvl_id = $row.attr('id');
 
                     submit_type = "edit-material";
                     $(".modal-title").text("Chỉnh sửa nguyên vật liệu");
-                    $("#material-name-val").val($($(".material-name").get(index)).text());
-                    $("#material-type-val").text($($(".material-type").get(index)).text());
-                    $("#material-unit-val").text($($(".material-unit").get(index)).text());
-                    $("#material-quantity-val").val($($(".material-quantity").get(index)).text());
-                    $("#material-unitprice-val").val($($(".material-unitprice").get(index)).text());
-                    $("#material-supplier-val").text($($(".material-supplier").get(index)).text());
-                    $("#material-status-val").text($($(".material-status").get(index)).text());
+                    $("#material-name-val").val($row.find('.material-name').text());
+                    $("#material-type-val").text($row.find(".material-type").text());
+                    $("#material-unit-val").text($row.find(".material-unit").text());
+                    $("#material-supplier-val").text($row.find(".material-supplier").text());
+                    $("#material-status-val").text($row.find(".material-status").text());
                 } else {
                     e.stopPropagation();
                     Swal.fire(
@@ -542,8 +540,9 @@ function getTenTT($TinhTrangList, $maTT)
                     if (result.isConfirmed) {
                         
                     } else if (result.isDenied) {
+                        var $row = $(this).closest('tr');
+                        obj_id = $row.attr('id');
                         action_type = "delete";
-                        obj_id = $($(".material-id").get(index)).text();
                         
                         // Ajax config
                         $.ajax({

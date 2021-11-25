@@ -168,15 +168,15 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                 if ($DonViTinhList && count($DonViTinhList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($DonViTinhList); $i++) {
-                                    echo "<tr role='row' class='odd'>";
+                                    echo "<tr role='row' class='odd' id='" . $DonViTinhList[$i]->get_MaDVT() . "'>";
                                     echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                     echo "<td class='text-center unit-id'>" . $DonViTinhList[$i]->get_MaDVT() . "</td>";
                                     echo "<td class='text-center unit-name'>" . $DonViTinhList[$i]->get_TenDVT() . "</td>";
                                     echo '<td class="td-actions text-center">
-                                            <button type="button" rel="tooltip" class="btn btn-success btn-edit-unit" data-target="#myModal" data-toggle="modal">
+                                            <button type="button" id="' . $DonViTinhList[$i]->get_MaDVT() . '" rel="tooltip" class="btn btn-success btn-edit-unit" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-unit">
+                                            <button type="button" id="' . $DonViTinhList[$i]->get_MaDVT() . '" rel="tooltip" class="btn btn-danger btn-delete-unit">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
@@ -230,22 +230,22 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                 if ($LoaiNguyenVatLieuList && count($LoaiNguyenVatLieuList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($LoaiNguyenVatLieuList); $i++) {
-                                    echo "<tr role='row' class='odd'>";
+                                    echo "<tr role='row' class='odd' id='" . $LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() . "'>";
                                     echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                     echo "<td class='text-center type-id'>" . $LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() . "</td>";
                                     echo "<td class='text-center type-name'>" . $LoaiNguyenVatLieuList[$i]->get_TenLoaiNVL() . "</td>";
                                     echo '<td class="td-actions text-center">
-                                            <button type="button" rel="tooltip" class="btn btn-success btn-edit-type" data-target="#myModal" data-toggle="modal">
+                                            <button type="button" id="' . $LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() . '" rel="tooltip" class="btn btn-success btn-edit-type" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-mater-type">
+                                            <button type="button" id="' . $LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() . '" rel="tooltip" class="btn btn-danger btn-delete-mater-type">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
                                     echo "</tr>";
                                 }
                                 } else {
-                                echo "Dữ liệu trống!";
+                                    echo "Dữ liệu trống!";
                                 }
                                 ?>
                             </tbody>
@@ -292,15 +292,15 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                 if ($TinhTrangList && count($TinhTrangList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($TinhTrangList); $i++) {
-                                    echo "<tr role='row' class='odd'>";
+                                    echo "<tr role='row' class='odd' id='" . $TinhTrangList[$i]->get_MaTinhTrang() . "'>";
                                     echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                     echo "<td class='text-center sts-id'>" . $TinhTrangList[$i]->get_MaTinhTrang() . "</td>";
                                     echo "<td class='text-center sts-name'>" . $TinhTrangList[$i]->get_TenTinhTrang() . "</td>";
                                     echo '<td class="td-actions text-center">
-                                            <button type="button" rel="tooltip" class="btn btn-success btn-edit-sts" data-target="#myModal" data-toggle="modal">
+                                            <button type="button" id="' . $TinhTrangList[$i]->get_MaTinhTrang() . '" rel="tooltip" class="btn btn-success btn-edit-sts" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-sts">
+                                            <button type="button" id="' . $TinhTrangList[$i]->get_MaTinhTrang() . '" rel="tooltip" class="btn btn-danger btn-delete-sts">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
@@ -354,15 +354,15 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                 if ($NhaCungCapList && count($NhaCungCapList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($NhaCungCapList); $i++) {
-                                    echo "<tr role='row' class='odd'>";
+                                    echo "<tr role='row' class='odd' id='" . $NhaCungCapList[$i]->get_MaNCC() . "'>";
                                     echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                     echo "<td class='text-center supplier-id'>" . $NhaCungCapList[$i]->get_MaNCC() . "</td>";
                                     echo "<td class='text-center supplier-name'>" . $NhaCungCapList[$i]->get_TenNCC() . "</td>";
                                     echo '<td class="td-actions text-center">
-                                            <button type="button" rel="tooltip" class="btn btn-success btn-edit-supplier" data-target="#myModal" data-toggle="modal">
+                                            <button type="button" id="' . $NhaCungCapList[$i]->get_MaNCC() . '" rel="tooltip" class="btn btn-success btn-edit-supplier" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-supplier">
+                                            <button type="button" id="' . $NhaCungCapList[$i]->get_MaNCC() . '" rel="tooltip" class="btn btn-danger btn-delete-supplier">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
@@ -489,41 +489,45 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
         //edit đvt
         $(".btn-edit-unit").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 object = "unit";
-                obj_id = $($(".unit-id").get(index)).text();
                 action_type = "edit-unit";
                 path = "../controllers/C_DonViTinh.php";
+
                 $(".input-label").text("Tên đơn vị tính:");
                 $(".modal-title").text("Chỉnh sửa đơn vị tính");
-                $("#obj-name-val").val($($(".unit-name").get(index)).text());
-                console.log(obj_id);
+                $("#obj-name-val").val($row.find(".unit-name").text());
             });
         });
 
         //edit loại nvl
         $(".btn-edit-type").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 object = "material type";
                 action_type = "edit-type";
-                obj_id = $($(".type-id").get(index)).text();
                 path = "../controllers/C_LoaiNguyenVatLieu.php";
+
                 $(".input-label").text("Tên loại ng. vật liệu:");
                 $(".modal-title").text("Chỉnh sửa loại nguyên vật liệu");
-                $("#obj-name-val").val($($(".type-name").get(index)).text());
-                console.log(obj_id);
+                $("#obj-name-val").val($row.find(".type-name").text());
             });
         });
 
         //edit tình trạng
         $(".btn-edit-sts").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 object = "status";
                 action_type = "edit-sts";
-                obj_id = $($(".sts-id").get(index)).text();
                 path = "../controllers/C_TinhTrang.php";
+
                 $(".input-label").text("Tên tình trạng:");
                 $(".modal-title").text("Chỉnh sửa tình trạng");
-                $("#obj-name-val").val($($(".sts-name").get(index)).text());
+                $("#obj-name-val").val($row.find(".sts-name").text());
                 console.log(obj_id);
             });
         });
@@ -531,13 +535,15 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
         //edit ncc
         $(".btn-edit-supplier").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 object = "supplier";
                 action_type = "edit-supplier";
-                obj_id = $($(".supplier-id").get(index)).text();
                 path = "../controllers/C_NhaCungCap.php";
+
                 $(".input-label").text("Tên nhà cung cấp:");
                 $(".modal-title").text("Chỉnh sửa nhà cung cấp");
-                $("#obj-name-val").val($($(".supplier-name").get(index)).text());
+                $("#obj-name-val").val($row.find(".supplier-name").text());
                 console.log(obj_id);
             });
         });
@@ -556,8 +562,9 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                 if (result.isConfirmed) {
                     
                 } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
                     action_type = "delete";
-                    obj_id = $($(".unit-id").get(index)).text();
+                    obj_id = $row.attr('id');
                     
                     // Ajax config
                     $.ajax({
@@ -618,8 +625,9 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                 if (result.isConfirmed) {
                     
                 } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
+                    obj_id = $row.attr('id');
                     action_type = "delete";
-                    obj_id = $($(".supplier-id").get(index)).text();
                     
                     // Ajax config
                     $.ajax({
@@ -680,8 +688,9 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                 if (result.isConfirmed) {
                     
                 } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
+                    obj_id = $row.attr('id');
                     action_type = "delete";
-                    obj_id = $($(".type-id").get(index)).text();
                     
                     // Ajax config
                     $.ajax({
@@ -742,8 +751,9 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                 if (result.isConfirmed) {
                     
                 } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
+                    obj_id = $row.attr('id');
                     action_type = "delete";
-                    obj_id = $($(".sts-id").get(index)).text();
                     
                     // Ajax config
                     $.ajax({

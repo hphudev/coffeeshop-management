@@ -115,7 +115,7 @@ class C_PhieuXuat
                 }
                 else
                 {
-                    echo json_encode(array('success' =>'0'));
+                    echo json_encode(array('success'=>'0'));
                 }
             }
         }

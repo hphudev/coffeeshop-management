@@ -189,20 +189,20 @@ function getTenNV($NhanVienList, $maNV)
                                         // output data of each row
                                         for ($i = 0; $i < count($PhieuKiemList); $i++)
                                         {
-                                            echo "<tr role='row' class='odd'>";
+                                            echo "<tr role='row' class='odd' id='" . $PhieuKiemList[$i]->get_MaPK() . "'>";
                                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center pk-id'>" . $PhieuKiemList[$i]->get_MaPK() . "</td>";
                                             echo "<td class='text-center'>" . $PhieuKiemList[$i]->get_ThoiGian() . "</td>";
                                             echo "<td class='text-center main-staff'>" . getTenNV($NhanVienList, $PhieuKiemList[$i]->get_MaNVKiem()) . "</td>";
                                             echo "<td class='text-center sup-staff'>" . getTenNV($NhanVienList, $PhieuKiemList[$i]->get_MaNVPK()) . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $PhieuKiemList[$i]->get_MaPK() . '" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">info</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $PhieuKiemList[$i]->get_MaPK() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-danger btn-delete-rp">
+                                                    <button type="button" id="' . $PhieuKiemList[$i]->get_MaPK() . '" rel="tooltip" class="btn btn-danger btn-delete-rp">
                                                         <i class="material-icons">close</i>
                                                     </button>
                                                 </td>';
@@ -231,7 +231,7 @@ function getTenNV($NhanVienList, $maNV)
                     // output data of each row
                     for ($i = 0; $i < count($PhieuKiemList); $i++)
                     {
-                        echo "<p class='note'>" . $PhieuKiemList[$i]->get_GhiChu() . "</p>";
+                        echo "<p class='note' id='" . $PhieuKiemList[$i]->get_MaPK() . "'>" . $PhieuKiemList[$i]->get_GhiChu() . "</p>";
                     }
                 }
             }    
@@ -321,6 +321,16 @@ function getTenNV($NhanVienList, $maNV)
             }
         });
 
+        function getHiddenNoteIndex() {
+            for (let i = 0; i < $(".note").length; i++)
+            {
+                if ($($(".note").get(i)).attr('id') == obj_id) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
         //mở rộng
         $(".btn-expand").on("click", function() {
             window.location.href = "../admin/index.php?page=werehouse&expand";
@@ -360,7 +370,8 @@ function getTenNV($NhanVienList, $maNV)
         // view phiếu xuất detail
         $(".btn-view-detail").each(function(index) {
             $(this).on("click", function() {
-                window.location.href = "../admin/index.php?page=werehouse&report&id=" + $($(".pk-id").get(index)).text();
+                var $row = $(this).closest('tr');
+                window.location.href = "../admin/index.php?page=werehouse&report&id=" + $row.attr('id');
             });
         })
 
@@ -380,13 +391,15 @@ function getTenNV($NhanVienList, $maNV)
         // edit phiếu xuất
         $(".btn-edit").each(function(index) {
             $(this).on("click", function() {
-                $("#main-staff-val").text($($(".main-staff").get(index)).text());
-                $("#sup-staff-val").text($($(".sup-staff").get(index)).text());
-                $("#note-val").val($($(".note").get(index)).text());
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
+                action_type = "edit";
+
+                $("#main-staff-val").text($row.find(".main-staff").text());
+                $("#sup-staff-val").text($row.find(".sup-staff").text());
+                $("#note-val").val($($(".note").get(getHiddenNoteIndex())).text());
 
                 $(".modal-title").text("Chỉnh sửa phiếu kiểm");
-                action_type = "edit";
-                obj_id = $($(".pk-id").get(index)).text();
             });
         })
     });
@@ -404,8 +417,9 @@ function getTenNV($NhanVienList, $maNV)
                 if (result.isConfirmed) {
                     
                 } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
+                    obj_id = $row.attr('id');
                     action_type = "delete";
-                    obj_id = $($(".pk-id").get(index)).text();
                     
                     // Ajax config
                     $.ajax({

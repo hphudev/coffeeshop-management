@@ -223,7 +223,7 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                         for ($i = 0; $i < count($CTPhieuNhap); $i++)
                                         {
                                             $NguyenVatLieu = $ModelNguyenVatLieu->get_NguyenVatLieuDetails($CTPhieuNhap[$i]->get_MaNVL());
-                                            echo "<tr role='row' class='odd'>";
+                                            echo "<tr role='row' class='odd' id='" . $CTPhieuNhap[$i]->get_MaNVL() . "'>";
                                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center mater-id'>" . $CTPhieuNhap[$i]->get_MaNVL() . "</td>";
                                             echo "<td class='text-center mater-name'>" . $NguyenVatLieu->get_TenNVL() . "</td>";
@@ -231,7 +231,7 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                             echo "<td class='text-center mater-quantity'>" . $CTPhieuNhap[$i]->get_SoLuong() . "</td>";
                                             echo "<td class='text-center mater-unitprice'>" . $CTPhieuNhap[$i]->get_DonGiaNhap() . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $CTPhieuNhap[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
                                                 </td>';
@@ -336,7 +336,6 @@ function getTenNCC($NhaCungCapList, $maNCC)
             }
         });
 
-
         // add phiếu nhập
         $(".btn-add").each(function(index) {
             $(this).on("click", function() {
@@ -353,14 +352,15 @@ function getTenNCC($NhaCungCapList, $maNCC)
         // edit phiếu nhập
         $(".btn-edit").each(function(index) {
             $(this).on("click", function() {
-                $("#mater-val").text($($(".mater-name").get(index)).text());
-                $("#quantity-val").val($($(".mater-quantity").get(index)).text());
-                $("#unitprice-val").val($($(".mater-unitprice").get(index)).text());
+                var $row = $(this).closest('tr');
+                action_type = "edit";
+                obj_id = $row.attr('id');
+
+                $("#mater-val").text($row.find(".mater-name").text());
+                $("#quantity-val").val($row.find(".mater-quantity").text());
+                $("#unitprice-val").val($row.find(".mater-unitprice").text());
 
                 $(".modal-title").text("Chỉnh sửa nguyên vật liệu");
-                action_type = "edit";
-                obj_id = $($(".mater-id").get(index)).text();
-                console.log(obj_id);
             });
         })
 

@@ -212,7 +212,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                             $status = 'Không sẵn sàng';
                                         }
 
-                                        echo "<tr role='row' class='odd'>";
+                                        echo "<tr role='row' class='odd' id='" . $MonList[$i]->get_MaMon() . "'>";
                                         echo "<td class='text-center'>". ($i + 1) ."</td>";
                                         echo "<td class='text-center m-id'>". $MonList[$i]->get_MaMon() ."</td>";
                                         echo "<td class='text-center'><img class='img' src='data:image/jpeg;base64,". base64_encode($MonList[$i]->get_HinhAnh()) ."' alt='Món' style='min-width:80px; max-width:100px; min-height: 80px; max-height: 80px; border-radius: 6px;'</td>";
@@ -221,13 +221,13 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                         echo "<td class='text-center quantity'>". $MonList[$i]->get_SoLuong() ."</td>";
                                         echo "<td class='text-center status'>". $status ."</td>";
                                         echo '<td class="td-actions text-center">
-                                                <button type="button" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
+                                                <button type="button" id="' . $MonList[$i]->get_MaMon() . '" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
                                                     <i class="material-icons">info</i>
                                                 </button>
-                                                <button type="button" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
+                                                <button type="button" id="' . $MonList[$i]->get_MaMon() . '" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
                                                     <i class="material-icons">edit</i>
                                                 </button>
-                                                <button type="button" rel="tooltip" class="btn btn-warning btn-add-quantity" data-target="#addQuantityModal" data-toggle="modal">
+                                                <button type="button" id="' . $MonList[$i]->get_MaMon() . '" rel="tooltip" class="btn btn-warning btn-add-quantity" data-target="#addQuantityModal" data-toggle="modal">
                                                     <i class="material-icons">add</i>
                                                 </button>
                                             </td>';
@@ -249,11 +249,13 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
             {
                 for ($i = 0; $i < count($MonList); $i++)
                 {
-                    echo "<p class='unit'>". getTenDVT($DonViTinhList, $MonList[$i]->get_MaDVT()) ."</p>";
-                    echo "<p class='description'>". $MonList[$i]->get_MoTa() ."</p>";
-                    echo "<p class='note'>". $MonList[$i]->get_GhiChu() ."</p>";
-                    echo "<p class='add-date-info'>". $MonList[$i]->get_NgayThem() ."</p>";
-                    echo "<p class='last-mod-date-info'>". $MonList[$i]->get_NgayChinhSuaLanCuoi() ."</p>";
+                    echo "<div class='hidden-info' id='". $MonList[$i]->get_MaMon() ."'>";
+                    echo "<p class='unit'>" . getTenDVT($DonViTinhList, $MonList[$i]->get_MaDVT()) ."</p>";
+                    echo "<p class='description'>" . $MonList[$i]->get_MoTa() ."</p>";
+                    echo "<p class='note'>" . $MonList[$i]->get_GhiChu() ."</p>";
+                    echo "<p class='add-date-info'>" . $MonList[$i]->get_NgayThem() ."</p>";
+                    echo "<p class='last-mod-date-info'>" . $MonList[$i]->get_NgayChinhSuaLanCuoi() ."</p>";
+                    echo "</div>";
                 }
             }
             ?>
@@ -514,7 +516,6 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
 <script>
     var mon_id = "";
     var action = "";
-    var add_quantity_index = 0;
     var add_quantity = 0;
     var sizeRowArr = [];
     var priceRowArr = [];
@@ -525,11 +526,49 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
             }
         });
-
+        
         $('.fileinput').fileinput();
 
         $("#btnRemoveAllRow").addClass("disabledbutton");
     });
+
+    function initModalData($row) {
+        var div_index = getHiddenDivIndex();
+        $("#name-val").attr('value', $row.find('.name').text());
+        $("#img-val").attr('src', $row.find(".img").attr('src'));
+        $("#type-val").text($row.find(".type-name").html());
+        $("#unit-val").text($($(".unit").get(div_index)).text());
+        $("#description-val").val($($(".description").get(div_index)).text());
+        $("#note-val").val($($(".note").get(div_index)).text());
+        $("#add-date").text($($(".add-date-info").get(div_index)).text());
+        $("#last-mod-date").text($($(".last-mod-date-info").get(div_index)).text());
+
+        if ($row.find(".status").html() == "Sẵn sàng") {
+            $("#ckb-status").prop('checked', true);
+        } else {
+            $("#ckb-status").prop('checked', false);
+        }
+    }
+
+    function getHiddenDivIndex() {
+        for (let i = 0; i < $(".hidden-info").length; i++)
+        {
+            if ($($(".hidden-info").get(i)).attr('id') == mon_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function updateQuantityAfterAdd(new_quantity) {
+        for (let i = 0; i < $(".odd").length; i++)
+        {
+            if ($($(".odd").get(i)).attr('id') == mon_id) {
+                $($($(".odd").get(i)).find(".quantity")).text(new_quantity);
+                return;
+            }
+        }
+    }
 
     //Nút tab loại món
     $(".btn-item-type").on("click", function() {
@@ -548,25 +587,14 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
     $(".btn-view-detail").each(function(index) {
         $(this).on("click", function(e) {
             if (checkQuyenMon()) {
+                var $row = $(this).closest('tr');
+                mon_id = $row.attr('id');
+                initModalData($row);
+
                 $("#img-val").show();
                 $(".img-picker").hide();
                 $(".add-size-box").hide();
-
-                mon_id = $($(".m-id").get(index)).text();
-                $("#name-val").val($($(".name").get(index)).text());
-                $("#img-val").attr('src', $($(".img").get(index)).attr('src'));
-                $("#type-val").text($($(".type-name").get(index)).text());
-                $("#unit-val").text($($(".unit").get(index)).text());
-                $("#description-val").val($($(".description").get(index)).text());
-                $("#note-val").val($($(".note").get(index)).text());
-                $("#add-date").text($($(".add-date-info").get(index)).text());
-                $("#last-mod-date").text($($(".last-mod-date-info").get(index)).text());
                 $(".sts-div").show();
-                if ($($(".status").get(index)).text() == "Sẵn sàng") {
-                    $("#ckb-status").prop('checked', true);
-                } else {
-                    $("#ckb-status").prop('checked', false);
-                }
                 $(".add-date-div").show();
                 $(".last-mod-date-div").show();
 
@@ -590,26 +618,15 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
     $(".btn-edit-data").each(function(index) {
         $(this).on("click", function(e) {
             if (checkQuyenMon()) {
+                var $row = $(this).closest('tr');
+                mon_id = $row.attr('id');
+                initModalData($row);
+
                 $("#img-val").hide();
                 $(".img-picker").show();
                 $(".add-size-box").show();
                 $("#btnRemoveAllRow").removeClass("disabledbutton");
-
-                mon_id = $($(".m-id").get(index)).text();
-                $("#name-val").val($($(".name").get(index)).text());
-                $("#img-val").attr('src', $($(".img").get(index)).attr('src'));
-                $("#type-val").text($($(".type-name").get(index)).text());
-                $("#unit-val").text($($(".unit").get(index)).text());
-                $("#description-val").val($($(".description").get(index)).text());
-                $("#note-val").val($($(".note").get(index)).text());
-                $("#add-date").text($($(".add-date-info").get(index)).text());
-                $("#last-mod-date").text($($(".last-mod-date-info").get(index)).text());
                 $(".sts-div").show();
-                if ($($(".status").get(index)).text() == "Sẵn sàng") {
-                    $("#ckb-status").prop('checked', true);
-                } else {
-                    $("#ckb-status").prop('checked', false);
-                }
                 $(".add-date-div").show();
                 $(".last-mod-date-div").show();
 
@@ -671,10 +688,12 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
     $(".btn-add-quantity").each(function(index) {
         $(this).on("click", function(e) {
             if (checkQuyenMon()) {
-                $('#add-quantity-title').text("Thêm số lượng > " + $($(".name").get(index)).text());
+                var $row = $(this).closest('tr');
+                mon_id = $row.attr('id');
+
+                $('#add-quantity-title').text("Thêm số lượng > " + $row.find('.name').text());
                 $('#quantity-val').val('');
-                mon_id = $($(".m-id").get(index)).text();
-                add_quantity_index = index;
+                old_quantity = $row.find('.quantity').text();
             } else {
                 e.stopPropagation();
                 Swal.fire(
@@ -827,15 +846,6 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         }
     });
 
-    //Hàm thêm phẩy cho tiền
-    $.fn.digits = function() { 
-        return this.each(function(){ 
-            $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
-        });
-    }
-
-    $(".money").digits();
-
     function checkQuyenMon() {
         if ($("#quyen").text()==="mon1") {
             return true;
@@ -946,7 +956,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
             if (checkAddQuantityInput()) {
                 var $this 		    = $(this);
                 var $caption        = $this.html();
-                add_quantity = parseInt($("#quantity-val").val()) + parseInt($($(".quantity").get(add_quantity_index)).text());
+                add_quantity = parseInt($("#quantity-val").val()) + parseInt(old_quantity);
 
                 // Ajax config
                 $.ajax({
@@ -973,7 +983,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                             ).then((result) => {
                                 if (result.isConfirmed) {
                                     $('#addQuantityModal').modal('hide');
-                                    $($(".quantity").get(add_quantity_index)).text(add_quantity.toString());
+                                    updateQuantityAfterAdd(add_quantity.toString());
                                 }
                             })
                         }
