@@ -1,19 +1,14 @@
 <script type="text/javascript">
-
-    
-    function checkSameName(valueA, valueB)
-    {
+    function checkSameName(valueA, valueB) {
         valueA = valueA.toLowerCase();
         valueB = valueB.toLowerCase();
         let valueASplit = valueA.split(" ");
         //let valueBSplit = valueB.split(" ");
         let check = false;
-        if (valueB.length <= valueASplit.length)
-        {
+        if (valueB.length <= valueASplit.length) {
             check = true;
             for (let i = 0; i < valueB.length; i++)
-                if (!valueASplit[i].includes(valueB[i]))
-                {
+                if (!valueASplit[i].includes(valueB[i])) {
                     //console.log(decodeURIComponent(escape(valueASplit[i])) + " " + valueB[i]);
                     check = false;
                     break;
@@ -23,188 +18,171 @@
         return (valueA.includes(valueB) || check);
     }
 
-    $(document).ready(function () {
+    $(document).ready(function() {
 
-        $('[name="orderType"]').on('change', function(){
-            if ($(this).val() === "yes")
-            {
+        $('[name="orderType"]').on('change', function() {
+            if ($(this).val() === "yes") {
                 console.log("yes");
                 $("#tableNumber").collapse('show');
-            }
-            else
+            } else
                 $("#tableNumber").collapse('hide');
 
         });
-        $('#tbFindItem').keydown(function(event){
+        $('#tbFindItem').keydown(function(event) {
             console.log("ok");
-            if (event.keyCode == 13)
-            {
-                    event.preventDefault();
-                    return false;
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
             }
         });
 
-        $('#tbFindItem').on('input',function(e){
+        $('#tbFindItem').on('input', function(e) {
             // console.log("vào");
             let value = $('#tbFindItem').val();
             let itemList = $('.item');
             // console.log(value);
-            for (let i = 0; i < itemList.length; i++)
-            {
+            for (let i = 0; i < itemList.length; i++) {
                 let func = {};
                 func.name = 'getItemName';
                 func.id = itemList[i].getAttribute('id');
                 $.ajax({
                     type: "POST",
                     url: "../models/M_BanHang.php",
-                    data: {func: JSON.stringify(func)},
-                    success: function (response) {
+                    data: {
+                        func: JSON.stringify(func)
+                    },
+                    success: function(response) {
                         let name = JSON.parse(response);
-                        if (value == '')
-                        {
-                            $('#'+ itemList[i].getAttribute('id')).removeClass('d-none');
+                        if (value == '') {
+                            $('#' + itemList[i].getAttribute('id')).removeClass('d-none');
                             return;
                         }
-                        if (!checkSameName(name.toString(), value.toString()))
-                        {
+                        if (!checkSameName(name.toString(), value.toString())) {
                             $('#' + itemList[i].getAttribute('id')).addClass('d-none');
-                        }
-                        else
-                            $('#'+ itemList[i].getAttribute('id')).removeClass('d-none');
+                        } else
+                            $('#' + itemList[i].getAttribute('id')).removeClass('d-none');
                     }
                 });
             }
         });
     });
 
-    function payOrder()
-    {
+    function payOrder() {
         // if (sessionStorage`)
-        let func = {};
-        func.name = "checkRight";
-        func.id = "order1";
-        $.ajax({
-            type: "POST",
-            url: "../models/M_BanHang.php",
-            data: {func: JSON.stringify(func)},
-            success: function (response) {
-                response = JSON.parse(response);
-                if (response == false)
-                {
-                    console.log("ok");
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Bạn chưa có quyền thực hiện chức năng thanh toán',
-                        timer: 2500
+        let bill = JSON.parse(sessionStorage.getItem('bill'));
+        if (bill === null || bill.length == 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Order không có món',
+                showConfirmButton: true,
+                timer: 2000
+            });
+            return;
+        } else
+            Swal.fire({
+                icon: 'info',
+                title: 'Đang thanh toán',
+                text: 'Hệ thống đang gửi order lên nhà bếp và in phiếu thanh toán',
+                showConfirmButton: false,
+                allowOutsideClick: false
+                // timer: 800
+            });
+        Swal.showLoading();
+        setTimeout(() => {
+            let func = {};
+            // func.id = "MON001";
+            func.name = "saveOrder";
+            func.data = JSON.parse(sessionStorage.getItem('bill'));
+            console.log(func);
+            $.ajax({
+                type: "POST",
+                data: {
+                    func: JSON.stringify(func)
+                },
+                url: "../models/M_BanHang.php",
+                // dataType: "json",
+                timeout: 5000,
+                success: function(response) {
+                    Swal.close();
+                    //console.log(response);
+                    sessionStorage.removeItem('bill');
+                    $("#bill").modal('hide');
+                    // Swal.fire({
+                    //     title: response
+                    // })
+                    $.ajax({
+                        type: "POST",
+                        url: "/coffeeshopmanagement/controllers/C_HoaDon.php",
+                        data: {
+                            action: "pay",
+                            id: response,
+                        },
+                        beforeSend: function() {},
+                        success: function(response) {
+                            $("#modalThanhToan").html(response)
+                        },
+                        complete: function() {},
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
                     })
-                    .then((result) =>{
-                        return;
-                    });
-                }
-                else
-                {
-                    console.log(response);
-                    //------------------------
-                    let bill = JSON.parse(sessionStorage.getItem('bill'));
-                    console.log(bill);
-                    if (bill === null || bill.length == 0)
-                    {
+                    // if (true)
+                    // {
+                    //     Swal.fire({
+                    //         title: 'Thanh toán thành công',
+                    //         icon: 'success',
+                    //         showConfirmButton: false,
+                    //         timer: 700
+                    //     });
+                    // }
+                    // else
+                    // {
+                    //     Swal.fire({
+                    //         icon: 'error',
+                    //         title: 'Không thể thanh toán',
+                    //         text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
+                    //         showConfirmButton: true,
+                    //         timer: 3000 
+                    //     });
+                    // }
+
+                },
+                error: function(xmlhttprequest, textstatus, message) {
+                    if (textstatus === "timeout") {
                         Swal.fire({
                             icon: 'warning',
-                            title: 'Order không có món',
+                            title: 'Thời gian phản hồi quá lâu',
+                            text: 'Không thể thanh toán vì có sự cố máy chủ',
                             showConfirmButton: true,
-                            timer: 2000
+                            timer: 3000
                         });
-                        return;
-                    }
-                    else
+                    } else {
                         Swal.fire({
-                            icon: 'info',
-                            title: 'Đang thanh toán',
-                            text: 'Hệ thống đang gửi order lên nhà bếp và in phiếu thanh toán',
-                            showConfirmButton: false,
-                            allowOutsideClick: false
-                            // timer: 800
+                            icon: 'error',
+                            title: 'Không thể thanh toán',
+                            text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!',
+                            showConfirmButton: true,
+                            timer: 3000
                         });
-                    Swal.showLoading();
-                    setTimeout(() => {
-                        let func = {};
-                        // func.id = "MON001";
-                        func.name = "saveOrder";
-                        func.data = JSON.parse(sessionStorage.getItem('bill'));
-                        console.log(func);
-                        $.ajax({
-                            type: "POST",
-                            data: {func: JSON.stringify(func)},
-                            url: "../models/M_BanHang.php",
-                            // dataType: "json",
-                            timeout: 5000,
-                            success: function (response) {
-                                Swal.close();
-                                console.log(response);
-                                $("#bill").modal('hide');
-                                // sessionStorage.removeItem('bill');
-                                // if (true)
-                                // {
-                                //     Swal.fire({
-                                //         title: 'Thanh toán thành công',
-                                //         icon: 'success',
-                                //         showConfirmButton: false,
-                                //         timer: 700
-                                //     });
-                                // }
-                                // else
-                                // {
-                                //     Swal.fire({
-                                //         icon: 'error',
-                                //         title: 'Không thể thanh toán',
-                                //         text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
-                                //         showConfirmButton: true,
-                                //         timer: 3000 
-                                //     });
-                                // }
-                                
-                            },
-                            error: function(xmlhttprequest, textstatus, message) {
-                                if(textstatus==="timeout") {
-                                    Swal.fire({
-                                        icon: 'warning',
-                                        title: 'Thời gian phản hồi quá lâu',
-                                        text: 'Không thể thanh toán vì có sự cố máy chủ', 
-                                        showConfirmButton: true,
-                                        timer: 3000 
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Không thể thanh toán',
-                                        text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
-                                        showConfirmButton: true,
-                                        timer: 3000 
-                                    });
-                                }
-                            }
-                        });
-                        // func = {};
-                        // func.name = "getItemName";
-                        // func.id = "MON001";
-                        // $.ajax({
-                        //     type: "POST",
-                        //     url: "../models/M_BanHang.php",
-                        //     data: {func: JSON.stringify(func)},
-                        //     success: function (response) {
-                        //         console.log(response);
-                        //     }
-                        // });
-                    }, 1200); 
+                    }
                 }
-                
-            }
-        });
+            });
+            // func = {};
+            // func.name = "getItemName";
+            // func.id = "MON001";
+            // $.ajax({
+            //     type: "POST",
+            //     url: "../models/M_BanHang.php",
+            //     data: {func: JSON.stringify(func)},
+            //     success: function (response) {
+            //         console.log(response);
+            //     }
+            // });
+        }, 1200);
+
     }
 
-    function saveWork()
-    {
+    function saveWork() {
         let idItem = sessionStorage.getItem("idItemOptionTable");
         let idItemSession = 'order' + idItem;
         let labelSize = document.getElementsByClassName("label-size");
@@ -215,19 +193,15 @@
         let infoDetailItem = JSON.parse(sessionStorage.getItem('infoDetail' + idItem));
         console.log('osize ' + oSize.length);
         // console.log(value);  
-        for (let i = 0; i < oSize.length; i++)
-        {
-            if (oSize[i].checked)
-            {
+        for (let i = 0; i < oSize.length; i++) {
+            if (oSize[i].checked) {
                 value.size = labelSize[i].textContent;
                 value.price = infoDetailItem[0][i].DonGia;
             }
         }
         value.toppingList = [];
-        for (let i = 0; i < oTopping.length; i++)
-        {
-            if (oTopping[i].checked)
-            {
+        for (let i = 0; i < oTopping.length; i++) {
+            if (oTopping[i].checked) {
                 value.toppingList.push(labelTopping[i].textContent);
             }
         }
@@ -238,8 +212,7 @@
         console.log(sessionStorage.getItem(idItemSession));
     }
 
-    function saveWorkOnEditOptionItem(index)
-    {
+    function saveWorkOnEditOptionItem(index) {
         console.log(index);
         //let idItem = sessionStorage.getItem("idItemOptionTable");
         //let idItemSession = 'order' + idItem;
@@ -251,25 +224,21 @@
         //let value = JSON.parse(sessionStorage.getItem(idItemSession));
         let infoDetailItem = JSON.parse(sessionStorage.getItem('infoDetail' + bill[index].id));
         console.log('osize' + oSize.length);
-        for (let i = 0; i < oSize.length; i++)
-        {
-            if (oSize[i].checked)
-            {
+        for (let i = 0; i < oSize.length; i++) {
+            if (oSize[i].checked) {
                 bill[index].size = labelSize[i].textContent;
                 bill[index].price = infoDetailItem[0][i].DonGia;
             }
         }
         bill[index].toppingList = [];
-        for (let i = 0; i < oTopping.length; i++)
-        {
-            if (oTopping[i].checked)    
-            {
+        for (let i = 0; i < oTopping.length; i++) {
+            if (oTopping[i].checked) {
                 bill[index].toppingList.push(labelTopping[i].textContent);
             }
         }
         sessionStorage.setItem('bill', JSON.stringify(bill));
         let elementBill = document.getElementById('bill_' + index.toString());
-        let elementChild = elementBill.getElementsByClassName('des'); 
+        let elementChild = elementBill.getElementsByClassName('des');
         // console.log(elementChild);
         elementChild[0].innerHTML = bill[index].size;
         elementChild[2].innerHTML = bill[index].price;
@@ -282,10 +251,10 @@
             title: '',
             showConfirmButton: false,
             timer: 700
-            }).then(()=>{
-                // location.reload();
-                console.log("ok");
-            });
+        }).then(() => {
+            // location.reload();
+            console.log("ok");
+        });
         elementChild[3].innerHTML = convertNumToStringHaveDot(bill[index].price * bill[index].num);
         //console.log(value);
         // console.log(sessionStorage.getItem(idItemSession));
@@ -293,8 +262,7 @@
         // console.log(sessionStorage.getItem(idItemSession));
     }
 
-    function oneMoreItem(idItem)
-    {
+    function oneMoreItem(idItem) {
         // alert(idCard);
         let idItemSession = 'order' + idItem;
         let idBadge = 'badge' + idItem;
@@ -308,24 +276,19 @@
         let elementBtnShowOptionItemList = document.getElementById(idBtnShowOptionItemList);
         console.log(elementBtnAddItemToBill.id);
 
-        if (elementBadge.classList.contains('d-none'))
-        {
+        if (elementBadge.classList.contains('d-none')) {
             elementBadge.classList.remove('d-none');
         }
-        if (elementBtnMinus.classList.contains('d-none'))
-        {
+        if (elementBtnMinus.classList.contains('d-none')) {
             elementBtnMinus.classList.remove('d-none');
         }
-        if (elementBtnAddItemToBill.classList.contains('d-none'))
-        {
+        if (elementBtnAddItemToBill.classList.contains('d-none')) {
             elementBtnAddItemToBill.classList.remove('d-none');
         }
-        if (elementBtnShowOptionItemList.classList.contains('d-none'))
-        {
+        if (elementBtnShowOptionItemList.classList.contains('d-none')) {
             elementBtnShowOptionItemList.classList.remove('d-none');
         }
-        if (sessionStorage.getItem(idItemSession) === null)
-        {
+        if (sessionStorage.getItem(idItemSession) === null) {
             let value = {};
             value.id = idItem;
             value.num = 1;
@@ -337,28 +300,25 @@
             sessionStorage.setItem(idItemSession, JSON.stringify(value));
             // console.log(JSON.stringify(value)); 
 
-        }
-        else
-        {
+        } else {
             let value = JSON.parse(sessionStorage.getItem(idItemSession));
             value.num++;
             sessionStorage.setItem(idItemSession, JSON.stringify(value));
         }
-        
+
         // console.log(sessionStorage.getItem(idItemSession)); 
         // if ( sessionStorage.getItem(idBadge) === null)
         //     sessionStorage.setItem(idBadge, 0);
         // else
         //     sessionStorage.setItem(idBadge, Number(sessionStorage.getItem(idBadge)) + 1);
-        elementBadge.innerHTML = JSON.parse(sessionStorage.getItem(idItemSession)).num; 
+        elementBadge.innerHTML = JSON.parse(sessionStorage.getItem(idItemSession)).num;
         showOptionTable(idItem);
         setTimeout(() => {
             saveWork();
         }, 500);
     }
 
-    function oneItemOff(idItem)
-    {
+    function oneItemOff(idItem) {
         // alert(idCard);
         let idItemSession = 'order' + idItem;
         let idBadge = 'badge' + idItem;
@@ -370,22 +330,19 @@
         let elementBtnMinus = document.getElementById(idBtn);
         let elementBtnAddItemToBill = document.getElementById(idBtnAddItemToBill);
         let elementBtnShowOptionItemList = document.getElementById(idBtnShowOptionItemList);
-        if (Number(elementBadge.textContent) > 0)
-        {
+        if (Number(elementBadge.textContent) > 0) {
             // sessionStorage.setItem(idBadge, Number(sessionStorage.getItem(idBadge)) - 1);
             let value = JSON.parse(sessionStorage.getItem(idItemSession));
             value.num--;
             sessionStorage.setItem(idItemSession, JSON.stringify(value));
             elementBadge.innerHTML = value.num;
         }
-        if (elementBadge.textContent == '0')
-        {
+        if (elementBadge.textContent == '0') {
             elementBtnMinus.classList.add('d-none');
             elementBadge.classList.add('d-none');
             elementBtnAddItemToBill.classList.add('d-none');
             elementBtnShowOptionItemList.classList.add('d-none');
-            if (!(sessionStorage.getItem('order' + idItem) === null))
-            {
+            if (!(sessionStorage.getItem('order' + idItem) === null)) {
                 sessionStorage.removeItem('order' + idItem);
             }
 
@@ -394,8 +351,7 @@
 
     }
 
-    function checkVisionBadge(idItem)
-    {
+    function checkVisionBadge(idItem) {
         //sessionStorage.clear();
         let idItemSession = 'order' + idItem;
         let idBadge = 'badge' + idItem;
@@ -415,16 +371,13 @@
 
         // elementBadge.innerHTML = sessionStorage.getItem(idBadge);
         //console.log('ccccc' + (sessionStorage.getItem(idItemSession) === null));
-        if (!(sessionStorage.getItem(idItemSession) === null))
-        {
+        if (!(sessionStorage.getItem(idItemSession) === null)) {
             let value = JSON.parse(sessionStorage.getItem(idItemSession));
             elementBadge.innerHTML = value.num;
-        }
-        else
+        } else
             elementBadge.innerHTML = '0';
 
-        if (Number(elementBadge.textContent) > 0)
-        {
+        if (Number(elementBadge.textContent) > 0) {
             elementBadge.classList.remove('d-none');
             elementBtnMinus.classList.remove('d-none');
             elementBtnAddItemToBill.classList.remove('d-none');
@@ -432,36 +385,34 @@
         }
     }
 
-    function reloadPage()
-    {
-        if (confirm("Bạn chưa lưu công việc? Bạn có muốn làm mới trang không?"))
-        {
+    function reloadPage() {
+        if (confirm("Bạn chưa lưu công việc? Bạn có muốn làm mới trang không?")) {
             sessionStorage.clear();
             Swal.fire({
                 position: 'center',
                 icon: 'success',
                 timer: 900,
                 showConfirmButton: false
-            }).then(()=>{
+            }).then(() => {
                 location.reload();
-            }
-            );
+            });
         }
     }
 
-    function sendJSON(value, method, link){
+    function sendJSON(value, method, link) {
         $.ajax({
             method: method,
             url: link,
-            data: {func: JSON.stringify(value)},
-            success: function (res) {
+            data: {
+                func: JSON.stringify(value)
+            },
+            success: function(res) {
                 //console.log(res);
             }
         });
     }
 
-    function insertCheckStateInOptionSize(value, data)
-    {
+    function insertCheckStateInOptionSize(value, data) {
         if (data === null)
             return "";
         data = JSON.parse(data);
@@ -471,21 +422,18 @@
             return "";
     }
 
-    function insertCheckStateInOptionTopping(value, data)
-    {
+    function insertCheckStateInOptionTopping(value, data) {
         if (data === null)
             return "";
         data = JSON.parse(data);
-        for (let i = 0; i < data.toppingList.length; i++)
-        {
+        for (let i = 0; i < data.toppingList.length; i++) {
             if (value == data.toppingList[i])
                 return "checked";
         }
         return "";
     }
 
-    function showOptionTable($idItem)
-    {
+    function showOptionTable($idItem) {
         //console.log("okll");
         let func = {};
         func.name = "showItemOptionsTable";
@@ -495,74 +443,67 @@
         console.log("data: " + JSON.stringify(func));
         $.ajax({
             method: "POST",
-            data: {func: JSON.stringify(func)},
+            data: {
+                func: JSON.stringify(func)
+            },
             url: "../models/M_BanHang.php",
-            success: function(response){
+            success: function(response) {
                 console.log("response: " + response);
                 sessionStorage.setItem('infoDetail' + $idItem, response);
                 $res = JSON.parse(response);
                 console.log($res);
                 document.getElementById('optionSize').innerHTML = "";
                 let check = false;
-                for (let i = 0; i < $res[0].length; i++)
-                {
-                    if (insertCheckStateInOptionSize($res[0][i].TenKichThuoc, sessionStorage.getItem('order' + $idItem)) == "checked")
-                    {
+                for (let i = 0; i < $res[0].length; i++) {
+                    if (insertCheckStateInOptionSize($res[0][i].TenKichThuoc, sessionStorage.getItem('order' + $idItem)) == "checked") {
                         check = true;
                     }
                 }
                 console.log('show' + check.toString() + $res[0].length.toString());
-                for (let i = 0; i < $res[0].length; i++)
-                {
-                    if (i==0 && check==false)
-                    {
+                for (let i = 0; i < $res[0].length; i++) {
+                    if (i == 0 && check == false) {
                         $html = '<div class="form-check form-check-radio">' +
-                                '<label class="form-check-label text-dark label-size">' + 
-                                    '<input class="form-check-input o-size" type="radio" name="exampleRadio" value="option1" checked/>' +
-                                    $res[0][i].TenKichThuoc +
-                                    '<span class="circle">' +
-                                        '<span class="check"></span>' +
-                                    '</span>' +
-                                '</label>' +
+                            '<label class="form-check-label text-dark label-size">' +
+                            '<input class="form-check-input o-size" type="radio" name="exampleRadio" value="option1" checked/>' +
+                            $res[0][i].TenKichThuoc +
+                            '<span class="circle">' +
+                            '<span class="check"></span>' +
+                            '</span>' +
+                            '</label>' +
+                            '</div>';
+                    } else {
+                        $html = '<div class="form-check form-check-radio">' +
+                            '<label class="form-check-label text-dark label-size">' +
+                            '<input class="form-check-input o-size" type="radio" name="exampleRadio" value="option1" ' + insertCheckStateInOptionSize($res[0][i].TenKichThuoc, sessionStorage.getItem('order' + $idItem)) + '/>' +
+                            $res[0][i].TenKichThuoc +
+                            '<span class="circle">' +
+                            '<span class="check"></span>' +
+                            '</span>' +
+                            '</label>' +
                             '</div>';
                     }
-                    else
-                    {
-                        $html = '<div class="form-check form-check-radio">' +
-                                '<label class="form-check-label text-dark label-size">' + 
-                                    '<input class="form-check-input o-size" type="radio" name="exampleRadio" value="option1" ' + insertCheckStateInOptionSize($res[0][i].TenKichThuoc, sessionStorage.getItem('order' + $idItem)) +'/>' +
-                                    $res[0][i].TenKichThuoc +
-                                    '<span class="circle">' +
-                                        '<span class="check"></span>' +
-                                    '</span>' +
-                                '</label>' +
-                            '</div>';
-                    }
-                    
+
                     let newcontent = document.createElement('div');
                     newcontent.innerHTML = $html;
-                    while (newcontent.firstChild)
-                    {
+                    while (newcontent.firstChild) {
                         document.getElementById('optionSize').appendChild(newcontent.firstChild);
                     }
                 }
                 document.getElementById('optionTopping').innerHTML = "";
-                for (let i = 0; i < $res[1].length; i++)
-                {
+                for (let i = 0; i < $res[1].length; i++) {
                     $html = '<div class="form-check">' +
-                                '<label class="form-check-label text-dark label-topping">' + 
-                                    '<input class="form-check-input o-topping" type="checkbox" value="" ' + insertCheckStateInOptionTopping($res[1][i].TenTopping, sessionStorage.getItem('order' + $idItem)) +'/>' + 
-                                    $res[1][i].TenTopping + 
-                                    '<span class="form-check-sign">' + 
-                                        '<span class="check"></span>' + 
-                                    '</span>' + 
-                                '</label>' + 
-                            '</div>';
-                            
+                        '<label class="form-check-label text-dark label-topping">' +
+                        '<input class="form-check-input o-topping" type="checkbox" value="" ' + insertCheckStateInOptionTopping($res[1][i].TenTopping, sessionStorage.getItem('order' + $idItem)) + '/>' +
+                        $res[1][i].TenTopping +
+                        '<span class="form-check-sign">' +
+                        '<span class="check"></span>' +
+                        '</span>' +
+                        '</label>' +
+                        '</div>';
+
                     let newcontent = document.createElement('div');
                     newcontent.innerHTML = $html;
-                    while (newcontent.firstChild)
-                    {
+                    while (newcontent.firstChild) {
                         document.getElementById('optionTopping').appendChild(newcontent.firstChild);
                     }
                 }
@@ -573,8 +514,7 @@
         });
     }
 
-    function showOptionTableForListOrder(index)
-    {
+    function showOptionTableForListOrder(index) {
         let bill = JSON.parse(sessionStorage.getItem('bill'));
         $data = bill[index];
         console.log($data);
@@ -585,61 +525,58 @@
         sessionStorage.setItem('idItemOptionTable', $data.id);
         $.ajax({
             method: "POST",
-            data: {func: JSON.stringify(func)},
+            data: {
+                func: JSON.stringify(func)
+            },
             url: "../models/M_BanHang.php",
-            success: function(response){
+            success: function(response) {
                 sessionStorage.setItem('infoDetail' + $data.id, response);
                 $res = JSON.parse(response);
                 console.log($res);
                 console.log('vào');
                 //$dataParse = JSON.parse($data);
                 document.getElementById('optionSize').innerHTML = "";
-                for (let i = 0; i < $res[0].length; i++)
-                {
+                for (let i = 0; i < $res[0].length; i++) {
                     $html = '<div class="form-check form-check-radio">' +
-                                '<label class="form-check-label text-dark label-size">' + 
-                                    '<input class="form-check-input o-size" type="radio" name="exampleRadio" value="option1" ' + insertCheckStateInOptionSize($res[0][i].TenKichThuoc, JSON.stringify($data)) +'/>' +
-                                    $res[0][i].TenKichThuoc +
-                                    '<span class="circle">' +
-                                        '<span class="check"></span>' +
-                                    '</span>' +
-                                '</label>' +
-                            '</div>';
+                        '<label class="form-check-label text-dark label-size">' +
+                        '<input class="form-check-input o-size" type="radio" name="exampleRadio" value="option1" ' + insertCheckStateInOptionSize($res[0][i].TenKichThuoc, JSON.stringify($data)) + '/>' +
+                        $res[0][i].TenKichThuoc +
+                        '<span class="circle">' +
+                        '<span class="check"></span>' +
+                        '</span>' +
+                        '</label>' +
+                        '</div>';
                     let newcontent = document.createElement('div');
                     newcontent.innerHTML = $html;
-                    while (newcontent.firstChild)
-                    {
+                    while (newcontent.firstChild) {
                         document.getElementById('optionSize').appendChild(newcontent.firstChild);
                     }
                 }
                 document.getElementById('optionTopping').innerHTML = "";
-                for (let i = 0; i < $res[1].length; i++)
-                {
+                for (let i = 0; i < $res[1].length; i++) {
                     $html = '<div class="form-check">' +
-                                '<label class="form-check-label text-dark label-topping">' + 
-                                    '<input class="form-check-input o-topping" type="checkbox" value="" ' + insertCheckStateInOptionTopping($res[1][i].TenTopping, JSON.stringify($data)) +'/>' + 
-                                    $res[1][i].TenTopping + 
-                                    '<span class="form-check-sign">' + 
-                                        '<span class="check"></span>' + 
-                                    '</span>' + 
-                                '</label>' + 
-                            '</div>';
-                            
+                        '<label class="form-check-label text-dark label-topping">' +
+                        '<input class="form-check-input o-topping" type="checkbox" value="" ' + insertCheckStateInOptionTopping($res[1][i].TenTopping, JSON.stringify($data)) + '/>' +
+                        $res[1][i].TenTopping +
+                        '<span class="form-check-sign">' +
+                        '<span class="check"></span>' +
+                        '</span>' +
+                        '</label>' +
+                        '</div>';
+
                     let newcontent = document.createElement('div');
                     newcontent.innerHTML = $html;
-                    while (newcontent.firstChild)
-                    {
+                    while (newcontent.firstChild) {
                         document.getElementById('optionTopping').appendChild(newcontent.firstChild);
                     }
                 }
                 document.getElementById('AddOption').removeAttribute('onclick');
-                document.getElementById('AddOption').setAttribute('onclick', "saveWorkOnEditOptionItem(" + index +");");
+                document.getElementById('AddOption').setAttribute('onclick', "saveWorkOnEditOptionItem(" + index + ");");
             }
         });
     }
 
-    function addItemToBill($idItem)
-    {
+    function addItemToBill($idItem) {
         // if (sessionStorage.getItem('Bill') === null)
         // {
         //     sessionStorage.setItem('Bill', new Array());
@@ -648,8 +585,7 @@
 
         // sessionStorage.setItem('Bill', tmp);
         // console.log(sessionStorage.getItem('Bill'));
-        if (sessionStorage.getItem('bill') === null)
-        {
+        if (sessionStorage.getItem('bill') === null) {
             let bill = [];
             sessionStorage.setItem('bill', JSON.stringify(bill));
         }
@@ -664,46 +600,40 @@
             title: '',
             showConfirmButton: false,
             timer: 700
-            }).then(()=>{
-                location.reload();
-            });
+        }).then(() => {
+            location.reload();
+        });
         // setTimeout(() => {
         // }, 1000);
         // console.log(JSON.parse(sessionStorage.getItem('bill')));    
         // console.log(sessionStorage.getItem('order' + $idItem));
     }
 
-    function convertNumToStringHaveDot($num)
-    {
+    function convertNumToStringHaveDot($num) {
         $num = $num.toString();
         let res = "";
         let count = 0;
-        for (let i = $num.length - 1; i >= 0 ; i--)
-        {
+        for (let i = $num.length - 1; i >= 0; i--) {
             count++;
-            if (count == 3)
-            {
+            if (count == 3) {
                 count = 0;
                 if (i > 0)
-                    res = "." + $num[i] + res; 
+                    res = "." + $num[i] + res;
                 else
                     res = $num[i] + res;
-            }
-            else
-            {
+            } else {
                 res = $num[i] + res;
             }
         }
         return res;
     }
 
-    function editAddItem(serial)
-    {
+    function editAddItem(serial) {
         //console.log(serialBill);
         let bill = JSON.parse(sessionStorage.getItem('bill'));
         bill[serial].num++;
         let elementBill = document.getElementById('bill_' + serial.toString());
-        let elementChild = elementBill.getElementsByClassName('des'); 
+        let elementChild = elementBill.getElementsByClassName('des');
         // console.log(elementChild);
         // elementChild[0].innerHTML = bill[serial].size
         elementChild[1].innerHTML = bill[serial].num;
@@ -715,21 +645,17 @@
         sessionStorage.setItem('bill', bill);
     }
 
-    function editMinusItem(serial)
-    {
+    function editMinusItem(serial) {
         //console.log(serialBill);
         let bill = JSON.parse(sessionStorage.getItem('bill'));
-        if (bill[serial].num == 1)
-        {
-            if (!confirm("Bạn có muốn hủy món " + bill[serial].name + " hay không?"))
-            {
+        if (bill[serial].num == 1) {
+            if (!confirm("Bạn có muốn hủy món " + bill[serial].name + " hay không?")) {
                 return;
             }
         }
         //console.log("vao");
         bill[serial].num--;
-        if (bill[serial].num == 0)
-        {
+        if (bill[serial].num == 0) {
             document.getElementsByClassName('row-bill_' + serial.toString())[0].remove();
             bill.splice(serial, 1);
             bill = JSON.stringify(bill);
@@ -737,7 +663,7 @@
             return;
         }
         let elementBill = document.getElementById('bill_' + serial.toString());
-        let elementChild = elementBill.getElementsByClassName('des'); 
+        let elementChild = elementBill.getElementsByClassName('des');
         // console.log(elementChild);
         // elementChild[0].innerHTML = bill[serial].size
         elementChild[1].innerHTML = bill[serial].num;
@@ -749,11 +675,9 @@
     }
 
 
-    function editDeleteItem(index)
-    {
+    function editDeleteItem(index) {
         let bill = JSON.parse(sessionStorage.getItem('bill'));
-        if (!confirm("Bạn có muốn hủy món " + bill[index].name + " hay không?"))
-        {
+        if (!confirm("Bạn có muốn hủy món " + bill[index].name + " hay không?")) {
             return;
         }
         let element = document.getElementById('bill_' + index.toString());
@@ -770,8 +694,7 @@
         showBill();
     }
 
-    function showBill()
-    {
+    function showBill() {
         document.getElementById('contentOrder').innerHTML = "";
         if (sessionStorage.getItem('bill') === null)
             return;
@@ -793,8 +716,7 @@
         //                                 '</tr>' +
         //                             '</thead>' +
         //                             '<tbody>';
-        for (let i = 0; i < bill.length; i++)
-        {
+        for (let i = 0; i < bill.length; i++) {
             console.log(html);
             let func = {};
             func.name = "getItemName";
@@ -802,38 +724,40 @@
             $.ajax({
                 type: "POST",
                 url: "../models/M_BanHang.php",
-                data: {func: JSON.stringify(func)},
-                success: function (response) {
+                data: {
+                    func: JSON.stringify(func)
+                },
+                success: function(response) {
                     setTimeout(() => {
                         bill[i].name = JSON.parse(response);
                         sessionStorage.setItem('bill', JSON.stringify(bill));
                         //let stringBill = JSON.stringify(bill[i]).toString();
                         console.log(bill[i].size);
-                        html = 
-                                            '<tr id="bill_' + i.toString() + '" style=" overflow: scroll;">' +
-                                            '<th cope="row">' + (Number(i) + 1) +'</th>' +
-                                            '<td> <p style="width: 150px">' + bill[i].name + 'aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb</p></td>' +
-                                            '<td> <p class="des" style="width: 50px">' + bill[i].size + '</p></td>' +
-                                            '<td> <p class="des" style="width: 20px">' + bill[i].num + '</p></td>' +
-                                            '<td> <p class="des" style="width: 50px">' + bill[i].price + '</p></td>' +
-                                            '<td> <p class="des" style="width: 50px">' + bill[i].num * bill[i].price + '</p></td>' +
-                                            '<td> <p class="des" style="width: 200px">' + bill[i].toppingList + '</p></td>' +
-                                            '<td style="width: 70px">' +
-                                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" +
-                                            '</td>' +
-                                            '<td style="width: 70px">' +
-                                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-warning btn-round text-white mr-1' onclick='editMinusItem(" + i + ")'>GIẢM</a>" +
-                                            '</td>' +
-                                            '<td style="width: 70px">' +
-                                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-success btn-round text-white mr-1' onclick='editAddItem(" + i + ")'>TĂNG</a>" +
-                                            '</td>' +
-                                            '<td style="width: 70px">' +
-                                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-danger btn-round text-white mr-1' onclick='editDeleteItem(" + i +")'>XÓA</a>" +
-                                            '</td>' +
-                                            '</tr>';
+                        html =
+                            '<tr id="bill_' + i.toString() + '" style=" overflow: scroll;">' +
+                            '<th cope="row">' + (Number(i) + 1) + '</th>' +
+                            '<td> <p style="width: 150px">' + bill[i].name + 'aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb</p></td>' +
+                            '<td> <p class="des" style="width: 50px">' + bill[i].size + '</p></td>' +
+                            '<td> <p class="des" style="width: 20px">' + bill[i].num + '</p></td>' +
+                            '<td> <p class="des" style="width: 50px">' + bill[i].price + '</p></td>' +
+                            '<td> <p class="des" style="width: 50px">' + bill[i].num * bill[i].price + '</p></td>' +
+                            '<td> <p class="des" style="width: 200px">' + bill[i].toppingList + '</p></td>' +
+                            '<td style="width: 70px">' +
+                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-info btn-round text-white mr-1' data-toggle='modal' data-target='#optionModal' onclick='showOptionTableForListOrder(" + i + ");'>TÙY CHỌN</a>" +
+                            '</td>' +
+                            '<td style="width: 70px">' +
+                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-warning btn-round text-white mr-1' onclick='editMinusItem(" + i + ")'>GIẢM</a>" +
+                            '</td>' +
+                            '<td style="width: 70px">' +
+                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-success btn-round text-white mr-1' onclick='editAddItem(" + i + ")'>TĂNG</a>" +
+                            '</td>' +
+                            '<td style="width: 70px">' +
+                            "<a style='width: 70px; font-size: 10px; padding: 10px' href='#pablo' class='btn btn-danger btn-round text-white mr-1' onclick='editDeleteItem(" + i + ")'>XÓA</a>" +
+                            '</td>' +
+                            '</tr>';
                         elementContentBill.innerHTML += html;
                     }, 350);
-                    
+
                     // console.log(html);
                     // let html = '<div class="row row-bill_' + i.toString() + '">' + 
                     //                 '<div class="card card-pricing bg-dark mr-3 ml-3 pl-3 pr-3">' + 
@@ -852,21 +776,20 @@
                     //                         '</div>' +
                     //                 '</div>' +
                     //             '</div>';
-            // let newcontent = document.createElement('div');
-            // newcontent.innerHTML = html;
-            // while (newcontent.firstChild)
-            // {
-            //     elementContentBill.appendChild(newcontent.firstChild);
-            // }
+                    // let newcontent = document.createElement('div');
+                    // newcontent.innerHTML = html;
+                    // while (newcontent.firstChild)
+                    // {
+                    //     elementContentBill.appendChild(newcontent.firstChild);
+                    // }
                 }
-            });     
+            });
         }
         console.log(html);
 
     }
 
-    function deleteOrder(MaDM)
-    {
+    function deleteOrder(MaDM) {
         let func = {};
         func.name = 'deleteOrder';
         func.MaDM = MaDM;
@@ -874,8 +797,10 @@
         $.ajax({
             type: "POST",
             url: "../models/M_BanHang.php",
-            data: {func: JSON.stringify(func)},
-            success: function (response) {
+            data: {
+                func: JSON.stringify(func)
+            },
+            success: function(response) {
                 Swal.fire({
                     icon: 'success',
                     title: 'Đang cập nhật tình trạng phục vụ',
@@ -889,112 +814,95 @@
         });
     }
 
-    $(document).ready(function () {
-        $('#tbFindOrder').on('input', function(){
+    $(document).ready(function() {
+        $('#tbFindOrder').on('input', function() {
             loadBlender($(this).val());
         });
     });
 
     var timerOrder = setInterval(() => {
         // console.log($('#tbFindOrder').val() == '');
-        if (!$('#billBlender').is(':visible') || ($('#badgeOrderFinish').text() == '0'))
-        {
+        if (!$('#billBlender').is(':visible') || ($('#badgeOrderFinish').text() == '0')) {
             // console.log('vào');
             loadBlender('');
         }
     }, 1000);
 
-    function loadBlender(stringToFind)
-    {
-        if ($('#billBlender').hasClass('show'))
-        {
-            let func = {};
-            func.name = 'checkRight';
-            func.id = 'order2';
-            $.ajax({
-                type: "POST",
-                url: "../models/M_BanHang.php",
-                data: {func: JSON.stringify(func)},
-                success: function (response) {
-                    $('#billBlender').modal('hide');
-                }
-            });
-        }
+    function loadBlender(stringToFind) {
         let func = {};
         func.name = 'getOrders';
         $.ajax({
             type: "POST",
             url: "../models/M_Blender.php",
-            data: {func: JSON.stringify(func)},
-            success: function (response) {
+            data: {
+                func: JSON.stringify(func)
+            },
+            success: function(response) {
                 let data = JSON.parse(response);
                 // console.log(JSON.parse(response));    
                 document.getElementById('blenderCustomer').innerHTML = '';
                 let countOrderFinish = 0;
-                for (let i = 0; i < data.length; i++)
-                {
+                for (let i = 0; i < data.length; i++) {
                     if (stringToFind != '' && !checkSameName(data[i][0]['SoBan'], stringToFind))
                         continue;
                     if (data[i][0]['TinhTrang'] != 'phuc vu')
                         continue;
                     countOrderFinish++;
-                    let html = '<div id="row' + data[i][0]['MaDM'] +'" class="row blenderOrders" style="margin: 0">' +
-                                    '<div id="accordion' + data[i][0]['MaDM'] +'" role="tablist">' +
-                                        '<div class="card card-collapse" style="width: 70vw; text-align: center;">' +
-                                            '<div class="card-header bg-light border-primary" style=" background-color: white" role="tab" id="heading">' +
-                                                '<h5 class="mb-0" style="font-size: 20px; font-weight: 500;">' +
-                                                    '<a id="title" data-toggle="collapse" href="#collapse' + data[i][0]['MaDM'] +'" aria-expanded="true" aria-controls="collapse" style="display: flex; color: black">' +
-                                                        'Order <br>' + data[i][0]['SoBan'] +
-                                                        '<i class="material-icons">keyboard_arrow_down</i>' +
-                                                        '<div style="display: flex; margin-left: 80%; ">' +
-                                                            '<button type="button" rel="tooltip" class="btn btn-simple btn-warning" style=" font-weight: 700; background-color: white; color: black" onclick="deleteOrder(\'' + data[i][0]['MaDM'] + '\')"> ' +
-                                                                'PHỤC VỤ' + 
-                                                                '<i class="material-icons">person</i>' +
-                                                            '</button>' +
-                                                        '</div>' +
-                                                    '</a>' +
-                                                '</h5>' +
-                                            '</div>' +
-                                            '<div id="collapse' + data[i][0]['MaDM'] +'" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion' + data[i][0]['MaDM'] +'" style="text-align: center;">' +
-                                                '<div class="card-body">' +
-                                                    '<table class="table">' +
-                                                        '<thead>' +
-                                                            '<tr>' +
-                                                                '<th class="text-center" style="font-weight: 500;">STT</th>' +
-                                                                '<th style="width: 300px; font-weight: 500;">Tên món</th>'+
-                                                                '<th style="width: 300px; font-weight: 500;">Số lượng</th>' +
-                                                                '<th style="width: 300px; font-weight: 500;">Kích cỡ</th>' +
-                                                                '<th style="max-width: 100px; font-weight: 500;">Topping</th>' +
-                                                            '</tr>' +
-                                                        '</thead>' +
-                                                        '<tbody id="content">';
-                                                        for (let j = 0; j < data[i][1].length; j++)
-                                                        {
-                                                            html +=
-                                                                '<tr>' +
-                                                                    '<td class="text-center" style="width: 50px;">' + (j + 1) +'</td>' +
-                                                                    '<td>'+ data[i][1][j][0]['TenMon'] + '</td>' +
-                                                                    '<td>' + data[i][1][j][0]['SoLuong'] + '</td>' +
-                                                                    '<td>' + data[i][1][j][0]['TenDonVi'] + '</td>' + 
-                                                                    '<td style="max-width: 400px;">' +
-                                                                        data[i][1][j][1] +
-                                                                    '</td>' +
-                                                                '</tr>'
-                                                        }
-                                                        '</tbody>' +
-                                                    '</table>' +
-                                                '</div>' +
-                                            '</div>' +
-                                        '</div>' +
-                                    '</div>' +
-                                '</div>';
+                    let html = '<div id="row' + data[i][0]['MaDM'] + '" class="row blenderOrders" style="margin: 0">' +
+                        '<div id="accordion' + data[i][0]['MaDM'] + '" role="tablist">' +
+                        '<div class="card card-collapse" style="width: 70vw; text-align: center;">' +
+                        '<div class="card-header bg-light border-primary" style=" background-color: white" role="tab" id="heading">' +
+                        '<h5 class="mb-0" style="font-size: 20px; font-weight: 500;">' +
+                        '<a id="title" data-toggle="collapse" href="#collapse' + data[i][0]['MaDM'] + '" aria-expanded="true" aria-controls="collapse" style="display: flex; color: black">' +
+                        'Order <br>' + data[i][0]['SoBan'] +
+                        '<i class="material-icons">keyboard_arrow_down</i>' +
+                        '<div style="display: flex; margin-left: 80%; ">' +
+                        '<button type="button" rel="tooltip" class="btn btn-simple btn-warning" style=" font-weight: 700; background-color: white; color: black" onclick="deleteOrder(\'' + data[i][0]['MaDM'] + '\')"> ' +
+                        'PHỤC VỤ' +
+                        '<i class="material-icons">person</i>' +
+                        '</button>' +
+                        '</div>' +
+                        '</a>' +
+                        '</h5>' +
+                        '</div>' +
+                        '<div id="collapse' + data[i][0]['MaDM'] + '" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion' + data[i][0]['MaDM'] + '" style="text-align: center;">' +
+                        '<div class="card-body">' +
+                        '<table class="table">' +
+                        '<thead>' +
+                        '<tr>' +
+                        '<th class="text-center" style="font-weight: 500;">STT</th>' +
+                        '<th style="width: 300px; font-weight: 500;">Tên món</th>' +
+                        '<th style="width: 300px; font-weight: 500;">Số lượng</th>' +
+                        '<th style="width: 300px; font-weight: 500;">Kích cỡ</th>' +
+                        '<th style="max-width: 100px; font-weight: 500;">Topping</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody id="content">';
+                    for (let j = 0; j < data[i][1].length; j++) {
+                        html +=
+                            '<tr>' +
+                            '<td class="text-center" style="width: 50px;">' + (j + 1) + '</td>' +
+                            '<td>' + data[i][1][j][0]['TenMon'] + '</td>' +
+                            '<td>' + data[i][1][j][0]['SoLuong'] + '</td>' +
+                            '<td>' + data[i][1][j][0]['TenDonVi'] + '</td>' +
+                            '<td style="max-width: 400px;">' +
+                            data[i][1][j][1] +
+                            '</td>' +
+                            '</tr>'
+                    }
+                    '</tbody>' +
+                    '</table>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
                     document.getElementById('blenderCustomer').innerHTML += html;
-                }    
+                }
                 document.getElementById('badgeOrderFinish').innerHTML = countOrderFinish;
                 return true;
             },
-            error(jq, text, err)
-            {
+            error(jq, text, err) {
                 return false;
             }
         });
@@ -1002,47 +910,28 @@
 </script>
 
 <?php
-    include_once '../models/M_BanHang.php';
-    include_once '../models/M_Blender.php';
-    include_once '../models/M_PhanQuyen.php';
-    //include '../models/M_General_CMD.php';
-    // session_start();
+include_once '../models/M_BanHang.php';
+include_once '../models/M_Blender.php';
+//include '../models/M_General_CMD.php';
 
-    $modelPQ = new Model_PhanQuyen();
-    if (!$modelPQ->check_PhanQuyen($_SESSION['maCV'], "order0"))
-    {
-        echo '<div class="card" style="position: relative; max-width: 500px; max-height: 500px; margin-left: 50%; margin-top: 20%; transform: translate(-50%, -50%)">
-                <div class="card-body ">
-                    <h6 class="card-category text-danger">
-                        <i class="material-icons">gavel</i> Cảnh báo Phân quyền
-                    </h6>
-                    <h4 class="card-title">
-                        Bạn chưa có quyền truy cập vào chức năng này
-                    </h4>
-                </div>
-            </div>';
-    }
-    else
-    {
-        $itemList = Model_Sale::getItemListFromServer();
-        echo
-        '  
+if (1 == 2)
+    die("Bạn không có quyền truy cập, ok?");
+
+//$modelSale->sortItemListByNumChoice();
+$itemList = Model_Sale::getItemListFromServer();
+echo
+'  
+        <script type="text/javascript">
+            sessionStorage.setItem("itemList", ' . json_encode($itemList) . ')
+        </script>
+    ';
+include('../admin/sale.php');
+for ($i = 0; $i < count($itemList); $i++) {
+    echo
+    '
             <script type="text/javascript">
-                sessionStorage.setItem("itemList", ' . json_encode($itemList) .')
+                checkVisionBadge(\'' . $itemList[$i]->get_MaMon() . '\');
             </script>
         ';
-        include('../admin/sale.php');
-        for ($i = 0; $i < count($itemList); $i++)
-        {
-            echo 
-            '
-                <script type="text/javascript">
-                    checkVisionBadge(\''. $itemList[$i]->get_MaMon() .'\');
-                </script>
-            ';
-        }
-        Model_Sale::deleteOrderFail();
-    }
-    //$modelSale->sortItemListByNumChoice();
-    
+}
 ?>

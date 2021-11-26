@@ -75,6 +75,7 @@ class Model_KhuyenMai
             '" . $KhuyenMai->get_PhanTramKM() .  "',
             '" . $KhuyenMai->get_TienKMToiDa() .  "',
             '" . $KhuyenMai->get_TienHDToiThieu() .  "')";
+        echo $sql;
         if ($conn->query($sql) === TRUE) {
             return true;
         } else {

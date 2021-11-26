@@ -37,6 +37,7 @@ class C_KhachHang
             if ($_POST['action'] == 'update') {
                 $KhachHang = new KhachHang();
                 //$KhachHang->set_MaKH($General->AutoGetID());
+                echo $_POST['hoten'];
                 $KhachHang->set_MaKH($_POST['id']);
                 $KhachHang->set_HoTen($_POST['hoten']);
                 $KhachHang->set_SDT($_POST['sdt']);
@@ -47,21 +48,21 @@ class C_KhachHang
                 $KhachHang->set_NgayDK(date('Y-m-d H:i:s', strtotime($_POST['ngaydk'])));
                 $KhachHang->set_LoaiTV($ModelKhachHang->get_LoaiTVByName($_POST['loaitv']));
                 if ($ModelKhachHang->update_KhachHang($KhachHang)) {
-                    echo "successsss";
+                    echo "success";
                 } else {
                     echo "error";
                 }
             }
             if ($_POST['action'] == 'add') {
                 $KhachHang = new KhachHang();
-                $KhachHang->set_MaKH($General->AutoGetID('khachhang', 'kh'));
+                $KhachHang->set_MaKH($General->getIDNum('khachhang', 'kh', 'MaKH'));
                 $KhachHang->set_HoTen($_POST['hoten']);
                 $KhachHang->set_SDT($_POST['sdt']);
                 $KhachHang->set_GioiTinh($_POST['gioitinh']);
                 $KhachHang->set_DiemTV($_POST['diemtv']);
                 $KhachHang->set_TongChi($_POST['tongchi']);
                 $KhachHang->set_DiemTV($_POST['diemtv']);
-                $KhachHang->set_NgayDK(date('Y-m-d H:i:s', strtotime($_POST['ngaydk'])));
+                $KhachHang->set_NgayDK(date('Y-m-d', strtotime($_POST['ngaydk'])));
                 $KhachHang->set_LoaiTV($ModelKhachHang->get_LoaiTVByName($_POST['loaitv']));
 
                 if ($ModelKhachHang->find_KHBySDT($KhachHang->get_SDT()) == null) {
@@ -73,6 +74,8 @@ class C_KhachHang
                 } else {
                     echo "phone";
                 }
+
+                //echo $General->getIDNum('khachhang', 'kh', 'MaKH');
             }
             if ($_POST['action'] == 'delete') {
                 if ($ModelKhachHang->delete_KhachHang($_POST['id'])) {
@@ -96,7 +99,7 @@ class C_KhachHang
             }
             if ($_POST['action'] == 'addHangTV') {
                 $LoaiTV = new LoaiTV();
-                $LoaiTV->set_MaLoaiTV($General->AutoGetID('loaithanhvien', 'tv'));
+                $LoaiTV->set_MaLoaiTV($General->AutoGetID('loaithanhvien', 'tv', 'MaLoaiTV'));
                 $LoaiTV->set_TenLoaiTV($_POST['tenloaitv']);
                 $LoaiTV->set_DiemLenHang($_POST['diemlenhang']);
                 $LoaiTV->set_TyLeTichDiem($_POST['tyletichluy']);
@@ -152,7 +155,7 @@ class C_KhachHang
             }
             if ($_POST['action'] == 'addKM') {
                 $KhuyenMai = new KhuyenMai();
-                $KhuyenMai->set_MaKM($General->AutoGetID('khuyenmai', 'km'));
+                $KhuyenMai->set_MaKM($General->AutoGetID('khuyenmai', 'km', 'MaKM'));
                 $KhuyenMai->set_Code($_POST['code']);
                 $KhuyenMai->set_TenKM($_POST['tenkm']);
                 $KhuyenMai->set_ThoiGianBD($_POST['ngaybd']);
@@ -184,8 +187,6 @@ class C_KhachHang
                 }
             }
             if ($_POST['action'] == 'deleteKM') {
-                $KhuyenMai = new KhuyenMai();
-                $KhuyenMai->set_MaKM($General->AutoGetID('khuyenmai', 'km'));
                 if ($ModelKhuyenMai->delete_KhuyenMai($_POST['id'])) {
                     echo "success";
                 } else {
