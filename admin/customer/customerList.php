@@ -176,7 +176,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                <button id="btnCancel" type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
                 <button id="btnConfirm" type="button" class="btn btn-success">Lưu</button>
             </div>
         </div>
@@ -478,6 +478,19 @@
                     addKH()
                 }
             }
+        })
+
+        $("#btnCancel").click(function(){
+            let func = {};
+            func.name = 'deleteOrderFail';
+            $.ajax({
+                type: "POST",
+                url: "../models/M_BanHang.php",
+                data: {func: JSON.stringify(func)},
+                success: function (response) {
+                    deleteOrderFail();
+                }
+            });
         })
     })
 </script>

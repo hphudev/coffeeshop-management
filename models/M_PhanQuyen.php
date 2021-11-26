@@ -51,7 +51,7 @@ class Model_PhanQuyen
         if ($result->num_rows > 0) {
             return true;
         } else
-            return false;
+            return false; 
     }
     public function check_PhanQuyen($id, $TenQuyen)
     {

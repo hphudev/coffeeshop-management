@@ -469,6 +469,7 @@
                     // Swal.fire({
                     //     title: response,
                     // })
+                    sessionStorage.removeItem('bill');
                     $('#section-to-print').html(response)
                     window.print()
                     $("#thanhtoanModel").modal('hide')

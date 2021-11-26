@@ -101,7 +101,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <h4>
-                                            THỐNG KÊ
+                                            TÀI CHÍNH
                                         </h4>
                                         <div class="container-fluid">
                                             <div class="row">
@@ -117,20 +117,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input id="thongke1" class="form-check-input" type="checkbox" value="" disabled>
-                                                            Tạo thống kê/báo cáo
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -142,8 +128,8 @@
                                                 <div class="col-md-6">
                                                     <div class="form-check">
                                                         <label class="form-check-label">
-                                                            <input id="mon0" class="form-check-input" type="checkbox" value="" disabled>
-                                                            Xem thông tin món
+                                                            <input id="order0" class="form-check-input" type="checkbox" value="" disabled>
+                                                            Xem trang bán hàng
                                                             <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                             </span>
@@ -153,8 +139,8 @@
                                                 <div class="col-md-6">
                                                     <div class="form-check">
                                                         <label class="form-check-label">
-                                                            <input id="mon1" class="form-check-input" type="checkbox" value="" disabled>
-                                                            Thực hiện các thao tác với món
+                                                            <input id="order1" class="form-check-input" type="checkbox" value="" disabled>
+                                                            Thanh toán hóa đơn
                                                             <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                             </span>
@@ -164,19 +150,8 @@
                                                 <div class="col-md-6">
                                                     <div class="form-check">
                                                         <label class="form-check-label">
-                                                            <input id="mon2" class="form-check-input" type="checkbox" value="" disabled>
-                                                            Thực hiện báo cáo doanh thu theo món
-                                                            <span class="form-check-sign">
-                                                                <span class="check"></span>
-                                                            </span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-check">
-                                                        <label class="form-check-label">
-                                                            <input id="mon3" class="form-check-input" type="checkbox" value="" disabled>
-                                                            Thực hiện order món
+                                                            <input id="order2" class="form-check-input" type="checkbox" value="" disabled>
+                                                            Phục vụ món
                                                             <span class="form-check-sign">
                                                                 <span class="check"></span>
                                                             </span>
