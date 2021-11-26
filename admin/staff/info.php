@@ -47,9 +47,9 @@
                             <div class=" col-md-5">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Ngày sinh</label>
-                                    <input id="inputNgaySinh" type="datetime-local" class="form-control personal_info" value="<?php
-                                                                                                                                echo date('Y-m-d\TH:i', $NhanVien->get_NgaySinh())
-                                                                                                                                ?>" disabled>
+                                    <input id="inputNgaySinh" type="date" class="form-control personal_info" value="<?php
+                                                                                                                    echo date('Y-m-d', $NhanVien->get_NgaySinh())
+                                                                                                                    ?>" disabled>
                                 </div>
                             </div>
                         </div>
@@ -134,9 +134,9 @@
                             <div class="col-md-7">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Ngày vào làm</label>
-                                    <input id="inputNgVaoLam" type="datetime-local" class="form-control work_info" value="<?php
-                                                                                                                            echo date('Y-m-d\TH:i', $NhanVien->get_NgayVaoLam())
-                                                                                                                            ?>" disabled>
+                                    <input id="inputNgVaoLam" type="date" class="form-control work_info" value="<?php
+                                                                                                                echo date('Y-m-d', $NhanVien->get_NgayVaoLam())
+                                                                                                                ?>" disabled>
                                 </div>
                             </div>
                         </div>
@@ -195,58 +195,166 @@
 
 <script>
     $(document).ready(function() {
+        function checkPhanQuyen(PhanQuyen, Callback) {
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
+                data: {
+                    phanquyen: PhanQuyen,
+                },
+                beforeSend: function() {
+
+                },
+                success: function(response) {
+                    // alert(response)
+                    if (response == "true") {
+                        Callback()
+                    } else {
+                        Swal.fire(
+                            "Thất bại!",
+                            "Bạn không có quyền truy cập mục này!",
+                            "warning"
+                        )
+                    }
+                },
+                complete: function() {},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
+        }
+
+        function checkNVInfomation() {
+            if ($('#inputHoTenDem').val() == "" ||
+                $('#inputTen').val() == "" ||
+                $('#inputCMND').val() == "" ||
+                $('#inputNgaySinh').val() == "" ||
+                $('#inputGioiTinh').val() == "" ||
+                $('#inputSDT').val() == "" ||
+                $('#inputDiaChi').val() == "" ||
+                $('#inputMaNV').val() == "" ||
+                $('#inputNgVaoLam').val() == "" ||
+                $('#inputChucVu').val() == "" ||
+                $('#inputLuong').val() == "" ||
+                $('#inputTaiKhoan').val() == "" ||
+                $('#inputMa').val() == "") {
+                Swal.fire(
+                    'Thất bại!',
+                    'Vui lòng nhập đầy đủ thông tin',
+                    'error'
+                )
+                return false;
+            };
+            if (checkNgayVaoLam()) {
+
+            }
+            if (!checkNgaySinh()) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Nhân viên phải đủ 18 tuổi. Vui lòng kiểm tra lại',
+                    'error'
+                )
+                return false;
+            }
+            if (!checkSDT()) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Số điện thoại không đúng định dạng. Vui lòng kiểm tra lại',
+                    'error'
+                )
+                return false;
+            }
+            if (!checkNgayVaoLam()) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Nhân viên phải đủ 18 tuổi khi vào làm và ngày vào làm\nvà ngày vào làm phải trước ngày hiện tại\nVui lòng kiểm tra lại thông tin!',
+                    'error'
+                )
+                return false;
+            }
+            return true;
+        }
+
+        function checkSDT() {
+            const regex = /(84|0[3|5|7|8|9])+([0-9]{8})/
+            return regex.test(String($('#inputSDT').val()));
+        }
+
+        function checkNgaySinh() {
+            var dob = new Date(Date.parse($('#inputNgaySinh').val()))
+            var ageDifMs = Date.now() - dob.getTime()
+            var ageDate = new Date(ageDifMs)
+            if (Math.abs(ageDate.getUTCFullYear() - 1970) >= 18)
+                return true
+            else
+                return false
+        }
+
+        function checkNgayVaoLam() {
+            var dow = new Date(Date.parse($('#inputNgVaoLam').val()))
+            var dob = new Date(Date.parse($('#inputNgaySinh').val()))
+ 
+            var workDifMs = dow.getTime() - dob.getTime()
+
+            if (dow > new Date())
+                return false
+
+            var workDate = new Date(workDifMs)
+
+            if (Math.abs(workDate.getUTCFullYear() - 1970) >= 18)
+                return true
+            else
+                return false
+        }
+
         $('#btnEditPersonalInfo').click(function() {
-            if (checkPhanQuyen()) {
+            checkPhanQuyen('nhansu1', function() {
                 $(this).removeClass('btn-warning')
                 $(this).prop("disabled", true)
                 $('.personal_info').prop("disabled", false)
                 $('#btnSavePersonalInfo').removeClass('invisible')
                 $('#btnCancelEditPersonalInfo').removeClass('invisible')
-            } else {
-                Swal.fire(
-                    'Thất bại!',
-                    'Bạn không có quyền thực hiện chức năng này',
-                    'error'
-                )
-            }
+            })
         });
 
         $('#btnSavePersonalInfo').click(function() {
-            var xmlhttp = new XMLHttpRequest();
-            var url = "../../coffeeshopmanagement/controllers/C_NhanVien.php?page=staff&id=" + $('#inputMaNV').val() + '&update' +
-                "&HoTenDem=" + $('#inputHoTenDem').val() +
-                "&Ten=" + $('#inputTen').val() +
-                "&NgaySinh=" + $('#inputNgaySinh').val() +
-                "&CMND=" + $('#inputCMND').val() +
-                "&GioiTinh=" + $('#inputGioiTinh').val() +
-                "&SDT=" + $('#inputSDT').val() +
-                "&DiaChi=" + $('#inputDiaChi').val();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    if (this.responseText == 'success') {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin chỉnh sửa đã được lưu lại',
-                            'success'
-                        )
-                    } else {
-                        Swal.fire(
-                            'Thất bại!',
-                            'Đã xảy ra lỗi. Vui lòng thử lại',
-                            'error'
-                        )
+            if (checkNVInfomation()) {
+                var xmlhttp = new XMLHttpRequest();
+                var url = "../../coffeeshopmanagement/controllers/C_NhanVien.php?page=staff&id=" + $('#inputMaNV').val() + '&update' +
+                    "&HoTenDem=" + $('#inputHoTenDem').val() +
+                    "&Ten=" + $('#inputTen').val() +
+                    "&NgaySinh=" + $('#inputNgaySinh').val() +
+                    "&CMND=" + $('#inputCMND').val() +
+                    "&GioiTinh=" + $('#inputGioiTinh').val() +
+                    "&SDT=" + $('#inputSDT').val() +
+                    "&DiaChi=" + $('#inputDiaChi').val();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if (this.responseText == 'success') {
+                            Swal.fire(
+                                'Thành công!',
+                                'Thông tin chỉnh sửa đã được lưu lại',
+                                'success'
+                            )
+                        } else {
+                            Swal.fire(
+                                'Thất bại!',
+                                'Đã xảy ra lỗi. Vui lòng thử lại',
+                                'error'
+                            )
+                        }
                     }
-                }
-            };
+                };
 
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
 
-            $(this).addClass('invisible')
-            $('.personal_info').prop("disabled", true)
-            $('#btnEditPersonalInfo').prop("disabled", false)
-            $('#btnEditPersonalInfo').addClass('btn-warning')
-            $('#btnCancelEditPersonalInfo').addClass('invisible')
+                $(this).addClass('invisible')
+                $('.personal_info').prop("disabled", true)
+                $('#btnEditPersonalInfo').prop("disabled", false)
+                $('#btnEditPersonalInfo').addClass('btn-warning')
+                $('#btnCancelEditPersonalInfo').addClass('invisible')
+            }
         });
 
         $('#btnCancelEditPersonalInfo').click(function() {
@@ -263,55 +371,51 @@
         });
 
         $('#btnEditWorkInfo').click(function() {
-            if (checkPhanQuyen()) {
+            checkPhanQuyen('nhansu1', function() {
                 $(this).removeClass('btn-warning')
                 $(this).prop("disabled", true)
                 $('.work_info').prop("disabled", false)
                 $('#btnSaveWorkInfo').removeClass('invisible')
                 $('#btnCancelEditWorkInfo').removeClass('invisible')
-            } else {
-                Swal.fire(
-                    'Thất bại!',
-                    'Bạn không có quyền thực hiện chức năng này',
-                    'error'
-                )
-            }
+            })
         });
 
         $('#btnSaveWorkInfo').click(function() {
-            var xmlhttp = new XMLHttpRequest();
-            var url = "../../coffeeshopmanagement/controllers/C_NhanVien.php?page=staff&id=" + $('#inputMaNV').val() + '&updatework' +
-                "&NgayVaoLam=" + $('#inputNgVaoLam').val() +
-                "&ChucVu=" + $('#inputChucVu').val() +
-                "&Luong=" + $('#inputLuong').val() +
-                "&TaiKhoan=" + $('#inputTaiKhoan').val() +
-                "&MatKhau=" + $('#inputMatKhau').val();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    if (this.responseText == 'success') {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin chỉnh sửa đã được lưu lại',
-                            'success'
-                        )
-                    } else {
-                        Swal.fire(
-                            'Thất bại!',
-                            'Đã xảy ra lỗi. Vui lòng thử lại',
-                            'error'
-                        )
+            if (checkNVInfomation()) {
+                var xmlhttp = new XMLHttpRequest();
+                var url = "../../coffeeshopmanagement/controllers/C_NhanVien.php?page=staff&id=" + $('#inputMaNV').val() + '&updatework' +
+                    "&NgayVaoLam=" + $('#inputNgVaoLam').val() +
+                    "&ChucVu=" + $('#inputChucVu').val() +
+                    "&Luong=" + $('#inputLuong').val() +
+                    "&TaiKhoan=" + $('#inputTaiKhoan').val() +
+                    "&MatKhau=" + $('#inputMatKhau').val();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        if (this.responseText == 'success') {
+                            Swal.fire(
+                                'Thành công!',
+                                'Thông tin chỉnh sửa đã được lưu lại',
+                                'success'
+                            )
+                        } else {
+                            Swal.fire(
+                                'Thất bại!',
+                                'Đã xảy ra lỗi. Vui lòng thử lại',
+                                'error'
+                            )
+                        }
                     }
-                }
-            };
+                };
 
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
+                xmlhttp.open("GET", url, true);
+                xmlhttp.send();
 
-            $(this).addClass('invisible')
-            $('.work_info').prop("disabled", true)
-            $('#btnEditWorkInfo').prop("disabled", false)
-            $('#btnEditWorkInfo').addClass('btn-warning')
-            $('#btnCancelEditWorkInfo').addClass('invisible')
+                $(this).addClass('invisible')
+                $('.work_info').prop("disabled", true)
+                $('#btnEditWorkInfo').prop("disabled", false)
+                $('#btnEditWorkInfo').addClass('btn-warning')
+                $('#btnCancelEditWorkInfo').addClass('invisible')
+            }
         });
 
         $('#btnCancelEditWorkInfo').click(function() {
@@ -326,23 +430,5 @@
             $('#btnEditWorkInfo').addClass('btn-warning')
             $('#btnSaveWorkInfo').addClass('invisible')
         });
-
-        function checkPhanQuyen() {
-            var xmlhttp = new XMLHttpRequest();
-            var url = "../../coffeeshopmanagement/controllers/C_PhanQuyen.php?check&quyen=nhansu1";
-
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    if (this.responseText == 'true') {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            };
-
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
-        }
     })
 </script>
