@@ -50,8 +50,8 @@
                                     echo "<tr class='text-center' id='" . $DSKhuyenMai[$i]->get_MaKM() . "'>";
                                     echo "<td class='text-center code' >" . $DSKhuyenMai[$i]->get_Code() . "</td>";
                                     echo "<td class='text-center tenkm' >" . $DSKhuyenMai[$i]->get_TenKM() . "</td>";
-                                    echo "<td id='" . date("Y-m-d\TH:i", $DSKhuyenMai[$i]->get_ThoiGianBD()) . "' class='text-center ngaybd' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianBD()) . "</td>";
-                                    echo "<td id='" . date("Y-m-d\TH:i", $DSKhuyenMai[$i]->get_ThoiGianKT()) . "' class='text-center ngaykt' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianKT()) . "</td>";
+                                    echo "<td class='text-center ngaybd' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianBD()) . "</td>";
+                                    echo "<td class='text-center ngaykt' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianKT()) . "</td>";
                                     echo "<td class='text-center soluong' >" . $DSKhuyenMai[$i]->get_SoLuong() . "</td>";
                                     echo "<td class='text-center phantram' >" . $DSKhuyenMai[$i]->get_PhanTramKM() . "</td>";
                                     echo "<td class='text-center toida' >" . $DSKhuyenMai[$i]->get_TienKMToiDa() . "</td>";
@@ -113,17 +113,17 @@
                                 </div>
                                 <div class=" col-md-12">
                                     <label class="bmd-label-floating">Ngày bắt đầu</label>
-                                    <input id="inputNgayBD" type="datetime-local" class="form-control personal_info" value="<?php
-                                                                                                                            $now = new DateTime('now');
-                                                                                                                            echo $now->format("Y-m-d\TH:i")
-                                                                                                                            ?>">
+                                    <input id="inputNgayBD" type="date" class="form-control personal_info" value="<?php
+                                                                                                                    $now = new DateTime('now');
+                                                                                                                    echo $now->format("Y-m-d\TH:i")
+                                                                                                                    ?>">
                                 </div>
                                 <div class=" col-md-12">
                                     <label class="bmd-label-floating">Ngày kết thúc</label>
-                                    <input id="inputNgayKT" type="datetime-local" class="form-control personal_info" value="<?php
-                                                                                                                            $now = new DateTime('now');
-                                                                                                                            echo $now->format("Y-m-d\TH:i")
-                                                                                                                            ?>">
+                                    <input id="inputNgayKT" type="date" class="form-control personal_info" value="<?php
+                                                                                                                    $now = new DateTime('now');
+                                                                                                                    echo $now->format("Y-m-d\TH:i")
+                                                                                                                    ?>">
                                 </div>
                                 <div class=" col-md-6">
                                     <label class="bmd-label-floating">Số lượng phát hành</label>
@@ -244,8 +244,8 @@
         function initModalData($row) {
             $('#inputCode').attr('value', $row.find('.code').html())
             $('#inputName').attr('value', $row.find('.tenkm').html())
-            $('#inputNgayBD').attr('value', $row.find('.ngaybd').attr('id'))
-            $('#inputNgayKT').attr('value', $row.find('.ngaykt').attr('id'))
+            $('#inputNgayBD').attr('value', $row.find('.ngaybd').html())
+            $('#inputNgayKT').attr('value', $row.find('.ngaykt').html())
             $('#inputAmount').attr('value', $row.find('.soluong').html())
             $('#inputPercent').attr('value', $row.find('.phantram').html())
             $('#inputMaximum').attr('value', $row.find('.toida').html())
@@ -253,10 +253,14 @@
         }
 
         function clearModalData() {
+            var now = new Date();
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
             $('#inputCode').attr('value', '')
             $('#inputName').attr('value', '')
-            $('#inputNgayBD').attr('value', '')
-            $('#inputNgayKT').attr('value', '')
+            $('#inputNgayBD').attr('value', today)
+            $('#inputNgayKT').attr('value', today)
             $('#inputAmount').attr('value', '')
             $('#inputPercent').attr('value', '')
             $('#inputMaximum').attr('value', '')
@@ -283,21 +287,26 @@
 
                 },
                 success: function(response) {
-                    Swal.fire({
-                        title: response
-                    })
-                    // if (response.includes("success"))
-                    //     Swal.fire(
-                    //         'Thành công!',
-                    //         'Thông tin khuyến mãi đã được cập nhật',
-                    //         'success'
-                    //     )
-                    // else
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         '.Đã xảy ra lỗi. Vui lòng thử lại',
-                    //         'error'
-                    //     )
+                    // Swal.fire({
+                    //     title: response
+                    // })
+                    if (response.includes("success")) {
+                        modal.modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Thông tin khuyến mãi đã được cập nhật!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnDSKM').click()
+                        })
+                    } else
+                        Swal.fire(
+                            'Thất bại!',
+                            '.Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+
                 },
                 complete: function() {
                     modal.modal('hide')
@@ -327,28 +336,32 @@
 
                 },
                 success: function(response) {
-                    Swal.fire({
-                        title: response,
-                    })
-                    // if (response.includes("success"))
-                    //     Swal.fire(
-                    //         'Thành công!',
-                    //         'Thông tin đã tạo mã khuyến mãi thành công!\nMã đã tạo: ' + $('#inputCode').val(),
-                    //         'success'
-                    //     )
-                    // else if (response.includes("exist"))
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         'Mã khuyến mãi đã tồn tại!',
-                    //         'error'
-                    //     )
-                    // else {
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         'Đã xảy ra lỗi. Vui lòng thử lại',
-                    //         'error'
-                    //     )
-                    // }
+                    // Swal.fire({
+                    //     title: response,
+                    // })
+                    if (response.includes("success")) {
+                        modal.modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Mã khuyến mãi đã được tạo!\nCode: " + $('#inputKMCode').val(),
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnDSKM').click()
+                        })
+                    } else if (response.includes("exist"))
+                        Swal.fire(
+                            'Thất bại!',
+                            'Mã khuyến mãi đã tồn tại!',
+                            'error'
+                        )
+                    else {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+                    }
                 },
                 complete: function() {
                     modal.modal('hide')
@@ -390,6 +403,8 @@
             }
         }
 
+        function checkNgayBT() {}
+
         function createKM(point) {
             var date = new Date()
             $.ajax({
@@ -412,28 +427,32 @@
 
                 },
                 success: function(response) {
-                    Swal.fire({
-                        title: response,
-                    })
-                    // if (response.includes("success"))
-                    //     Swal.fire(
-                    //         'Thành công',
-                    //         'Mã khuyến mãi đã được tạo!',
-                    //         'success'
-                    //     )
-                    // else if (response.includes("exist"))
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         'Mã khuyến mãi đã tồn tại!',
-                    //         'error'
-                    //     )
-                    // else {
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         'Đã xảy ra lỗi. Vui lòng thử lại',
-                    //         'error'
-                    //     )
-                    // }
+                    // Swal.fire({
+                    //     title: response,
+                    // })
+                    if (response.includes("success")) {
+                        modal2.modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Mã khuyến mãi đã được tạo!\nCode: " + $('#inputKMCode').val(),
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnDSKM').click()
+                        })
+                    } else if (response.includes("exist"))
+                        Swal.fire(
+                            'Thất bại!',
+                            'Mã khuyến mãi đã tồn tại!',
+                            'error'
+                        )
+                    else {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+                    }
                 },
                 complete: function() {
                     modal2.modal('hide')
@@ -460,13 +479,17 @@
                     // Swal.fire({
                     //     title: response,
                     // })
-                    if (response.includes("success"))
-                        Swal.fire(
-                            'Thành công',
-                            'Mã khuyến mãi đã được xóa khỏi hệ thống',
-                            'success'
-                        )
-                    else {
+                    if (response.includes("success")) {
+                        modal.modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Mã khuyến mãi đã xóa khỏi hệ thống!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnDSKM').click()
+                        })
+                    } else {
                         Swal.fire(
                             'Thất bại!',
                             'Đã xảy ra lỗi. Vui lòng thử lại',
@@ -577,8 +600,8 @@
         })
 
         $('.btnEditKM').click(function() {
+            var $row = $(this).closest('tr')
             checkPhanQuyen('khachhang3', function() {
-                var $row = $(this).closest('tr')
                 $("#btnConfirm").addClass('view')
                 modal.modal('show')
                 selectedKMID = $row.attr('id');

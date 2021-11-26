@@ -26,6 +26,7 @@
 
 <script>
     $(document).ready(function() {
+
         function changeTab(clicked) {
             if (!clicked.hasClass('btn-info')) {
                 var activeTab = $('.btn-info')
@@ -98,7 +99,7 @@
             })
         }
 
-        $('#btnDSKH').click(async function() {
+        $('#btnDSKH').click(function() {
             changeTab($(this))
             checkPhanQuyen('khachhang0')
         })

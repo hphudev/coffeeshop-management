@@ -157,21 +157,25 @@
 
                 },
                 success: function(response) {
-                    Swal.fire({
-                        title: response
-                    })
-                    // if (response.includes("success"))
-                    //     Swal.fire(
-                    //         'Thành công!',
-                    //         'Thông tin khách hàng đã được cập nhật',
-                    //         'success'
-                    //     )
-                    // else
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         '.Đã xảy ra lỗi. Vui lòng thử lại',
-                    //         'error'
-                    //     )
+                    // Swal.fire({
+                    //     title: response
+                    // })
+                    if (response.includes("success")) {
+                        modal.modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Hạng thành viên đã được cập nhật!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnHangTV').click()
+                        })
+                    } else
+                        Swal.fire(
+                            'Thất bại!',
+                            '.Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
                 },
                 complete: function() {
                     modal.modal('hide')
@@ -201,12 +205,15 @@
                     //     title: response,
                     // })
                     if (response.includes("success")) {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin hạng thành viên đã được thêm',
-                            'success'
-                        )
-                        $('#btnHangTV').click()
+                        modal.modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Hạng thành viên đã được thêm!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnHangTV').click()
+                        })
                     } else if (response.includes("exist")) {
                         Swal.fire(
                             'Thất bại!',
@@ -245,12 +252,15 @@
                     //     title: response,
                     // })
                     if (response.includes("success")) {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin hạng thành viên đã được xóa',
-                            'success'
-                        )
-                        $('#btnHangTV').click()
+                        modal.modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Hạng thành viên đã được cập nhật!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnHangTV').click()
+                        })
                     } else
                         Swal.fire(
                             'Thất bại!',

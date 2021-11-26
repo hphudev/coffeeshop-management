@@ -51,7 +51,7 @@
                                         echo "<td class='text-center gioitinh' >" . $DSKhachHang[$i]->get_GioiTinh() . "</td>";
                                         echo "<td class='text-center loaitv' >" . $DSKhachHang[$i]->get_LoaiTV()->get_TenLoaiTV() . "</td>";
                                         echo "<td class='text-center diemtv' >" . $DSKhachHang[$i]->get_DiemTV() . "</td>";
-                                        echo "<td id='" . date("Y-m-d\TH:i", $DSKhachHang[$i]->get_NgayDK()) . "' class='text-center ngaydk' >" . date('Y-m-d', $DSKhachHang[$i]->get_NgayDK()) . "</td>";
+                                        echo "<td class='text-center ngaydk' >" . date('Y-m-d', $DSKhachHang[$i]->get_NgayDK()) . "</td>";
                                         echo "<td class='text-center tongchi' >" . $DSKhachHang[$i]->get_TongChi() . "</td>";
                                 ?>
                                         <td class="td-actions text-center">
@@ -113,10 +113,10 @@
                                 </div>
                                 <div class=" col-md-6">
                                     <label class="bmd-label-floating">Ngày đăng ký</label>
-                                    <input id="inputNgayDK" type="datetime-local" class="form-control personal_info" value="<?php
-                                                                                                                            $now = new DateTime('now');
-                                                                                                                            echo $now->format("Y-m-d\TH:i")
-                                                                                                                            ?>">
+                                    <input id="inputNgayDK" type="date" class="form-control personal_info" value="<?php
+                                                                                                                    $now = new DateTime('now');
+                                                                                                                    echo $now->format("Y-m-d")
+                                                                                                                    ?>">
                                 </div>
                             </div>
                             <div class="row">
@@ -186,17 +186,18 @@
 <script>
     $(document).ready(function() {
         var modal = $('#modalKhachHang')
+        var selectedKHID = ""
         var tableNV = $('#tableNhanVien').DataTable({
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
             }
-        });
+        })
 
         function initModalData($row) {
-            alert($row.find('.hoten').html())
+            selectedKHID = $row.find('.makh').html()
             $('#inputHoTen').attr('value', $row.find('.hoten').html())
             $('#inputSDT').attr('value', $row.find('.sdt').html())
-            $('#inputNgayDK').attr('value', $row.find('.ngaydk').attr('id'))
+            $('#inputNgayDK').attr('value', $row.find('.ngaydk').html())
             $('#inputDiemTV').attr('value', $row.find('.diemtv').html())
             $('#inputTongChi').attr('value', $row.find('.tongchi').html())
             $("#inputGioiTinh").text($row.find('.gioitinh').text());
@@ -204,9 +205,13 @@
         }
 
         function clearModalData() {
+            var now = new Date();
+            var day = ("0" + now.getDate()).slice(-2);
+            var month = ("0" + (now.getMonth() + 1)).slice(-2);
+            var today = now.getFullYear() + "-" + (month) + "-" + (day);
             $('#inputHoTen').attr('value', '')
             $('#inputSDT').attr('value', '')
-            $('#inputNgayDK').attr('value', new Date())
+            $('#inputNgayDK').attr('value', today)
             $('#inputDiemTV').attr('value', '')
             $('#inputTongChi').attr('value', '')
         }
@@ -217,7 +222,7 @@
                 url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
                 data: {
                     action: 'update',
-                    id: 'kh001',
+                    id: selectedKHID,
                     hoten: $('#inputHoTen').val(),
                     sdt: $('#inputSDT').val(),
                     ngaydk: $('#inputNgayDK').val(),
@@ -233,26 +238,43 @@
                     // Swal.fire({
                     //     title: response
                     // })
-                    if (response.includes("success"))
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin khách hàng đã được cập nhật',
-                            'success'
-                        )
-                    else
+                    if (response.includes("success")) {
+                        modal.modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Thông tin khách hàng đã được cập nhật!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnDSKH').click()
+                        })
+                    } else
                         Swal.fire(
                             'Thất bại!',
                             '.Đã xảy ra lỗi. Vui lòng thử lại',
                             'error'
                         )
                 },
-                complete: function() {
-                    modal.modal('hide')
-                },
+                complete: function() {},
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     alert(errorThrown);
                 }
             })
+        }
+
+        function checkSDT() {
+            const regex = /(84|0[3|5|7|8|9])+([0-9]{8})/
+            return regex.test(String($('#inputSDT').val()));
+        }
+
+        function checkNgayDK() {
+            var today = new Date()
+            var ngayDK = new Date($('#inputNgayDK').val())
+            if (today < ngayDK) {
+                return false
+            } else {
+                return true
+            }
         }
 
         function checkInfo() {
@@ -263,6 +285,18 @@
                 $('#inputLoaiTV').text() == "" ||
                 $('#inputDiemTV').val() == "" ||
                 $('#inputTongChi').val() == "") {
+                Swal.fire(
+                    "Thất bại",
+                    "Vui lòng nhập đủ thông tin!",
+                    "warning"
+                )
+                return false;
+            } else if (!checkNgayDK()) {
+                Swal.fire(
+                    "Thất bại",
+                    "Ngày đăng ký không được sau ngày hiện tại!",
+                    "warning"
+                )
                 return false;
             }
             return true;
@@ -286,30 +320,30 @@
 
                 },
                 success: function(response) {
-                    // Swal.fire({
-                    //     title: response,
-                    // })
-                    if (response.includes("success")) {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin khách hàng đã được cập nhật',
-                            'success'
-                        )
-                        modal.modal('hide')
-                        $('#btnDSKH').click()
-                    } else if (response.includes("phone")) {
-                        Swal.fire(
-                            'Thất bại!',
-                            'Số điện thoại đã được sử dụng!',
-                            'error'
-                        )
-                    } else {
-                        Swal.fire(
-                            'Thất bại!',
-                            'Đã xảy ra lỗi. Vui lòng thử lại',
-                            'error'
-                        )
-                    }
+                    Swal.fire({
+                        title: response,
+                    })
+                    // if (response.includes("success")) {
+                    //     Swal.fire(
+                    //         'Thành công!',
+                    //         'Thông tin khách hàng đã được cập nhật',
+                    //         'success'
+                    //     )
+                    //     modal.modal('hide')
+                    //     $('#btnDSKH').click()
+                    // } else if (response.includes("phone")) {
+                    //     Swal.fire(
+                    //         'Thất bại!',
+                    //         'Số điện thoại đã được sử dụng!',
+                    //         'error'
+                    //     )
+                    // } else {
+                    //     Swal.fire(
+                    //         'Thất bại!',
+                    //         'Đã xảy ra lỗi. Vui lòng thử lại',
+                    //         'error'
+                    //     )
+                    // }
                 },
                 complete: function() {},
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -406,8 +440,8 @@
         })
 
         $('.btnEditKH').click(function() {
+            var $row = $(this).closest('tr')
             checkPhanQuyen('khachhang1', function() {
-                var $row = $(this).closest('tr')
                 $("#btnConfirm").addClass('view')
                 modal.modal('show')
                 initModalData($row)
@@ -443,12 +477,6 @@
                     alert("add")
                     addKH()
                 }
-            } else {
-                Swal.fire(
-                    "Thất bại",
-                    "Vui lòng nhập đủ thông tin!",
-                    "warning"
-                )
             }
         })
     })
