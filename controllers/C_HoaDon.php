@@ -49,7 +49,7 @@ class C_HoaDon
             if ($_POST['action'] == 'hoadon') {
                 // Cap nhat thong tin hoa don
                 $HoaDon = new HoaDon();
-                $HoaDon->set_MaHD($ModelGeneral->AutoGetID('hoadon', 'hd', 'MaHD'));
+                $HoaDon->set_MaHD($ModelGeneral->getIDNum('hoadon', 'hd', 'MaHD'));
                 $HoaDon->set_MaNVLap($_SESSION['id']);
                 $HoaDon->set_MaKH($_POST['customer']);
                 $HoaDon->set_TongTienTT($_POST['pay']);
