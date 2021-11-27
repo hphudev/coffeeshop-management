@@ -119,6 +119,7 @@
                         },
                         beforeSend: function() {},
                         success: function(response) {
+                            //alert(response)
                             $("#modalThanhToan").html(response)
                         },
                         complete: function() {},
