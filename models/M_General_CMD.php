@@ -74,4 +74,10 @@ class General_CMD
         }
         return $res;
     }
+
+    public static function checkRight($maQuyen)
+    {
+        $modelPQ = new Model_PhanQuyen();
+        return $modelPQ->check_PhanQuyen($_SESSION['maCV'], $maQuyen);
+    }
 }
