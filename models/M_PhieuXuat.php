@@ -121,7 +121,7 @@ class Model_PhieuXuat
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("phieuxuat", "PX");
+        return $general_cmd->getIDNum("phieuxuat", "PX", "MaPX");
     }
 }
 

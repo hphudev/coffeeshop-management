@@ -90,6 +90,6 @@ class Model_LoaiMon
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("loai_mon", "LM");
+        return $general_cmd->getIDNum("loai_mon", "LM", "MaLoaiMon");
     }
 }

@@ -102,6 +102,6 @@ class Model_NguyenVatLieu
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("nguyenvatlieu", "nvl");
+        return $general_cmd->getIDNum("nguyenvatlieu", "NVL", "MaNVL");
     }
 }

@@ -157,6 +157,6 @@ class Model_Mon
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("mon", "MON");
+        return $general_cmd->getIDNum("mon", "MON", "MaMon");
     }
 }

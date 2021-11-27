@@ -322,7 +322,13 @@ class C_Mon
                 include_once('../admin/menu/menu.php');
             }
             else {
-                echo "Bạn không có quyền truy cập mục này";
+                echo "<script>" .
+                    "Swal.fire(
+                        'Thất bại!',
+                        'Bạn không có quyền truy cập mục này!',
+                        'error'
+                    );" .
+                    "</script>";
             }
         }
     }

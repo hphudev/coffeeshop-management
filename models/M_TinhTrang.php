@@ -96,6 +96,6 @@ class Model_TinhTrang
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("tinhtrang", "TT");
+        return $general_cmd->getIDNum("tinhtrang", "TT", "MaTT");
     }
 }

@@ -102,6 +102,37 @@
                     </div>
                     <div class="col-md-12">
                         <h4>
+                            MÓN
+                        </h4>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="mon0" class="form-check-input" type="checkbox" value="" disabled>
+                                            Xem danh sách món
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="mon1" class="form-check-input" type="checkbox" value="" disabled>
+                                            Thực hiện các thao tác với món
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <h4>
                             NHÂN SỰ
                         </h4>
                         <div class="container-fluid">
