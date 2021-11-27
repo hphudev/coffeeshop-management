@@ -1,5 +1,15 @@
 <div class="container-fluid">
     <div class="row">
+        <div class="col-md-6">
+            <div class="font-weight-bold page_title">
+                NHÂN VIÊN: <?php echo $NhanVien->get_HoTenDem() . " " . $NhanVien->get_Ten() ?>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="container-fluid">
+    <div class="row">
         <div class="col-md-7">
             <div class="card">
                 <div class="card-header card-header-info card-header-icon">
@@ -293,7 +303,7 @@
         function checkNgayVaoLam() {
             var dow = new Date(Date.parse($('#inputNgVaoLam').val()))
             var dob = new Date(Date.parse($('#inputNgaySinh').val()))
- 
+
             var workDifMs = dow.getTime() - dob.getTime()
 
             if (dow > new Date())

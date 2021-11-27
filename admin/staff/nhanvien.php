@@ -1,3 +1,10 @@
+<h3 class="card-title">
+    Tổng số nhân viên:
+    <?php
+    echo count($NhanVienList)
+    ?>
+</h3>
+
 <div class="card">
     <div class="card-header card-header-primary card-header-icon">
         <h3 class="card-title">Danh sách nhân viên</h3>
@@ -92,63 +99,54 @@
                     <div class="card-body">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-md-7">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Họ và tên đệm
-                                        </label>
-                                        <input id="inputHoTenDem" type="text" class="form-control personal_info">
-                                    </div>
-                                </div>
                                 <div class="col-md-5">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Tên</label>
-                                        <input id="inputTen" type="text" class="form-control personal_info">
-                                    </div>
+                                    <label class="bmd-label-floating">Họ và tên đệm
+                                    </label>
+                                    <input id="inputHoTenDem" type="text" class="form-control personal_info">
                                 </div>
-                            </div>
-                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating">Tên</label>
+                                    <input id="inputTen" type="text" class="form-control personal_info">
+                                </div>
                                 <div class="col-md-4">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">CMND/CCCD</label>
-                                        <input id="inputCMND" type="text" class="form-control personal_info">
-                                    </div>
-                                </div>
-                                <div class=" col-md-4">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Số điện thoại</label>
-                                        <input id="inputSDT" type="number" class="form-control personal_info">
-                                    </div>
-                                </div>
-                                <div class=" col-md-4">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Ngày sinh</label>
-                                        <input id="inputNgaySinh" type="datetime-local" class="form-control personal_info" value="<?php
-                                                                                                                                    $now = new DateTime('now');
-                                                                                                                                    echo $now->format("Y-m-d\TH:i")
-                                                                                                                                    ?>">
-                                    </div>
+                                    <label class="bmd-label-floating">CMND/CCCD</label>
+                                    <input id="inputCMND" type="text" class="form-control personal_info">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class=" col-md-5">
+                                <div class=" col-md-4">
+                                    <label class="bmd-label-floating">Số điện thoại</label>
+                                    <input id="inputSDT" type="text" class="form-control personal_info">
+                                </div>
+                                <div class=" col-md-4">
+                                    <label class="bmd-label-floating">Ngày sinh</label>
+                                    <input id="inputNgaySinh" type="date" class="form-control personal_info" value="<?php
+                                                                                                                    $now = new DateTime('now');
+                                                                                                                    echo $now->format("Y-m-d")
+                                                                                                                    ?>">
+                                </div>
+                                <div class=" col-md-4">
                                     <div class="form-group">
-                                        <label for="genderPicker">Giới tính</label>
-                                        <select id="inputGioiTinh" class="form-control personal_info selectpicker" data-style="btn btn-link">
-                                            <option value="Nam">Nam</option>
-                                            <option value="Nữ">Nữ</option>
-                                            <option value="Khác">Khác</option>
-                                        </select>
+                                        <label> Giới tính</label>
+                                        <div class="dropdown">
+                                            <button id="inputGioiTinh" class="btn  btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Giới tính
+                                            </button>
+                                            <div id="gioiTinhSelect" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <a class="dropdown-item item-gt"> Nam</a>
+                                                <a class="dropdown-item item-gt"> Nữ</a>
+                                                <a class="dropdown-item item-gt"> Khác</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class=" col-md-12">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">
-                                            Địa chỉ
-                                        </label>
-                                        <input id="inputDiaChi" type="text" class="form-control personal_info">
-                                    </div>
+                                    <label class="bmd-label-floating">
+                                        Địa chỉ
+                                    </label>
+                                    <input id="inputDiaChi" type="text" class="form-control personal_info">
                                 </div>
                             </div>
                         </div>
@@ -165,59 +163,51 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">
-                                            Mã nhân viên
-                                        </label>
-                                        <input id="inputMaNV" type="text" class="form-control personal_info" disabled>
-                                    </div>
+                                    <label class="bmd-label-floating">
+                                        Mã nhân viên
+                                    </label>
+                                    <input id="inputMaNV" type="text" class="form-control personal_info" disabled>
                                 </div>
+
                             </div>
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="form-group">
-                                        <label for="genderPicker">
-                                            Vị trí công việc
-                                        </label>
-                                        <select id="inputChucVu" class="form-control personal_info selectpicker" data-style="btn btn-link">
-                                            <?php
-                                            for ($i = 0; $i < count($ChucVuList); $i++) {
-                                                echo "<option>" . $ChucVuList[$i]->get_TenCV() . "</option>";
-                                            }
-                                            ?>
-                                        </select>
+                                        <label> Chức vụ</label>
+                                        <div class="dropdown">
+                                            <button id="inputChucVu" class="btn  btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chức vụ
+                                            </button>
+                                            <div id="chucVuSelect" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <?php
+                                                foreach ($ChucVuList as $CV) {
+                                                    echo '<a id="' . $CV->get_MaCV() . '" class="dropdown-item item-cv">' . $CV->get_TenCV() . '</a>';
+                                                }
+                                                ?>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="bmd-label-floating">Ngày vào làm</label>
+                                    <input id="inputNgVaoLam" type="date" class="form-control personal_info" value="<?php
+                                                                                                                    $now = new DateTime('now');
+                                                                                                                    echo $now->format("Y-m-d")
+                                                                                                                    ?>">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="bmd-label-floating">Lương</label>
+                                    <input id="inputLuong" type="number" class="form-control personal_info">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class=" col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Ngày vào làm</label>
-                                        <input id="inputNgVaoLam" type="datetime-local" class="form-control personal_info" value="<?php
-                                                                                                                                    $now = new DateTime('now');
-                                                                                                                                    echo $now->format("Y-m-d\TH:i")
-                                                                                                                                    ?>">
-                                    </div>
+                                    <label class="bmd-label-floating">Tên tài khoản cung cấp cho nhân viên</label>
+                                    <input id="inputTaiKhoan" type="text" class="form-control personal_info">
                                 </div>
                                 <div class=" col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Lương</label>
-                                        <input id="inputLuong" type="number" class="form-control personal_info">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class=" col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Tên tài khoản cung cấp cho nhân viên</label>
-                                        <input id="inputTaiKhoan" type="text" class="form-control personal_info">
-                                    </div>
-                                </div>
-                                <div class=" col-md-6">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Mật khẩu tài khoản</label>
-                                        <input id="inputMatKhau" type="password" class="form-control personal_info">
-                                    </div>
+                                    <label class="bmd-label-floating">Mật khẩu tài khoản</label>
+                                    <input id="inputMatKhau" type="password" class="form-control personal_info">
                                 </div>
                             </div>
                         </div>
@@ -239,6 +229,14 @@
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
             }
         });
+
+        $('.item-gt').click(function() {
+            $('#inputGioiTinh').text($(this).html())
+        })
+
+        $('.item-cv').click(function() {
+            $('#inputChucVu').text($(this).html())
+        })
 
         $("#btnAddNV").click(function() {
             checkPhanQuyen('nhansu1', function() {
@@ -302,18 +300,21 @@
                     "&Ten=" + $('#inputTen').val() +
                     "&CMND=" + $('#inputCMND').val() +
                     "&NgaySinh=" + $('#inputNgaySinh').val() +
-                    "&GioiTinh=" + $('#inputGioiTinh').val() +
+                    "&GioiTinh=" + $('#inputGioiTinh').text() +
                     "&SDT=" + $('#inputSDT').val() +
                     "&DiaChi=" + $('#inputDiaChi').val() +
                     "&MaNV=" + $('#inputMaNV').val() +
                     "&NgayVaoLam=" + $('#inputNgVaoLam').val() +
-                    "&ChucVu=" + $('#inputChucVu').val() +
+                    "&ChucVu=" + $('#inputChucVu').text() +
                     "&Luong=" + $('#inputLuong').val() +
-                    "&TaiKhoan=" + $('#c').val() +
+                    "&TaiKhoan=" + $('#inputTaiKhoan').val() +
                     "&MatKhau=" + $('#inputMatKhau').val();
 
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
+                        // Swal.fire({
+                        //     title: responseText
+                        // })
                         if (this.responseText == 'success') {
                             Swal.fire(
                                 'Thành công!',
@@ -370,12 +371,11 @@
                 $('#inputTen').val() == "" ||
                 $('#inputCMND').val() == "" ||
                 $('#inputNgaySinh').val() == "" ||
-                $('#inputGioiTinh').val() == "" ||
+                $('#inputGioiTinh').text() == "Giới tính" ||
                 $('#inputSDT').val() == "" ||
                 $('#inputDiaChi').val() == "" ||
-                $('#inputMaNV').val() == "" ||
                 $('#inputNgVaoLam').val() == "" ||
-                $('#inputChucVu').val() == "" ||
+                $('#inputChucVu').text() == "Chức vụ" ||
                 $('#inputLuong').val() == "" ||
                 $('#inputTaiKhoan').val() == "" ||
                 $('#inputMa').val() == "") {

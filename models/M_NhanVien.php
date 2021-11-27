@@ -75,7 +75,8 @@ class Model_NhanVien
                 '" . $NhanVien->get_DiaChi() . "',
                 '" . date('Y-m-d H:i:s', $NhanVien->get_NgayVaoLam()) . "',
                 '" . $NhanVien->get_ChucVu()->get_MaCV() . "',
-                '" . $NhanVien->get_Luong() . "')";
+                '" . $NhanVien->get_Luong() . "',
+                '" . $NhanVien->get_TaiKhoan()->get_MaTK() . "')";
 
         if ($conn->query($sql) === TRUE) {
             return true;

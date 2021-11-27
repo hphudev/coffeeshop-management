@@ -1,6 +1,8 @@
 <?php
 include_once '../models/M_NhanVien.php';
 include_once '../models/M_ChucVu.php';
+include_once '../models/M_General_CMD.php';
+
 
 class C_NhanVien
 {
@@ -10,6 +12,7 @@ class C_NhanVien
         $ModelChucVu = new Model_ChucVu();
         $ChucVuList = $ModelChucVu->get__AllChucVu();
         $ModelPhanQuyen = new Model_PhanQuyen();
+        $General = new General_CMD();
 
         if (isset($_GET['page'])) {
             if ($_GET['page'] == 'staff' && !isset($_GET['id'])) {
@@ -67,7 +70,8 @@ class C_NhanVien
                 }
             } else if (isset($_GET['add'])) {
                 $NhanVien = new NhanVien();
-                $NhanVien->set_MaNV($_GET['MaNV']);
+
+                $NhanVien->set_MaNV($General->getIDNum('nhanvien', 'nv', 'MaNV'));
                 $NhanVien->set_HoTenDem($_GET['HoTenDem']);
                 $NhanVien->set_Ten($_GET['Ten']);
                 $NhanVien->set_CMND($_GET['CMND']);
@@ -83,13 +87,11 @@ class C_NhanVien
 
                 $result = $ModelNhanVien->add_NhanVien($NhanVien);
 
-                if ($result == 1) {
+                if ($result == true) {
                     echo 'success';
                 } else {
                     echo 'error';
                 }
-
-                include_once('../admin/staff.php');
             } else if (isset($_GET['delete'])) {
                 $result = $ModelNhanVien->delete_NhanVien($NhanVien->get_MaNV());
 
