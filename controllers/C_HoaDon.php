@@ -56,7 +56,8 @@ class C_HoaDon
             $HoaDon->set_TongTienKH($_POST['payed']);
             $HoaDon->set_TienTraLai($_POST['excess']);
             $HoaDon->set_ChiTietHoaDon($ModelHoaDon->get_HoaDonByDatMon($_POST['order']));
-            // $ModelHoaDon->add_HoaDon($HoaDon);
+            $SoThuTu = $_POST['position'];
+            $ModelHoaDon->add_HoaDon($HoaDon);
             // Cap nhat thong tin khach hang
             $KH = new KhachHang();
             if ($_POST['customer'] != "") {
@@ -66,12 +67,11 @@ class C_HoaDon
                 $ModelKhachHang->update_KhachHang($KH);
             }
             // Cap nhap thong tin ma khuyen mai
-            if ($_POST['discount_id'] != "") {
+            if ($_POST['discount_id'] != 'null' && $_POST['discount_id'] != '') {
                 $KhuyenMai = $ModelKhuyenMai->get_KhuyenMai($_POST['discount_id']);
                 $KhuyenMai->set_SoLuong($KhuyenMai->get_SoLuong() - 1);
                 $ModelKhuyenMai->update_KhuyenMai($KhuyenMai);
             }
-
 
             $NhanVienThuNgan = $ModelNhanVien->get_NhanVienDetails($HoaDon->get_MaNVLap());
             include_once '../admin/payment/receipt.php';

@@ -75,9 +75,10 @@ class Model_KhachHang
             . 'GioiTinh="' .  $KhachHang->get_GioiTinh() . '", '
             . 'MaLoaiTV="' .  $KhachHang->get_LoaiTV()->get_MaLoaiTV() . '", '
             . 'DiemTV="' .  $KhachHang->get_DiemTV() . '", '
-            //. 'NgayDangKy="' .  $KhachHang->get_NgayDK() . '",'
+            . 'NgayDangKy="' .  $KhachHang->get_NgayDK() . '",'
             . 'TongChi="' .  $KhachHang->get_TongChi() . '" '
             . 'WHERE MaKH="' . $KhachHang->get_MaKH() . '" ';
+        echo $sql;
         if ($conn->query($sql) === TRUE) {
             return true;
         } else {

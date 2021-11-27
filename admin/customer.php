@@ -22,34 +22,9 @@
 
     </div>
 </div>
-</div>
 
 <script>
     $(document).ready(function() {
-
-        async function checkQuanQuyen(PhanQuyen) {
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
-                data: {
-                    phanquyen: PhanQuyen,
-                },
-                beforeSend: function() {
-
-                },
-                success: function(response) {
-                    if (response == "true") {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
-        }
 
         function changeTab(clicked) {
             if (!clicked.hasClass('btn-info')) {
@@ -62,91 +37,80 @@
             }
         }
 
+        function checkPhanQuyen(PhanQuyen) {
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
+                data: {
+                    phanquyen: PhanQuyen,
+                },
+                beforeSend: function() {
+
+                },
+                success: function(response) {
+                    // alert(response)
+                    if (response == "true") {
+                        switch (PhanQuyen) {
+                            case 'khachhang2':
+                                getTab('hangthanhvien')
+                                break;
+                            case 'khachhang4':
+                                getTab('khuyenmai')
+                                break;
+                            case 'khachhang0':
+                            default:
+                                getTab('khachhang')
+                                break;
+                        }
+                    } else {
+                        Swal.fire(
+                            "Thất bại!",
+                            "Bạn không có quyền truy cập mục này!",
+                            "warning"
+                        )
+                    }
+                },
+                complete: function() {},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
+            return result
+        }
+
+        function getTab(tab) {
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
+                data: {
+                    action: tab,
+                },
+                beforeSend: function() {
+
+                },
+                success: function(response) {
+                    $('.khachhang_content').html(response)
+                },
+                complete: function() {},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
+        }
+
         $('#btnDSKH').click(function() {
-            if (checkQuanQuyen('khachhang0')) {
-                changeTab($(this))
-                $.ajax({
-                    type: "POST",
-                    url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
-                    data: {
-                        action: 'khachhang',
-                    },
-                    beforeSend: function() {
-
-                    },
-                    success: function(response) {
-                        $('.khachhang_content').html(response)
-                    },
-                    complete: function() {},
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert(errorThrown);
-                    }
-                })
-            } else {
-                Swal.fire(
-                    "Thất bại!",
-                    "Bạn không có quyền truy cập mục này!",
-                    "warning"
-                )
-            }
+            changeTab($(this))
+            checkPhanQuyen('khachhang0')
         })
-        $('#btnHangTV').click(function() {
-            if (checkQuanQuyen('khachhang1')) {
-                changeTab($(this))
-                $.ajax({
-                    type: "POST",
-                    url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
-                    data: {
-                        action: 'hangthanhvien',
-                    },
-                    beforeSend: function() {
 
-                    },
-                    success: function(response) {
-                        $('.khachhang_content').html(response)
-                    },
-                    complete: function() {},
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert(errorThrown);
-                    }
-                })
-            } else {
-                Swal.fire(
-                    "Thất bại!",
-                    "Bạn không có quyền truy cập mục này!",
-                    "warning"
-                )
-            }
-
+        $('#btnHangTV').click(async function() {
+            changeTab($(this))
+            checkPhanQuyen('khachhang2')
         })
+
         $('#btnDSKM').click(function() {
-            if (checkQuanQuyen('khachhang2')) {
-                changeTab($(this))
-                $.ajax({
-                    type: "POST",
-                    url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
-                    data: {
-                        action: 'khuyenmai',
-                    },
-                    beforeSend: function() {
-
-                    },
-                    success: function(response) {
-                        $('.khachhang_content').html(response)
-                    },
-                    complete: function() {},
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        alert(errorThrown);
-                    }
-                })
-            } else {
-                Swal.fire(
-                    "Thất bại!",
-                    "Bạn không có quyền truy cập mục này!",
-                    "warning"
-                )
-            }
-
+            changeTab($(this))
+            checkPhanQuyen('khachhang4')
         })
         $('#btnDSKH').click()
     })

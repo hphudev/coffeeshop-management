@@ -1,87 +1,76 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header card-header-primary card-header-icon">
-                <div class="card-icon">
-                    <i class="material-icons">assignment</i>
-                </div>
-                <h2 class="card-title">Danh sách nhân viên</h2>
-                <div>
-                    <button id="btnAddNV" type="button" rel="tooltip" class="btn btn-success">
-                        <i class="material-icons">add</i>
-                        Thêm nhân viên
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table id="tableNV" class="table table-hover ">
-                                    <thead class="text-primary">
-                                        <th>ID</th>
-                                        <th>Họ tên đệm</th>
-                                        <th>Tên</th>
-                                        <th>Chức vụ</th>
-                                        <th>Ngày vào làm</th>
-                                        <th>Lương</th>
-                                        <th class="text-right">Thao tác</th>
-                                    </thead>
-                                    <tbody>
-                                        <?php
+<div class="card">
+    <div class="card-header card-header-primary card-header-icon">
+        <h3 class="card-title">Danh sách nhân viên</h3>
+        <div>
+            <button id="btnAddNV" type="button" rel="tooltip" class="btn btn-success">
+                <i class="material-icons">add</i>
+                Thêm nhân viên
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table id="tableNV" class="table table-hover ">
+                            <thead class="text-primary">
+                                <th>ID</th>
+                                <th>Họ tên đệm</th>
+                                <th>Tên</th>
+                                <th>Chức vụ</th>
+                                <th>Ngày vào làm</th>
+                                <th>Lương</th>
+                                <th class="text-right">Thao tác</th>
+                            </thead>
+                            <tbody>
+                                <?php
 
-                                        for ($i = 0; $i < count($NhanVienList); $i++) {
-                                            echo "<tr id='row" . $NhanVienList[$i]->get_MaNV() . "'>";
-                                            echo "<td>" . $NhanVienList[$i]->get_MaNV() . "</td>";
-                                            echo "<td>" . $NhanVienList[$i]->get_HoTenDem() . "</td>";
-                                            echo "<td>" . $NhanVienList[$i]->get_Ten() . "</td>";
-                                            echo "<td>" . $NhanVienList[$i]->get_ChucVu()->get_TenCV() . "</td>";
-                                            echo "<td>" . date('d/m/Y', $NhanVienList[$i]->get_NgayVaoLam()) . "</td>";
-                                            echo "<td>" . $NhanVienList[$i]->get_Luong() . "</td>";
+                                for ($i = 0; $i < count($NhanVienList); $i++) {
+                                    echo "<tr id='row" . $NhanVienList[$i]->get_MaNV() . "'>";
+                                    echo "<td>" . $NhanVienList[$i]->get_MaNV() . "</td>";
+                                    echo "<td>" . $NhanVienList[$i]->get_HoTenDem() . "</td>";
+                                    echo "<td>" . $NhanVienList[$i]->get_Ten() . "</td>";
+                                    echo "<td>" . $NhanVienList[$i]->get_ChucVu()->get_TenCV() . "</td>";
+                                    echo "<td>" . date('d/m/Y', $NhanVienList[$i]->get_NgayVaoLam()) . "</td>";
+                                    echo "<td>" . $NhanVienList[$i]->get_Luong() . "</td>";
 
-                                        ?>
-                                            <td class="td-actions text-right">
-                                                <button <?php
-                                                        echo 'id="' . $NhanVienList[$i]->get_MaNV() . '"'
-                                                        ?> type="button" rel="tooltip" class="btn btn-View-NV btn-link btn-info btn-just-icon" data-toggle="tooltip" data-placement="top" title="Thông tin chi tiết">
-                                                    <i class="material-icons">person</i>
-                                                </button>
-                                                <button <?php
-                                                        echo 'id="' . $NhanVienList[$i]->get_MaNV() . '"'
-                                                        ?> type="button" rel="tooltip" class="btn btn-Edit-NV btn-link btn-warning btn-just-icon" data-toggle="tooltip" data-placement="top" title="Chỉnh sửa thông tin">
-                                                    <i class="material-icons">edit</i>
-                                                </button>
-                                                <button <?php
-                                                        echo 'id="' . $NhanVienList[$i]->get_MaNV() . '"'
-                                                        ?> type="button" rel="tooltip" class="btn btn-Delete-NV btn-link btn-danger btn-just-icon" data-toggle="tooltip" data-placement="top" title="Xóa nhân viên">
-                                                    <i class="material-icons">close</i>
-                                                </button>
-                                            </td>
+                                ?>
+                                    <td class="td-actions text-right">
+                                        <button <?php
+                                                echo 'id="' . $NhanVienList[$i]->get_MaNV() . '"'
+                                                ?> type="button" rel="tooltip" class="btn btnViewNV btn-link btn-info btn-just-icon" data-toggle="tooltip" data-placement="top" title="Thông tin chi tiết">
+                                            <i class="material-icons">person</i>
+                                        </button>
+                                        <button <?php
+                                                echo 'id="' . $NhanVienList[$i]->get_MaNV() . '"'
+                                                ?> type="button" rel="tooltip" class="btn btn-Delete-NV btn-link btn-danger btn-just-icon" data-toggle="tooltip" data-placement="top" title="Xóa nhân viên">
+                                            <i class="material-icons">close</i>
+                                        </button>
+                                    </td>
 
-                                        <?php
-                                            echo "</tr>";
-                                        }
-                                        ?>
-                                    </tbody>
-                                    <tfoot>
-                                        <th>ID</th>
-                                        <th>Họ tên đệm</th>
-                                        <th>Tên</th>
-                                        <th>Chức vụ</th>
-                                        <th>Ngày vào làm</th>
-                                        <th>Lương</th>
-                                        <th class="text-right">Thao tác</th>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        </div>
+                                <?php
+                                    echo "</tr>";
+                                }
+                                ?>
+                            </tbody>
+                            <tfoot>
+                                <th>ID</th>
+                                <th>Họ tên đệm</th>
+                                <th>Tên</th>
+                                <th>Chức vụ</th>
+                                <th>Ngày vào làm</th>
+                                <th>Lương</th>
+                                <th class="text-right">Thao tác</th>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Modal NhanVien -->
 <div class="modal fade bd-example-modal-lg" id="addNVModel" tabindex="-1" role="dialog" aria-labelledby="addNVModel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -252,23 +241,20 @@
         });
 
         $("#btnAddNV").click(function() {
-            // if (checkPhanQuyen()) {
+            checkPhanQuyen('nhansu1', function() {
                 $("#addNVModel").modal('show');
-            // } else {
-            //     Swal.fire(
-            //         'Thất bại!',
-            //         'Bạn không có quyền thực hiện chức năng này',
-            //         'error'
-            //     )
-            // }
+            })
         })
 
-        $(".btn-View-NV").click(function() {
+        $(".btnViewNV").click(function() {
+            checkPhanQuyen('nhansu1', function() {
+                $("#addNVModel").modal('show');
+            })
             var nvID = $(this).attr('id')
             window.location.href = "../admin/index.php?page=staff&id=" + nvID;
         });
 
-        $(".btn-Delete-NV").click(function() {
+        $(".btnDeleteNV").click(function() {
             Swal.fire({
                 title: 'Xóa nhân viên?',
                 text: "Bạn không thể hoàn tác thao tác này, tiếp tục?",
@@ -334,6 +320,7 @@
                                 'Thông tin nhân viên đã được thêm',
                                 'success'
                             )
+                            $('#btnDSNV').click()
                         } else {
                             Swal.fire(
                                 'Thất bại!',
@@ -349,22 +336,33 @@
             }
         });
 
-        function checkPhanQuyen() {
-            var xmlhttp = new XMLHttpRequest();
-            var url = "../../coffeeshopmanagement/controllers/C_PhanQuyen.php?check&quyen=nhansu1";
+        function checkPhanQuyen(PhanQuyen, Callback) {
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
+                data: {
+                    phanquyen: PhanQuyen,
+                },
+                beforeSend: function() {
 
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    if (this.responseText == 'true') {
-                        return true;
+                },
+                success: function(response) {
+                    // alert(response)
+                    if (response == "true") {
+                        Callback()
                     } else {
-                        return false;
+                        Swal.fire(
+                            "Thất bại!",
+                            "Bạn không có quyền truy cập mục này!",
+                            "warning"
+                        )
                     }
+                },
+                complete: function() {},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
                 }
-            };
-
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
+            })
         }
 
         function checkNVInfomation() {
@@ -388,15 +386,14 @@
                 )
                 return false;
             };
-            if (!check)
-                if (!checkNgaySinh()) {
-                    Swal.fire(
-                        'Thất bại!',
-                        'Nhân viên phải đủ 18 tuổi. Vui lòng kiểm tra lại',
-                        'error'
-                    )
-                    return false;
-                }
+            if (!checkNgaySinh()) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Nhân viên phải đủ 18 tuổi. Vui lòng kiểm tra lại',
+                    'error'
+                )
+                return false;
+            }
             if (!checkSDT()) {
                 Swal.fire(
                     'Thất bại!',
@@ -405,6 +402,7 @@
                 )
                 return false;
             }
+            return true;
         }
 
         function checkSDT() {

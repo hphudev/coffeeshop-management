@@ -1,4 +1,3 @@
-
 <!-- region 1 - danh sách điều khiển -->
 <div>
     <h3 style="font-weight: 400;">BÁN HÀNG</h3>
@@ -6,7 +5,7 @@
         <div class="row row-header">
             <button type="button" class="col btn btn-warning" data-toggle="modal" data-target="#bill" onclick="showBill();">Xem ORDER</button>
             <button type="button" class="col btn btn-info" data-toggle="modal" data-target="#billBlender" onclick="loadBlender('');">
-                PHỤC VỤ <span id="badgeOrderFinish" class="badge badge-danger ml-2" style="font-size: 13px;" ></span>
+                PHỤC VỤ <span id="badgeOrderFinish" class="badge badge-danger ml-2" style="font-size: 13px;"></span>
             </button>
             <button id="btnReloadBill" type="button" class="col btn btn-danger" onclick="reloadPage();">Làm mới Bill</button>
             <button id="btnReloadPage" type="button" class="col btn btn-primary" onclick="location.reload();">Tải lại trang</button>
@@ -14,32 +13,31 @@
     </div class="container mt3">
     <form action="">
         <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">
-                        <i class="material-icons">search</i>
-                    </span>
-                </div>
-                <input id="tbFindItem" class="form-control"  type="text" value = "" style="">
+            <div class="input-group-prepend">
+                <span class="input-group-text">
+                    <i class="material-icons">search</i>
+                </span>
+            </div>
+            <input id="tbFindItem" class="form-control" type="text" value="" style="">
         </div>
     </form>
 </div>
 
 <!--#region 2 - danh sách món -->
 <div class="row menu" style="width: fit-content;">
-<?php
-    for ($i = 0; $i < count($itemList); $i++)
-    {
-        
+    <?php
+    for ($i = 0; $i < count($itemList); $i++) {
+
         // https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg
         $idItem = $itemList[$i]->get_MaMon();
         // if ($i % 3 == 0)
-        ?>
-        <div id= <?php echo '"' . $itemList[$i]->get_MaMon() . '"'?> class="col item">
+    ?>
+        <div id=<?php echo '"' . $itemList[$i]->get_MaMon() . '"' ?> class="col item">
             <div class="card align-items-top justify-content-center" style="width: 250px; padding: 0px; border-radius: 10px">
-                <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh())?>" alt="Card image" style="width: 100%; height: 150px; border-radius: 10px 10px 0 0;")>
-                <div class="card-body d-flex flex-column align-items-top justify-content-top"> 
+                <img class="card-img-left" src="data:image/jpeg;base64,<?php echo base64_encode($itemList[$i]->get_HinhAnh()) ?>" alt="Card image" style="width: 100%; height: 150px; border-radius: 10px 10px 0 0;" )>
+                <div class="card-body d-flex flex-column align-items-top justify-content-top">
                     <?php
-                        echo '
+                    echo '
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col">
@@ -52,35 +50,35 @@
                                     </div>
                                 </div>
                             </div>';
-                        // echo '
-                        //     <div class="row">
-                        //         <div class="col">
-                        //             <p class="card-text" style="width: 100%"> Mô tả: ' . $itemList[$i]->get_MoTa() . 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-                        //         </div>
-                        //     </div>';
-                        // echo '<p class="card-text"> Mô tả: ' . $itemList[$i]->get_MoTa() . '</p>';
+                    // echo '
+                    //     <div class="row">
+                    //         <div class="col">
+                    //             <p class="card-text" style="width: 100%"> Mô tả: ' . $itemList[$i]->get_MoTa() . 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+                    //         </div>
+                    //     </div>';
+                    // echo '<p class="card-text"> Mô tả: ' . $itemList[$i]->get_MoTa() . '</p>';
                     ?>
                     <div style="text-align: center;">
-                        <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none  pt-2 pb-2 pl-3 pr-3" onclick="oneItemOff('<?php echo $idItem?>')">
+                        <button id="btnMinus<?php echo $idItem ?>" type="button" class=" btn btn-danger btn-circle d-none  pt-2 pb-2 pl-3 pr-3" onclick="oneItemOff('<?php echo $idItem ?>')">
                             <span class="material-icons">
                                 remove
                             </span>
                         </button>
                         <span id="badge<?php echo $idItem ?>" class="badge badge-light d-none" style="font-size: 13px; width:60px; height: 25px; border: 1px solid orange">0</span>
-                        <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success pt-2 pb-2 pl-3 pr-3" onclick="oneMoreItem('<?php echo $idItem?>')">
+                        <button id="btnAdd<?php echo $idItem ?>" type="button" class="btn btn-success pt-2 pb-2 pl-3 pr-3" onclick="oneMoreItem('<?php echo $idItem ?>')">
                             <span class="material-icons" style="">
                                 add
                             </span>
                         </button>
                     </div>
-                    <button id="btnShowOptionItemList<?php echo $idItem?>" class="btn btn-info d-none" style="min-width:200px; bolder-radius: 30px 30px 0 0;" data-toggle="modal" data-target="#optionModal" onclick="showOptionTable('<?php echo $idItem?>');">Tùy chọn</button>
-                    <button id="btnAddItemToBill<?php echo $idItem?>" class="btn btn-warning d-none" style="min-width: 200px;" data-toggle="modal" data-target="" onclick="addItemToBill('<?php echo $idItem ?>')">Thêm vào BILL</button>
+                    <button id="btnShowOptionItemList<?php echo $idItem ?>" class="btn btn-info d-none" style="min-width:200px; bolder-radius: 30px 30px 0 0;" data-toggle="modal" data-target="#optionModal" onclick="showOptionTable('<?php echo $idItem ?>');">Tùy chọn</button>
+                    <button id="btnAddItemToBill<?php echo $idItem ?>" class="btn btn-warning d-none" style="min-width: 200px;" data-toggle="modal" data-target="" onclick="addItemToBill('<?php echo $idItem ?>')">Thêm vào BILL</button>
                 </div>
             </div>
         </div>
-    <?php }?>
+    <?php } ?>
 </div>
-  
+
 
 <!-- region 3 - bảng tùy chọn-->
 <!-- <button class="btn btn-round" data-toggle="modal" data-target="#bill">
@@ -93,12 +91,12 @@
         <div class="modal-content" style="width: 95vw; left: 50%; top:50%; transform: translateX(-50%)">
             <div class="card card-signup card-plain">
                 <div class="modal-header">
-                  <div class="card-header card-header-danger text-center w-100">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                      <i class="material-icons">clear</i>
-                    </button>
-                    <h4 class="card-title">ORDER</h4>
-                  </div>
+                    <div class="card-header card-header-danger text-center w-100">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+                        <h4 class="card-title">ORDER</h4>
+                    </div>
                 </div>
                 <div class="modal-body" style="width: 100%">
                     <!-- <div class="row ml-3">
@@ -203,7 +201,7 @@
                     </div> -->
                 </div>
                 <div class="modal-footer justify-content-center">
-                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" style="font-weight: 500;" onclick="payOrder();" data-toggle="modal" >THANH TOÁN</a>
+                    <a id="SendToBill" class="btn btn-danger btn-link btn-wd btn-lg" style="font-weight: 500;" onclick="payOrder();" data-toggle="modal">THANH TOÁN</a>
                 </div>
             </div>
         </div>
@@ -214,17 +212,17 @@
         <div class="modal-content" style="width: 75vw; left: 50%; top:50%; transform: translateX(-50%)">
             <div class="card card-signup card-plain">
                 <div class="modal-header">
-                  <div class="card-header card-header-info text-center w-100">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                      <i class="material-icons">clear</i>
-                    </button>
-                    <h4 class="card-title">PHỤC VỤ ORDER </h4>
-                    <div class="mb-3" style="display: flex; flex-direction: column">
-                        <label for="exampleFormControlInput1" class="form-label bg-danger" style="color: white; border-radius: 5px; width: 10%; text-align: center">Tìm kiếm Order</label>
-                        <input id="tbFindOrder" type="number" class="form-control" style="border: 1px solid red ;background-color: white; border-radius: 5px; color: black; font-weight: 500; padding-left: 10px; font-size: 20px; width: 30%" placeholder="Nhập số thứ tự Order">
+                    <div class="card-header card-header-info text-center w-100">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+                        <h4 class="card-title">PHỤC VỤ ORDER </h4>
+                        <div class="mb-3" style="display: flex; flex-direction: column">
+                            <label for="exampleFormControlInput1" class="form-label bg-danger" style="color: white; border-radius: 5px; width: 10%; text-align: center">Tìm kiếm Order</label>
+                            <input id="tbFindOrder" type="number" class="form-control" style="border: 1px solid red ;background-color: white; border-radius: 5px; color: black; font-weight: 500; padding-left: 10px; font-size: 20px; width: 30%" placeholder="Nhập số thứ tự Order">
+                        </div>
+
                     </div>
-                    
-                  </div>
                 </div>
                 <div class="modal-body" style="text-align: center;">
                     <div id="blenderCustomer" class="container-fluid" style="text-align: center;">
@@ -283,6 +281,7 @@
         </div>
     </div>
 </div>
+<div id="modalThanhToan"></div>
 
 <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
   Launch demo modal
@@ -314,40 +313,40 @@
         <div class="modal-content">
             <div class="card card-signup card-plain">
                 <div class="modal-header">
-                  <div class="card-header card-header-info text-center w-100">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                      <i class="material-icons">clear</i>
-                    </button>
-                    <h4 class="card-title">Bảng tùy chọn</h4>
-                  </div>
+                    <div class="card-header card-header-info text-center w-100">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="material-icons">clear</i>
+                        </button>
+                        <h4 class="card-title">Bảng tùy chọn</h4>
+                    </div>
                 </div>
                 <div class="modal-body">
-                        <h5>Tùy chọn kích thước</h5>
-                        <div id="optionSize">
-                            <div id="sizeTenKichThuoc" class="form-check form-check-radio">
-                                <label class="form-check-label o-size">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
-                                    Size M
-                                    <span class="circle">
-                                        <span class="check"></span>
-                                    </span>
-                                </label>
-                            </div>
+                    <h5>Tùy chọn kích thước</h5>
+                    <div id="optionSize">
+                        <div id="sizeTenKichThuoc" class="form-check form-check-radio">
+                            <label class="form-check-label o-size">
+                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" />
+                                Size M
+                                <span class="circle">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
                         </div>
-                    
-                    <hr> 
-                        <h5 >Tùy chọn Topping</h5>
-                        <div id="optionTopping">
-                            <div class="form-check">
-                                <label class="form-check-label o-topping">
-                                    <input class="form-check-input" type="checkbox" value=""/>
-                                    Trân châu đen/trắng
-                                    <span class="form-check-sign">
-                                        <span class="check"></span>
-                                    </span>
-                                </label>
-                            </div>
+                    </div>
+
+                    <hr>
+                    <h5>Tùy chọn Topping</h5>
+                    <div id="optionTopping">
+                        <div class="form-check">
+                            <label class="form-check-label o-topping">
+                                <input class="form-check-input" type="checkbox" value="" />
+                                Trân châu đen/trắng
+                                <span class="form-check-sign">
+                                    <span class="check"></span>
+                                </span>
+                            </label>
                         </div>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-center">
                     <a id="AddOption" class="btn btn-success btn-link btn-wd btn-lg" data-toggle="modal" data-target="#optionModal">Xong</a>

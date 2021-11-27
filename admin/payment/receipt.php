@@ -1,4 +1,3 @@
-
 <div class="container receipt">
     <!-- Thong tin quan -->
     <div class="row">
@@ -48,7 +47,6 @@
                 </div>
             </div>
             <div class="row">
-
                 <div class="col-md-6">
                     Nhân viên:
                 </div>
@@ -68,7 +66,16 @@
                     ?>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-md-6">
+                    Số thứ tự
+                </div>
+                <div class="col-md-6">
+                    <?php
+                    echo $SoThuTu
+                    ?>
+                </div>
+            </div>
         </div>
     </div>
     <!-- Chi tiet hoa don -->
