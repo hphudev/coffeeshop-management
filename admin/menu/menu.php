@@ -2,6 +2,7 @@
 include '../models/M_LoaiMon.php';
 include '../models/M_DonViTinh.php';
 include '../models/M_ChiTietMon.php';
+include '../models/M_Topping.php';
 
 $ModelLoaiMon = new Model_LoaiMon();
 $LoaiMonList = $ModelLoaiMon->get_AllLoaiMon();
@@ -28,6 +29,8 @@ function getTenDVT($DonViTinhList, $maDVT)
 $ModelCTMon = new Model_ChiTietMon();
 $AllCTMon = $ModelCTMon->getAllCTMon();
 
+$ModelTopping = new Model_Topping();
+$AllTopping = $ModelTopping->getAllTopping();
 ?>
 
 <style>
@@ -276,6 +279,20 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
             ?>
         </div>
 
+        <!-- hidden topping -->
+        <div class="d-none d-sm-none d-md-none d-lg-none d-xl-none">
+            <?php
+            if ($AllTopping && count($AllTopping) > 0)
+            {
+                for ($i = 0; $i < count($AllTopping); $i++)
+                {
+                    echo "<p class='m-id-topping'>". $AllTopping[$i]->get_MaMon() ."</p>";
+                    echo "<p class='topping-name'>". $AllTopping[$i]->get_TenTopping() ."</p>";
+                }
+            }
+            ?>
+        </div>
+
         <!-- hidden check quyền -->
         <?php
             if ($ModelPhanQuyen->check_PhanQuyen($_SESSION['maCV'], "mon1")) {
@@ -355,6 +372,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                     </div>
                 </div>
 
+                <!-- Table size -->
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Kích thước và giá: </p>
@@ -363,7 +381,6 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                 <tr role="row">
                                     <th class='text-center'><strong>Size</strong></th>
                                     <th class='text-center'><strong>Đơn giá</strong></th>
-                                    <th class='text-center'></th>
                                 </tr>
                             </thead>
 
@@ -382,6 +399,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                     </div>
                 </div>
 
+                <!-- Nút add size -->
                 <div class="form-group bmd-form-group add-size-box">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left"></p>
@@ -397,6 +415,44 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                 Thêm size
                             </div>
                             <div id="btnRemoveAllRow" class="btn btn-danger" >
+                                <span class="material-icons">playlist_remove</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table topping -->
+                <div class="form-group bmd-form-group">
+                    <div class="fields-group align-items-center">
+                        <p class="input-label text-left">Topping: </p>
+                        <table class="table input-value" id="toppingTable">
+                            <thead>
+                                <tr role="row">
+                                    <th class='text-center'><strong>Tên topping</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Nút add topping -->
+                <div class="form-group bmd-form-group add-topping-box">
+                    <div class="fields-group align-items-center">
+                        <p class="input-label text-left"></p>
+                        <div class="sections-container input-value">
+                            <div class="fields-group">
+                                <input id="topping-val" style="width: 200px;" class="form-control" type="text" placeholder="Tên topping">
+                            </div>
+                            
+                            <div id="btnAddToppingRow" class="btn btn-info">
+                                <span class="material-icons">add</span>
+                                Thêm topping
+                            </div>
+                            <div id="btnRemoveAllTRow" class="btn btn-danger" >
                                 <span class="material-icons">playlist_remove</span>
                             </div>
                         </div>
@@ -519,6 +575,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
     var add_quantity = 0;
     var sizeRowArr = [];
     var priceRowArr = [];
+    var toppingRowArr = [];
     $(document).ready(function() {
         //init datatables
         $('.datatables').DataTable({
@@ -594,12 +651,15 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 $("#img-val").show();
                 $(".img-picker").hide();
                 $(".add-size-box").hide();
+                $(".add-topping-box").hide();
                 $(".sts-div").show();
                 $(".add-date-div").show();
                 $(".last-mod-date-div").show();
 
                 $("#sizeTable > tbody").empty();
+                $("#toppingTable > tbody").empty();
                 initSizeAndPriceTable();
+                initToppingTable();
 
                 $(".modal-title").text("Thông tin món");
                 $("#saveData").hide();
@@ -625,7 +685,9 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 $("#img-val").hide();
                 $(".img-picker").show();
                 $(".add-size-box").show();
+                $(".add-topping-box").show();
                 $("#btnRemoveAllRow").removeClass("disabledbutton");
+                $("#btnRemoveAllTRow").removeClass("disabledbutton");
                 $(".sts-div").show();
                 $(".add-date-div").show();
                 $(".last-mod-date-div").show();
@@ -656,6 +718,8 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 $("#img-val").hide();
                 $(".img-picker").show();
                 $(".add-size-box").show();
+                $(".add-size-box").show();
+                $(".add-topping-box").show();
 
                 $("#name-val").val("");
                 $("#type-val").text("Chọn loại món");
@@ -666,6 +730,8 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 $(".add-date-div").hide();
                 $(".last-mod-date-div").hide();
                 $(".sizeRow").remove();
+                $("#btnRemoveAllRow").addClass("disabledbutton");
+                $("#btnRemoveAllTRow").addClass("disabledbutton");
 
                 action = "add";
                 $(".modal-title").text("Thêm món");
@@ -764,6 +830,25 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         }
     }
 
+    //Hàm khởi tạo bảng topping
+    function initToppingTable() {
+        var arrTopping = [];
+        for (var i = 0; i < $(".m-id-topping").length; i++) {
+            if ($($(".m-id-topping").get(i)).text() == mon_id) {
+                arrTopping.push($($(".topping-name").get(i)).text());
+
+                toppingRowArr.push($($(".topping-name").get(i)).text());
+            }
+        }
+
+        for (var i = 0; i < arrTopping.length; i++) {
+            var crit = "<tr class='toppingRow'>" +
+                "<td class='text-center'>" + arrTopping[i] + "</td></tr>";
+
+            $("#toppingTable > tbody:last-child").append(crit);
+        }
+    }
+
     //Hàm check input lúc add row size và giá
     function checkSizeRowInput() {
         var size = $("#size-val").val();
@@ -781,7 +866,18 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         return true;
     }
 
-    //Hàm add row vào modal
+    //Hàm check input lúc add row topping
+    function checkToppingRowInput() {
+        var size = $("#topping-val").val();
+
+        if (size == "") {
+            return false;
+        }
+
+        return true;
+    }
+
+    //Hàm add row size vào modal
     function addRowToSizeTable(size, price) {
         var crit = "<tr class='sizeRow'>" +
                 "<td class='text-center'>" + size + "</td>" +
@@ -795,7 +891,20 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         }
     }
 
-    //Event add row button click
+    //Hàm add row topping vào modal
+    function addRowToToppingTable(topping) {
+        var crit = "<tr class='toppingRow'>" +
+                "<td class='text-center'>" + topping + "</td>" +
+                "</tr>";
+
+        $("#toppingTable > tbody:last-child").append(crit);
+
+        if (toppingRowArr.length == 1) {
+            $("#btnRemoveAllTRow").removeClass("disabledbutton");
+        }
+    }
+
+    //Event add size row button click
     $("#btnAddSizeRow").on("click", function() {
         if (checkSizeRowInput()) {
             sizeRowArr.push($("#size-val").val());
@@ -815,7 +924,25 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         }
     });
 
-    //Nút xóa row trong modal lúc add
+    //Event add topping row button click
+    $("#btnAddToppingRow").on("click", function() {
+        if (checkToppingRowInput()) {
+            toppingRowArr.push($("#topping-val").val());
+
+            addRowToToppingTable($("#topping-val").val());
+
+            $("#topping-val").val("");
+        }
+        else {
+            Swal.fire(
+                'Cảnh báo!',
+                'Vui lòng kiểm tra lại dữ liệu nhập!',
+                'warning'
+            )
+        }
+    });
+
+    //Nút xóa size row trong modal lúc add
     $("#btnRemoveAllRow").on("click", function() {
         Swal.fire({
             title: 'Xóa size - giá',
@@ -836,6 +963,26 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         })
     });
 
+    //Nút xóa topping row trong modal lúc add
+    $("#btnRemoveAllTRow").on("click", function() {
+        Swal.fire({
+            title: 'Xóa topping',
+            text: 'Thao tác này sẽ xóa tất cả hàng. Bạn vẫn muốn tiếp tục?',
+            showDenyButton: true,
+            confirmButtonText: 'Hủy',
+            denyButtonText: `Xóa`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                
+            } else if (result.isDenied) {
+                $("#toppingTable .toppingRow").remove();
+                toppingRowArr = []; 
+                $("#btnRemoveAllTRow").addClass("disabledbutton");
+            }
+        })
+    });
+
     //Add row size on enter
     $('#price-val').keypress(function (e) {
         var key = e.which;
@@ -843,6 +990,16 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         {
             $("#btnAddSizeRow").click();
             $("#size-val").focus();
+        }
+    });
+
+    //Add row topping on enter
+    $('#topping-val').keypress(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+        {
+            $("#btnAddToppingRow").click();
+            $("#topping-val").focus();
         }
     });
 
@@ -898,6 +1055,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 }
                 formData.append('size', JSON.stringify(sizeRowArr));
                 formData.append('price', JSON.stringify(priceRowArr));
+                formData.append('topping', JSON.stringify(toppingRowArr));
 
                 // Ajax config
                 $.ajax({

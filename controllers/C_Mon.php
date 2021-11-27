@@ -41,7 +41,8 @@ class C_Mon
 
             //Món
             if ($_POST['action']=="add" && isset($_POST['name']) && isset($_POST['type']) && isset($_POST['unit'])
-                && isset($_POST['description']) && isset($_POST['note']) && isset($_POST['size']) && isset($_POST['price']))
+                && isset($_POST['description']) && isset($_POST['note']) && isset($_POST['size']) && isset($_POST['price'])
+                && isset($_POST['topping']))
             {
                 //Validate image file
                 try {
@@ -138,7 +139,7 @@ class C_Mon
                 );
                 
                 $Mon = new Mon($data);
-                if ($ModelMon->addMon($Mon, json_decode($_POST['size']), json_decode($_POST['price'])) == 1)
+                if ($ModelMon->addMon($Mon, json_decode($_POST['size']), json_decode($_POST['price']), json_decode($_POST['topping'])) == 1)
                 {
                     $arr = array('success'=>'1');
                     echo json_encode($arr);
@@ -150,7 +151,7 @@ class C_Mon
             }
             elseif ($_POST['action']=="edit" && isset($_POST['name']) && isset($_POST['type']) && isset($_POST['unit'])
                 && isset($_POST['description']) && isset($_POST['note']) && isset($_POST['size']) && isset($_POST['price'])
-                && isset($_POST['id']) && isset($_POST['status']))
+                && isset($_POST['id']) && isset($_POST['status']) && isset($_POST['topping']))
             {
                 if (isset($_FILES['file']['error']))
                 {
@@ -236,7 +237,7 @@ class C_Mon
                 );
 
                 $Mon = new Mon($data);
-                if ($ModelMon->updateMon($Mon, json_decode($_POST['size']), json_decode($_POST['price'])) == 1)
+                if ($ModelMon->updateMon($Mon, json_decode($_POST['size']), json_decode($_POST['price']), json_decode($_POST['topping'])) == 1)
                 {
                     $arr = array('success'=>'1');
                     echo json_encode($arr);

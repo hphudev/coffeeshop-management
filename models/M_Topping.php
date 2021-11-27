@@ -1,40 +1,40 @@
 <?php
-    include 'E_ChiTietMon.php';
+    include 'E_Topping.php';
 
-    class Model_ChiTietMon
+    class Model_Topping
     {
         public function __construct()
         {
         }
 
-        public function getAllCTMon()
+        public function getAllTopping()
         {
            include '../configs/config.php';
-            $sql = "SELECT * FROM ct_mon";
+            $sql = "SELECT * FROM topping_lienket";
             $result = $conn->query($sql);
             $itemList = array();
             if ($result->num_rows > 0)
             {
                 while ($row = $result->fetch_assoc()) 
                 {
-                    $item = new ChiTietMon($row);
+                    $item = new Topping($row);
                     array_push($itemList, $item);
                 }
                 return $itemList;
             }
         }
 
-        public function addChiTietMon($MaMon, $sizeArr, $priceArr)
+        public function addTopping($MaMon, $toppingArr)
         {
             include '../configs/config.php';
 
             $sqlAdd = "";
-            for ($i = 0; $i < count($sizeArr); $i++)
+            for ($i = 0; $i < count($toppingArr); $i++)
             {
                 $sqlAdd .= "INSERT INTO
-                                ct_mon (MaMon, TenKichThuoc, DonGia)
+                                topping_lienket (MaMon, TenTopping)
                             VALUES
-                                ('" . $MaMon . "', '" . $sizeArr[$i] . "', " . $priceArr[$i] .");";
+                                ('" . $MaMon . "', '" . $toppingArr[$i] ."');";
             }
             $result = $conn->multi_query($sqlAdd);
             
@@ -48,12 +48,12 @@
             }
         }
 
-        public function deleteChiTietMon($MaMon)
+        public function deleteTopping($MaMon)
         {
             include '../configs/config.php';
 
             $sql = "DELETE FROM
-                            ct_mon
+                            topping_lienket
                     WHERE
                             MaMon='" . $MaMon . "'";
             $result = $conn->query($sql);

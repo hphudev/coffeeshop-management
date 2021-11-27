@@ -35,12 +35,14 @@ class Model_Mon
         }
     }
 
-    public function addMon($mon, $sizeArr, $priceArr)
+    public function addMon($mon, $sizeArr, $priceArr, $toppingArr)
     {
         include '../configs/config.php';
         include 'M_ChiTietMon.php';
+        include 'M_Topping.php';
 
         $ModelCTMon = new Model_ChiTietMon();
+        $ModelTopping = new Model_Topping();
 
         $sql = "INSERT INTO
                         mon (MaMon, TenMon, MaLoaiMon, SoLuong, MaDVT, HinhAnh, MoTa, GhiChu, NgayThem, NgayChinhSuaLanCuoi, TinhTrang)
@@ -52,7 +54,11 @@ class Model_Mon
         $result = $conn->query($sql);
         if ($result) {
             if ($ModelCTMon->addChiTietMon($mon->get_MaMon(), $sizeArr, $priceArr) == 1) {
-                return 1;
+                if ($ModelTopping->addTopping($mon->get_MaMon(), $toppingArr) == 1)
+                {
+                    return 1;
+                }
+                return 0;
             } else {
                 return 0;
             }
@@ -77,12 +83,14 @@ class Model_Mon
         }
     }
 
-    public function updateMon($mon, $sizeArr, $priceArr)
+    public function updateMon($mon, $sizeArr, $priceArr, $toppingArr)
     {
         include '../configs/config.php';
         include 'M_ChiTietMon.php';
+        include 'M_Topping.php';
 
         $ModelCTMon = new Model_ChiTietMon();
+        $ModelTopping = new Model_Topping();
 
         if ($mon->get_HinhAnh() != '') {
             $sql = "UPDATE
@@ -105,18 +113,41 @@ class Model_Mon
         $result = $conn->query($sql);
         if ($result) {
             if (count($sizeArr) == 0) {
-                return 1;
+                if ($ModelCTMon->deleteChiTietMon($mon->get_MaMon()) == 1) {
+                    if (count($toppingArr) == 0)
+                    {
+                        if ($ModelTopping->deleteTopping($mon->get_MaMon()) == 1) {
+                            return 1;
+                        }
+                    }
+                    else {
+                        if ($ModelTopping->deleteTopping($mon->get_MaMon()) == 1) {
+                            if ($ModelTopping->addTopping($mon->get_MaMon(), $toppingArr) == 1) {
+                                return 1;
+                            }
+                        }
+                    }
+                }
             } else {
                 if ($ModelCTMon->deleteChiTietMon($mon->get_MaMon()) == 1) {
                     if ($ModelCTMon->addChiTietMon($mon->get_MaMon(), $sizeArr, $priceArr) == 1) {
-                        return 1;
-                    } else {
-                        return 0;
+                        if (count($toppingArr) == 0)
+                        {
+                            if ($ModelTopping->deleteTopping($mon->get_MaMon()) == 1) {
+                                return 1;
+                            }
+                        }
+                        else {
+                            if ($ModelTopping->deleteTopping($mon->get_MaMon()) == 1) {
+                                if ($ModelTopping->addTopping($mon->get_MaMon(), $toppingArr) == 1) {
+                                    return 1;
+                                }
+                            }
+                        }
                     }
-                } else {
-                    return 0;
                 }
             }
+            return 0;
         } else {
             return 0;
         }
