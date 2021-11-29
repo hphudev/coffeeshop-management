@@ -163,7 +163,7 @@ function getTenNV($NhanVienList, $maNV)
                         <table id="datatablesUnit" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
                             <thead>
                                 <tr role="row">
-                                    <th class='text-center text-success'>STT</th>
+                                    <!-- <th class='text-center text-success'>STT</th> -->
                                     <th class='text-center text-success'>Mã PK</th>
                                     <th class='text-center text-success'>Ngày lập</th>
                                     <th class='text-center text-success'>Nhân viên kiểm</th>
@@ -173,7 +173,7 @@ function getTenNV($NhanVienList, $maNV)
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class='text-center'>STT</th>
+                                    <!-- <th class='text-center'>STT</th> -->
                                     <th class='text-center'>Mã PK</th>
                                     <th class='text-center'>Ngày lập</th>
                                     <th class='text-center'>Nhân viên kiểm</th>
@@ -190,7 +190,7 @@ function getTenNV($NhanVienList, $maNV)
                                         for ($i = 0; $i < count($PhieuKiemList); $i++)
                                         {
                                             echo "<tr role='row' class='odd' id='" . $PhieuKiemList[$i]->get_MaPK() . "'>";
-                                            echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                                            // echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center pk-id'>" . $PhieuKiemList[$i]->get_MaPK() . "</td>";
                                             echo "<td class='text-center'>" . $PhieuKiemList[$i]->get_ThoiGian() . "</td>";
                                             echo "<td class='text-center main-staff'>" . getTenNV($NhanVienList, $PhieuKiemList[$i]->get_MaNVKiem()) . "</td>";
@@ -321,16 +321,6 @@ function getTenNV($NhanVienList, $maNV)
             }
         });
 
-        function getHiddenNoteIndex() {
-            for (let i = 0; i < $(".note").length; i++)
-            {
-                if ($($(".note").get(i)).attr('id') == obj_id) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
         //mở rộng
         $(".btn-expand").on("click", function() {
             window.location.href = "../admin/index.php?page=werehouse&expand";
@@ -404,6 +394,33 @@ function getTenNV($NhanVienList, $maNV)
         })
     });
 
+    function getHiddenNoteIndex() {
+        for (let i = 0; i < $(".note").length; i++)
+        {
+            if ($($(".note").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function updateRowData() {
+        var index = 0;
+        for (let i = 0; i < $(".btn-edit").length; i++)
+        {
+            if ($($(".btn-edit").get(i)).attr('id') == obj_id) {
+                index = i;
+                break;
+            }
+        }
+
+        var $row = $($(".btn-edit").get(index)).closest('tr');
+
+        $row.find('.main-staff').text($("#main-staff-val").text());
+        $row.find(".sup-staff").text($("#sup-staff-val").text());
+        $($(".note").get(getHiddenNoteIndex())).text($("#note-val").val());
+    }
+
     //Nút xóa phiếu kiểm
     $(".btn-delete-rp").each(function(index) {
         $(this).on("click", function() {
@@ -443,7 +460,7 @@ function getTenNV($NhanVienList, $maNV)
                                     'success'
                                 ).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.reload();
+                                        $row.remove();
                                     }
                                 })
                             }
@@ -509,7 +526,11 @@ function getTenNV($NhanVienList, $maNV)
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type == "edit") {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }

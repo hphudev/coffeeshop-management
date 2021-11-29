@@ -100,7 +100,7 @@ class C_NguyenVatLieu
                     $NVL = new NguyenVatLieu($data);
                     if ($modelNVL->add_NguyenVatLieu($NVL) == 1)
                     {
-                        $arr = array('success'=>'1');
+                        $arr = array('success'=>'1', 'id'=>$data['MaNVL']);
                         echo json_encode($arr);
                     }
                     else
@@ -114,7 +114,7 @@ class C_NguyenVatLieu
                         "MaNVL"=>$_POST['id'],
                         "MaLoaiNVL"=>getMaLoaiNVL($LoaiNguyenVatLieuList, $_POST['type']),
                         "TenNVL"=>$_POST['name'],
-                        "SoLuongTon"=>0,
+                        "SoLuongTon"=>$_POST['quantity'],
                         "MaDVT"=>getMaDVT($DonViTinhList, $_POST['unit']),
                         "DonGiaNhap"=>0,
                         "MaNCC"=>getMaNCC($NhaCungCapList, $_POST['supplier']),

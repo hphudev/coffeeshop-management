@@ -228,8 +228,8 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                             echo "<td class='text-center mater-id'>" . $CTPhieuNhap[$i]->get_MaNVL() . "</td>";
                                             echo "<td class='text-center mater-name'>" . $NguyenVatLieu->get_TenNVL() . "</td>";
                                             echo "<td class='text-center'>" . getTenDVT($DonViTinhList, $NguyenVatLieu->get_MaDVT()) . "</td>";
-                                            echo "<td class='text-center mater-quantity'>" . $CTPhieuNhap[$i]->get_SoLuong() . "</td>";
-                                            echo "<td class='text-center mater-unitprice'>" . $CTPhieuNhap[$i]->get_DonGiaNhap() . "</td>";
+                                            echo "<td class='text-center mater-quantity money'>" . $CTPhieuNhap[$i]->get_SoLuong() . "</td>";
+                                            echo "<td class='text-center mater-unitprice money'>" . $CTPhieuNhap[$i]->get_DonGiaNhap() . "</td>";
                                             echo '<td class="td-actions text-center">
                                                     <button type="button" id="' . $CTPhieuNhap[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
@@ -357,8 +357,8 @@ function getTenNCC($NhaCungCapList, $maNCC)
                 obj_id = $row.attr('id');
 
                 $("#mater-val").text($row.find(".mater-name").text());
-                $("#quantity-val").val($row.find(".mater-quantity").text());
-                $("#unitprice-val").val($row.find(".mater-unitprice").text());
+                $("#quantity-val").val(parseFloat(($row.find(".mater-quantity").text()).replace(/,/g, '')));
+                $("#unitprice-val").val(parseFloat(($row.find(".mater-unitprice").text()).replace(/,/g, '')));
 
                 $(".modal-title").text("Chỉnh sửa nguyên vật liệu");
             });
@@ -373,6 +373,23 @@ function getTenNCC($NhaCungCapList, $maNCC)
             });
         })
     });
+
+    function getRowIndex() {
+        for (let i = 0; i < $(".btn-edit").length; i++)
+        {
+            if ($($(".btn-edit").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function updateRowData() {
+        var $row = $($(".btn-edit").get(getRowIndex())).closest('tr');
+
+        $row.find('.mater-quantity').text($("#quantity-val").val());
+        $row.find('.mater-unitprice').text($("#unitprice-val").val());
+    }
 
     $.fn.digits = function() { 
         return this.each(function(){ 
@@ -425,7 +442,11 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type == "edit") {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }

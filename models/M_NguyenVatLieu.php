@@ -57,8 +57,8 @@ class Model_NguyenVatLieu
     {
         include '../configs/config.php';
         $sql = "UPDATE nguyenvatlieu SET MaLoaiNVL='" . $nvl->get_MaLoaiNVL() . "', TenNVL='" . $nvl->get_TenNVL().
-                "', MaDVT='" . $nvl->get_MaDVT() . "', MaNCC='" . $nvl->get_MaNhaCungCap() .
-                "', MaTinhTrang='" . $nvl->get_MaTinhTrang() . "' WHERE MaNVL='" . $nvl->get_MaNVL() . "'";
+                "', MaDVT='" . $nvl->get_MaDVT() . "', MaNCC='" . $nvl->get_MaNhaCungCap() . "', SoLuongTon=" . $nvl->get_SoLuongTon().
+                ", MaTinhTrang='" . $nvl->get_MaTinhTrang() . "' WHERE MaNVL='" . $nvl->get_MaNVL() . "'";
         $result = $conn->query($sql);
         if ($result) {
             return 1;
@@ -103,5 +103,6 @@ class Model_NguyenVatLieu
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
         return $general_cmd->getIDNum("nguyenvatlieu", "NVL", "MaNVL");
+        //return "NVL10";
     }
 }

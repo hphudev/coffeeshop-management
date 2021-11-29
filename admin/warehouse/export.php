@@ -163,7 +163,7 @@ function getTenNV($NhanVienList, $maNV)
                         <table id="datatablesUnit" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
                             <thead>
                                 <tr role="row">
-                                    <th class='text-center text-success'>STT</th>
+                                    <!-- <th class='text-center text-success'>STT</th> -->
                                     <th class='text-center text-success'>Mã PX</th>
                                     <th class='text-center text-success'>Ngày lập</th>
                                     <th class='text-center text-success'>Nhân viên xuất</th>
@@ -173,7 +173,7 @@ function getTenNV($NhanVienList, $maNV)
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class='text-center'>STT</th>
+                                    <!-- <th class='text-center'>STT</th> -->
                                     <th class='text-center'>Mã PX</th>
                                     <th class='text-center'>Ngày lập</th>
                                     <th class='text-center'>Nhân viên xuất</th>
@@ -190,7 +190,7 @@ function getTenNV($NhanVienList, $maNV)
                                         for ($i = 0; $i < count($PhieuXuatList); $i++)
                                         {
                                             echo "<tr role='row' class='odd' id='" . $PhieuXuatList[$i]->get_MaPX() . "'>";
-                                            echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                                            // echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center px-id'>" . $PhieuXuatList[$i]->get_MaPX() . "</td>";
                                             echo "<td class='text-center'>" . $PhieuXuatList[$i]->get_NgayLap() . "</td>";
                                             echo "<td class='text-center wh-staff'>" . getTenNV($NhanVienList, $PhieuXuatList[$i]->get_MaNVXuat()) . "</td>";
@@ -321,16 +321,6 @@ function getTenNV($NhanVienList, $maNV)
             }
         });
 
-        function getHiddenNoteIndex() {
-            for (let i = 0; i < $(".note").length; i++)
-            {
-                if ($($(".note").get(i)).attr('id') == obj_id) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
         //mở rộng
         $(".btn-expand").on("click", function() {
             window.location.href = "../admin/index.php?page=werehouse&expand";
@@ -442,7 +432,7 @@ function getTenNV($NhanVienList, $maNV)
                                         'success'
                                     ).then((result) => {
                                         if (result.isConfirmed) {
-                                            location.reload();
+                                            $row.remove();
                                         }
                                     })
                                 }
@@ -466,6 +456,33 @@ function getTenNV($NhanVienList, $maNV)
             })
         });
     });
+
+    function getHiddenNoteIndex() {
+        for (let i = 0; i < $(".note").length; i++)
+        {
+            if ($($(".note").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function updateRowData() {
+        var index = 0;
+        for (let i = 0; i < $(".btn-edit").length; i++)
+        {
+            if ($($(".btn-edit").get(i)).attr('id') == obj_id) {
+                index = i;
+                break;
+            }
+        }
+
+        var $row = $($(".btn-edit").get(index)).closest('tr');
+
+        $row.find('.wh-staff').text($("#wh-staff-val").text());
+        $row.find(".iss-staff").text($("#iss-staff-val").text());
+        $($(".note").get(getHiddenNoteIndex())).text($("#note-val").val());
+    }
 
     function checkInput() {
         if ($("#wh-staff-val").text() == "Chọn nhân viên" || $("#iss-staff-val").text() == "Chọn nhân viên"
@@ -509,7 +526,11 @@ function getTenNV($NhanVienList, $maNV)
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type == "edit") {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }

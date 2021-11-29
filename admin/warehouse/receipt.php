@@ -367,16 +367,6 @@ function getTenNCC($NhaCungCapList, $maNCC)
             }
         });
 
-        function getHiddenRowIndex() {
-            for (let i = 0; i < $(".hidden-info").length; i++)
-            {
-                if ($($(".hidden-info").get(i)).attr('id') == obj_id) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-
         //Buttons các mục của kho
         //nguyên vật liệu
         $(".btn-material").on("click", function() {
@@ -460,6 +450,38 @@ function getTenNCC($NhaCungCapList, $maNCC)
         });
     });
 
+    function getHiddenRowIndex() {
+        for (let i = 0; i < $(".hidden-info").length; i++)
+        {
+            if ($($(".hidden-info").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function getRowIndex() {
+        for (let i = 0; i < $(".btn-edit").length; i++)
+        {
+            if ($($(".btn-edit").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function updateRowData() {
+        var $row = $($(".btn-edit").get(getRowIndex())).closest('tr');
+        var $hidden_row = $($(".hidden-info").get(getHiddenRowIndex()));
+
+        $row.find('.supplier').text($("#supplier-val").text());
+        $hidden_row.find('.staff-name-src').text($("#staff-val").text());
+        $hidden_row.find('.shipper-name-src').text($("#shipper-val").val());
+        $hidden_row.find('.pay-amount-src').text($("#pay-amount-val").val());
+        $hidden_row.find('.debt-amount-src').text($("#debt-amount-val").val());
+        $hidden_row.find('.note-src').text($("#note-val").val());
+    }
+
     $.fn.digits = function() { 
         return this.each(function(){ 
             $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
@@ -470,8 +492,8 @@ function getTenNCC($NhaCungCapList, $maNCC)
 
     function checkInput() {
         if ($("#staff-val").text() == "Chọn nhân viên" || $("#supplier-val").text() == "Chọn NCC" ||
-            $("#shipper-val").val() == "" || $("#pay-amount-val").val() == "" ||
-            $("#debt-amount-val").val() == "" || $("#note-val").val() == "") {
+            $("#shipper-val").val() == "" || $("#pay-amount-val").val() == "" || parseInt($("#pay-amount-val").val()) < 0 ||
+            $("#debt-amount-val").val() == "" || $("#note-val").val() == "" || parseInt($("#debt-amount-val").val()) < 0) {
                 return false;
         }
         return true;
@@ -515,7 +537,11 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type == "edit") {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }

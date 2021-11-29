@@ -140,7 +140,7 @@
                         <table id="datatablesType" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
                             <thead>
                                 <tr role="row">
-                                    <th class='text-center text-info'>STT</th>
+                                    <!-- <th class='text-center text-info'>STT</th> -->
                                     <th class='text-center text-info'>Mã loại món</th>
                                     <th class='text-center text-info'>Tên loại món</th>
                                     <th class='text-center text-info'>Thao tác</th>
@@ -148,7 +148,7 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class='text-center'>STT</th>
+                                    <!-- <th class='text-center'>STT</th> -->
                                     <th class='text-center'>Mã loại món</th>
                                     <th class='text-center'>Tên loại món</th>
                                     <th class='text-center'>Thao tác</th>
@@ -160,7 +160,7 @@
                                     // output data of each row
                                     for ($i = 0; $i < count($LoaiMonList); $i++) {
                                         echo "<tr role='row' class='odd' id='" . $LoaiMonList[$i]->get_MaLoaiMon() . "'>";
-                                        echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                                        // echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                         echo "<td class='text-center type-id'>" . $LoaiMonList[$i]->get_MaLoaiMon() . "</td>";
                                         echo "<td class='text-center type-name'>" . $LoaiMonList[$i]->get_TenLoaiMon() . "</td>";
                                         echo '<td class="td-actions text-center">
@@ -231,6 +231,20 @@
         });
     });
 
+    function updateRowData() {
+        var index = 0;
+        for (let i = 0; i < $(".btn-edit-type").length; i++)
+        {
+            if ($($(".btn-edit-type").get(i)).attr('id') == obj_id) {
+                index = i;
+                break;
+            }
+        }
+
+        var $row = $($(".btn-edit-type").get(index)).closest('tr');
+        $row.find('.type-name').text($("#obj-name-val").val());
+    }
+
     //Nút tab menu
     $(".btn-menu").on("click", function() {
         window.location.href = "../admin/index.php?page=table";
@@ -293,7 +307,7 @@
                                     'success'
                                 ).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.reload();
+                                        $row.remove();
                                     }
                                 })
                             }
@@ -349,7 +363,11 @@
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type == "edit-type") {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }

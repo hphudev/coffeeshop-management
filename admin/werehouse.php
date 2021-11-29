@@ -219,7 +219,7 @@ function getTenTT($TinhTrangList, $maTT)
             <table id="datatables" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
                 <thead>
                     <tr role="row">
-                        <th class='text-center text-info'>STT</th>
+                        <!-- <th class='text-center text-info'>STT</th> -->
                         <th class='text-center text-info'>Mã</th>
                         <th class='text-center text-info'>Tên nguyên vật liệu</th>
                         <th class='text-center text-info'>Loại NVL</th>
@@ -233,7 +233,7 @@ function getTenTT($TinhTrangList, $maTT)
                 </thead>
                 <tfoot>
                     <tr>
-                        <th class='text-center'>STT</th>
+                        <!-- <th class='text-center'>STT</th> -->
                         <th class='text-center'>Mã</th>
                         <th class='text-center'>Tên nguyên vật liệu</th>
                         <th class='text-center'>Loại NVL</th>
@@ -252,9 +252,9 @@ function getTenTT($TinhTrangList, $maTT)
                         // output data of each row
                         for ($i = 0; $i < count($NguyenVatLieuList); $i++) {
                             echo "<tr role='row' class='odd' id='" . $NguyenVatLieuList[$i]->get_MaNVL() . "'>";
-                            echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                            // echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                             echo "<td class='text-center material-id'>" . $NguyenVatLieuList[$i]->get_MaNVL() . "</td>";
-                            echo "<td class='text-center material-name'><strong>" . $NguyenVatLieuList[$i]->get_TenNVL() . "</strong></td>";
+                            echo "<td class='text-center'><strong class='material-name'>" . $NguyenVatLieuList[$i]->get_TenNVL() . "</strong></td>";
                             echo "<td class='text-center material-type'>" . getTenLoaiNVL($LoaiNguyenVatLieuList, $NguyenVatLieuList[$i]->get_MaLoaiNVL()) . "</td>";
                             echo "<td class='text-center material-unit'>" . getTenDVT($DonViTinhList, $NguyenVatLieuList[$i]->get_MaDVT()) . "</td>";
                             echo "<td class='text-center material-quantity'>" . $NguyenVatLieuList[$i]->get_SoLuongTon() . "</td>";
@@ -353,14 +353,14 @@ function getTenTT($TinhTrangList, $maTT)
                     </div>
                 </div>
 
-                <!-- <div class="form-group bmd-form-group">
+                <div class="form-group bmd-form-group quantity-row">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Số lượng: </p>
-                        <input disabled id="material-quantity-val" type="number" class="form-control input-value" placeholder="0">
+                        <input id="material-quantity-val" type="number" class="form-control input-value" placeholder="0">
                     </div>
                 </div>
 
-                <div class="form-group bmd-form-group">
+                <!-- <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Đơn giá nhập: </p>
                         <input disabled id="material-unitprice-val" type="number" class="form-control input-value" placeholder="0">
@@ -488,7 +488,7 @@ function getTenTT($TinhTrangList, $maTT)
                 $("#material-name-val").val("");
                 $("#material-type-val").text("Chọn loại");
                 $("#material-unit-val").text("Chọn ĐVT");
-                //$("#material-quantity-val").val("");
+                $(".quantity-row").hide();
                 //$("#material-unitprice-val").val("");
                 $("#material-supplier-val").text("Chọn NCC");
                 $("#material-status-val").text("Chọn tình trạng");
@@ -514,6 +514,8 @@ function getTenTT($TinhTrangList, $maTT)
                     $("#material-name-val").val($row.find('.material-name').text());
                     $("#material-type-val").text($row.find(".material-type").text());
                     $("#material-unit-val").text($row.find(".material-unit").text());
+                    $(".quantity-row").show();
+                    $("#material-quantity-val").val(parseFloat(($row.find('.material-quantity').text()).replace(/,/g, '')));
                     $("#material-supplier-val").text($row.find(".material-supplier").text());
                     $("#material-status-val").text($row.find(".material-status").text());
                 } else {
@@ -566,7 +568,8 @@ function getTenTT($TinhTrangList, $maTT)
                                         'success'
                                     ).then((result) => {
                                         if (result.isConfirmed) {
-                                            location.reload();
+                                            // location.reload();
+                                            $row.remove();
                                         }
                                     })
                                 }
@@ -621,6 +624,51 @@ function getTenTT($TinhTrangList, $maTT)
         });
     });
 
+    function getRowIndex() {
+        for (let i = 0; i < $(".btn-edit-data").length; i++)
+        {
+            if ($($(".btn-edit-data").get(i)).attr('id') == nvl_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function addNewMaterialToTable(id) {
+        var crit = "<tr role='row' class='odd' id='" + id + "'>" +
+                "<td tabindex='0' class='text-center sorting_1'>" + ($(".sorting_1").length + 1) + "</td>" +
+                "<td class='text-center material-id'>" + id + "</td>" +
+                "<td class='text-center material-name'><strong>" + $("#material-name-val").val() + "</strong></td>" +
+                "<td class='text-center material-type'>" + $("#material-type-val").text() + "</td>" +
+                "<td class='text-center material-unit'>" + $("#material-unit-val").text() + "</td>" +
+                "<td class='text-center material-quantity'>0</td>" +
+                "<td class='text-center material-unitprice money'>0</td>" +
+                "<td class='text-center material-supplier'>" + $("#material-supplier-val").text() + "</td>" +
+                "<td class='text-center material-status'>" + $("#material-status-val").text() + "</td>" +
+                "<td class='td-actions text-center'>" +
+                    "<button type='button' id='" + id + "' rel='tooltip' class='btn btn-success btn-edit-data' data-target='#myModal' data-toggle='modal'>" +
+                        "<i class='material-icons'>edit</i>" +
+                    "</button>" +
+                    "<button type='button' id='" + id + "' rel='tooltip' class='btn btn-danger btn-delete-mater'>" +
+                        "<i class='material-icons'>close</i>" +
+                    "</button>" + "</td>" + 
+                "</tr>";
+
+        $("#datatables > tbody").append(crit);
+    }
+
+    function updateRowData() {
+        var $row = $($(".btn-edit-data").get(getRowIndex())).closest('tr');
+
+        $row.find('.material-name').text($("#material-name-val").val());
+        $row.find(".material-type").text($("#material-type-val").text());
+        $row.find(".material-unit").text($("#material-unit-val").text());
+        $row.find('.material-quantity').text($("#material-quantity-val").val());
+        $row.find(".material-supplier").text($("#material-supplier-val").text());
+        $row.find(".material-status").text($("#material-status-val").text());
+        $row.find('.material-quantity').digits();
+    }
+
     $.fn.digits = function() { 
         return this.each(function(){ 
             $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
@@ -639,17 +687,23 @@ function getTenTT($TinhTrangList, $maTT)
     }
 
     function checkInput() {
-        if ($("#material-name-val").val() == "" ||  $("#material-type-val").text() == "Chọn loại" ||
-            $("#material-unit-val").text() == "Chọn ĐVT" ||
-            $("#material-supplier-val").text() == "Chọn NCC" ||
-            $("#material-status-val").text() == "Chọn tình trạng") {
-                console.log($("#material-name-val").val());
-                console.log($("#material-type-val").text());
-                console.log($("#material-unit-val").text());
-                console.log($("#material-supplier-val").text());
-                console.log($("#material-status-val").text());
-                return false;
-            }
+        if (submit_type == "edit-material") {
+            if ($("#material-name-val").val() == "" ||  $("#material-type-val").text() == "Chọn loại" ||
+                $("#material-unit-val").text() == "Chọn ĐVT" ||
+                $("#material-supplier-val").text() == "Chọn NCC" ||
+                $("#material-status-val").text() == "Chọn tình trạng" ||
+                $("#material-quantity-val").val() == "" || parseInt($("#material-quantity-val").val()) < 0) {
+                    return false;
+                }
+        }
+        else {
+            if ($("#material-name-val").val() == "" ||  $("#material-type-val").text() == "Chọn loại" ||
+                $("#material-unit-val").text() == "Chọn ĐVT" ||
+                $("#material-supplier-val").text() == "Chọn NCC" ||
+                $("#material-status-val").text() == "Chọn tình trạng") {
+                    return false;
+                }
+        }
         return true;
     }
 </script>
@@ -671,7 +725,7 @@ function getTenTT($TinhTrangList, $maTT)
                         name: $("#material-name-val").val(),
                         type: $("#material-type-val").text(),
                         unit: $("#material-unit-val").text(),
-                        // quantity: $("#material-quantity-val").val(),
+                        quantity: $("#material-quantity-val").val(),
                         // unitprice: $("#material-unitprice-val").val(),
                         supplier: $("#material-supplier-val").text(),
                         status: $("#material-status-val").text()
@@ -691,7 +745,11 @@ function getTenTT($TinhTrangList, $maTT)
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (submit_type == "edit-material") {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }
@@ -714,7 +772,7 @@ function getTenTT($TinhTrangList, $maTT)
             else {
                 Swal.fire(
                     'Thất bại!',
-                    'Vui lòng nhập đủ dữ liệu!',
+                    'Vui lòng kiểm tra lại dữ liệu nhập!',
                     'error'
                 )
                 // $(".alert").addClass("open");

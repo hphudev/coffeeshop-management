@@ -149,7 +149,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                         <table id="datatablesUnit" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
                             <thead>
                                 <tr role="row">
-                                    <th class='text-center text-success'>STT</th>
+                                    <!-- <th class='text-center text-success'>STT</th> -->
                                     <th class='text-center text-success'>Mã ĐVT</th>
                                     <th class='text-center text-success'>Tên đơn vị tính</th>
                                     <th class='text-center text-success'>Thao tác</th>
@@ -157,7 +157,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class='text-center'>STT</th>
+                                    <!-- <th class='text-center'>STT</th> -->
                                     <th class='text-center'>Mã ĐVT</th>
                                     <th class='text-center'>Tên đơn vị tính</th>
                                     <th class='text-center'>Thao tác</th>
@@ -169,7 +169,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                 // output data of each row
                                 for ($i = 0; $i < count($DonViTinhList); $i++) {
                                     echo "<tr role='row' class='odd' id='" . $DonViTinhList[$i]->get_MaDVT() . "'>";
-                                    echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                                    // echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                     echo "<td class='text-center unit-id'>" . $DonViTinhList[$i]->get_MaDVT() . "</td>";
                                     echo "<td class='text-center unit-name'>" . $DonViTinhList[$i]->get_TenDVT() . "</td>";
                                     echo '<td class="td-actions text-center">
@@ -549,6 +549,68 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
         });
     });
 
+    function updateRowData() {
+        var length = 0;
+        var index = 0;
+
+        if (action_type == "edit-unit") {
+            length = $(".btn-edit-unit").length;
+
+            for (let i = 0; i < length; i++)
+            {
+                if ($($(".btn-edit-unit").get(i)).attr('id') == obj_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            var $row = $($(".btn-edit-unit").get(index)).closest('tr');
+            $row.find('.unit-name').text($("#obj-name-val").val());
+        }
+        if (action_type == "edit-type") {
+            length = $(".btn-edit-type").length;
+
+            for (let i = 0; i < length; i++)
+            {
+                if ($($(".btn-edit-type").get(i)).attr('id') == obj_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            var $row = $($(".btn-edit-type").get(index)).closest('tr');
+            $row.find('.type-name').text($("#obj-name-val").val());
+        }
+        if (action_type == "edit-sts") {
+            length = $(".btn-edit-sts").length;
+
+            for (let i = 0; i < length; i++)
+            {
+                if ($($(".btn-edit-sts").get(i)).attr('id') == obj_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            var $row = $($(".btn-edit-sts").get(index)).closest('tr');
+            $row.find('.sts-name').text($("#obj-name-val").val());
+        }
+        if (action_type == "edit-supplier") {
+            length = $(".btn-edit-supplier").length;
+
+            for (let i = 0; i < length; i++)
+            {
+                if ($($(".btn-edit-supplier").get(i)).attr('id') == obj_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            var $row = $($(".btn-edit-supplier").get(index)).closest('tr');
+            $row.find('.supplier-name').text($("#obj-name-val").val());
+        }
+    }
+
     //Nút xóa đơn vị tính
     $(".btn-delete-unit").each(function(index) {
         $(this).on("click", function() {
@@ -588,7 +650,8 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                     'success'
                                 ).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.reload();
+                                        //location.reload();
+                                        $row.remove();
                                     }
                                 })
                             }
@@ -840,7 +903,11 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type.includes("edit")) {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }
@@ -850,7 +917,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                 'Vui lòng kiểm tra lại!',
                                 'error'
                             )
-                            }
+                        }
                     },
                     complete: function() {
                         $this.attr('disabled', false).html($caption);
