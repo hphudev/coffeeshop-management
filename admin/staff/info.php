@@ -65,13 +65,20 @@
                         </div>
                         <div class="row">
                             <div class=" col-md-5">
-                                <div class="form-group bmd-form-group">
-                                    <label for="genderPicker">Giới tính</label>
-                                    <select id="inputGioiTinh" disabled class="form-control personal_info selectpicker" data-style="btn btn-link">
-                                        <option <?php if ($NhanVien->get_GioiTinh() == "Nam") echo "selected" ?> value="Nam">Nam</option>
-                                        <option <?php if ($NhanVien->get_GioiTinh() == "Nữ") echo "selected" ?> value="Nữ">Nữ</option>
-                                        <option <?php if ($NhanVien->get_GioiTinh() == "Khác") echo "selected" ?> value="Khác">Khác</option>
-                                    </select>
+                                <div class="form-group">
+                                    <label> Giới tính</label>
+                                    <div class="dropdown">
+                                        <button id="inputGioiTinh" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                                            <?php
+                                            echo $NhanVien->get_GioiTinh();
+                                            ?>
+                                        </button>
+                                        <div id="gioiTinhSelect" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item item-gt"> Nam</a>
+                                            <a class="dropdown-item item-gt"> Nữ</a>
+                                            <a class="dropdown-item item-gt"> Khác</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -163,18 +170,24 @@
                         <div class="row">
                             <div class=" col-md-5">
                                 <div class="form-group">
-                                    <label for="inputChucVu">Chức vụ</label>
-                                    <select id="inputChucVu" disabled class="form-control work_info selectpicker" data-style="btn btn-link">
-                                        <?php
-                                        for ($i = 0; $i < count($ChucVuList); $i++) {
-                                            echo '<option';
-                                            if ($ChucVuList[$i]->get_MaCV() == $NhanVien->get_ChucVu()->get_MaCV())
-                                                echo ' selected ';
-                                            echo ' value="' . $ChucVuList[$i]->get_TenCV();
-                                            echo '">' . $ChucVuList[$i]->get_TenCV() . '</option>';
-                                        }
-                                        ?>
-                                    </select>
+                                    <label> Chức vụ</label>
+                                    <div class="dropdown">
+                                        <button id="inputChucVu" class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                                            <?php
+                                            echo $NhanVien->get_ChucVu()->get_TenCV()
+                                            ?>
+                                        </button>
+                                        <div id="chucVuSelect" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <?php
+                                            foreach ($ChucVuList as $CV) {
+                                                echo '<a id="' . $CV->get_MaCV() . '" class="dropdown-item item-cv';
+                                                if ($CV->get_MaCV() == $NhanVien->get_ChucVu()->get_MaCV())
+                                                    echo ' selected-cv ';
+                                                echo '">' . $CV->get_TenCV() . '</a>';
+                                            }
+                                            ?>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -182,9 +195,9 @@
                             <div class="col-md-5">
                                 <div class="form-group bmd-form-group">
                                     <label class="bmd-label-floating">Tên tài khoản được cấp</label>
-                                    <input id="inputTaiKhoan" type="text" class="form-control work_info" <?php
-                                                                                                            echo 'value="' . $NhanVien->get_TaiKhoan()->get_MaTK() . '"'
-                                                                                                            ?> disabled>
+                                    <input id="inputTaiKhoan" type="text" class="form-control" data-toggle="tooltip" data-placement="top" title="Bạn không thể thay đổi thông tin này" <?php
+                                                                                                                                                                                        echo 'value="' . $NhanVien->get_TaiKhoan()->get_MaTK() . '"'
+                                                                                                                                                                                        ?> disabled>
                                 </div>
                             </div>
                             <div class="col-md-7">
@@ -205,46 +218,37 @@
 
 <script>
     $(document).ready(function() {
-        function checkPhanQuyen(PhanQuyen, Callback) {
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
-                data: {
-                    phanquyen: PhanQuyen,
-                },
-                beforeSend: function() {
+        var luong = $('#inputLuong').val()
+        $('#inputLuong').val(toMoney(luong))
 
-                },
-                success: function(response) {
-                    // alert(response)
-                    if (response == "true") {
-                        Callback()
-                    } else {
-                        Swal.fire(
-                            "Thất bại!",
-                            "Bạn không có quyền truy cập mục này!",
-                            "warning"
-                        )
-                    }
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
-        }
+        $('#inputLuong').on('input', function() {
+            if ($(this).val() == "")
+                $(this).val("0")
+            var luong = toInt($(this).val())
+            $(this).val(toMoney(luong))
+        })
+
+        $('.item-gt').click(function() {
+            $('#inputGioiTinh').text($(this).text())
+        })
+
+        $('.item-cv').click(function() {
+            $('#inputChucVu').text($(this).text())
+            $('.selected-cv').removeClass('selected-cv')
+            $(this).addClass('selected-cv')
+        })
 
         function checkNVInfomation() {
             if ($('#inputHoTenDem').val() == "" ||
                 $('#inputTen').val() == "" ||
                 $('#inputCMND').val() == "" ||
                 $('#inputNgaySinh').val() == "" ||
-                $('#inputGioiTinh').val() == "" ||
+                $('#inputGioiTinh').text() == "" ||
                 $('#inputSDT').val() == "" ||
                 $('#inputDiaChi').val() == "" ||
                 $('#inputMaNV').val() == "" ||
                 $('#inputNgVaoLam').val() == "" ||
-                $('#inputChucVu').val() == "" ||
+                $('#inputChucVu').text() == "" ||
                 $('#inputLuong').val() == "" ||
                 $('#inputTaiKhoan').val() == "" ||
                 $('#inputMa').val() == "") {
@@ -255,10 +259,7 @@
                 )
                 return false;
             };
-            if (checkNgayVaoLam()) {
-
-            }
-            if (!checkNgaySinh()) {
+            if (!checkNgaySinh($('#inputNgaySinh').val())) {
                 Swal.fire(
                     'Thất bại!',
                     'Nhân viên phải đủ 18 tuổi. Vui lòng kiểm tra lại',
@@ -266,7 +267,7 @@
                 )
                 return false;
             }
-            if (!checkSDT()) {
+            if (!checkSDT($('#inputSDT').val())) {
                 Swal.fire(
                     'Thất bại!',
                     'Số điện thoại không đúng định dạng. Vui lòng kiểm tra lại',
@@ -274,7 +275,7 @@
                 )
                 return false;
             }
-            if (!checkNgayVaoLam()) {
+            if (!checkNgayVaoLam($('#inputNgVaoLam').val(), $('#inputNgaySinh').val())) {
                 Swal.fire(
                     'Thất bại!',
                     'Nhân viên phải đủ 18 tuổi khi vào làm và ngày vào làm\nvà ngày vào làm phải trước ngày hiện tại\nVui lòng kiểm tra lại thông tin!',
@@ -285,38 +286,6 @@
             return true;
         }
 
-        function checkSDT() {
-            const regex = /(84|0[3|5|7|8|9])+([0-9]{8})/
-            return regex.test(String($('#inputSDT').val()));
-        }
-
-        function checkNgaySinh() {
-            var dob = new Date(Date.parse($('#inputNgaySinh').val()))
-            var ageDifMs = Date.now() - dob.getTime()
-            var ageDate = new Date(ageDifMs)
-            if (Math.abs(ageDate.getUTCFullYear() - 1970) >= 18)
-                return true
-            else
-                return false
-        }
-
-        function checkNgayVaoLam() {
-            var dow = new Date(Date.parse($('#inputNgVaoLam').val()))
-            var dob = new Date(Date.parse($('#inputNgaySinh').val()))
-
-            var workDifMs = dow.getTime() - dob.getTime()
-
-            if (dow > new Date())
-                return false
-
-            var workDate = new Date(workDifMs)
-
-            if (Math.abs(workDate.getUTCFullYear() - 1970) >= 18)
-                return true
-            else
-                return false
-        }
-
         $('#btnEditPersonalInfo').click(function() {
             checkPhanQuyen('nhansu1', function() {
                 $(this).removeClass('btn-warning')
@@ -324,6 +293,8 @@
                 $('.personal_info').prop("disabled", false)
                 $('#btnSavePersonalInfo').removeClass('invisible')
                 $('#btnCancelEditPersonalInfo').removeClass('invisible')
+
+                $('#inputGioiTinh').prop('disabled', false)
             })
         });
 
@@ -335,7 +306,7 @@
                     "&Ten=" + $('#inputTen').val() +
                     "&NgaySinh=" + $('#inputNgaySinh').val() +
                     "&CMND=" + $('#inputCMND').val() +
-                    "&GioiTinh=" + $('#inputGioiTinh').val() +
+                    "&GioiTinh=" + $('#inputGioiTinh').text() +
                     "&SDT=" + $('#inputSDT').val() +
                     "&DiaChi=" + $('#inputDiaChi').val();
                 xmlhttp.onreadystatechange = function() {
@@ -364,6 +335,8 @@
                 $('#btnEditPersonalInfo').prop("disabled", false)
                 $('#btnEditPersonalInfo').addClass('btn-warning')
                 $('#btnCancelEditPersonalInfo').addClass('invisible')
+
+                $('#inputGioiTinh').prop('disabled', true)
             }
         });
 
@@ -378,6 +351,7 @@
             $('#btnEditPersonalInfo').prop("disabled", false)
             $('#btnEditPersonalInfo').addClass('btn-warning')
             $('#btnSavePersonalInfo').addClass('invisible')
+            $('#inputGioiTinh').prop('disabled', true)
         });
 
         $('#btnEditWorkInfo').click(function() {
@@ -387,6 +361,8 @@
                 $('.work_info').prop("disabled", false)
                 $('#btnSaveWorkInfo').removeClass('invisible')
                 $('#btnCancelEditWorkInfo').removeClass('invisible')
+
+                $('#inputChucVu').prop('disabled', false)
             })
         });
 
@@ -395,8 +371,8 @@
                 var xmlhttp = new XMLHttpRequest();
                 var url = "../../coffeeshopmanagement/controllers/C_NhanVien.php?page=staff&id=" + $('#inputMaNV').val() + '&updatework' +
                     "&NgayVaoLam=" + $('#inputNgVaoLam').val() +
-                    "&ChucVu=" + $('#inputChucVu').val() +
-                    "&Luong=" + $('#inputLuong').val() +
+                    "&ChucVu=" + $('.selected-cv').prop('id') +
+                    "&Luong=" + toInt($('#inputLuong').val()) +
                     "&TaiKhoan=" + $('#inputTaiKhoan').val() +
                     "&MatKhau=" + $('#inputMatKhau').val();
                 xmlhttp.onreadystatechange = function() {
@@ -406,6 +382,12 @@
                                 'Thành công!',
                                 'Thông tin chỉnh sửa đã được lưu lại',
                                 'success'
+                            )
+                        } else if (this.responseText == 'account') {
+                            Swal.fire(
+                                'Thất bại!',
+                                'Tên tài khoản đã tồn tại, vui lòng dùng tên khác',
+                                'error'
                             )
                         } else {
                             Swal.fire(
@@ -425,6 +407,7 @@
                 $('#btnEditWorkInfo').prop("disabled", false)
                 $('#btnEditWorkInfo').addClass('btn-warning')
                 $('#btnCancelEditWorkInfo').addClass('invisible')
+                $('#inputChucVu').prop('disabled', true)
             }
         });
 
@@ -439,6 +422,7 @@
             $('#btnEditWorkInfo').prop("disabled", false)
             $('#btnEditWorkInfo').addClass('btn-warning')
             $('#btnSaveWorkInfo').addClass('invisible')
+            $('#inputChucVu').prop('disabled', true)
         });
     })
 </script>

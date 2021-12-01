@@ -320,30 +320,30 @@
 
                 },
                 success: function(response) {
-                    Swal.fire({
-                        title: response,
-                    })
-                    // if (response.includes("success")) {
-                    //     Swal.fire(
-                    //         'Thành công!',
-                    //         'Thông tin khách hàng đã được cập nhật',
-                    //         'success'
-                    //     )
-                    //     modal.modal('hide')
-                    //     $('#btnDSKH').click()
-                    // } else if (response.includes("phone")) {
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         'Số điện thoại đã được sử dụng!',
-                    //         'error'
-                    //     )
-                    // } else {
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         'Đã xảy ra lỗi. Vui lòng thử lại',
-                    //         'error'
-                    //     )
-                    // }
+                    // Swal.fire({
+                    //     title: response,
+                    // })
+                    if (response.includes("success")) {
+                        Swal.fire(
+                            'Thành công!',
+                            'Thông tin khách hàng đã được cập nhật',
+                            'success'
+                        )
+                        modal.modal('hide')
+                        $('#btnDSKH').click()
+                    } else if (response.includes("phone")) {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Số điện thoại đã được sử dụng!',
+                            'error'
+                        )
+                    } else {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+                    }
                 },
                 complete: function() {},
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -392,34 +392,6 @@
 
         }
 
-        function checkPhanQuyen(PhanQuyen, Callback) {
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
-                data: {
-                    phanquyen: PhanQuyen,
-                },
-                beforeSend: function() {
-
-                },
-                success: function(response) {
-                    if (response == "true") {
-                        Callback()
-                    } else {
-                        Swal.fire(
-                            "Thất bại",
-                            "Bạn không có quyền thực hiện chức năng này!",
-                            "warning"
-                        )
-                    }
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
-        }
-
         $(".mater-gender-opt").each(function(index) {
             $(this).on("click", function() {
                 $("#inputGioiTinh").text($(this).text());
@@ -464,7 +436,6 @@
                     if (result.isConfirmed) {
                         deleteKH($row.find('.makh').html())
                     }
-
                 })
             })
         })
@@ -480,14 +451,16 @@
             }
         })
 
-        $("#btnCancel").click(function(){
+        $("#btnCancel").click(function() {
             let func = {};
             func.name = 'deleteOrderFail';
             $.ajax({
                 type: "POST",
                 url: "../models/M_BanHang.php",
-                data: {func: JSON.stringify(func)},
-                success: function (response) {
+                data: {
+                    func: JSON.stringify(func)
+                },
+                success: function(response) {
                     deleteOrderFail();
                 }
             });

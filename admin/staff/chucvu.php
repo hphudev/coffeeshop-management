@@ -22,10 +22,10 @@
                     <tbody>
                         <?php
                         for ($i = 0; $i < count($ChucVuList); $i++) {
-                            echo "<tr>";
-                            echo "<td>" . $ChucVuList[$i]->get_MaCV() . "</td>";
-                            echo "<td>" . $ChucVuList[$i]->get_TenCV() . "</td>";
-                            echo "<td>" . $ChucVuList[$i]->get_MucTroCap() . "</td>";
+                            echo "<tr id='" . $ChucVuList[$i]->get_MaCV() . "'>";
+                            echo "<td class='macv'>" . $ChucVuList[$i]->get_MaCV() . "</td>";
+                            echo "<td class='tencv'>" . $ChucVuList[$i]->get_TenCV() . "</td>";
+                            echo "<td class='trocap'>" . $ChucVuList[$i]->get_MucTroCap() . "</td>";
                         ?>
                             <td class="td-actions text-right">
                                 <button type="button" rel="tooltip" class="btn btnEditCV btn-link btn-warning btn-just-icon" data-placement="top" title="Chỉnh sửa thông tin">
@@ -68,27 +68,21 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-5">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Mã chức vụ
-                                        </label>
-                                        <input id="inputMaChucVu" value=" " type="text" class="form-control chucvu_info" disabled>
-                                    </div>
+                                    <label class="bmd-label-floating">Mã chức vụ
+                                    </label>
+                                    <input id="inputMaChucVu" value=" " type="text" class="form-control chucvu_info" disabled>
                                 </div>
                                 <div class="col-md-7">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Tên chức vụ
-                                        </label>
-                                        <input id="inputTenChucVu" value=" " type="text" class="form-control chucvu_info">
-                                    </div>
+                                    <label class="bmd-label-floating">Tên chức vụ
+                                    </label>
+                                    <input id="inputTenChucVu" value=" " type="text" class="form-control chucvu_info">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="form-group bmd-form-group">
-                                        <label class="bmd-label-floating">Mức trợ cấp (VNĐ)</label>
-                                        <input id="inputMucTroCap" value=" " type="text" class="form-control chucvu_info">
+                                    <label class="bmd-label-floating">Mức trợ cấp (VNĐ)</label>
+                                    <input id="inputMucTroCap" value=" " type="text" class="form-control chucvu_info">
 
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -113,6 +107,11 @@
             }
         });
 
+        $('.trocap').each(function() {
+            var trocap = $(this).text()
+            $(this).html(toMoney(trocap))
+        })
+
         $('#btnAddCV').click(function() {
             checkPhanQuyen('nhansu3', function() {
                 $('#addCVModel').modal('show')
@@ -124,14 +123,13 @@
         })
 
         $(".btnEditCV").click(function() {
+            var $row = $(this).closest('tr')
             checkPhanQuyen('nhansu3', function() {
                 $('#addCVModel').modal('show')
-                var $row = $(this).closest('tr')
-                var $columns = $row.find('td');
                 $('#btnConfirmAddCV').addClass('edit')
-                $('#inputMaChucVu').attr('value', $columns[0].innerHTML)
-                $('#inputTenChucVu').attr('value', $columns[1].innerHTML)
-                $('#inputMucTroCap').attr('value', $columns[2].innerHTML)
+                $('#inputMaChucVu').attr('value', $row.find('.macv').html())
+                $('#inputTenChucVu').attr('value', $row.find('.tencv').html())
+                $('#inputMucTroCap').attr('value', $row.find('.trocap').html())
             })
         });
 
@@ -184,6 +182,14 @@
             }
         });
 
+        $('#inputMucTroCap').on('input', function() {
+            if ($(this).val() == "") {
+                $(this).val("0")
+            }
+            var trocap = toInt($(this).val())
+            $(this).val(toMoney(trocap))
+        })
+
         function checkCVInfomation() {
             if (
                 $('#inputTenChucVu').val() == "" ||
@@ -193,8 +199,6 @@
                     'Vui lòng nhập đầy đủ thông tin',
                     'error'
                 )
-            } else if (!checkMucTroCap()) {
-
             } else {
                 checkTenChucVu()
             }
@@ -202,8 +206,7 @@
 
         function checkTenChucVu() {
             var xmlhttp = new XMLHttpRequest();
-            var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?check=" + $('#inputTenChucVu').val();
-
+            var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?check=" + $('#inputTenChucVu').val().toUpperCase()
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     if (this.responseText == 'exist') {
@@ -227,7 +230,7 @@
         }
 
         function checkMucTroCap() {
-            var TroCap = $('#inputMucTroCap').val();
+            var TroCap = toInt($('#inputMucTroCap').val());
             if (TroCap < 0) {
                 Swal.fire(
                     'Thất bại!',
@@ -243,17 +246,21 @@
         function addChucVu() {
             var xmlhttp = new XMLHttpRequest();
             var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?add" +
-                "&TenCV=" + $('#inputTenChucVu').val() +
-                "&TroCap=" + $('#inputMucTroCap').val();
+                "&TenCV=" + $('#inputTenChucVu').val().toString().toUpperCase() +
+                "&TroCap=" + toInt($('#inputMucTroCap').val());
 
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     if (this.responseText == 'success') {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin nhân viên đã được thêm',
-                            'success'
-                        )
+                        $('#addCVModel').modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Thông tin chức vụ đã được thêm mới!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnDSCV').click()
+                        })
                     } else {
                         Swal.fire(
                             'Thất bại!',
@@ -271,17 +278,21 @@
         function editChucVu() {
             var xmlhttp = new XMLHttpRequest();
             var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?update=" + $('#inputMaChucVu').val() +
-                "&TenCV=" + $('#inputTenChucVu').val() +
-                "&TroCap=" + $('#inputMucTroCap').val();
+                "&TenCV=" + $('#inputTenChucVu').val().toString().toUpperCase() +
+                "&TroCap=" + toInt($('#inputMucTroCap').val());
 
             xmlhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     if (this.responseText == 'success') {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin chức vụ đã được chỉnh sửa',
-                            'success'
-                        )
+                        $('#addCVModel').modal('hide')
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: "Thông tin chức vụ đã được chỉnh sửa!",
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then((result) => {
+                            $('#btnDSCV').click()
+                        })
                     } else {
                         Swal.fire(
                             'Thất bại!',
@@ -317,138 +328,5 @@
             xmlhttp.open("GET", url, true);
             xmlhttp.send();
         }
-
-        function checkPhanQuyen(PhanQuyen, Callback) {
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
-                data: {
-                    phanquyen: PhanQuyen,
-                },
-                beforeSend: function() {
-
-                },
-                success: function(response) {
-                    // alert(response)
-                    if (response == "true") {
-                        Callback()
-                    } else {
-                        Swal.fire(
-                            "Thất bại",
-                            "Bạn không có quyền thực hiện chức năng này!",
-                            "warning"
-                        )
-                    }
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
-        }
-
-        // Bang phan quyen
-        $('.dropdown-item').click(function() {
-            if ($('#btnEditPQ').prop('disabled') == true) {
-                Swal.fire(
-                    'Lưu ý!',
-                    'Vui lòng lưu lại chỉnh sửa hiện tại!',
-                    'warning'
-                )
-            } else {
-                isViewPQ = true
-                $('.form-check-input').prop('checked', false);
-                $('#btnSelectCVPQ').html($(this).text())
-                $('.selected-CV').removeClass('selected-CV')
-                $(this).addClass('selected-CV')
-                var xmlhttp = new XMLHttpRequest();
-                var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?phanquyen=" +
-                    $(this).attr('id')
-                xmlhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        if (this.responseText == 'error') {
-                            Swal.fire(
-                                'Thất bại!',
-                                'Đã xảy ra lỗi. Vui lòng thử lại',
-                                'error'
-                            )
-                        } else {
-                            var PhanQuyenList = this.responseText.split("</br>")
-                            PhanQuyenList.forEach(element => {
-                                $("#" + element).prop('checked', true);
-                            });
-                        }
-                    }
-                };
-                xmlhttp.open("GET", url, true);
-                xmlhttp.send();
-            }
-        })
-        $('#btnEditPQ').click(function() {
-            checkPhanQuyen('nhansu3', function() {
-                if (isViewPQ) {
-                    $('.form-check-input').prop('disabled', false)
-                    $('#btnEditPQ').prop('disabled', true)
-                    $('#btnSaveEditPQ').removeClass('invisible')
-                    $('#btnCancelEditPQ').removeClass('invisible')
-                } else {
-                    Swal.fire(
-                        'Thất lại!',
-                        'Vui lòng chọn chức vụ cần chỉnh sửa',
-                        'warning'
-                    )
-                }
-            })
-        })
-        $('#btnSaveEditPQ').click(function() {
-            $('.form-check-input').prop('disabled', true)
-            $(this).addClass('invisible')
-            $('#btnEditPQ').prop('disabled', false)
-            $('#btnCancelEditPQ').addClass('invisible')
-
-            var dsQuyen = ""
-
-            $('.form-check-input:checked').each(function() {
-                if ($(this).attr('id') != "") {
-                    dsQuyen += $(this).attr('id')
-                    dsQuyen += "-"
-                }
-            })
-
-            var xmlhttp = new XMLHttpRequest();
-            var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?id=" + $('.selected-CV').attr('id') + "&updatePQ=" + dsQuyen;
-
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    if (this.responseText == 'success') {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin phân quyền đã được lưu lại',
-                            'success'
-                        )
-                    } else {
-                        Swal.fire(
-                            'Thất bại!',
-                            'Đã xảy ra lỗi. Vui lòng thử lại',
-                            'error'
-                        )
-                    }
-                }
-            };
-
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
-        })
-        $('#btnCancelEditPQ').click(function() {
-            $('.form-check-input').prop('disabled', true)
-            $(this).addClass('invisible')
-            $('#btnEditPQ').prop('disabled', false)
-            $('#btnSaveEditPQ').addClass('invisible')
-            Swal.fire(
-                'Lưu ý!',
-                'Thông tin chỉnh sửa đã không được lưu',
-                'warning'
-            )
-        })
     });
 </script>

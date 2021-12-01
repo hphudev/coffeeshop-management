@@ -32,14 +32,14 @@ class General_CMD
     public static function getIDNum($table, $prefix, $primaryKey)
     {
         include('../configs/config.php');
-        $sql = 'SELECT ' . $primaryKey . ' FROM ' . $table .
-            ' ORDER BY ' . $primaryKey . " DESC";
+        $sql = 'SELECT ' . $primaryKey . ', LENGTH(' . $primaryKey . ') FROM ' . $table .
+            ' ORDER BY LENGTH(' . $primaryKey . ') DESC, ' . $primaryKey . " DESC";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             $data = mysqli_fetch_assoc($result);
-            return $prefix . (intval(explode($prefix, $data[$primaryKey])[1]) + 1);
+            return  $prefix . (intval(explode($prefix, $data[$primaryKey])[1]) + 1);
         } else {
-            return 'null';
+            return $prefix . "1";
         }
     }
 

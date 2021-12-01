@@ -40,7 +40,7 @@
                                     echo "<td>" . $NhanVienList[$i]->get_Ten() . "</td>";
                                     echo "<td>" . $NhanVienList[$i]->get_ChucVu()->get_TenCV() . "</td>";
                                     echo "<td>" . date('d/m/Y', $NhanVienList[$i]->get_NgayVaoLam()) . "</td>";
-                                    echo "<td>" . $NhanVienList[$i]->get_Luong() . "</td>";
+                                    echo "<td class='luong'>" . $NhanVienList[$i]->get_Luong() . "</td>";
 
                                 ?>
                                     <td class="td-actions text-right">
@@ -196,8 +196,8 @@
                                                                                                                     ?>">
                                 </div>
                                 <div class="col-md-3">
-                                    <label class="bmd-label-floating">Lương</label>
-                                    <input id="inputLuong" type="number" class="form-control personal_info">
+                                    <label class="bmd-label-floating">Lương (VNĐ)</label>
+                                    <input id="inputLuong" type="text" class="form-control personal_info" value="0">
                                 </div>
                             </div>
                             <div class="row">
@@ -229,6 +229,11 @@
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
             }
         });
+
+        $('.luong').each(function() {
+            var luong = $(this).text()
+            $(this).html(toMoney(luong))
+        })
 
         $('.item-gt').click(function() {
             $('#inputGioiTinh').text($(this).html())
@@ -306,7 +311,7 @@
                     "&MaNV=" + $('#inputMaNV').val() +
                     "&NgayVaoLam=" + $('#inputNgVaoLam').val() +
                     "&ChucVu=" + $('#inputChucVu').text() +
-                    "&Luong=" + $('#inputLuong').val() +
+                    "&Luong=" + toInt($('#inputLuong').val()) +
                     "&TaiKhoan=" + $('#inputTaiKhoan').val() +
                     "&MatKhau=" + $('#inputMatKhau').val();
 
@@ -316,12 +321,21 @@
                         //     title: responseText
                         // })
                         if (this.responseText == 'success') {
+                            $("#addNVModel").modal('hide');
+                            Swal.fire({
+                                title: 'Thành công!',
+                                text: 'Thông tin nhân viên đã được thêm',
+                                icon: 'success',
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                                $('#btnDSNV').click()
+                            })
+                        } else if (this.responseText == 'account') {
                             Swal.fire(
-                                'Thành công!',
-                                'Thông tin nhân viên đã được thêm',
-                                'success'
+                                'Thất bại!',
+                                'Tên tài khoản đã tồn tại, vui lòng dùng tên khác',
+                                'error'
                             )
-                            $('#btnDSNV').click()
                         } else {
                             Swal.fire(
                                 'Thất bại!',
@@ -337,34 +351,14 @@
             }
         });
 
-        function checkPhanQuyen(PhanQuyen, Callback) {
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
-                data: {
-                    phanquyen: PhanQuyen,
-                },
-                beforeSend: function() {
+        $('#inputLuong').on('input', function() {
+            if ($(this).val() == "") {
+                $(this).val("0")
+            }
+            var luong = toInt($(this).val())
+            $(this).val(toMoney(luong))
+        })
 
-                },
-                success: function(response) {
-                    // alert(response)
-                    if (response == "true") {
-                        Callback()
-                    } else {
-                        Swal.fire(
-                            "Thất bại!",
-                            "Bạn không có quyền truy cập mục này!",
-                            "warning"
-                        )
-                    }
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
-        }
 
         function checkNVInfomation() {
             if ($('#inputHoTenDem').val() == "" ||

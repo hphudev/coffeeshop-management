@@ -10,7 +10,8 @@ class Model_NhanVien
     public function get_AllNhanVien()
     {
         include '../configs/config.php';
-        $sql = 'SELECT * FROM nhanvien';
+        $sql = 'SELECT * FROM nhanvien' .
+            ' ORDER BY LENGTH(MaNV) ASC, MaNV ASC';
         $result = $conn->query($sql);
         $NhanVienList = array();
         if ($result->num_rows > 0) {
@@ -41,8 +42,6 @@ class Model_NhanVien
     public function update_NhanVienDetails($NhanVien)
     {
         include '../configs/config.php';
-
-
         $sql = "UPDATE `nhanvien` 
                 SET `HoTen`='" . $NhanVien->get_HoTenDem() . " " . $NhanVien->get_Ten() . "',
                     `NgaySinh`='" . date('Y-m-d H:i:s', $NhanVien->get_NgaySinh()) . "',
@@ -55,7 +54,8 @@ class Model_NhanVien
                     `Luong`='" . $NhanVien->get_Luong() . "'
                 WHERE `MaNV`='" . $NhanVien->get_MaNV() . "'";
         if ($conn->query($sql) === TRUE) {
-            return true;
+            $ModelTK = new Model_TaiKhoan();
+            return $ModelTK->update_TaiKhoan($NhanVien->get_TaiKhoan(), $NhanVien->get_MaNV());
         } else {
             return false;
         }
@@ -77,9 +77,9 @@ class Model_NhanVien
                 '" . $NhanVien->get_ChucVu()->get_MaCV() . "',
                 '" . $NhanVien->get_Luong() . "',
                 '" . $NhanVien->get_TaiKhoan()->get_MaTK() . "')";
-
         if ($conn->query($sql) === TRUE) {
-            return true;
+            $ModelTK = new Model_TaiKhoan();
+            return $ModelTK->add_TaiKhoan($NhanVien->get_TaiKhoan(), $NhanVien->get_MaNV());
         } else {
             return false;
         }

@@ -14,7 +14,7 @@ class C_ChucVu
 
             if (isset($_GET['add'])) {
                 $ChucVu = new ChucVu();
-                $ChucVu->set_MaCV($ModelGeneral->AutoGetID('chucvu', 'cv'));
+                $ChucVu->set_MaCV($ModelGeneral->AutoGetID('chucvu', 'cv', 'MaCV'));
                 $ChucVu->set_TenCV($_GET['TenCV']);
                 $ChucVu->set_MucTroCap($_GET['TroCap']);
                 $result = $ModelChucVu->add_ChucVu($ChucVu);
@@ -43,7 +43,7 @@ class C_ChucVu
                 $ChucVu->set_MaCV($_GET['update']);
                 $ChucVu->set_TenCV($_GET['TenCV']);
                 $ChucVu->set_MucTroCap($_GET['TroCap']);
-                $result = $ModelChucVu->update_ChucVu($ChucVu);
+                $result = $ModelChucVu->add_ChucVu($ChucVu);
 
                 if ($result == 1) {
                     echo 'success';
