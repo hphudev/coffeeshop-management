@@ -388,21 +388,30 @@
                     dataGood[count] = dataBad[count] = 0;
                     if (tro_good < response[0].length && tro_bad < response[1].length)
                     {
-                        if (Number(response[0][tro_good]['nam'] < Number(response[1][tro_bad]['nam'])))
+                        if (Number(response[0][tro_good]['nam']) < Number(response[1][tro_bad]['nam']))
                         {
                             labelsTmp[count] = response[0][tro_good]['nam'];
                             dataGood[count] = response[0][tro_good]['thu'];
                             tro_good++;
                         }
                         else
-                            if (Number(response[0]['nam'] > Number(response[1]['nam'])))
+                            if (Number(response[0][tro_good]['nam']) > Number(response[1][tro_bad]['nam']))
                             {
                                 labelsTmp[count] = response[1][tro_bad]['nam'];
                                 dataBad[count] = response[1][tro_bad]['chi'];
                                 tro_bad++;
                             }
+                            else 
+                                if (Number(response[0][tro_good]['nam']) == Number(response[1][tro_bad]['nam']))
+                                {
+                                    labelsTmp[count] = response[1][tro_bad]['nam'];
+                                    dataGood[count] = response[0][tro_good]['thu'];
+                                    dataBad[count] = response[1][tro_bad]['chi'];
+                                    tro_bad++;
+                                    tro_good++;
+                                }
                     }
-                    else
+                    else 
                     {
                         if (!(tro_good < response[0].length))
                         {
