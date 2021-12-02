@@ -88,7 +88,7 @@
 
 <div class="modal fade modal-dialog-scrollable" id="bill" tabindex="-1" role="">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width: 95vw; left: 50%; top:50%; transform: translateX(-50%)">
+        <div class="modal-content" style="width: 95vw; height:fit-content; left: 50%; top:0%; transform: translateX(-50%)">
             <div class="card card-signup card-plain">
                 <div class="modal-header">
                     <div class="card-header card-header-danger text-center w-100">
@@ -98,7 +98,7 @@
                         <h4 class="card-title">ORDER</h4>
                     </div>
                 </div>
-                <div class="modal-body" style="width: 100%">
+                <div class="modal-body" style="width: 100%; height: fit-content">
                     <!-- <div class="row ml-3">
                         <h5>Hình thức order</h5>
                         <div class="ml-4">
@@ -209,7 +209,7 @@
 </div>
 <div class="modal fade modal-dialog-scrollable" id="billBlender" tabindex="-1" role="">
     <div class="modal-dialog" role="document">
-        <div class="modal-content" style="width: 75vw; left: 50%; top:50%; transform: translateX(-50%)">
+        <div class="modal-content" style="width: 75vw; height:fit-content; left: 50%;top:0; transform: translateX(-50%)">
             <div class="card card-signup card-plain">
                 <div class="modal-header">
                     <div class="card-header card-header-info text-center w-100">
@@ -218,14 +218,14 @@
                         </button>
                         <h4 class="card-title">PHỤC VỤ ORDER </h4>
                         <div class="mb-3" style="display: flex; flex-direction: column">
-                            <label for="exampleFormControlInput1" class="form-label bg-danger" style="color: white; border-radius: 5px; width: 10%; text-align: center">Tìm kiếm Order</label>
+                            <label for="exampleFormControlInput1" class="form-label bg-danger" style="color: white; border-radius: 5px; width: fit-content; text-align: center">Tìm kiếm Order</label>
                             <input id="tbFindOrder" type="number" class="form-control" style="border: 1px solid red ;background-color: white; border-radius: 5px; color: black; font-weight: 500; padding-left: 10px; font-size: 20px; width: 30%" placeholder="Nhập số thứ tự Order">
                         </div>
 
                     </div>
                 </div>
-                <div class="modal-body" style="text-align: center;">
-                    <div id="blenderCustomer" class="container-fluid" style="text-align: center;">
+                <div class="modal-body" style="text-align: center; padding: 0">
+                    <div id="blenderCustomer" class="container-fluid d-flex flex-row justify-content-center" style="text-align: center; position: relative;">
                         <!-- <div id="row" class="row blenderOrders" style="">
                             <div id="accordion" role="tablist">
                                 <div class="card card-collapse" style="width: 75vw; text-align: center;">
