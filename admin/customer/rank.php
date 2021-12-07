@@ -290,32 +290,38 @@
         });
 
         $('#btnAddTV').click(function() {
-            modal.modal('show')
-            clearModalData()
+            checkPhanQuyen('kh4', function() {
+                modal.modal('show')
+                clearModalData()
+            })
         })
 
         $('.btnEditRank').click(function() {
-            var $row = $(this).closest('tr')
-            $("#btnConfirm").addClass('view')
-            modal.modal('show')
-            initModalData($row)
+            checkPhanQuyen('kh4', function() {
+                var $row = $(this).closest('tr')
+                $("#btnConfirm").addClass('view')
+                modal.modal('show')
+                initModalData($row)
+            })
         })
 
         $('.btnDeleteRank').click(function() {
-            var $row = $(this).closest('tr')
-            Swal.fire({
-                title: 'Bạn có chắc chắn muốn xóa khách hàng?',
-                text: "Việc làm này sẽ không thể hoàn tác!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Đồng ý',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    deleteHangTV($row.find('.maloaitv').html())
-                }
+            checkPhanQuyen('kh4', function() {
+                var $row = $(this).closest('tr')
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn xóa khách hàng?',
+                    text: "Việc làm này sẽ không thể hoàn tác!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Đồng ý',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteHangTV($row.find('.maloaitv').html())
+                    }
+                })
             })
         })
 

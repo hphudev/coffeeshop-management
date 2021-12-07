@@ -101,6 +101,7 @@
     $(document).ready(function() {
         // Table Chuc Vu
         var isViewPQ = false
+        var selectedCV = ""
         var tableType = $('#tableType').DataTable({
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
@@ -134,6 +135,7 @@
         });
 
         $(".btnDeleteCV").click(function() {
+            var $row = $(this).closest('tr')
             checkPhanQuyen('nhansu3', function() {
                 Swal.fire({
                     title: 'Xóa chức vụ?',
@@ -146,18 +148,19 @@
                     cancelButtonText: 'Hủy'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        var nvID = $(this).attr('id')
                         var xmlhttp = new XMLHttpRequest();
-                        var url = "../../coffeeshopmanagement/controllers/C_NhanVien.php?page=staff&id=" + nvID + "&delete";
+                        var url = "../../coffeeshopmanagement/controllers/C_ChucVu.php?delete=" + $row.find('.macv').html();
                         xmlhttp.onreadystatechange = function() {
                             if (this.readyState == 4 && this.status == 200) {
                                 if (this.responseText == 'success') {
-                                    Swal.fire(
-                                        'Đã xóa!',
-                                        'Chức vụ đã được xóa khỏi hệ thống',
-                                        'success'
-                                    )
-                                    $('#row' + nvID).remove();
+                                    Swal.fire({
+                                        title: 'Thành công!',
+                                        text: "Thông tin chức vụ đã được xóa!",
+                                        icon: 'success',
+                                        confirmButtonText: 'Ok'
+                                    }).then((result) => {
+                                        $('#btnDSCV').click()
+                                    })
                                 } else {
                                     Swal.fire(
                                         'Thất bại!',

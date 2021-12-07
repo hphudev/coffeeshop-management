@@ -507,34 +507,6 @@
 
         }
 
-        function checkPhanQuyen(PhanQuyen, Callback) {
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
-                data: {
-                    phanquyen: PhanQuyen,
-                },
-                beforeSend: function() {
-
-                },
-                success: function(response) {
-                    if (response == "true") {
-                        Callback()
-                    } else {
-                        Swal.fire(
-                            "Thất bại",
-                            "Bạn không có quyền thực hiện chức năng này!",
-                            "warning"
-                        )
-                    }
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
-        }
-
         $('#btnFindKHInfo').click(function() {
             if ($('#inputSDTKH').val() == "") {
                 Swal.fire(
@@ -586,14 +558,14 @@
         })
 
         $('#btnAddKM').click(function() {
-            checkPhanQuyen('khachhang3', function() {
+            checkPhanQuyen('kh5', function() {
                 modal.modal('show')
                 clearModalData()
             })
         })
 
         $('#btnExchangeKM').click(function() {
-            checkPhanQuyen('khachhang4', function() {
+            checkPhanQuyen('kh5', function() {
                 modal2.modal('show')
                 clearModalData()
             })
@@ -601,7 +573,7 @@
 
         $('.btnEditKM').click(function() {
             var $row = $(this).closest('tr')
-            checkPhanQuyen('khachhang3', function() {
+            checkPhanQuyen('kh5', function() {
                 $("#btnConfirm").addClass('view')
                 modal.modal('show')
                 selectedKMID = $row.attr('id');
@@ -610,7 +582,7 @@
         })
 
         $('.btnDeleteKM').click(function() {
-            checkPhanQuyen('khachhang3', function() {
+            checkPhanQuyen('kh5', function() {
                 var $row = $(this).closest('tr')
                 selectedKMID = $row.attr('id');
                 Swal.fire({
