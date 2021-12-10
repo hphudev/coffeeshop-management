@@ -7,6 +7,7 @@ class KhuyenMai
     private $ThoiGianBD;
     private $ThoiGianKT;
     private $SoLuong;
+    private $SoLuongConLai;
     private $PhanTramKM;
     private $TienKMToiDa;
     private $TienHDToiThieu;
@@ -18,6 +19,7 @@ class KhuyenMai
             $this->TenKM = "";
 
         $this->SoLuong =
+            $this->SoLuongConLai =
             $this->PhanTramKM =
             $this->TienKMToiDa =
             $this->TienHDToiThieu = 0;
@@ -34,6 +36,7 @@ class KhuyenMai
         $this->ThoiGianBD = strtotime($row['ThoiGianBatDau']);
         $this->ThoiGianKT = strtotime($row['ThoiGianKetThuc']);
         $this->SoLuong = $row['SoLuongPhatHanh'];
+        $this->SoLuongConLai = $row['SoLuongConLai'];
         $this->PhanTramKM = $row['PhanTramKM'];
         $this->TienKMToiDa = $row['TienKMToiDa'];
         $this->TienHDToiThieu = $row['TienHDToiThieu'];
@@ -98,6 +101,17 @@ class KhuyenMai
     {
         return $this->SoLuong;
     }
+
+    function set_SoLuongConLai($sl)
+    {
+        $this->SoLuongConLai = $sl;
+    }
+
+    function get_SoLuongConLai()
+    {
+        return $this->SoLuongConLai;
+    }
+
     function set_PhanTramKM($per)
     {
         $this->PhanTramKM = $per;

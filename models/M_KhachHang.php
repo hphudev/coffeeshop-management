@@ -65,7 +65,6 @@ class Model_KhachHang
             return false;
         }
     }
-
     public function update_KhachHang($KhachHang)
     {
         include '../configs/config.php';
@@ -78,14 +77,27 @@ class Model_KhachHang
             . 'NgayDangKy="' .  $KhachHang->get_NgayDK() . '",'
             . 'TongChi="' .  $KhachHang->get_TongChi() . '" '
             . 'WHERE MaKH="' . $KhachHang->get_MaKH() . '" ';
-        echo $sql;
         if ($conn->query($sql) === TRUE) {
             return true;
         } else {
             return false;
         }
     }
-    public function get_AllHangTV()
+    public function update_KhachHangPoint($KhachHang)
+    {
+        include '../configs/config.php';
+        $sql = 'UPDATE khachhang SET '
+            . 'MaLoaiTV="' .  $KhachHang->get_LoaiTV()->get_MaLoaiTV() . '", '
+            . 'DiemTV="' .  $KhachHang->get_DiemTV() . '", '
+            . 'TongChi="' .  $KhachHang->get_TongChi() . '" '
+            . 'WHERE MaKH="' . $KhachHang->get_MaKH() . '" ';
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public static function get_AllHangTV()
     {
         include '../configs/config.php';
         $sql =  'SELECT * FROM loaithanhvien';
@@ -169,6 +181,28 @@ class Model_KhachHang
             return false;
         }
     }
+    public function updateHTVPosition()
+    {
+        include '../configs/config.php';
+        $sql =  'SELECT * FROM loaithanhvien ORDER BY DiemLenHang DESC';
+        $result = $conn->query($sql);
+        $DSHangTV = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $HangTV = new LoaiTV();
+                $HangTV->clone($row);
+                array_push($DSHangTV, $HangTV);
+            }
+            $i = 1;
+            foreach ($DSHangTV as $HangTV) {
+                $HangTV->set_HangTV($i);
+                $this->update_LoaiTV($HangTV);
+                $i++;
+            }
+            return true;
+        }
+        return null;
+    }
     public function find_KHBySDT($SDT)
     {
         include '../configs/config.php';
@@ -182,5 +216,24 @@ class Model_KhachHang
             }
         }
         return null;
+    }
+    public function update_HangThanhVien($KhachHang)
+    {
+        $rankUp = $KhachHang->get_LoaiTV();
+        include '../configs/config.php';
+        $sql =  'SELECT * FROM loaithanhvien ORDER BY DiemLenHang ASC';
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $HangTV = new LoaiTV();
+                $HangTV->clone($row);
+                if ($HangTV->get_DiemLenHang() <= $KhachHang->get_TongChi()) {
+                    $rankUp = $HangTV->get_MaLoaiTV();
+                }
+            }
+        }
+        $KhachHang->get_LoaiTV()->set_MaLoaiTV($rankUp);
+        $ModelKhachHang = new Model_KhachHang();
+        return $ModelKhachHang->update_KhachHangPoint($KhachHang);
     }
 }

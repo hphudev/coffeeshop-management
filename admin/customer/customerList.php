@@ -422,6 +422,9 @@
                 $("#btnConfirm").addClass('view')
                 modal.modal('show')
                 initModalData($row)
+                checkPhanQuyenNoAlert('admin', function() {
+                    $('.important-info').attr('disabled', false)
+                })
             })
         })
 

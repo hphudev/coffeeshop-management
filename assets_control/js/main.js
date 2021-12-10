@@ -35,6 +35,29 @@ function checkPhanQuyen(PhanQuyen, Callback) {
     })
 }
 
+function checkPhanQuyenNoAlert(PhanQuyen, Callback) {
+    $.ajax({
+        type: "POST",
+        url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
+        data: {
+            phanquyen: PhanQuyen,
+        },
+        beforeSend: function() {
+
+        },
+        success: function(response) {
+            // alert(response)
+            if (response == "true") {
+                Callback()
+            }
+        },
+        complete: function() {},
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert(errorThrown);
+        }
+    })
+}
+
 function checkSDT(sdt) {
     const regex = /(84|0[3|5|7|8|9])+([0-9]{8})/
     return regex.test(String(sdt));

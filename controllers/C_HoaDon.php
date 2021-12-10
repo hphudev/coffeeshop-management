@@ -30,19 +30,19 @@ class C_HoaDon
             }
             if ($_POST['action'] == 'khuyenmai') {
                 $khuyenMaiId = $_POST['id'];
-                $KhuyenMai = $ModelKhuyenMai->get_KhuyenMai($khuyenMaiId);
-                if ($KhuyenMai == null) {
+                $KM = $ModelKhuyenMai->get_KhuyenMai($khuyenMaiId);
+                if ($KM == null) {
                     echo "error";
                 } else {
                     $today = new DateTime('now');
-                    if (date("Y-m-d", $KhuyenMai->get_ThoiGianKT()) < $today->format("Y-m-d")) {
+                    if (date("Y-m-d", $KM->get_ThoiGianKT()) < $today->format("Y-m-d")) {
                         echo "expired";
-                    } else if ($KhuyenMai->get_SoLuong() < 0) {
+                    } else if ($KM->get_SoLuongConLai() <= 0) {
                         echo "runout";
                     } else {
-                        echo $KhuyenMai->get_MaKM();
+                        echo $KM->get_MaKM();
                         echo "\n";
-                        echo $KhuyenMai->get_TienKMToiDa();
+                        echo $KM->get_TienKMToiDa();
                     }
                 }
             }
@@ -66,12 +66,13 @@ class C_HoaDon
                     $KH = $ModelKhachHang->get_KhachHangDetails($_POST['customer']);
                     $KH->set_DiemTV($KH->get_DiemTV() + ($HoaDon->get_TongTienTT() / 1000) * $KH->get_LoaiTV()->get_TyLeTichDiem());
                     $KH->set_TongChi($KH->get_TongChi() + $HoaDon->get_TongTienTT());
-                    $ModelKhachHang->update_KhachHang($KH);
+                    $ModelKhachHang->update_KhachHangPoint($KH);
+                    $ModelKhachHang->update_HangThanhVien($KH);
                 }
                 // Cap nhap thong tin ma khuyen mai
                 if ($_POST['discount_id'] != 'null' && $_POST['discount_id'] != '') {
-                    $KhuyenMai = $ModelKhuyenMai->get_KhuyenMai($_POST['discount_id']);
-                    $KhuyenMai->set_SoLuong($KhuyenMai->get_SoLuong() - 1);
+                    $KhuyenMai = $ModelKhuyenMai->get_KhuyenMaiById($_POST['discount_id']);
+                    $KhuyenMai->set_SoLuongConLai($KhuyenMai->get_SoLuongConLai() - 1);
                     $ModelKhuyenMai->update_KhuyenMai($KhuyenMai);
                 }
 
