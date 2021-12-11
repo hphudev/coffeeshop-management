@@ -81,7 +81,7 @@
         } else
             Swal.fire({
                 icon: 'info',
-                title: 'Đang thanh toán',
+                title: 'Đang thiết lập thanh toán',
                 text: 'Hệ thống đang gửi order lên nhà bếp và in phiếu thanh toán',
                 showConfirmButton: false,
                 allowOutsideClick: false
@@ -105,7 +105,7 @@
                 success: function(response) {
                     Swal.close();
                     //console.log(response);
-                    sessionStorage.removeItem('bill');
+                    // sessionStorage.removeItem('bill');
                     $("#bill").modal('hide');
                     // Swal.fire({
                     //     title: response
@@ -737,7 +737,7 @@
                         html =
                             '<tr id="bill_' + i.toString() + '" style=" overflow: scroll;">' +
                             '<th cope="row">' + (Number(i) + 1) + '</th>' +
-                            '<td> <p style="width: 150px">' + bill[i].name + 'aaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbb</p></td>' +
+                            '<td> <p style="width: 150px">' + bill[i].name + '</p></td>' +
                             '<td> <p class="des" style="width: 50px">' + bill[i].size + '</p></td>' +
                             '<td> <p class="des" style="width: 20px">' + bill[i].num + '</p></td>' +
                             '<td> <p class="des" style="width: 50px">' + bill[i].price + '</p></td>' +
@@ -849,7 +849,7 @@
                     if (data[i][0]['TinhTrang'] != 'phuc vu')
                         continue;
                     countOrderFinish++;
-                    let html = '<div id="row' + data[i][0]['MaDM'] + '" class="row blenderOrders" style="margin: 0">' +
+                    let html = '<div id="row' + data[i][0]['MaDM'] + '" class="row blenderOrders" style="padding: 0">' +
                         '<div id="accordion' + data[i][0]['MaDM'] + '" role="tablist">' +
                         '<div class="card card-collapse" style="width: 70vw; text-align: center;">' +
                         '<div class="card-header bg-light border-primary" style=" background-color: white" role="tab" id="heading">' +
@@ -857,8 +857,8 @@
                         '<a id="title" data-toggle="collapse" href="#collapse' + data[i][0]['MaDM'] + '" aria-expanded="true" aria-controls="collapse" style="display: flex; color: black">' +
                         'Order <br>' + data[i][0]['SoBan'] +
                         '<i class="material-icons">keyboard_arrow_down</i>' +
-                        '<div style="display: flex; margin-left: 80%; ">' +
-                        '<button type="button" rel="tooltip" class="btn btn-simple btn-warning" style=" font-weight: 700; background-color: white; color: black" onclick="deleteOrder(\'' + data[i][0]['MaDM'] + '\')"> ' +
+                        '<div style="display: flex; position: absolute; right: 5%; ">' +
+                        '<button type="button" rel="tooltip" class="btn btn-simple btn-warning" style=" font-weight: 700; background-color: white; color: black" onclick="deleteOrder(\'' + data[i][0]['MaDM'] + '\')">' +
                         'PHỤC VỤ' +
                         '<i class="material-icons">person</i>' +
                         '</button>' +

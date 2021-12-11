@@ -1,6 +1,6 @@
 
-<div class="container-fluid" style="position: relative; top: -8%">
-    <div class="bg-light" style="position: fixed;  z-index: 999; width: 1200px; border-radius: 5px">
+<div class="container-fluid" style="position: relative; top: -4%;">
+    <div class="bg-light container-fluid" style="position: fixed;  z-index: 999; width: 79vw; border-radius: 5px;">
         <button type="button" class="col btn" style="font-size: 20px; font-weight: 500; background-color: #343a40;">
             PHIẾU ORDER<span class="badge badge-danger ml-2" style="font-size: 25px;">
             <?php
@@ -13,7 +13,7 @@
         </span>
         </button>
         <div class="mb-3 ml-3">
-            <label for="exampleFormControlInput1" class="form-label bg-danger" style="color: white; border-radius: 5px; width: 10%; text-align: center">Tìm kiếm Order</label>
+            <label for="exampleFormControlInput1" class="form-label bg-danger" style="color: white; border-radius: 5px; width: fit-content; text-align: center">Tìm kiếm Order</label>
             <input id="tbFindOrder" type="number" class="form-control" style="border: 1px solid red ;background-image: linear-gradient(0, rgba(255, 153, 255 , 0.8), rgba(153, 255, 255, 0.5)); border-radius: 5px; color: black; font-weight: 500; padding-left: 10px; font-size: 20px; width: 20%" placeholder="Nhập số thứ tự Order">
         </div>
     </div>
@@ -21,27 +21,27 @@
         <?php 
             for ($i = 0; $i < count($bills); $i++)
             {
-                if ($bills[$i][0]->get_TinhTrang() == 'phuc vu')
+                if ($bills[$i][0]->get_TinhTrang() == 'phuc vu' || $bills[$i][0]->get_TinhTrang() == 'da gui')
                     continue;
         ?>  
             <div id="row<?php echo $bills[$i][0]->get_MaDM() ?>" class="row blenderOrders" style="width:max-content;">
                 <div id="accordion<?php echo $bills[$i][0]->get_MaDM() ?>" role="tablist">
-                    <div class="card card-collapse" style="width: 1200px;">
-                        <div class="card-header" style="background-color:tomato;" role="tab" id="heading<?php echo $bills[$i][0]->get_MaDM()?>">
+                    <div class="card card-collapse" style="width: 79vw;">
+                        <div class="card-header" style="position: relative; background-color:tomato;" role="tab" id="heading<?php echo $bills[$i][0]->get_MaDM()?>">
                             <h5 class="mb-0" style="font-size: 20px; font-weight: 500;">
                                 <a id="title<?php echo $bills[$i][0]->get_MaDM() ?>" class="text-light" data-toggle="collapse" href="#collapse<?php echo $bills[$i][0]->get_MaDM()?>" aria-expanded="true" aria-controls="collapse<?php echo $bills[$i][0]->get_MaDM()?>" style="display: flex;">
                                     Order <br> <?php echo $bills[$i][0]->get_SoBan() ?>
                                     <i class="material-icons">keyboard_arrow_down</i>
-                                    <div style="display: flex; margin-left: 65%; ">
+                                    <div style="display: flex; position: absolute; right: 5%; ">
                                         <button id="btnState<?php echo $bills[$i][0]->get_MaDM() ?>" type="button" rel="tooltip" class="btn btn-success btn-simple" style="font-weight: 700; margin-right: 5px; <?php echo ($bills[$i][0]->get_TinhTrang() == 'da tiep nhan') ? 'cursor: not-allowed;' : 'cursor: pointer;' ?> " onclick="updateStateOrder('<?php echo $bills[$i][0]->get_MaDM() ?>', 'da tiep nhan')" <?php echo ($bills[$i][0]->get_TinhTrang() == 'da tiep nhan') ? 'disabled' : '' ?>>
-                                            <?php echo ($bills[$i][0]->get_TinhTrang() == 'da gui') ? 
+                                            <?php echo ($bills[$i][0]->get_TinhTrang() == 'da thanh toan') ? 
                                                 'TIẾP NHẬN 
                                                 <i class="material-icons">
                                                     volunteer_activism
                                                 </i>' : 'ĐÃ TIẾP NHẬN' 
                                             ?>
                                         </button>
-                                        <button id="btnCall<?php echo $bills[$i][0]->get_MaDM() ?>" type="button" rel="tooltip" class="btn btn-simple" style=" font-weight: 700;  <?php echo ($bills[$i][0]->get_TinhTrang() == 'da gui') ? 'cursor: not-allowed;' : 'cursor: pointer;' ?> background-color: white; color: black" onclick="updateStateOrder('<?php echo $bills[$i][0]->get_MaDM() ?>', 'phuc vu')" <?php echo ($bills[$i][0]->get_TinhTrang() == 'da gui') ? 'disabled' : '' ?>>
+                                        <button id="btnCall<?php echo $bills[$i][0]->get_MaDM() ?>" type="button" rel="tooltip" class="btn btn-simple" style=" font-weight: 700;  <?php echo ($bills[$i][0]->get_TinhTrang() == 'da thanh toan') ? 'cursor: not-allowed;' : 'cursor: pointer;' ?> background-color: white; color: black" onclick="updateStateOrder('<?php echo $bills[$i][0]->get_MaDM() ?>', 'phuc vu')" <?php echo ($bills[$i][0]->get_TinhTrang() == 'da thanh toan') ? 'disabled' : '' ?>>
                                             GỌI PHỤC VỤ
                                             <i class="material-icons">person</i>
                                         </button>

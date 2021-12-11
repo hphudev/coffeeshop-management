@@ -575,7 +575,7 @@
         })
 
         $('#cancelPay').click(function() {
-            // 
+            $("#bill").modal('show');
         })
     })
 </script>
