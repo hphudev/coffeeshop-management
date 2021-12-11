@@ -1,4 +1,6 @@
 <?php
+include '../models/E_Mon.php';
+
 class Model_Mon
 {
     public function __construct()
