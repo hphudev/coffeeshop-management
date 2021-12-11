@@ -223,15 +223,15 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                         for ($i = 0; $i < count($CTPhieuNhap); $i++)
                                         {
                                             $NguyenVatLieu = $ModelNguyenVatLieu->get_NguyenVatLieuDetails($CTPhieuNhap[$i]->get_MaNVL());
-                                            echo "<tr role='row' class='odd'>";
+                                            echo "<tr role='row' class='odd' id='" . $CTPhieuNhap[$i]->get_MaNVL() . "'>";
                                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center mater-id'>" . $CTPhieuNhap[$i]->get_MaNVL() . "</td>";
                                             echo "<td class='text-center mater-name'>" . $NguyenVatLieu->get_TenNVL() . "</td>";
                                             echo "<td class='text-center'>" . getTenDVT($DonViTinhList, $NguyenVatLieu->get_MaDVT()) . "</td>";
-                                            echo "<td class='text-center mater-quantity'>" . $CTPhieuNhap[$i]->get_SoLuong() . "</td>";
-                                            echo "<td class='text-center mater-unitprice'>" . $CTPhieuNhap[$i]->get_DonGiaNhap() . "</td>";
+                                            echo "<td class='text-center mater-quantity money'>" . $CTPhieuNhap[$i]->get_SoLuong() . "</td>";
+                                            echo "<td class='text-center mater-unitprice money'>" . $CTPhieuNhap[$i]->get_DonGiaNhap() . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $CTPhieuNhap[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
                                                 </td>';
@@ -336,7 +336,6 @@ function getTenNCC($NhaCungCapList, $maNCC)
             }
         });
 
-
         // add phiếu nhập
         $(".btn-add").each(function(index) {
             $(this).on("click", function() {
@@ -353,14 +352,15 @@ function getTenNCC($NhaCungCapList, $maNCC)
         // edit phiếu nhập
         $(".btn-edit").each(function(index) {
             $(this).on("click", function() {
-                $("#mater-val").text($($(".mater-name").get(index)).text());
-                $("#quantity-val").val($($(".mater-quantity").get(index)).text());
-                $("#unitprice-val").val($($(".mater-unitprice").get(index)).text());
+                var $row = $(this).closest('tr');
+                action_type = "edit";
+                obj_id = $row.attr('id');
+
+                $("#mater-val").text($row.find(".mater-name").text());
+                $("#quantity-val").val(parseFloat(($row.find(".mater-quantity").text()).replace(/,/g, '')));
+                $("#unitprice-val").val(parseFloat(($row.find(".mater-unitprice").text()).replace(/,/g, '')));
 
                 $(".modal-title").text("Chỉnh sửa nguyên vật liệu");
-                action_type = "edit";
-                obj_id = $($(".mater-id").get(index)).text();
-                console.log(obj_id);
             });
         })
 
@@ -373,6 +373,23 @@ function getTenNCC($NhaCungCapList, $maNCC)
             });
         })
     });
+
+    function getRowIndex() {
+        for (let i = 0; i < $(".btn-edit").length; i++)
+        {
+            if ($($(".btn-edit").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function updateRowData() {
+        var $row = $($(".btn-edit").get(getRowIndex())).closest('tr');
+
+        $row.find('.mater-quantity').text($("#quantity-val").val());
+        $row.find('.mater-unitprice').text($("#unitprice-val").val());
+    }
 
     $.fn.digits = function() { 
         return this.each(function(){ 
@@ -425,7 +442,11 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type == "edit") {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }

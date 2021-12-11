@@ -8,10 +8,41 @@ class C_Mon
     {
         $ModelPhanQuyen = new Model_PhanQuyen();
 
-        if (isset($_POST['action']))
+        if (isset($_GET['item-type']))
         {
+            include '../models/M_LoaiMon.php';
+
+            $ModelLoaiMon = new Model_LoaiMon();
+            $LoaiMonList = $ModelLoaiMon->get_AllLoaiMon();
+            function getMaLM($LoaiMonList, $tenLM)
+            {
+                for ($i = 0; $i < count($LoaiMonList); $i++) {
+                    if ($LoaiMonList[$i]->get_TenLoaiMon() == $tenLM) {
+                        return $LoaiMonList[$i]->get_MaLoaiMon();
+                    }
+                }
+            }
+
+            include_once '../admin/menu/item-type.php';
+        }
+        elseif (isset($_POST['action']))
+        {
+            include '../models/M_LoaiMon.php';
+            $ModelLoaiMon = new Model_LoaiMon();
+            $LoaiMonList = $ModelLoaiMon->get_AllLoaiMon();
+            function getMaLM($LoaiMonList, $tenLM)
+            {
+                for ($i = 0; $i < count($LoaiMonList); $i++) {
+                    if ($LoaiMonList[$i]->get_TenLoaiMon() == $tenLM) {
+                        return $LoaiMonList[$i]->get_MaLoaiMon();
+                    }
+                }
+            }
+
+            //Món
             if ($_POST['action']=="add" && isset($_POST['name']) && isset($_POST['type']) && isset($_POST['unit'])
-                && isset($_POST['description']) && isset($_POST['note']) && isset($_POST['size']) && isset($_POST['price']))
+                && isset($_POST['description']) && isset($_POST['note']) && isset($_POST['size']) && isset($_POST['price'])
+                && isset($_POST['topping']))
             {
                 //Validate image file
                 try {
@@ -76,7 +107,6 @@ class C_Mon
 
                 //Process init data to store to db
                 include '../models/M_DonViTinh.php';
-                include '../models/M_LoaiMon.php';
 
                 $ModelDonViTinh = new Model_DonViTinh();
                 $DonViTinhList = $ModelDonViTinh->get_AllDonViTinh();
@@ -85,17 +115,6 @@ class C_Mon
                     for ($i = 0; $i < count($DonViTinhList); $i++) {
                         if ($DonViTinhList[$i]->get_TenDVT() == $tenDVT) {
                             return $DonViTinhList[$i]->get_MaDVT();
-                        }
-                    }
-                }
-
-                $ModelLoaiMon = new Model_LoaiMon();
-                $LoaiMonList = $ModelLoaiMon->get_AllLoaiMon();
-                function getMaLM($LoaiMonList, $tenLM)
-                {
-                    for ($i = 0; $i < count($LoaiMonList); $i++) {
-                        if ($LoaiMonList[$i]->get_TenLoaiMon() == $tenLM) {
-                            return $LoaiMonList[$i]->get_MaLoaiMon();
                         }
                     }
                 }
@@ -120,7 +139,7 @@ class C_Mon
                 );
                 
                 $Mon = new Mon($data);
-                if ($ModelMon->addMon($Mon, json_decode($_POST['size']), json_decode($_POST['price'])) == 1)
+                if ($ModelMon->addMon($Mon, json_decode($_POST['size']), json_decode($_POST['price']), json_decode($_POST['topping'])) == 1)
                 {
                     $arr = array('success'=>'1');
                     echo json_encode($arr);
@@ -132,7 +151,7 @@ class C_Mon
             }
             elseif ($_POST['action']=="edit" && isset($_POST['name']) && isset($_POST['type']) && isset($_POST['unit'])
                 && isset($_POST['description']) && isset($_POST['note']) && isset($_POST['size']) && isset($_POST['price'])
-                && isset($_POST['id']) && isset($_POST['status']))
+                && isset($_POST['id']) && isset($_POST['status']) && isset($_POST['topping']))
             {
                 if (isset($_FILES['file']['error']))
                 {
@@ -186,7 +205,6 @@ class C_Mon
 
                 //Process init data to store to db
                 include '../models/M_DonViTinh.php';
-                include '../models/M_LoaiMon.php';
 
                 $ModelDonViTinh = new Model_DonViTinh();
                 $DonViTinhList = $ModelDonViTinh->get_AllDonViTinh();
@@ -195,17 +213,6 @@ class C_Mon
                     for ($i = 0; $i < count($DonViTinhList); $i++) {
                         if ($DonViTinhList[$i]->get_TenDVT() == $tenDVT) {
                             return $DonViTinhList[$i]->get_MaDVT();
-                        }
-                    }
-                }
-
-                $ModelLoaiMon = new Model_LoaiMon();
-                $LoaiMonList = $ModelLoaiMon->get_AllLoaiMon();
-                function getMaLM($LoaiMonList, $tenLM)
-                {
-                    for ($i = 0; $i < count($LoaiMonList); $i++) {
-                        if ($LoaiMonList[$i]->get_TenLoaiMon() == $tenLM) {
-                            return $LoaiMonList[$i]->get_MaLoaiMon();
                         }
                     }
                 }
@@ -230,7 +237,7 @@ class C_Mon
                 );
 
                 $Mon = new Mon($data);
-                if ($ModelMon->updateMon($Mon, json_decode($_POST['size']), json_decode($_POST['price'])) == 1)
+                if ($ModelMon->updateMon($Mon, json_decode($_POST['size']), json_decode($_POST['price']), json_decode($_POST['topping'])) == 1)
                 {
                     $arr = array('success'=>'1');
                     echo json_encode($arr);
@@ -240,12 +247,62 @@ class C_Mon
                     echo json_encode(array('success' =>'0'));
                 }
             }
-            elseif ($_POST['action']=='add_quantity' && isset($_POST['quantity']) &&
-                    isset($_POST['mon_id'])) 
+            elseif ($_POST['action']=='add_quantity' && isset($_POST['quantity']) && isset($_POST['mon_id'])) 
             {
                 $ModelMon = new Model_Mon();
 
                 if ($ModelMon->addQuantityMon($_POST['mon_id'], $_POST['quantity']) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
+                }
+            }
+            //Loại món
+            elseif ($_POST['action']=='add-type')
+            {
+                $data = array(
+                    "MaLoaiMon"=>$ModelLoaiMon->generate_MaLoaiMon(),
+                    "TenLoaiMon"=>$_POST['type_name'],
+                );
+                
+                $LM = new LoaiMon($data);
+
+                if ($ModelLoaiMon->add_LoaiMon($LM) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
+                }
+            }
+            elseif ($_POST['action']=='edit-type')
+            {
+                $data = array(
+                    "MaLoaiMon"=>$_POST['type_id'],
+                    "TenLoaiMon"=>$_POST['type_name'],
+                );
+                
+                $LM = new LoaiMon($data);
+
+                if ($ModelLoaiMon->update_LoaiMon($LM) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
+                }
+            }
+            elseif ($_POST['action']=='delete-type')
+            {
+                if ($ModelLoaiMon->delete_LoaiMon($_POST['type_id']) == 1)
                 {
                     $arr = array('success'=>'1');
                     echo json_encode($arr);
@@ -262,10 +319,16 @@ class C_Mon
                 $ModelMon = new Model_Mon();
                 $MonList = $ModelMon->getAllItem();
 
-                include_once('../admin/menu.php');
+                include_once('../admin/menu/menu.php');
             }
             else {
-                echo "Bạn không có quyền truy cập mục này";
+                echo "<script>" .
+                    "Swal.fire(
+                        'Thất bại!',
+                        'Bạn không có quyền truy cập mục này!',
+                        'error'
+                    );" .
+                    "</script>";
             }
         }
     }

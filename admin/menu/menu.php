@@ -2,6 +2,7 @@
 include '../models/M_LoaiMon.php';
 include '../models/M_DonViTinh.php';
 include '../models/M_ChiTietMon.php';
+include '../models/M_Topping.php';
 
 $ModelLoaiMon = new Model_LoaiMon();
 $LoaiMonList = $ModelLoaiMon->get_AllLoaiMon();
@@ -28,6 +29,8 @@ function getTenDVT($DonViTinhList, $maDVT)
 $ModelCTMon = new Model_ChiTietMon();
 $AllCTMon = $ModelCTMon->getAllCTMon();
 
+$ModelTopping = new Model_Topping();
+$AllTopping = $ModelTopping->getAllTopping();
 ?>
 
 <style>
@@ -150,6 +153,11 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
 <div class="container-fluid">
     <div class="flex-sp-bet below-menu-icon col-sm-12 col-md-12 col-lg-12 col-xl-12">
         <h3 class="d-none d-sm-none d-md-none d-lg-block d-xl-block"><strong>Quản lý món</strong></h3>
+
+        <div class="buttons-group">
+            <div class="btn btn-success">MENU</div>
+            <div class="btn btn-default btn-item-type">Loại món</div>
+        </div>
     </div>
 
     <div class="line-break"></div>
@@ -207,7 +215,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                             $status = 'Không sẵn sàng';
                                         }
 
-                                        echo "<tr role='row' class='odd'>";
+                                        echo "<tr role='row' class='odd' id='" . $MonList[$i]->get_MaMon() . "'>";
                                         echo "<td class='text-center'>". ($i + 1) ."</td>";
                                         echo "<td class='text-center m-id'>". $MonList[$i]->get_MaMon() ."</td>";
                                         echo "<td class='text-center'><img class='img' src='data:image/jpeg;base64,". base64_encode($MonList[$i]->get_HinhAnh()) ."' alt='Món' style='min-width:80px; max-width:100px; min-height: 80px; max-height: 80px; border-radius: 6px;'</td>";
@@ -216,13 +224,13 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                         echo "<td class='text-center quantity'>". $MonList[$i]->get_SoLuong() ."</td>";
                                         echo "<td class='text-center status'>". $status ."</td>";
                                         echo '<td class="td-actions text-center">
-                                                <button type="button" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
+                                                <button type="button" id="' . $MonList[$i]->get_MaMon() . '" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
                                                     <i class="material-icons">info</i>
                                                 </button>
-                                                <button type="button" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
+                                                <button type="button" id="' . $MonList[$i]->get_MaMon() . '" rel="tooltip" class="btn btn-success btn-edit-data" data-target="#myModal" data-toggle="modal">
                                                     <i class="material-icons">edit</i>
                                                 </button>
-                                                <button type="button" rel="tooltip" class="btn btn-warning btn-add-quantity" data-target="#addQuantityModal" data-toggle="modal">
+                                                <button type="button" id="' . $MonList[$i]->get_MaMon() . '" rel="tooltip" class="btn btn-warning btn-add-quantity" data-target="#addQuantityModal" data-toggle="modal">
                                                     <i class="material-icons">add</i>
                                                 </button>
                                             </td>';
@@ -244,11 +252,13 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
             {
                 for ($i = 0; $i < count($MonList); $i++)
                 {
-                    echo "<p class='unit'>". getTenDVT($DonViTinhList, $MonList[$i]->get_MaDVT()) ."</p>";
-                    echo "<p class='description'>". $MonList[$i]->get_MoTa() ."</p>";
-                    echo "<p class='note'>". $MonList[$i]->get_GhiChu() ."</p>";
-                    echo "<p class='add-date-info'>". $MonList[$i]->get_NgayThem() ."</p>";
-                    echo "<p class='last-mod-date-info'>". $MonList[$i]->get_NgayChinhSuaLanCuoi() ."</p>";
+                    echo "<div class='hidden-info' id='". $MonList[$i]->get_MaMon() ."'>";
+                    echo "<p class='unit'>" . getTenDVT($DonViTinhList, $MonList[$i]->get_MaDVT()) ."</p>";
+                    echo "<p class='description'>" . $MonList[$i]->get_MoTa() ."</p>";
+                    echo "<p class='note'>" . $MonList[$i]->get_GhiChu() ."</p>";
+                    echo "<p class='add-date-info'>" . $MonList[$i]->get_NgayThem() ."</p>";
+                    echo "<p class='last-mod-date-info'>" . $MonList[$i]->get_NgayChinhSuaLanCuoi() ."</p>";
+                    echo "</div>";
                 }
             }
             ?>
@@ -264,6 +274,20 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                     echo "<p class='m-id-ct'>". $AllCTMon[$i]->get_MaMon() ."</p>";
                     echo "<p class='size-ct'>". $AllCTMon[$i]->get_TenKichThuoc() ."</p>";
                     echo "<p class='price-ct'>". $AllCTMon[$i]->get_DonGia() ."</p>";
+                }
+            }
+            ?>
+        </div>
+
+        <!-- hidden topping -->
+        <div class="d-none d-sm-none d-md-none d-lg-none d-xl-none">
+            <?php
+            if ($AllTopping && count($AllTopping) > 0)
+            {
+                for ($i = 0; $i < count($AllTopping); $i++)
+                {
+                    echo "<p class='m-id-topping'>". $AllTopping[$i]->get_MaMon() ."</p>";
+                    echo "<p class='topping-name'>". $AllTopping[$i]->get_TenTopping() ."</p>";
                 }
             }
             ?>
@@ -348,6 +372,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                     </div>
                 </div>
 
+                <!-- Table size -->
                 <div class="form-group bmd-form-group">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left">Kích thước và giá: </p>
@@ -356,7 +381,6 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                 <tr role="row">
                                     <th class='text-center'><strong>Size</strong></th>
                                     <th class='text-center'><strong>Đơn giá</strong></th>
-                                    <th class='text-center'></th>
                                 </tr>
                             </thead>
 
@@ -375,6 +399,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                     </div>
                 </div>
 
+                <!-- Nút add size -->
                 <div class="form-group bmd-form-group add-size-box">
                     <div class="fields-group align-items-center">
                         <p class="input-label text-left"></p>
@@ -390,6 +415,44 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                                 Thêm size
                             </div>
                             <div id="btnRemoveAllRow" class="btn btn-danger" >
+                                <span class="material-icons">playlist_remove</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table topping -->
+                <div class="form-group bmd-form-group">
+                    <div class="fields-group align-items-center">
+                        <p class="input-label text-left">Topping: </p>
+                        <table class="table input-value" id="toppingTable">
+                            <thead>
+                                <tr role="row">
+                                    <th class='text-center'><strong>Tên topping</strong></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Nút add topping -->
+                <div class="form-group bmd-form-group add-topping-box">
+                    <div class="fields-group align-items-center">
+                        <p class="input-label text-left"></p>
+                        <div class="sections-container input-value">
+                            <div class="fields-group">
+                                <input id="topping-val" style="width: 200px;" class="form-control" type="text" placeholder="Tên topping">
+                            </div>
+                            
+                            <div id="btnAddToppingRow" class="btn btn-info">
+                                <span class="material-icons">add</span>
+                                Thêm topping
+                            </div>
+                            <div id="btnRemoveAllTRow" class="btn btn-danger" >
                                 <span class="material-icons">playlist_remove</span>
                             </div>
                         </div>
@@ -509,10 +572,10 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
 <script>
     var mon_id = "";
     var action = "";
-    var add_quantity_index = 0;
     var add_quantity = 0;
     var sizeRowArr = [];
     var priceRowArr = [];
+    var toppingRowArr = [];
     $(document).ready(function() {
         //init datatables
         $('.datatables').DataTable({
@@ -526,34 +589,77 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         $("#btnRemoveAllRow").addClass("disabledbutton");
     });
 
+    function initModalData($row) {
+        var div_index = getHiddenDivIndex();
+        $("#name-val").attr('value', $row.find('.name').text());
+        $("#img-val").attr('src', $row.find(".img").attr('src'));
+        $("#type-val").text($row.find(".type-name").html());
+        $("#unit-val").text($($(".unit").get(div_index)).text());
+        $("#description-val").val($($(".description").get(div_index)).text());
+        $("#note-val").val($($(".note").get(div_index)).text());
+        $("#add-date").text($($(".add-date-info").get(div_index)).text());
+        $("#last-mod-date").text($($(".last-mod-date-info").get(div_index)).text());
+
+        if ($row.find(".status").html() == "Sẵn sàng") {
+            $("#ckb-status").prop('checked', true);
+        } else {
+            $("#ckb-status").prop('checked', false);
+        }
+    }
+
+    function getHiddenDivIndex() {
+        for (let i = 0; i < $(".hidden-info").length; i++)
+        {
+            if ($($(".hidden-info").get(i)).attr('id') == mon_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function updateQuantityAfterAdd(new_quantity) {
+        for (let i = 0; i < $(".odd").length; i++)
+        {
+            if ($($(".odd").get(i)).attr('id') == mon_id) {
+                $($($(".odd").get(i)).find(".quantity")).text(new_quantity);
+                return;
+            }
+        }
+    }
+
+    //Nút tab loại món
+    $(".btn-item-type").on("click", function() {
+        if (checkQuyenMon()) {
+            window.location.href = "../admin/index.php?page=table&item-type";
+        } else {
+            Swal.fire(
+                'Thất bại!',
+                'Bạn không có quyền thực hiện thao tác này!',
+                'error'
+            )
+        }
+    });
+
     //Nút xem thông tin
     $(".btn-view-detail").each(function(index) {
         $(this).on("click", function(e) {
             if (checkQuyenMon()) {
+                var $row = $(this).closest('tr');
+                mon_id = $row.attr('id');
+                initModalData($row);
+
                 $("#img-val").show();
                 $(".img-picker").hide();
                 $(".add-size-box").hide();
-
-                mon_id = $($(".m-id").get(index)).text();
-                $("#name-val").val($($(".name").get(index)).text());
-                $("#img-val").attr('src', $($(".img").get(index)).attr('src'));
-                $("#type-val").text($($(".type-name").get(index)).text());
-                $("#unit-val").text($($(".unit").get(index)).text());
-                $("#description-val").val($($(".description").get(index)).text());
-                $("#note-val").val($($(".note").get(index)).text());
-                $("#add-date").text($($(".add-date-info").get(index)).text());
-                $("#last-mod-date").text($($(".last-mod-date-info").get(index)).text());
+                $(".add-topping-box").hide();
                 $(".sts-div").show();
-                if ($($(".status").get(index)).text() == "Sẵn sàng") {
-                    $("#ckb-status").prop('checked', true);
-                } else {
-                    $("#ckb-status").prop('checked', false);
-                }
                 $(".add-date-div").show();
                 $(".last-mod-date-div").show();
 
                 $("#sizeTable > tbody").empty();
+                $("#toppingTable > tbody").empty();
                 initSizeAndPriceTable();
+                initToppingTable();
 
                 $(".modal-title").text("Thông tin món");
                 $("#saveData").hide();
@@ -572,33 +678,27 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
     $(".btn-edit-data").each(function(index) {
         $(this).on("click", function(e) {
             if (checkQuyenMon()) {
+                var $row = $(this).closest('tr');
+                mon_id = $row.attr('id');
+                initModalData($row);
+
                 $("#img-val").hide();
                 $(".img-picker").show();
                 $(".add-size-box").show();
+                $(".add-topping-box").show();
                 $("#btnRemoveAllRow").removeClass("disabledbutton");
-
-                mon_id = $($(".m-id").get(index)).text();
-                $("#name-val").val($($(".name").get(index)).text());
-                $("#img-val").attr('src', $($(".img").get(index)).attr('src'));
-                $("#type-val").text($($(".type-name").get(index)).text());
-                $("#unit-val").text($($(".unit").get(index)).text());
-                $("#description-val").val($($(".description").get(index)).text());
-                $("#note-val").val($($(".note").get(index)).text());
-                $("#add-date").text($($(".add-date-info").get(index)).text());
-                $("#last-mod-date").text($($(".last-mod-date-info").get(index)).text());
+                $("#btnRemoveAllTRow").removeClass("disabledbutton");
                 $(".sts-div").show();
-                if ($($(".status").get(index)).text() == "Sẵn sàng") {
-                    $("#ckb-status").prop('checked', true);
-                } else {
-                    $("#ckb-status").prop('checked', false);
-                }
                 $(".add-date-div").show();
                 $(".last-mod-date-div").show();
 
                 sizeRowArr = [];
                 priceRowArr = [];
+                toppingRowArr = [];
                 $("#sizeTable > tbody").empty();
+                $("#toppingTable > tbody").empty();
                 initSizeAndPriceTable();
+                initToppingTable();
 
                 action = "edit";
                 $(".modal-title").text("Chỉnh sửa thông tin món");
@@ -621,6 +721,8 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 $("#img-val").hide();
                 $(".img-picker").show();
                 $(".add-size-box").show();
+                $(".add-size-box").show();
+                $(".add-topping-box").show();
 
                 $("#name-val").val("");
                 $("#type-val").text("Chọn loại món");
@@ -631,6 +733,8 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 $(".add-date-div").hide();
                 $(".last-mod-date-div").hide();
                 $(".sizeRow").remove();
+                $("#btnRemoveAllRow").addClass("disabledbutton");
+                $("#btnRemoveAllTRow").addClass("disabledbutton");
 
                 action = "add";
                 $(".modal-title").text("Thêm món");
@@ -653,10 +757,12 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
     $(".btn-add-quantity").each(function(index) {
         $(this).on("click", function(e) {
             if (checkQuyenMon()) {
-                $('#add-quantity-title').text("Thêm số lượng > " + $($(".name").get(index)).text());
+                var $row = $(this).closest('tr');
+                mon_id = $row.attr('id');
+
+                $('#add-quantity-title').text("Thêm số lượng > " + $row.find('.name').text());
                 $('#quantity-val').val('');
-                mon_id = $($(".m-id").get(index)).text();
-                add_quantity_index = index;
+                old_quantity = $row.find('.quantity').text();
             } else {
                 e.stopPropagation();
                 Swal.fire(
@@ -727,6 +833,25 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         }
     }
 
+    //Hàm khởi tạo bảng topping
+    function initToppingTable() {
+        var arrTopping = [];
+        for (var i = 0; i < $(".m-id-topping").length; i++) {
+            if ($($(".m-id-topping").get(i)).text() == mon_id) {
+                arrTopping.push($($(".topping-name").get(i)).text());
+
+                toppingRowArr.push($($(".topping-name").get(i)).text());
+            }
+        }
+
+        for (var i = 0; i < arrTopping.length; i++) {
+            var crit = "<tr class='toppingRow'>" +
+                "<td class='text-center'>" + arrTopping[i] + "</td></tr>";
+
+            $("#toppingTable > tbody:last-child").append(crit);
+        }
+    }
+
     //Hàm check input lúc add row size và giá
     function checkSizeRowInput() {
         var size = $("#size-val").val();
@@ -744,7 +869,18 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         return true;
     }
 
-    //Hàm add row vào modal
+    //Hàm check input lúc add row topping
+    function checkToppingRowInput() {
+        var size = $("#topping-val").val();
+
+        if (size == "") {
+            return false;
+        }
+
+        return true;
+    }
+
+    //Hàm add row size vào modal
     function addRowToSizeTable(size, price) {
         var crit = "<tr class='sizeRow'>" +
                 "<td class='text-center'>" + size + "</td>" +
@@ -758,7 +894,20 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         }
     }
 
-    //Event add row button click
+    //Hàm add row topping vào modal
+    function addRowToToppingTable(topping) {
+        var crit = "<tr class='toppingRow'>" +
+                "<td class='text-center'>" + topping + "</td>" +
+                "</tr>";
+
+        $("#toppingTable > tbody:last-child").append(crit);
+
+        if (toppingRowArr.length == 1) {
+            $("#btnRemoveAllTRow").removeClass("disabledbutton");
+        }
+    }
+
+    //Event add size row button click
     $("#btnAddSizeRow").on("click", function() {
         if (checkSizeRowInput()) {
             sizeRowArr.push($("#size-val").val());
@@ -778,7 +927,25 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         }
     });
 
-    //Nút xóa row trong modal lúc add
+    //Event add topping row button click
+    $("#btnAddToppingRow").on("click", function() {
+        if (checkToppingRowInput()) {
+            toppingRowArr.push($("#topping-val").val());
+
+            addRowToToppingTable($("#topping-val").val());
+
+            $("#topping-val").val("");
+        }
+        else {
+            Swal.fire(
+                'Cảnh báo!',
+                'Vui lòng kiểm tra lại dữ liệu nhập!',
+                'warning'
+            )
+        }
+    });
+
+    //Nút xóa size row trong modal lúc add
     $("#btnRemoveAllRow").on("click", function() {
         Swal.fire({
             title: 'Xóa size - giá',
@@ -799,6 +966,26 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         })
     });
 
+    //Nút xóa topping row trong modal lúc add
+    $("#btnRemoveAllTRow").on("click", function() {
+        Swal.fire({
+            title: 'Xóa topping',
+            text: 'Thao tác này sẽ xóa tất cả hàng. Bạn vẫn muốn tiếp tục?',
+            showDenyButton: true,
+            confirmButtonText: 'Hủy',
+            denyButtonText: `Xóa`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                
+            } else if (result.isDenied) {
+                $("#toppingTable .toppingRow").remove();
+                toppingRowArr = []; 
+                $("#btnRemoveAllTRow").addClass("disabledbutton");
+            }
+        })
+    });
+
     //Add row size on enter
     $('#price-val').keypress(function (e) {
         var key = e.which;
@@ -809,14 +996,15 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
         }
     });
 
-    //Hàm thêm phẩy cho tiền
-    $.fn.digits = function() { 
-        return this.each(function(){ 
-            $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
-        });
-    }
-
-    $(".money").digits();
+    //Add row topping on enter
+    $('#topping-val').keypress(function (e) {
+        var key = e.which;
+        if(key == 13)  // the enter key code
+        {
+            $("#btnAddToppingRow").click();
+            $("#topping-val").focus();
+        }
+    });
 
     function checkQuyenMon() {
         if ($("#quyen").text()==="mon1") {
@@ -870,6 +1058,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                 }
                 formData.append('size', JSON.stringify(sizeRowArr));
                 formData.append('price', JSON.stringify(priceRowArr));
+                formData.append('topping', JSON.stringify(toppingRowArr));
 
                 // Ajax config
                 $.ajax({
@@ -928,7 +1117,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
             if (checkAddQuantityInput()) {
                 var $this 		    = $(this);
                 var $caption        = $this.html();
-                add_quantity = parseInt($("#quantity-val").val()) + parseInt($($(".quantity").get(add_quantity_index)).text());
+                add_quantity = parseInt($("#quantity-val").val()) + parseInt(old_quantity);
 
                 // Ajax config
                 $.ajax({
@@ -955,7 +1144,7 @@ $AllCTMon = $ModelCTMon->getAllCTMon();
                             ).then((result) => {
                                 if (result.isConfirmed) {
                                     $('#addQuantityModal').modal('hide');
-                                    $($(".quantity").get(add_quantity_index)).text(add_quantity.toString());
+                                    updateQuantityAfterAdd(add_quantity.toString());
                                 }
                             })
                         }

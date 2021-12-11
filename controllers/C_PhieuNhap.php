@@ -89,60 +89,69 @@ class C_PhieuNhap
                     }
                 }
             }
-            else
+            elseif ($_POST['action'] == "edit" && isset($_POST['staff_name']) && isset($_POST['shipper'])
+                && isset($_POST['supplier_name']) && isset($_POST['pay_amount'])
+                && isset($_POST['debt_amount']) && isset($_POST['note']) && isset($_POST['pn_id']))
             {
-                if ($_POST['action'] == "edit" && isset($_POST['staff_name']) && isset($_POST['shipper'])
-                    && isset($_POST['supplier_name']) && isset($_POST['pay_amount'])
-                    && isset($_POST['debt_amount']) && isset($_POST['note']) && isset($_POST['pn_id']))
+                include '../models/M_NhaCungCap.php';
+                include '../models/M_NhanVien.php';
+
+                $ModelNhanVien = new Model_NhanVien();
+                $NhanVienList = $ModelNhanVien->get_AllNhanVien();
+                function getMaNV($NhanVienList, $tenNV)
                 {
-                    include '../models/M_NhaCungCap.php';
-                    include '../models/M_NhanVien.php';
-
-                    $ModelNhanVien = new Model_NhanVien();
-                    $NhanVienList = $ModelNhanVien->get_AllNhanVien();
-                    function getMaNV($NhanVienList, $tenNV)
-                    {
-                        for ($i = 0; $i < count($NhanVienList); $i++) {
-                            if ($NhanVienList[$i]->get_Ten() == $tenNV) {
-                                return $NhanVienList[$i]->get_MaNV();
-                            }
+                    for ($i = 0; $i < count($NhanVienList); $i++) {
+                        if ($NhanVienList[$i]->get_Ten() == $tenNV) {
+                            return $NhanVienList[$i]->get_MaNV();
                         }
                     }
+                }
 
-                    $ModelNhaCungCap = new Model_NhaCungCap();
-                    $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
-                    function getMaNCC($NhaCungCapList, $tenNCC)
-                    {
-                        for ($i = 0; $i < count($NhaCungCapList); $i++) {
-                            if ($NhaCungCapList[$i]->get_TenNCC() == $tenNCC) {
-                                return $NhaCungCapList[$i]->get_MaNCC();
-                            }
+                $ModelNhaCungCap = new Model_NhaCungCap();
+                $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
+                function getMaNCC($NhaCungCapList, $tenNCC)
+                {
+                    for ($i = 0; $i < count($NhaCungCapList); $i++) {
+                        if ($NhaCungCapList[$i]->get_TenNCC() == $tenNCC) {
+                            return $NhaCungCapList[$i]->get_MaNCC();
                         }
                     }
+                }
 
 
-                    $data = array(
-                        "MaPN"=>$_POST['pn_id'],
-                        "MaNVNhap"=>getMaNV($NhanVienList, $_POST['staff_name']),
-                        "MaNCC"=>getMaNCC($NhaCungCapList, $_POST['supplier_name']),
-                        "NgayLap"=>"",
-                        "TongTien"=>0,
-                        "TenNguoiGiao"=>$_POST['shipper'],
-                        "TienThanhToan"=>$_POST['pay_amount'],
-                        "TienNo"=>$_POST['debt_amount'],
-                        "GhiChu"=>$_POST['note']
-                    );
-                    
-                    $PN = new PhieuNhap($data);
-                    if ($ModelPhieuNhap->update_PhieuNhap($PN) == 1)
-                    {
-                        $arr = array('success'=>'1');
-                        echo json_encode($arr);
-                    }
-                    else
-                    {
-                        echo json_encode(array('success' =>'0'));
-                    }
+                $data = array(
+                    "MaPN"=>$_POST['pn_id'],
+                    "MaNVNhap"=>getMaNV($NhanVienList, $_POST['staff_name']),
+                    "MaNCC"=>getMaNCC($NhaCungCapList, $_POST['supplier_name']),
+                    "NgayLap"=>"",
+                    "TongTien"=>0,
+                    "TenNguoiGiao"=>$_POST['shipper'],
+                    "TienThanhToan"=>$_POST['pay_amount'],
+                    "TienNo"=>$_POST['debt_amount'],
+                    "GhiChu"=>$_POST['note']
+                );
+                
+                $PN = new PhieuNhap($data);
+                if ($ModelPhieuNhap->update_PhieuNhap($PN) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
+                }
+            }
+            elseif ($_POST['action'] == "delete")
+            {
+                if ($ModelPhieuNhap->delete_PhieuNhap($_POST['pn_id']) == 1)
+                {
+                    $arr = array('success'=>'1');
+                    echo json_encode($arr);
+                }
+                else
+                {
+                    echo json_encode(array('success' =>'0'));
                 }
             }
         }

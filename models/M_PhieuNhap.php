@@ -71,11 +71,28 @@ class Model_PhieuNhap
         }
     }
 
+    public function delete_PhieuNhap($id)
+    {
+        include '../configs/config.php';
+        $CTPN = new Model_CT_PhieuNhap();
+        $CTPNList = $CTPN->get_CT_PhieuNhapDetails($id);
+
+        if (!$CTPNList || count($CTPNList) < 1) {
+            $sql = "DELETE FROM phieunhap WHERE MaPN='" . $id . "'";
+            $result = $conn->query($sql);
+            if ($result)
+            {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
     public function generate_MaPhieuNhap()
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("phieunhap", "pn");
+        return $general_cmd->getIDNum("phieunhap", "PN", "MaPN");
     }
 }
 
@@ -114,6 +131,7 @@ class Model_CT_PhieuNhap
             
             return $CTPhieuNhapArr;
         }
+        return $CTPhieuNhapArr;
     }
 
     public function add_CT_PhieuNhap($pn)

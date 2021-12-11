@@ -178,7 +178,7 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                         <table id="datatablesType" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
                             <thead>
                                 <tr role="row">
-                                    <th class='text-center text-info'>STT</th>
+                                    <!-- <th class='text-center text-info'>STT</th> -->
                                     <th class='text-center text-info'>Mã NVL</th>
                                     <th class='text-center text-info'>Tên nguyên vật liệu</th>
                                     <th class='text-center text-info'>Đơn vị tính</th>
@@ -188,7 +188,7 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                             </thead>
                             <tfoot>
                                 <tr>
-                                <th class='text-center'>STT</th>
+                                    <!-- <th class='text-center'>STT</th> -->
                                     <th class='text-center'>Mã NVL</th>
                                     <th class='text-center'>Tên nguyên vật liệu</th>
                                     <th class='text-center'>Đơn vị tính</th>
@@ -204,17 +204,17 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                                         for ($i = 0; $i < count($CTPhieuXuat); $i++)
                                         {
                                             $NguyenVatLieu = $ModelNguyenVatLieu->get_NguyenVatLieuDetails($CTPhieuXuat[$i]->get_MaNVL());
-                                            echo "<tr role='row' class='odd'>";
-                                            echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                                            echo "<tr role='row' class='odd' id='" . $CTPhieuXuat[$i]->get_MaNVL() . "'>";
+                                            // echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center mater-id'>" . $CTPhieuXuat[$i]->get_MaNVL() . "</td>";
                                             echo "<td class='text-center mater-name'>" . $NguyenVatLieu->get_TenNVL() . "</td>";
                                             echo "<td class='text-center'>" . getTenDVT($DonViTinhList, $NguyenVatLieu->get_MaDVT()) . "</td>";
                                             echo "<td class='text-center mater-quantity'>" . $CTPhieuXuat[$i]->get_SoLuong() . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $CTPhieuXuat[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-danger btn-delete" data-target="#myDeleteModal" data-toggle="modal" data-placement="top" title="Xóa">
+                                                    <button type="button" id="' . $CTPhieuXuat[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-danger btn-delete" data-target="#myDeleteModal" data-toggle="modal" data-placement="top" title="Xóa">
                                                         <i class="material-icons">close</i>
                                                     </button>
                                                 </td>';
@@ -355,7 +355,6 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
             }
         });
 
-
         // add phiếu xuất
         $(".btn-add").each(function(index) {
             $(this).on("click", function() {
@@ -372,38 +371,62 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
         // edit phiếu xuất
         $(".btn-edit").each(function(index) {
             $(this).on("click", function() {
-                $("#mater-val").text($($(".mater-name").get(index)).text());
+                var $row = $(this).closest('tr');
+                action_type = "edit";
+                obj_id = $row.attr('id');
+
+                $("#mater-val").text($row.find(".mater-name").text());
                 getMaterStockQuantity();
-                $("#quantity-val").val($($(".mater-quantity").get(index)).text());
-                $("#unitprice-val").val($($(".mater-unitprice").get(index)).text());
+                $("#quantity-val").val($row.find(".mater-quantity").text());
+                $("#unitprice-val").val($row.find(".mater-unitprice").text());
 
                 $(".modal-title").text("Chỉnh sửa nguyên vật liệu");
-                action_type = "edit";
-                obj_id = $($(".mater-id").get(index)).text();
-                console.log(obj_id);
             });
         })
 
         // xoá nvl
         $(".btn-delete").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 $(".modal-title").text("Xóa nguyên vật liệu");
 
                 action_type = "delete";
-                obj_id = $($(".mater-id").get(index)).text();
-                quantity_delete = $($(".mater-quantity").get(index)).text();
-                console.log(obj_id);
+                quantity_delete = $row.find(".mater-quantity").text();
             });
         })
 
         // dropdown nvl
         $(".mater-opt").each(function(index) {
             $(this).on("click", function() {
-                $("#mater-val").text($(this).text());
-                $("#quantity-stock").val($($(".quantity-opt").get(index)).text());
+                if (action_type != "edit") {
+                    $("#mater-val").text($(this).text());
+                    $("#quantity-stock").val($($(".quantity-opt").get(index)).text());
+                }
             });
         })
     });
+
+    function getRowIndex() {
+        for (let i = 0; i < $(".btn-edit").length; i++)
+        {
+            if ($($(".btn-edit").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function removeRow() {
+        var $row = $($(".btn-edit").get(getRowIndex())).closest('tr');
+        $row.remove();
+    }
+
+    function updateRowData() {
+        var $row = $($(".btn-edit").get(getRowIndex())).closest('tr');
+
+        $row.find('.mater-quantity').text($("#quantity-val").val());
+    }
 
     function getMaterStockQuantity() {
         $(".mater-opt").each(function(index) {
@@ -429,8 +452,6 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
     function checkValidQuantity() {
         if (parseInt($("#quantity-val").val()) > parseInt($("#quantity-stock").val()) ||
             parseInt($("#quantity-val").val()) < 1 || parseInt($("#quantity-stock").val()) == 0) {
-                console.log($("#quantity-val").val());
-                console.log($("#quantity-stock").val());
             return false;
         }
         return true;
@@ -470,7 +491,10 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type == "edit") {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
                                 }
                             })
                         }
@@ -527,18 +551,18 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                     $this.attr('disabled', true).html("Đang xử lý...");
                 },
                 success: function (response) {
-                    console.log(response);
                     var jsonData = JSON.parse(response);
 
                     if (jsonData.success == "1")
                     {
                         Swal.fire(
                             'Thành công!',
-                            'Thao tác thành công!',
+                            'Xóa thành công!',
                             'success'
                         ).then((result) => {
                             if (result.isConfirmed) {
-                                location.reload();
+                                $('#myDeleteModal').modal('hide');
+                                removeRow();
                             }
                         })
                     }

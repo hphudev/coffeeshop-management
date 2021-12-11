@@ -57,9 +57,8 @@ class Model_NguyenVatLieu
     {
         include '../configs/config.php';
         $sql = "UPDATE nguyenvatlieu SET MaLoaiNVL='" . $nvl->get_MaLoaiNVL() . "', TenNVL='" . $nvl->get_TenNVL().
-                "', SoLuongTon=" . $nvl->get_SoLuongTon() . ", MaDVT='" . $nvl->get_MaDVT() .
-                "', DonGiaNhap=" . $nvl->get_DonGiaNhap(). ", MaNCC='" . $nvl->get_MaNhaCungCap() .
-                "', MaTinhTrang='" . $nvl->get_MaTinhTrang() . "' WHERE MaNVL='" . $nvl->get_MaNVL() . "'";
+                "', MaDVT='" . $nvl->get_MaDVT() . "', MaNCC='" . $nvl->get_MaNhaCungCap() . "', SoLuongTon=" . $nvl->get_SoLuongTon().
+                ", MaTinhTrang='" . $nvl->get_MaTinhTrang() . "' WHERE MaNVL='" . $nvl->get_MaNVL() . "'";
         $result = $conn->query($sql);
         if ($result) {
             return 1;
@@ -69,10 +68,41 @@ class Model_NguyenVatLieu
         }
     }
 
+    public function delete_NguyenVatLieu($MaNVL)
+    {
+        include '../configs/config.php';
+        $sql = "SELECT * FROM ct_phieunhap WHERE MaNVL='" . $MaNVL . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows == 0)
+        {
+            $sql = "SELECT * FROM ct_phieuxuat WHERE MaNVL='" . $MaNVL . "'";
+            $result = $conn->query($sql);
+            if ($result->num_rows == 0)
+            {
+                $sql = "SELECT * FROM ct_phieukiem WHERE MaNVL='" . $MaNVL . "'";
+                $result = $conn->query($sql);
+                if ($result->num_rows == 0)
+                {
+                    $sql = "DELETE FROM nguyenvatlieu WHERE MaNVL='" . $MaNVL . "'";
+                    $result = $conn->query($sql);
+                    if ($result)
+                    {
+                        return 1;
+                    }
+                    return 0;
+                }
+                return 0;
+            }
+            return 0;
+        }
+        return 0;
+    }
+
     public function generate_MaNVL()
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("nguyenvatlieu", "nvl");
+        return $general_cmd->getIDNum("nguyenvatlieu", "NVL", "MaNVL");
+        //return "NVL10";
     }
 }

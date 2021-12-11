@@ -2,8 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-// $dbname = "coffeemanagement";
-$dbname = "mydb";
+$dbname = "coffeemanagement";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
