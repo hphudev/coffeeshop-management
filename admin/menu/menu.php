@@ -694,8 +694,11 @@ $AllTopping = $ModelTopping->getAllTopping();
 
                 sizeRowArr = [];
                 priceRowArr = [];
+                toppingRowArr = [];
                 $("#sizeTable > tbody").empty();
+                $("#toppingTable > tbody").empty();
                 initSizeAndPriceTable();
+                initToppingTable();
 
                 action = "edit";
                 $(".modal-title").text("Chỉnh sửa thông tin món");

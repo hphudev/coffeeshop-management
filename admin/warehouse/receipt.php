@@ -214,6 +214,9 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                                     <button type="button" id="' . $PhieuNhapList[$i]->get_MaPN() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
+                                                    <button type="button" id="' . $PhieuNhapList[$i]->get_MaPN() . '" rel="tooltip" class="btn btn-danger btn-delete">
+                                                        <i class="material-icons">close</i>
+                                                    </button>
                                                 </td>';
                                             echo "</tr>";
                                         }
@@ -433,6 +436,70 @@ function getTenNCC($NhaCungCapList, $maNCC)
                 $(".modal-title").text("Chỉnh sửa phiếu nhập");
             });
         })
+
+        //Nút xóa phiếu nhập
+        $(".btn-delete").each(function(index) {
+            $(this).on("click", function() {
+                Swal.fire({
+                    title: 'Xóa phiếu nhập',
+                    text: 'Thao tác này sẽ xóa phiếu nhập và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                    showDenyButton: true,
+                    confirmButtonText: 'Hủy',
+                    denyButtonText: `Xóa`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        
+                    } else if (result.isDenied) {
+                        var $row = $(this).closest('tr');
+                        obj_id = $row.attr('id');
+                        action_type = "delete";
+                        
+                        // Ajax config
+                        $.ajax({
+                            type: "POST",
+                            url: '../controllers/C_PhieuNhap.php',
+                            data: {
+                                action: action_type,
+                                pn_id: obj_id,
+                            },
+                            beforeSend: function () {
+                                
+                            },
+                            success: function (response) {
+                                var jsonData = JSON.parse(response);
+
+                                if (jsonData.success == "1")
+                                {
+                                    Swal.fire(
+                                        'Thành công!',
+                                        'Đã xóa phiếu nhập',
+                                        'success'
+                                    ).then((result) => {
+                                        if (result.isConfirmed) {
+                                            // location.reload();
+                                            $row.remove();
+                                        }
+                                    })
+                                }
+                                else {
+                                    Swal.fire(
+                                        'Thất bại!',
+                                        'Phiếu nhập không rỗng. Vui lòng kiểm tra lại!',
+                                        'error'
+                                    )
+                                }
+                            },
+                            complete: function() {
+                            
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                alert(errorThrown);
+                            }
+                        });
+                    }
+                })
+            })
+        });
 
         //Init dropdown in modal
         // dropdown nhân viên
