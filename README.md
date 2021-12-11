@@ -4,7 +4,7 @@
 ## [ 👉 Phân công nhiệm vụ (cập nhật thường xuyên)](https://docs.google.com/spreadsheets/d/1psbGGun83JsakSIM-gpP8nIIP9mZv5U0/edit?fbclid=IwAR1gj6W3gNi1wb4QwRkokk77b7XSIgp_PLL6XxfC5mASWNKXgsinehr9vF0#gid=808072217)
 ## [ 👉 Bảng vẽ các diagram](https://drive.google.com/drive/folders/1iC2xoFvRN-WQ5mUu8ZjJn1vEpBAjeAEL?usp=sharing)
 ## [ 👉 Bảng kết quả nghiệp vụ, biểu mẫu và use case](https://drive.google.com/drive/folders/13W19SFg6E-EZxEFMayFxOCbp06rLV28g?usp=sharing)
-## [ 👉 Tài liệu báo cáo](https://docs.google.com/document/d/1QTrvbMOdk5ftfpDdrcSP8Urjufd4_lE7/edit?usp=sharing&ouid=108747143347335012650&rtpof=true&sd=true)
+## [ 👉 Tài liệu báo cáo](https://docs.google.com/document/d/1Zm3Y6vFKfrOJTqPbw0pXklynqrOWD1U9/edit?usp=sharing&ouid=104039758420409603433&rtpof=true&sd=true)
 ## Giới thiệu
 Hệ thống quản lý quán cà phê của chúng tôi sẽ giúp bạn giải quyết bài toán quản lý kinh doanh một cách hiệu quả.
 Với chiến lược đáp ứng thực tế cho người dùng, các tính năng của hệ thống sẽ thể hiện rõ ràng các vai trò mà nó vốn có. Ngoài ra, để tránh tình trạng khó sử dụng, đội ngũ thiết kế của chúng tôi đã áp dụng các phương pháp bố trí, màu sắc một cách phù hợp nhất với khách hàng. Mục tiêu mà chúng tôi là thích ứng với bất kỳ loại hình kinh doanh quán cà phê nào. Hướng mà chúng tôi xây dựng chính là chiến lược cho các chuỗi kinh doanh lớn. Tuy nhiên, nếu loại hình kinh doanh của bạn là vừa và nhỏ thì chúng tôi vẫn đáp ứng được.
