@@ -47,5 +47,4 @@
                 echo json_encode(General_CMD::checkRight($data->id));
             }
         }
-    }    
-?> 
+    }

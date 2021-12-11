@@ -283,7 +283,7 @@
 
 </div>
 
-<script>
+<script type="text/javascript">
     $(document).ready(function() {
         $("#thanhtoanModel").modal('show')
         var items = $(".predict-money-container")
@@ -368,6 +368,10 @@
             pay_v = total_v - discount_v;
             pay.html(toMoney(pay_v))
             calculateExcess()
+            if (discount_v > pay_v) {
+                excess_v = 0;
+                excess.html(toMoney(excess_v))
+            }
         }
 
         function checkPromotion(promotionCode) {
@@ -469,6 +473,7 @@
                     // Swal.fire({
                     //     title: response,
                     // })
+                    updateOrderState($('.madm').attr('id'))
                     sessionStorage.removeItem('bill');
                     $('#section-to-print').html(response)
                     window.print()
@@ -479,6 +484,40 @@
                     alert(errorThrown);
                 }
             })
+        }
+
+        function updateOrderState(id) {
+            let func = {};
+            func.name = 'updateStateOrder'
+            func.id = id
+            func.state = "da thanh toan"
+            $.ajax({
+                type: "POST",
+                url: "/coffeeshopmanagement/models/M_Blender.php",
+                data: {
+                    func: JSON.stringify(func)
+                },
+                success: function(response) {
+                    // if (response == "1") {
+                    //     Swal.fire(
+                    //         'Thành công',
+                    //         'Khách hàng đã thanh toán thành công',
+                    //         'success'
+                    //     )
+                    // } else {
+                    //     Swal.fire(
+                    //         'Thất bại',
+                    //         'Thanh toán tất ba',
+                    //         'error'
+                    //     )
+                    // }
+                },
+                complete: function() {},
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                }
+            })
+
         }
 
         $(".btn-default").click(function() {
@@ -536,7 +575,7 @@
         })
 
         $('#cancelPay').click(function() {
-
+            // 
         })
     })
 </script>

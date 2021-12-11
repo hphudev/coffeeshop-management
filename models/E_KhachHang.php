@@ -26,7 +26,6 @@ class KhachHang
 
         $this->LoaiTV = new LoaiTV();
     }
-
     function clone($row)
     {
         $this->MaKH = $row['MaKH'];
@@ -40,7 +39,6 @@ class KhachHang
         $ModelKhachHang = new Model_KhachHang();
         $this->LoaiTV = $ModelKhachHang->get_LoaiTV($row['MaLoaiTV']);
     }
-
     function set_MaKH($MaKH)
     {
         $this->MaKH = $MaKH;

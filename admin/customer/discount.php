@@ -25,6 +25,7 @@
                                     <th class='text-center text-info'>Thời gian bắt đầu</th>
                                     <th class='text-center text-info'>Thời gian kết thúc</th>
                                     <th class='text-center text-info'>Số lượng phát hành</th>
+                                    <th class='text-center text-info'>Số lượng còn lại</th>
                                     <th class='text-center text-info'>Phần trăm khuyến mãi</th>
                                     <th class='text-center text-info'>Trị giá tối đa</th>
                                     <th class='text-center text-info'>Hóa đơn áp dụng tối thiểu</th>
@@ -38,6 +39,7 @@
                                     <th class='text-center text-info'>Thời gian bắt đầu</th>
                                     <th class='text-center text-info'>Thời gian kết thúc</th>
                                     <th class='text-center text-info'>Số lượng phát hành</th>
+                                    <th class='text-center text-info'>Số lượng còn lại</th>
                                     <th class='text-center text-info'>Phần trăm khuyến mãi</th>
                                     <th class='text-center text-info'>Trị giá tối đa</th>
                                     <th class='text-center text-info'>Hóa đơn áp dụng tối thiểu</th>
@@ -53,6 +55,7 @@
                                     echo "<td class='text-center ngaybd' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianBD()) . "</td>";
                                     echo "<td class='text-center ngaykt' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianKT()) . "</td>";
                                     echo "<td class='text-center soluong' >" . $DSKhuyenMai[$i]->get_SoLuong() . "</td>";
+                                    echo "<td class='text-center soluongconlai' >" . $DSKhuyenMai[$i]->get_SoLuongConLai() . "</td>";
                                     echo "<td class='text-center phantram' >" . $DSKhuyenMai[$i]->get_PhanTramKM() . "</td>";
                                     echo "<td class='text-center toida' >" . $DSKhuyenMai[$i]->get_TienKMToiDa() . "</td>";
                                     echo "<td class='text-center toithieu' >" . $DSKhuyenMai[$i]->get_TienHDToiThieu() . "</td>";
@@ -130,15 +133,19 @@
                                     <input id="inputAmount" type="number" class="form-control personal_info" value="">
                                 </div>
                                 <div class=" col-md-6">
+                                    <label class="bmd-label-floating">Số lượng còn lại</label>
+                                    <input id="inputAmountLeft" type="number" class="form-control personal_info" value="">
+                                </div>
+                                <div class=" col-md-6">
                                     <label class="bmd-label-floating">Phần trăm khuyến mãi</label>
                                     <input id="inputPercent" type="number" class="form-control personal_info" value="">
                                 </div>
                                 <div class=" col-md-6">
-                                    <label class="bmd-label-floating">Trị giá tối đa</label>
+                                    <label class="bmd-label-floating">Trị giá tối đa (VNĐ)</label>
                                     <input id="inputMaximum" type="number" class="form-control personal_info" value="">
                                 </div>
                                 <div class=" col-md-6">
-                                    <label class="bmd-label-floating">Hóa đơn áp dụng</label>
+                                    <label class="bmd-label-floating">Hóa đơn áp dụng (VNĐ)</label>
                                     <input id="inputMinimum" type="number" class="form-control personal_info" value="">
                                 </div>
                             </div>
@@ -247,6 +254,7 @@
             $('#inputNgayBD').attr('value', $row.find('.ngaybd').html())
             $('#inputNgayKT').attr('value', $row.find('.ngaykt').html())
             $('#inputAmount').attr('value', $row.find('.soluong').html())
+            $('#inputAmountLeft').attr('value', $row.find('.soluongconlai').html())
             $('#inputPercent').attr('value', $row.find('.phantram').html())
             $('#inputMaximum').attr('value', $row.find('.toida').html())
             $('#inputMinimum').attr('value', $row.find('.toithieu').html())
@@ -262,6 +270,7 @@
             $('#inputNgayBD').attr('value', today)
             $('#inputNgayKT').attr('value', today)
             $('#inputAmount').attr('value', '')
+            $('#inputAmountLeft').attr('value', '')
             $('#inputPercent').attr('value', '')
             $('#inputMaximum').attr('value', '')
             $('#inputMinimum').attr('value', '')
@@ -279,6 +288,7 @@
                     ngaybd: $('#inputNgayBD').val(),
                     ngaykt: $('#inputNgayKT').val(),
                     soluong: $('#inputAmount').val(),
+                    soluongconlai: $('#inputAmountLeft').val(),
                     tyle: $('#inputPercent').val(),
                     toida: $('#inputMaximum').val(),
                     toithieu: $('#inputMinimum').val()
@@ -328,6 +338,7 @@
                     ngaybd: $('#inputNgayBD').val(),
                     ngaykt: $('#inputNgayKT').val(),
                     soluong: $('#inputAmount').val(),
+                    soluongconlai: $('#inputAmount').val(),
                     tyle: $('#inputPercent').val(),
                     toida: $('#inputMaximum').val(),
                     toithieu: $('#inputMinimum').val()
@@ -383,6 +394,8 @@
             return result;
         }
 
+
+
         function checkPoint() {
             var point = $('#khPoint').val()
             var giatri = $('#inputKMValue').val() / 1000
@@ -403,7 +416,125 @@
             }
         }
 
-        function checkNgayBT() {}
+        function checkInfomation() {
+            if (!checkName()) {
+                return false
+            } else if (!checkAmount()) {
+                return false
+            } else if (!checkNgayBD()) {
+                return false
+            } else if (!checkNgayKT()) {
+                return false
+            } else if (!checkValue()) {
+                return false
+            }
+            return true;
+        }
+
+        function checkName() {
+            if ($('#inputCode').val() == "" ||
+                $('#inputName').val() == "") {
+                Swal.fire(
+                    'Thất bại!',
+                    'Vui lòng nhập đủ thông tin!',
+                    'error'
+                )
+                return false;
+            }
+        }
+
+        function checkNgayBD() {
+            var ngaybd = new Date($('#inputNgayBD').val())
+            alert(ngaybd)
+
+            if (ngaybd < new Date()) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Ngày bắt đầu phải sau ngày hiện tại!',
+                    'error'
+                )
+                return false;
+            }
+        }
+
+        function checkNgayKT() {
+            var ngaybd = new Date($('#inputNgayBD').val())
+            var ngaykt = new Date($('#inputNgayKT').val())
+
+            if (ngaykt < ngaybd) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Ngày kết thúc phải sau ngày bắt đầu!',
+                    'error'
+                )
+                return false;
+            }
+        }
+
+        function checkAmount() {
+            var amount = $('#inputAmount').val()
+            var amount_left = $('#inputAmountLeft').val()
+
+            if (amount == "" || amount_left == "") {
+                Swal.fire(
+                    'Thất bại!',
+                    'Vui lòng nhập đủ thông tin!',
+                    'error'
+                )
+            }
+
+            if (amount < 0 || amount_left < 0) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Số lượng không được là số âm!',
+                    'error'
+                )
+                return false
+            }
+
+            if (amount < amount_left) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Số lượng còn lại không được lớn hơn số lượng phát hành!',
+                    'error'
+                )
+                return false
+            }
+        }
+
+        function checkValue() {
+            var percent = $('#inputPercent').val()
+            var max_value = $('#inputMaximum').val()
+            var min_value = $('#inputMinimum').val()
+
+            if (percent == "" || max_value == "" || min_value == "") {
+                Swal.fire(
+                    'Thất bại!',
+                    'Vui lòng nhập đủ thông tin!',
+                    'error'
+                )
+                return false
+            }
+
+            if (percent < 0 || max_value < 0 || min_value < 0) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Giá trị không được là số âm!',
+                    'error'
+                )
+                return false
+            }
+
+
+            if (percent < 0 || percent > 100) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Giá trị phần trăm phải từ 0 đến 100!',
+                    'error'
+                )
+                return false
+            }
+        }
 
         function createKM(point) {
             var date = new Date()
@@ -507,34 +638,6 @@
 
         }
 
-        function checkPhanQuyen(PhanQuyen, Callback) {
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
-                data: {
-                    phanquyen: PhanQuyen,
-                },
-                beforeSend: function() {
-
-                },
-                success: function(response) {
-                    if (response == "true") {
-                        Callback()
-                    } else {
-                        Swal.fire(
-                            "Thất bại",
-                            "Bạn không có quyền thực hiện chức năng này!",
-                            "warning"
-                        )
-                    }
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
-        }
-
         $('#btnFindKHInfo').click(function() {
             if ($('#inputSDTKH').val() == "") {
                 Swal.fire(
@@ -586,14 +689,14 @@
         })
 
         $('#btnAddKM').click(function() {
-            checkPhanQuyen('khachhang3', function() {
+            checkPhanQuyen('kh5', function() {
                 modal.modal('show')
                 clearModalData()
             })
         })
 
         $('#btnExchangeKM').click(function() {
-            checkPhanQuyen('khachhang4', function() {
+            checkPhanQuyen('kh5', function() {
                 modal2.modal('show')
                 clearModalData()
             })
@@ -601,7 +704,7 @@
 
         $('.btnEditKM').click(function() {
             var $row = $(this).closest('tr')
-            checkPhanQuyen('khachhang3', function() {
+            checkPhanQuyen('kh5', function() {
                 $("#btnConfirm").addClass('view')
                 modal.modal('show')
                 selectedKMID = $row.attr('id');
@@ -610,7 +713,7 @@
         })
 
         $('.btnDeleteKM').click(function() {
-            checkPhanQuyen('khachhang3', function() {
+            checkPhanQuyen('kh5', function() {
                 var $row = $(this).closest('tr')
                 selectedKMID = $row.attr('id');
                 Swal.fire({
@@ -632,10 +735,12 @@
         })
 
         $("#btnConfirm").click(function() {
-            if ($(this).hasClass('view')) {
-                updateKhuyenMai()
-            } else {
-                addKhuyenMai()
+            if (checkInfomation()) {
+                if ($(this).hasClass('view')) {
+                    updateKhuyenMai()
+                } else {
+                    addKhuyenMai()
+                }
             }
         })
 

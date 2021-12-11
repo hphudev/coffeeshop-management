@@ -18,7 +18,7 @@
                                 <tr role="row">
                                     <th class='text-center text-info'>Mã hạng thành viên</th>
                                     <th class='text-center text-info'>Tên hạng thành viên</th>
-                                    <th class='text-center text-info'>Điểm lên hạng</th>
+                                    <th class='text-center text-info'>Điểm tích lũy lên hạng (VNĐ)</th>
                                     <th class='text-center text-info'>Tỷ lệ tích lũy</th>
                                     <th class='text-center text-info'>Hạng thành viên</th>
                                     <th class='text-center text-info'>Thao tác</th>
@@ -28,7 +28,7 @@
                                 <tr>
                                     <th class='text-center text-info'>Mã hạng thành viên</th>
                                     <th class='text-center text-info'>Tên hạng thành viên</th>
-                                    <th class='text-center text-info'>Điểm lên hạng</th>
+                                    <th class='text-center text-info'>Điểm tích lũy lên hạng (VNĐ)</th>
                                     <th class='text-center text-info'>Tỷ lệ tích lũy</th>
                                     <th class='text-center text-info'>Hạng thành viên</th>
                                     <th class='text-center text-info'>Thao tác</th>
@@ -98,12 +98,12 @@
                                     <input id="inputRating" type="number" class="form-control personal_info" value="">
                                 </div>
                                 <div class=" col-md-6">
-                                    <label class="bmd-label-floating">Điểm lên hạng</label>
-                                    <input id="inputPoint" type="number" class="form-control personal_info" value="">
+                                    <label class="bmd-label-floating">Điểm tích lũy lên hạng (VNĐ)</label>
+                                    <input id="inputPoint" type="text" class="form-control personal_info" value="">
                                 </div>
                                 <div class=" col-md-12">
                                     <label class="bmd-label-floating">Hạng thành viên</label>
-                                    <input id="inputRank" type="number" class="form-control personal_info" value="">
+                                    <input id="inputRank" type="number" class="form-control personal_info" value="" disabled>
                                 </div>
                             </div>
                         </div>
@@ -120,12 +120,24 @@
 
 <script>
     $(document).ready(function() {
+        var selectedRankId = "";
         var modal = $('#modalKhachHang')
         var tableNV = $('#tableNhanVien').DataTable({
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
             }
         });
+
+        $('.diemlenhang').each(function() {
+            $(this).html(toMoney($(this).html()))
+        })
+
+        $('#inputPoint').on('input', function() {
+            if ($(this).val() == "")
+                $(this).val("0")
+            var point = toInt($(this).val())
+            $(this).val(toMoney(point))
+        })
 
         function initModalData($row) {
             $('#inputName').attr('value', $row.find('.tenloai').html())
@@ -147,10 +159,10 @@
                 url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
                 data: {
                     action: 'updateHangTV',
-                    id: 'tv1',
+                    id: selectedRankId,
                     tenloaitv: $('#inputName').val(),
                     tyletichluy: $('#inputRating').val(),
-                    diemlenhang: $('#inputPoint').val(),
+                    diemlenhang: toInt($('#inputPoint').val()),
                     hangtv: $('#inputRank').val()
                 },
                 beforeSend: function() {
@@ -194,7 +206,7 @@
                     action: "addHangTV",
                     tenloaitv: $('#inputName').val(),
                     tyletichluy: $('#inputRating').val(),
-                    diemlenhang: $('#inputPoint').val(),
+                    diemlenhang: toInt($('#inputPoint').val()),
                     hangtv: $('#inputRank').val()
                 },
                 beforeSend: function() {
@@ -290,32 +302,39 @@
         });
 
         $('#btnAddTV').click(function() {
-            modal.modal('show')
-            clearModalData()
+            checkPhanQuyen('kh4', function() {
+                modal.modal('show')
+                clearModalData()
+            })
         })
 
         $('.btnEditRank').click(function() {
             var $row = $(this).closest('tr')
-            $("#btnConfirm").addClass('view')
-            modal.modal('show')
-            initModalData($row)
+            selectedRankId = $row.attr('id')
+            checkPhanQuyen('kh4', function() {
+                $("#btnConfirm").addClass('view')
+                modal.modal('show')
+                initModalData($row)
+            })
         })
 
         $('.btnDeleteRank').click(function() {
             var $row = $(this).closest('tr')
-            Swal.fire({
-                title: 'Bạn có chắc chắn muốn xóa khách hàng?',
-                text: "Việc làm này sẽ không thể hoàn tác!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Đồng ý',
-                cancelButtonText: 'Hủy'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    deleteHangTV($row.find('.maloaitv').html())
-                }
+            checkPhanQuyen('kh4', function() {
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn xóa khách hàng?',
+                    text: "Việc làm này sẽ không thể hoàn tác!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Đồng ý',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteHangTV($row.find('.maloaitv').html())
+                    }
+                })
             })
         })
 

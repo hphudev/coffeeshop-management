@@ -10,7 +10,7 @@ class Model_Sale
         if (!@include("../configs/config.php")) {
             include_once("../configs/config.php");
         }
-        $sql = 'SELECT * FROM mon';
+        $sql = "SELECT * FROM mon WHERE TinhTrang = 'true'";
         $result = $conn->query($sql);
         $itemList = array();
         if ($result->num_rows > 0) {
@@ -173,7 +173,6 @@ class Model_Sale
         if (isset($madm)) {
             Model_Sale::insertDetailOrder($data, $madm);
             echo $madm;
-            //echo Model_Sale::insertDetailOrder($data, $madm);
         } else
             echo false;
     }
@@ -201,6 +200,32 @@ class Model_Sale
         if (!@include("../configs/config.php"))
             include_once("../configs/config.php");
         $sql = "DELETE FROM topping_dm WHERE MaCTDM = '" . $MaCTDM . "'";
+        $result = $conn->query($sql);
+        return $result;
+    }
+
+    public static function deleteOrderFail()
+    {
+        if (!@include("../configs/config.php"))
+            include_once("../configs/config.php");
+        $sql = "SELECT * FROM datmon WHERE TinhTrang = 'da gui'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                Model_Sale::deleteOrder($row['MaDM']);
+                Model_Sale::deleteDetailOrder($row['MaDM']);
+                Model_Sale::deleteTopping($row['MaDM']);
+            }
+        }
+        // $result = $conn->query($sql);
+        return $result;
+    }
+
+    public static function finishOrder($MaDM)
+    {
+        if (!@include("../configs/config.php"))
+            include_once("../configs/config.php");
+        $sql = "UPDATE FROM topping_dm WHERE MaCTDM = '" . $MaDM . "'";
         $result = $conn->query($sql);
         return $result;
     }

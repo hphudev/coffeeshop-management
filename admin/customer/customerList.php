@@ -23,7 +23,7 @@
                                     <th class='text-center text-info'>Loại thành viên</th>
                                     <th class='text-center text-info'>Điểm thành viên</th>
                                     <th class='text-center text-info'>Ngày đăng ký</th>
-                                    <th class='text-center text-info'>Tổng chi</th>
+                                    <th class='text-center text-info'>Tổng chi (VNĐ)</th>
                                     <th class='text-center text-info'>Thao tác</th>
                                 </tr>
                             </thead>
@@ -36,7 +36,7 @@
                                     <th class='text-center text-info'>Loại thành viên</th>
                                     <th class='text-center text-info'>Điểm thành viên</th>
                                     <th class='text-center text-info'>Ngày đăng ký</th>
-                                    <th class='text-center text-info'>Tổng chi</th>
+                                    <th class='text-center text-info'>Tổng chi (VNĐ)</th>
                                     <th class='text-center text-info'>Thao tác</th>
                                 </tr>
                             </tfoot>
@@ -142,7 +142,7 @@
                                         <div class="fields-group align-items-center">
                                             <p class="input-label text-left">Loại thành viên: </p>
                                             <div class="dropdown">
-                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="material-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <button class="btn btn-secondary dropdown-toggle important-info" type="button" id="material-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
                                                     <span id="inputLoaiTV">Chọn loại thành viên</span>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -162,13 +162,13 @@
                                     <label class="bmd-label-floating">
                                         Điểm thành viên
                                     </label>
-                                    <input id="inputDiemTV" type="number" class="form-control personal_info" value="0">
+                                    <input id="inputDiemTV" type="number" class="form-control personal_info important-info" value="0" disabled>
                                 </div>
                                 <div class=" col-md-6">
                                     <label class="bmd-label-floating">
-                                        Tổng chi
+                                        Tổng chi (VNĐ)
                                     </label>
-                                    <input id="inputTongChi" type="number" class="form-control personal_info" value="0">
+                                    <input id="inputTongChi" type="text" class="form-control personal_info important-info" value="0" disabled>
                                 </div>
                             </div>
                         </div>
@@ -191,6 +191,17 @@
             language: {
                 url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/vi.json'
             }
+        })
+
+        $('.tongchi').each(function() {
+            $(this).html(toMoney($(this).html()))
+        })
+
+        $('#inputTongChi').on('input', function() {
+            if ($(this).val() == "")
+                $(this).val("0")
+            var tongchi = toInt($(this).val())
+            $(this).val(toMoney(tongchi))
         })
 
         function initModalData($row) {
@@ -229,7 +240,7 @@
                     gioitinh: $('#inputGioiTinh').text(),
                     loaitv: $('#inputLoaiTV').text(),
                     diemtv: $('#inputDiemTV').val(),
-                    tongchi: $('#inputTongChi').val()
+                    tongchi: toInt($('#inputTongChi').val())
                 },
                 beforeSend: function() {
 
@@ -260,11 +271,6 @@
                     alert(errorThrown);
                 }
             })
-        }
-
-        function checkSDT() {
-            const regex = /(84|0[3|5|7|8|9])+([0-9]{8})/
-            return regex.test(String($('#inputSDT').val()));
         }
 
         function checkNgayDK() {
@@ -314,36 +320,36 @@
                     gioitinh: $('#inputGioiTinh').text(),
                     loaitv: $('#inputLoaiTV').text(),
                     diemtv: $('#inputDiemTV').val(),
-                    tongchi: $('#inputTongChi').val()
+                    tongchi: toInt($('#inputTongChi').val())
                 },
                 beforeSend: function() {
 
                 },
                 success: function(response) {
-                    Swal.fire({
-                        title: response,
-                    })
-                    // if (response.includes("success")) {
-                    //     Swal.fire(
-                    //         'Thành công!',
-                    //         'Thông tin khách hàng đã được cập nhật',
-                    //         'success'
-                    //     )
-                    //     modal.modal('hide')
-                    //     $('#btnDSKH').click()
-                    // } else if (response.includes("phone")) {
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         'Số điện thoại đã được sử dụng!',
-                    //         'error'
-                    //     )
-                    // } else {
-                    //     Swal.fire(
-                    //         'Thất bại!',
-                    //         'Đã xảy ra lỗi. Vui lòng thử lại',
-                    //         'error'
-                    //     )
-                    // }
+                    // Swal.fire({
+                    //     title: response,
+                    // })
+                    if (response.includes("success")) {
+                        Swal.fire(
+                            'Thành công!',
+                            'Thông tin khách hàng đã được cập nhật',
+                            'success'
+                        )
+                        modal.modal('hide')
+                        $('#btnDSKH').click()
+                    } else if (response.includes("phone")) {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Số điện thoại đã được sử dụng!',
+                            'error'
+                        )
+                    } else {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Đã xảy ra lỗi. Vui lòng thử lại',
+                            'error'
+                        )
+                    }
                 },
                 complete: function() {},
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -389,35 +395,6 @@
                 }
             })
             $('#btnDSKH').click()
-
-        }
-
-        function checkPhanQuyen(PhanQuyen, Callback) {
-            $.ajax({
-                type: "POST",
-                url: "/coffeeshopmanagement/controllers/C_PhanQuyen.php",
-                data: {
-                    phanquyen: PhanQuyen,
-                },
-                beforeSend: function() {
-
-                },
-                success: function(response) {
-                    if (response == "true") {
-                        Callback()
-                    } else {
-                        Swal.fire(
-                            "Thất bại",
-                            "Bạn không có quyền thực hiện chức năng này!",
-                            "warning"
-                        )
-                    }
-                },
-                complete: function() {},
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    alert(errorThrown);
-                }
-            })
         }
 
         $(".mater-gender-opt").each(function(index) {
@@ -433,7 +410,7 @@
         });
 
         $('#btnAddKH').click(function() {
-            checkPhanQuyen('khachhang1', function() {
+            checkPhanQuyen('kh1', function() {
                 modal.modal('show')
                 clearModalData()
             })
@@ -441,15 +418,18 @@
 
         $('.btnEditKH').click(function() {
             var $row = $(this).closest('tr')
-            checkPhanQuyen('khachhang1', function() {
+            checkPhanQuyen('kh1', function() {
                 $("#btnConfirm").addClass('view')
                 modal.modal('show')
                 initModalData($row)
+                checkPhanQuyenNoAlert('admin', function() {
+                    $('.important-info').attr('disabled', false)
+                })
             })
         })
 
         $('.btnDeleteKH').click(function() {
-            checkPhanQuyen('khachhang1', function() {
+            checkPhanQuyen('kh1', function() {
                 var $row = $(this).closest('tr')
                 Swal.fire({
                     title: 'Bạn có chắc chắn muốn xóa khách hàng?',
@@ -464,7 +444,6 @@
                     if (result.isConfirmed) {
                         deleteKH($row.find('.makh').html())
                     }
-
                 })
             })
         })
@@ -480,14 +459,16 @@
             }
         })
 
-        $("#btnCancel").click(function(){
+        $("#btnCancel").click(function() {
             let func = {};
             func.name = 'deleteOrderFail';
             $.ajax({
                 type: "POST",
                 url: "../models/M_BanHang.php",
-                data: {func: JSON.stringify(func)},
-                success: function (response) {
+                data: {
+                    func: JSON.stringify(func)
+                },
+                success: function(response) {
                     deleteOrderFail();
                 }
             });
