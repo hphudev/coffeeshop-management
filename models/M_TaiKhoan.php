@@ -22,6 +22,46 @@ class Model_TaiKhoan
         }
     }
 
+    public function add_TaiKhoan($TaiKhoan, $NVID)
+    {
+        include '../configs/config.php';
+        $sql = "INSERT INTO `taikhoan`(`MaTaiKhoan`, `MatKhau`, `MaNV`) VALUES 
+        ('" . $TaiKhoan->get_MaTK() . "',
+        '" . $TaiKhoan->get_MatKhau() . "',
+        '" . $NVID . "')";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function update_TaiKhoan($TaiKhoan, $NVID)
+    {
+        include '../configs/config.php';
+        $sql = "UPDATE `taikhoan` SET 
+                `MaTaiKhoan`='" . $TaiKhoan->get_MaTK() .  "',
+                `MatKhau`='" . $TaiKhoan->get_MatKhau() .  "'
+                WHERE `MaNV`='" .  $NVID .  "'";
+        if ($conn->query($sql) === TRUE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function check_TaiKhoan($MaTK)
+    {
+        include '../configs/config.php';
+        $sql = "SELECT * FROM `taikhoan` WHERE MaTaiKhoan='" . $MaTK . "'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public function get_TaiKhoanDetails($id)
     {
         include '../configs/config.php';

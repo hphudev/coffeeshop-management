@@ -33,7 +33,21 @@ class Model_KhuyenMai
             while ($row = $result->fetch_assoc()) {
                 $KhuyenMai = new KhuyenMai();
                 $KhuyenMai->clone($row);
-                $conn->close();
+                return $KhuyenMai;
+            }
+        } else
+            return null;
+    }
+
+    public function get_KhuyenMaiById($id)
+    {
+        include '../configs/config.php';
+        $sql =  'SELECT * FROM khuyenmai WHERE MaKM="' . $id . '"';
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $KhuyenMai = new KhuyenMai();
+                $KhuyenMai->clone($row);
                 return $KhuyenMai;
             }
         } else
@@ -50,6 +64,7 @@ class Model_KhuyenMai
             `ThoiGianBatDau`='" . date('Y-m-d', $KhuyenMai->get_ThoiGianBD()) .  "',
             `ThoiGianKetThuc`='" . date('Y-m-d', $KhuyenMai->get_ThoiGianKT()) .  "',
             `SoLuongPhatHanh`='" . $KhuyenMai->get_SoLuong() .  "',
+            `SoLuongConLai`='" . $KhuyenMai->get_SoLuongConLai() .  "',
             `PhanTramKM`='" . $KhuyenMai->get_PhanTramKM() .  "',
             `TienKMToiDa`='" . $KhuyenMai->get_TienKMToiDa() .  "',
             `TienHDToiThieu`='" . $KhuyenMai->get_TienHDToiThieu() .  "' 
@@ -65,13 +80,14 @@ class Model_KhuyenMai
     public function add_KhuyenMai($KhuyenMai)
     {
         include '../configs/config.php';
-        $sql = "INSERT INTO `khuyenmai`(`MaKM`, `Code`, `TenKM`, `ThoiGianBatDau`, `ThoiGianKetThuc`, `SoLuongPhatHanh`, `PhanTramKM`, `TienKMToiDa`, `TienHDToiThieu`) VALUES 
+        $sql = "INSERT INTO `khuyenmai`(`MaKM`, `Code`, `TenKM`, `ThoiGianBatDau`, `ThoiGianKetThuc`, `SoLuongPhatHanh`, `SoLuongConLai`, `PhanTramKM`, `TienKMToiDa`, `TienHDToiThieu`) VALUES 
             ('" . $KhuyenMai->get_MaKM() .  "',
             '" . $KhuyenMai->get_Code() .  "',
             '" . $KhuyenMai->get_TenKM() .  "',
             '" . $KhuyenMai->get_ThoiGianBD() .  "',
             '" . $KhuyenMai->get_ThoiGianKT() .  "',
             '" . $KhuyenMai->get_SoLuong() .  "',
+            '" . $KhuyenMai->get_SoLuongConLai() .  "',
             '" . $KhuyenMai->get_PhanTramKM() .  "',
             '" . $KhuyenMai->get_TienKMToiDa() .  "',
             '" . $KhuyenMai->get_TienHDToiThieu() .  "')";

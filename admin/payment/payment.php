@@ -368,6 +368,10 @@
             pay_v = total_v - discount_v;
             pay.html(toMoney(pay_v))
             calculateExcess()
+            if (discount_v > pay_v) {
+                excess_v = 0;
+                excess.html(toMoney(excess_v))
+            }
         }
 
         function checkPromotion(promotionCode) {

@@ -51,13 +51,13 @@
                     // alert(response)
                     if (response == "true") {
                         switch (PhanQuyen) {
-                            case 'khachhang2':
+                            case 'kh2':
                                 getTab('hangthanhvien')
                                 break;
-                            case 'khachhang4':
+                            case 'kh4':
                                 getTab('khuyenmai')
                                 break;
-                            case 'khachhang0':
+                            case 'kh0':
                             default:
                                 getTab('khachhang')
                                 break;
@@ -100,17 +100,17 @@
 
         $('#btnDSKH').click(function() {
             changeTab($(this))
-            checkPhanQuyen('khachhang0')
+            checkPhanQuyen('kh0')
         })
 
         $('#btnHangTV').click(async function() {
             changeTab($(this))
-            checkPhanQuyen('khachhang2')
+            checkPhanQuyen('kh2')
         })
 
         $('#btnDSKM').click(function() {
             changeTab($(this))
-            checkPhanQuyen('khachhang4')
+            checkPhanQuyen('kh4')
         })
         $('#btnDSKH').click()
     })

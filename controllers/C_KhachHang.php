@@ -37,7 +37,6 @@ class C_KhachHang
             if ($_POST['action'] == 'update') {
                 $KhachHang = new KhachHang();
                 //$KhachHang->set_MaKH($General->AutoGetID());
-                echo $_POST['hoten'];
                 $KhachHang->set_MaKH($_POST['id']);
                 $KhachHang->set_HoTen($_POST['hoten']);
                 $KhachHang->set_SDT($_POST['sdt']);
@@ -92,6 +91,7 @@ class C_KhachHang
                 $LoaiTV->set_TyLeTichDiem($_POST['tyletichluy']);
                 $LoaiTV->set_HangTV($_POST['hangtv']);
                 if ($ModelKhachHang->update_LoaiTV($LoaiTV)) {
+                    $ModelKhachHang->updateHTVPosition();
                     echo "success";
                 } else {
                     echo "error";
@@ -99,7 +99,7 @@ class C_KhachHang
             }
             if ($_POST['action'] == 'addHangTV') {
                 $LoaiTV = new LoaiTV();
-                $LoaiTV->set_MaLoaiTV($General->AutoGetID('loaithanhvien', 'tv', 'MaLoaiTV'));
+                $LoaiTV->set_MaLoaiTV($General->getIDNum('loaithanhvien', 'tv', 'MaLoaiTV'));
                 $LoaiTV->set_TenLoaiTV($_POST['tenloaitv']);
                 $LoaiTV->set_DiemLenHang($_POST['diemlenhang']);
                 $LoaiTV->set_TyLeTichDiem($_POST['tyletichluy']);
@@ -107,6 +107,7 @@ class C_KhachHang
 
                 if ($ModelKhachHang->get_LoaiTVByName($LoaiTV->get_TenLoaiTV()) == null) {
                     if ($ModelKhachHang->add_LoaiTV($LoaiTV)) {
+                        $ModelKhachHang->updateHTVPosition();
                         echo "success";
                     } else {
                         echo "error";
@@ -117,6 +118,7 @@ class C_KhachHang
             }
             if ($_POST['action'] == 'deleteHangTV') {
                 if ($ModelKhachHang->delete_LoaiTV($_POST['id'])) {
+                    $ModelKhachHang->updateHTVPosition();
                     echo "success";
                 } else {
                     echo "error";
@@ -143,6 +145,7 @@ class C_KhachHang
                 $KhuyenMai->set_ThoiGianBD(strtotime($_POST['ngaybd']));
                 $KhuyenMai->set_ThoiGianKT(strtotime($_POST['ngaykt']));
                 $KhuyenMai->set_SoLuong($_POST['soluong']);
+                $KhuyenMai->set_SoLuongConLai($_POST['soluongconlai']);
                 $KhuyenMai->set_PhanTramKM($_POST['tyle']);
                 $KhuyenMai->set_TienHDToiThieu($_POST['toithieu']);
                 $KhuyenMai->set_TienKMToiDa($_POST['toida']);
@@ -161,6 +164,7 @@ class C_KhachHang
                 $KhuyenMai->set_ThoiGianBD($_POST['ngaybd']);
                 $KhuyenMai->set_ThoiGianKT($_POST['ngaykt']);
                 $KhuyenMai->set_SoLuong($_POST['soluong']);
+                $KhuyenMai->set_SoLuongConLai($_POST['soluongconlai']);
                 $KhuyenMai->set_PhanTramKM($_POST['tyle']);
                 $KhuyenMai->set_TienHDToiThieu($_POST['toithieu']);
                 $KhuyenMai->set_TienKMToiDa($_POST['toida']);

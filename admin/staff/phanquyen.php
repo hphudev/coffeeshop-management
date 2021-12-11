@@ -40,6 +40,81 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h4>
+                            KHÁCH HÀNG
+                        </h4>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="kh0" class="form-check-input" type="checkbox" value="" disabled>
+                                            Xem thông tin khách hàng
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="kh1" class="form-check-input" type="checkbox" value="" disabled>
+                                            Chỉnh sửa/ thêm/ xóa thông tin khách hàng
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="kh2" class="form-check-input" type="checkbox" value="" disabled>
+                                            Xem thông tin hạng thành viên
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="kh3" class="form-check-input" type="checkbox" value="" disabled>
+                                            Chỉnh sửa/ Thêm/ Xóa thông tin hạng thành viên
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="kh4" class="form-check-input" type="checkbox" value="" disabled>
+                                            Xem thông tin khuyến mãi
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input id="kh5" class="form-check-input" type="checkbox" value="" disabled>
+                                            Thêm/ Xóa/Chỉnh sửa thông tin khuyến mãi. Đổi điểm tích lũy
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <h4>
                             TÀI CHÍNH
                         </h4>
                         <div class="container-fluid">
@@ -165,7 +240,7 @@
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input id="nhansu5" class="form-check-input" type="checkbox" disabled>
-                                            Chỉnh sửa/thêm/xóa thông tin bảng phân quyền
+                                            Chỉnh sửa thông tin bảng phân quyền
                                             <span class="form-check-sign">
                                                 <span class="check"></span>
                                             </span>
