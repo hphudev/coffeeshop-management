@@ -30,6 +30,8 @@
 
         // https://thecoffeevn.com/wp-content/uploads/2019/06/cach-nhan-biet-ca-phe-nguyen-chat-vs-don-phu-gia.jpg
         $idItem = $itemList[$i]->get_MaMon();
+        if ($itemList[$i]->get_SoLuong() <= 0)
+            continue;
         // if ($i % 3 == 0)
     ?>
         <div id=<?php echo '"' . $itemList[$i]->get_MaMon() . '"' ?> class="col item">
@@ -39,15 +41,8 @@
                     <?php
                     echo '
                             <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col">
-                                        <h class="card-title" style="font-weight: 500; font-size: 20px">' . $itemList[$i]->get_TenMon() . '</h>
-                                    </div>
-                                    <div class="col" style="text-align: right">
-                                        <span class="material-icons text-info"">
-                                            info
-                                        </span>
-                                    </div>
+                                <div class="row" style="">
+                                    <h class="card-title" style="font-weight: 500; font-size: 15px; width: 100%; text-align: center">' . $itemList[$i]->get_TenMon() . '</h>
                                 </div>
                             </div>';
                     // echo '
