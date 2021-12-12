@@ -225,7 +225,7 @@
                     </div>
                 </div>
                 <div class="modal-body" style="text-align: center; padding: 0">
-                    <div id="blenderCustomer" class="container-fluid d-flex flex-row justify-content-center" style="text-align: center; position: relative;">
+                    <div id="blenderCustomer" class="container-fluid d-flex flex-column justify-content-center" style=" position: relative;">
                         <!-- <div id="row" class="row blenderOrders" style="">
                             <div id="accordion" role="tablist">
                                 <div class="card card-collapse" style="width: 75vw; text-align: center;">

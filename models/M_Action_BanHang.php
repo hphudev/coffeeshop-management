@@ -1,7 +1,7 @@
 <?php
-include 'E_Mon.php';
-include 'E_ChiTietMon.php';
-include "E_Topping.php";
+include_once 'E_Mon.php';
+include_once 'E_ChiTietMon.php';
+include_once "E_Topping.php";
 
 class Model_Sale
 {

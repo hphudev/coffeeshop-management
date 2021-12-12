@@ -26,7 +26,9 @@ class C_HoaDon
                 $DatMon = $ModelHoaDon->get_DatMon($goiMonId);
                 $DatMonDetails = $ModelHoaDon->get_DatMonDetails($goiMonId);
                 $NhanVienThuNgan = $ModelNhanVien->get_NhanVienDetails($_SESSION['id']);
+                
                 include_once '../admin/payment/payment.php';
+                echo "<script>console.log('" . $_SESSION['id'] . "')</script>";
             }
             if ($_POST['action'] == 'khuyenmai') {
                 $khuyenMaiId = $_POST['id'];
