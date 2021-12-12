@@ -24,7 +24,7 @@
 </div>
 
 <!--#region 2 - danh sách món -->
-<div class="row menu" style="width: fit-content;">
+<div class="row menu" style="width: fit-content; margin: auto">
     <?php
     for ($i = 0; $i < count($itemList); $i++) {
 
