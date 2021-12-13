@@ -201,18 +201,21 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                         // output data of each row
                                         for ($i = 0; $i < count($PhieuNhapList); $i++)
                                         {
-                                            echo "<tr role='row' class='odd'>";
+                                            echo "<tr role='row' class='odd' id='" . $PhieuNhapList[$i]->get_MaPN() . "'>";
                                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center pn-id'>" . $PhieuNhapList[$i]->get_MaPN() . "</td>";
                                             echo "<td class='text-center'>" . $PhieuNhapList[$i]->get_NgayLap() . "</td>";
                                             echo "<td class='text-center supplier'>" . getTenNCC($NhaCungCapList, $PhieuNhapList[$i]->get_MaNCC()) . "</td>";
                                             echo "<td class='text-center total-amount money'>" . $PhieuNhapList[$i]->get_TongTien() . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $PhieuNhapList[$i]->get_MaPN() . '" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">info</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $PhieuNhapList[$i]->get_MaPN() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
+                                                    </button>
+                                                    <button type="button" id="' . $PhieuNhapList[$i]->get_MaPN() . '" rel="tooltip" class="btn btn-danger btn-delete">
+                                                        <i class="material-icons">close</i>
                                                     </button>
                                                 </td>';
                                             echo "</tr>";
@@ -241,12 +244,14 @@ function getTenNCC($NhaCungCapList, $maNCC)
                         // output data of each row
                         for ($i = 0; $i < count($PhieuNhapList); $i++)
                         {
+                            echo "<tr class='hidden-info' id='". $PhieuNhapList[$i]->get_MaPN() ."'>";
                             echo "<td class='staff-name-src'>" . getTenNV($NhanVienList, $PhieuNhapList[$i]->get_MaNVNhap()) . "</td>";
                             echo "<td class='shipper-name-src'>" . $PhieuNhapList[$i]->get_TenNguoiGiao() . "</td>";
                             echo "<td class='total-amount'>" . $PhieuNhapList[$i]->get_TongTien() . "</td>";
                             echo "<td class='pay-amount-src'>" . $PhieuNhapList[$i]->get_TienThanhToan() . "</td>";
                             echo "<td class='debt-amount-src'>" . $PhieuNhapList[$i]->get_TienNo() . "</td>";
                             echo "<td class='note-src'>" . $PhieuNhapList[$i]->get_GhiChu() . "</td>";
+                            echo "</tr>";
                         }
                     }
                 }
@@ -390,7 +395,8 @@ function getTenNCC($NhaCungCapList, $maNCC)
         // view phiếu nhập detail
         $(".btn-view-detail").each(function(index) {
             $(this).on("click", function() {
-                window.location.href = "../admin/index.php?page=werehouse&receipt&id=" + $($(".pn-id").get(index)).text();
+                var $row = $(this).closest('tr');
+                window.location.href = "../admin/index.php?page=werehouse&receipt&id=" + $row.attr('id');
             });
         })
 
@@ -414,20 +420,86 @@ function getTenNCC($NhaCungCapList, $maNCC)
         // edit phiếu nhập
         $(".btn-edit").each(function(index) {
             $(this).on("click", function() {
-                $("#staff-val").text($($(".staff-name-src").get(index)).text());
-                $("#supplier-val").text($($(".supplier").get(index)).text());
-                $("#shipper-val").val($($(".shipper-name-src").get(index)).text());
-                $("#total-amount-val").val($($(".total-amount").get(index)).text());
-                $("#pay-amount-val").val($($(".pay-amount-src").get(index)).text());
-                $("#debt-amount-val").val($($(".debt-amount-src").get(index)).text());
-                $("#note-val").val($($(".note-src").get(index)).text());
+                var $row = $(this).closest('tr');
+                action_type = "edit";
+                obj_id = $row.attr('id');
+                var hidden_index = getHiddenRowIndex();
+
+                $("#staff-val").text($($(".staff-name-src").get(hidden_index)).text());
+                $("#supplier-val").text($row.find(".supplier").text());
+                $("#shipper-val").val($($(".shipper-name-src").get(hidden_index)).text());
+                $("#total-amount-val").val($($(".total-amount").get(hidden_index)).text());
+                $("#pay-amount-val").val($($(".pay-amount-src").get(hidden_index)).text());
+                $("#debt-amount-val").val($($(".debt-amount-src").get(hidden_index)).text());
+                $("#note-val").val($($(".note-src").get(hidden_index)).text());
 
                 $(".modal-title").text("Chỉnh sửa phiếu nhập");
-                action_type = "edit";
-                obj_id = $($(".pn-id").get(index)).text();
             });
         })
 
+        //Nút xóa phiếu nhập
+        $(".btn-delete").each(function(index) {
+            $(this).on("click", function() {
+                Swal.fire({
+                    title: 'Xóa phiếu nhập',
+                    text: 'Thao tác này sẽ xóa phiếu nhập và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                    showDenyButton: true,
+                    confirmButtonText: 'Hủy',
+                    denyButtonText: `Xóa`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        
+                    } else if (result.isDenied) {
+                        var $row = $(this).closest('tr');
+                        obj_id = $row.attr('id');
+                        action_type = "delete";
+                        
+                        // Ajax config
+                        $.ajax({
+                            type: "POST",
+                            url: '../controllers/C_PhieuNhap.php',
+                            data: {
+                                action: action_type,
+                                pn_id: obj_id,
+                            },
+                            beforeSend: function () {
+                                
+                            },
+                            success: function (response) {
+                                var jsonData = JSON.parse(response);
+
+                                if (jsonData.success == "1")
+                                {
+                                    Swal.fire(
+                                        'Thành công!',
+                                        'Đã xóa phiếu nhập',
+                                        'success'
+                                    ).then((result) => {
+                                        if (result.isConfirmed) {
+                                            // location.reload();
+                                            $row.remove();
+                                        }
+                                    })
+                                }
+                                else {
+                                    Swal.fire(
+                                        'Thất bại!',
+                                        'Phiếu nhập không rỗng. Vui lòng kiểm tra lại!',
+                                        'error'
+                                    )
+                                }
+                            },
+                            complete: function() {
+                            
+                            },
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                alert(errorThrown);
+                            }
+                        });
+                    }
+                })
+            })
+        });
 
         //Init dropdown in modal
         // dropdown nhân viên
@@ -445,6 +517,38 @@ function getTenNCC($NhaCungCapList, $maNCC)
         });
     });
 
+    function getHiddenRowIndex() {
+        for (let i = 0; i < $(".hidden-info").length; i++)
+        {
+            if ($($(".hidden-info").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function getRowIndex() {
+        for (let i = 0; i < $(".btn-edit").length; i++)
+        {
+            if ($($(".btn-edit").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function updateRowData() {
+        var $row = $($(".btn-edit").get(getRowIndex())).closest('tr');
+        var $hidden_row = $($(".hidden-info").get(getHiddenRowIndex()));
+
+        $row.find('.supplier').text($("#supplier-val").text());
+        $hidden_row.find('.staff-name-src').text($("#staff-val").text());
+        $hidden_row.find('.shipper-name-src').text($("#shipper-val").val());
+        $hidden_row.find('.pay-amount-src').text($("#pay-amount-val").val());
+        $hidden_row.find('.debt-amount-src').text($("#debt-amount-val").val());
+        $hidden_row.find('.note-src').text($("#note-val").val());
+    }
+
     $.fn.digits = function() { 
         return this.each(function(){ 
             $(this).text( $(this).text().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") ); 
@@ -455,8 +559,8 @@ function getTenNCC($NhaCungCapList, $maNCC)
 
     function checkInput() {
         if ($("#staff-val").text() == "Chọn nhân viên" || $("#supplier-val").text() == "Chọn NCC" ||
-            $("#shipper-val").val() == "" || $("#pay-amount-val").val() == "" ||
-            $("#debt-amount-val").val() == "" || $("#note-val").val() == "") {
+            $("#shipper-val").val() == "" || $("#pay-amount-val").val() == "" || parseInt($("#pay-amount-val").val()) < 0 ||
+            $("#debt-amount-val").val() == "" || $("#note-val").val() == "" || parseInt($("#debt-amount-val").val()) < 0) {
                 return false;
         }
         return true;
@@ -500,7 +604,11 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type == "edit") {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }

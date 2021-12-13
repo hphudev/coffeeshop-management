@@ -45,7 +45,7 @@ class Blender
     {
         if (!@include("../configs/config.php"))
             include_once("../configs/config.php");
-        $sql = 'SELECT * FROM datmon';
+        $sql = "SELECT * FROM datmon";
         $result = $conn->query($sql);
         $orders = array();
         $n = 0;

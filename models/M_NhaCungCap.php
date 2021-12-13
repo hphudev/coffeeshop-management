@@ -96,6 +96,6 @@ class Model_NhaCungCap
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("nhacungcap", "ncc");
+        return $general_cmd->getIDNum("nhacungcap", "NCC", "MaNCC");
     }
 }

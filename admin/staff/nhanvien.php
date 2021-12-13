@@ -318,10 +318,11 @@
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         // Swal.fire({
-                        //     title: responseText
+                        //     title: this.responseText
                         // })
                         if (this.responseText == 'success') {
                             $("#addNVModel").modal('hide');
+                            // console.log("vào ");
                             Swal.fire({
                                 title: 'Thành công!',
                                 text: 'Thông tin nhân viên đã được thêm',
@@ -337,6 +338,7 @@
                                 'error'
                             )
                         } else {
+                            console.log("lỗi"); 
                             Swal.fire(
                                 'Thất bại!',
                                 'Đã xảy ra lỗi. Vui lòng thử lại',

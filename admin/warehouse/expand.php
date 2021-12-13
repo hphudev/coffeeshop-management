@@ -2,7 +2,7 @@
 include '../models/M_DonViTinh.php';
 include '../models/M_LoaiNguyenVatLieu.php';
 include '../models/M_NhaCungCap.php';
-//include '../models/M_TinhTrang.php';
+include '../models/M_TinhTrang.php';
 
 $ModelDonViTinh = new Model_DonViTinh();
 $DonViTinhList = $ModelDonViTinh->get_AllDonViTinh();
@@ -13,8 +13,8 @@ $LoaiNguyenVatLieuList = $ModelLoaiNguyenVatLieu->get_AllLoaiNguyenVatLieu();
 $ModelNhaCungCap = new Model_NhaCungCap();
 $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
 
-// $ModelTinhTrang = new Model_TinhTrang();
-// $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
+$ModelTinhTrang = new Model_TinhTrang();
+$TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
 ?>
 
 <style>
@@ -149,7 +149,7 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                         <table id="datatablesUnit" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
                             <thead>
                                 <tr role="row">
-                                    <th class='text-center text-success'>STT</th>
+                                    <!-- <th class='text-center text-success'>STT</th> -->
                                     <th class='text-center text-success'>Mã ĐVT</th>
                                     <th class='text-center text-success'>Tên đơn vị tính</th>
                                     <th class='text-center text-success'>Thao tác</th>
@@ -157,7 +157,7 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class='text-center'>STT</th>
+                                    <!-- <th class='text-center'>STT</th> -->
                                     <th class='text-center'>Mã ĐVT</th>
                                     <th class='text-center'>Tên đơn vị tính</th>
                                     <th class='text-center'>Thao tác</th>
@@ -168,15 +168,15 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                 if ($DonViTinhList && count($DonViTinhList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($DonViTinhList); $i++) {
-                                    echo "<tr role='row' class='odd'>";
-                                    echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                                    echo "<tr role='row' class='odd' id='" . $DonViTinhList[$i]->get_MaDVT() . "'>";
+                                    // echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                     echo "<td class='text-center unit-id'>" . $DonViTinhList[$i]->get_MaDVT() . "</td>";
                                     echo "<td class='text-center unit-name'>" . $DonViTinhList[$i]->get_TenDVT() . "</td>";
                                     echo '<td class="td-actions text-center">
-                                            <button type="button" rel="tooltip" class="btn btn-success btn-edit-unit" data-target="#myModal" data-toggle="modal">
+                                            <button type="button" id="' . $DonViTinhList[$i]->get_MaDVT() . '" rel="tooltip" class="btn btn-success btn-edit-unit" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-unit">
+                                            <button type="button" id="' . $DonViTinhList[$i]->get_MaDVT() . '" rel="tooltip" class="btn btn-danger btn-delete-unit">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
@@ -230,15 +230,77 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                 if ($LoaiNguyenVatLieuList && count($LoaiNguyenVatLieuList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($LoaiNguyenVatLieuList); $i++) {
-                                    echo "<tr role='row' class='odd'>";
+                                    echo "<tr role='row' class='odd' id='" . $LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() . "'>";
                                     echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                     echo "<td class='text-center type-id'>" . $LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() . "</td>";
                                     echo "<td class='text-center type-name'>" . $LoaiNguyenVatLieuList[$i]->get_TenLoaiNVL() . "</td>";
                                     echo '<td class="td-actions text-center">
-                                            <button type="button" rel="tooltip" class="btn btn-success btn-edit-type" data-target="#myModal" data-toggle="modal">
+                                            <button type="button" id="' . $LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() . '" rel="tooltip" class="btn btn-success btn-edit-type" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-mater-type">
+                                            <button type="button" id="' . $LoaiNguyenVatLieuList[$i]->get_MaLoaiNVL() . '" rel="tooltip" class="btn btn-danger btn-delete-mater-type">
+                                                <i class="material-icons">close</i>
+                                            </button>
+                                        </td>';
+                                    echo "</tr>";
+                                }
+                                } else {
+                                    echo "Dữ liệu trống!";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- tình trạng -->
+        <div class="col-lg-6 col-xl-6 col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-header card-header-text card-header-warning">
+                    <div class="card-text">
+                        <h4 class="card-title">Tình trạng</h4>
+                    </div>
+                </div>
+                <div class="card-body content-in-card">
+                    <button class="btn btn-warning btn-add-sts" data-toggle="modal" data-target="#myModal">
+                        <i class="material-icons">add</i>
+                        Thêm t. trạng
+                    </button>
+
+                    <div class="table-responsive">
+                        <table id="datatablesType" class="datatables table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
+                            <thead>
+                                <tr role="row">
+                                    <th class='text-center text-warning'>STT</th>
+                                    <th class='text-center text-warning'>Mã tình trạng</th>
+                                    <th class='text-center text-warning'>Tên tình trạng</th>
+                                    <th class='text-center text-warning'>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th class='text-center'>STT</th>
+                                    <th class='text-center'>Mã tình trạng</th>
+                                    <th class='text-center'>Tên tình trạng</th>
+                                    <th class='text-center'>Thao tác</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                                <?php
+                                if ($TinhTrangList && count($TinhTrangList) > 0) {
+                                // output data of each row
+                                for ($i = 0; $i < count($TinhTrangList); $i++) {
+                                    echo "<tr role='row' class='odd' id='" . $TinhTrangList[$i]->get_MaTinhTrang() . "'>";
+                                    echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
+                                    echo "<td class='text-center sts-id'>" . $TinhTrangList[$i]->get_MaTinhTrang() . "</td>";
+                                    echo "<td class='text-center sts-name'>" . $TinhTrangList[$i]->get_TenTinhTrang() . "</td>";
+                                    echo '<td class="td-actions text-center">
+                                            <button type="button" id="' . $TinhTrangList[$i]->get_MaTinhTrang() . '" rel="tooltip" class="btn btn-success btn-edit-sts" data-target="#myModal" data-toggle="modal">
+                                                <i class="material-icons">edit</i>
+                                            </button>
+                                            <button type="button" id="' . $TinhTrangList[$i]->get_MaTinhTrang() . '" rel="tooltip" class="btn btn-danger btn-delete-sts">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
@@ -292,15 +354,15 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                 if ($NhaCungCapList && count($NhaCungCapList) > 0) {
                                 // output data of each row
                                 for ($i = 0; $i < count($NhaCungCapList); $i++) {
-                                    echo "<tr role='row' class='odd'>";
+                                    echo "<tr role='row' class='odd' id='" . $NhaCungCapList[$i]->get_MaNCC() . "'>";
                                     echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                     echo "<td class='text-center supplier-id'>" . $NhaCungCapList[$i]->get_MaNCC() . "</td>";
                                     echo "<td class='text-center supplier-name'>" . $NhaCungCapList[$i]->get_TenNCC() . "</td>";
                                     echo '<td class="td-actions text-center">
-                                            <button type="button" rel="tooltip" class="btn btn-success btn-edit-supplier" data-target="#myModal" data-toggle="modal">
+                                            <button type="button" id="' . $NhaCungCapList[$i]->get_MaNCC() . '" rel="tooltip" class="btn btn-success btn-edit-supplier" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
                                             </button>
-                                            <button type="button" rel="tooltip" class="btn btn-danger btn-delete-supplier">
+                                            <button type="button" id="' . $NhaCungCapList[$i]->get_MaNCC() . '" rel="tooltip" class="btn btn-danger btn-delete-supplier">
                                                 <i class="material-icons">close</i>
                                             </button>
                                         </td>';
@@ -404,6 +466,16 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
             $("#obj-name-val").val("");
         });
 
+        //add tình trạng
+        $(".btn-add-sts").on("click", function() {
+            object = "status";
+            action_type = "add-sts";
+            path = "../controllers/C_TinhTrang.php";
+            $(".input-label").text("Tên tình trạng:");
+            $(".modal-title").text("Thêm tình trạng");
+            $("#obj-name-val").val("");
+        });
+
         //add ncc
         $(".btn-add-supplier").on("click", function() {
             object = "supplier";
@@ -417,27 +489,45 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
         //edit đvt
         $(".btn-edit-unit").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 object = "unit";
-                obj_id = $($(".unit-id").get(index)).text();
                 action_type = "edit-unit";
                 path = "../controllers/C_DonViTinh.php";
+
                 $(".input-label").text("Tên đơn vị tính:");
                 $(".modal-title").text("Chỉnh sửa đơn vị tính");
-                $("#obj-name-val").val($($(".unit-name").get(index)).text());
-                console.log(obj_id);
+                $("#obj-name-val").val($row.find(".unit-name").text());
             });
         });
 
         //edit loại nvl
         $(".btn-edit-type").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 object = "material type";
                 action_type = "edit-type";
-                obj_id = $($(".type-id").get(index)).text();
                 path = "../controllers/C_LoaiNguyenVatLieu.php";
+
                 $(".input-label").text("Tên loại ng. vật liệu:");
                 $(".modal-title").text("Chỉnh sửa loại nguyên vật liệu");
-                $("#obj-name-val").val($($(".type-name").get(index)).text());
+                $("#obj-name-val").val($row.find(".type-name").text());
+            });
+        });
+
+        //edit tình trạng
+        $(".btn-edit-sts").each(function(index) {
+            $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
+                object = "status";
+                action_type = "edit-sts";
+                path = "../controllers/C_TinhTrang.php";
+
+                $(".input-label").text("Tên tình trạng:");
+                $(".modal-title").text("Chỉnh sửa tình trạng");
+                $("#obj-name-val").val($row.find(".sts-name").text());
                 console.log(obj_id);
             });
         });
@@ -445,17 +535,81 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
         //edit ncc
         $(".btn-edit-supplier").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 object = "supplier";
                 action_type = "edit-supplier";
-                obj_id = $($(".supplier-id").get(index)).text();
                 path = "../controllers/C_NhaCungCap.php";
+
                 $(".input-label").text("Tên nhà cung cấp:");
                 $(".modal-title").text("Chỉnh sửa nhà cung cấp");
-                $("#obj-name-val").val($($(".supplier-name").get(index)).text());
+                $("#obj-name-val").val($row.find(".supplier-name").text());
                 console.log(obj_id);
             });
         });
     });
+
+    function updateRowData() {
+        var length = 0;
+        var index = 0;
+
+        if (action_type == "edit-unit") {
+            length = $(".btn-edit-unit").length;
+
+            for (let i = 0; i < length; i++)
+            {
+                if ($($(".btn-edit-unit").get(i)).attr('id') == obj_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            var $row = $($(".btn-edit-unit").get(index)).closest('tr');
+            $row.find('.unit-name').text($("#obj-name-val").val());
+        }
+        if (action_type == "edit-type") {
+            length = $(".btn-edit-type").length;
+
+            for (let i = 0; i < length; i++)
+            {
+                if ($($(".btn-edit-type").get(i)).attr('id') == obj_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            var $row = $($(".btn-edit-type").get(index)).closest('tr');
+            $row.find('.type-name').text($("#obj-name-val").val());
+        }
+        if (action_type == "edit-sts") {
+            length = $(".btn-edit-sts").length;
+
+            for (let i = 0; i < length; i++)
+            {
+                if ($($(".btn-edit-sts").get(i)).attr('id') == obj_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            var $row = $($(".btn-edit-sts").get(index)).closest('tr');
+            $row.find('.sts-name').text($("#obj-name-val").val());
+        }
+        if (action_type == "edit-supplier") {
+            length = $(".btn-edit-supplier").length;
+
+            for (let i = 0; i < length; i++)
+            {
+                if ($($(".btn-edit-supplier").get(i)).attr('id') == obj_id) {
+                    index = i;
+                    break;
+                }
+            }
+
+            var $row = $($(".btn-edit-supplier").get(index)).closest('tr');
+            $row.find('.supplier-name').text($("#obj-name-val").val());
+        }
+    }
 
     //Nút xóa đơn vị tính
     $(".btn-delete-unit").each(function(index) {
@@ -470,8 +624,9 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                 if (result.isConfirmed) {
                     
                 } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
                     action_type = "delete";
-                    obj_id = $($(".unit-id").get(index)).text();
+                    obj_id = $row.attr('id');
                     
                     // Ajax config
                     $.ajax({
@@ -495,7 +650,8 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                     'success'
                                 ).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.reload();
+                                        //location.reload();
+                                        $row.remove();
                                     }
                                 })
                             }
@@ -532,8 +688,9 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                 if (result.isConfirmed) {
                     
                 } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
+                    obj_id = $row.attr('id');
                     action_type = "delete";
-                    obj_id = $($(".supplier-id").get(index)).text();
                     
                     // Ajax config
                     $.ajax({
@@ -594,8 +751,9 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                 if (result.isConfirmed) {
                     
                 } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
+                    obj_id = $row.attr('id');
                     action_type = "delete";
-                    obj_id = $($(".type-id").get(index)).text();
                     
                     // Ajax config
                     $.ajax({
@@ -616,6 +774,69 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                 Swal.fire(
                                     'Thành công!',
                                     'Đã xóa loại nguyên vật liệu',
+                                    'success'
+                                ).then((result) => {
+                                    if (result.isConfirmed) {
+                                        location.reload();
+                                    }
+                                })
+                            }
+                            else {
+                                Swal.fire(
+                                    'Thất bại!',
+                                    'Vui lòng kiểm tra lại!',
+                                    'error'
+                                )
+                            }
+                        },
+                        complete: function() {
+                        
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert(errorThrown);
+                        }
+                    });
+                }
+            })
+        })
+    });
+
+    //Nút xóa tình trạng
+    $(".btn-delete-sts").each(function(index) {
+        $(this).on("click", function() {
+            Swal.fire({
+                title: 'Xóa tình trạng',
+                text: 'Thao tác này sẽ xóa tình trạng và không thể hoàn tác. Bạn vẫn muốn tiếp tục?',
+                showDenyButton: true,
+                confirmButtonText: 'Hủy',
+                denyButtonText: `Xóa`,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    
+                } else if (result.isDenied) {
+                    var $row = $(this).closest('tr');
+                    obj_id = $row.attr('id');
+                    action_type = "delete";
+                    
+                    // Ajax config
+                    $.ajax({
+                        type: "POST",
+                        url: '../controllers/C_TinhTrang.php',
+                        data: {
+                            action: action_type,
+                            sts_id: obj_id,
+                        },
+                        beforeSend: function () {
+                            
+                        },
+                        success: function (response) {
+                            var jsonData = JSON.parse(response);
+
+                            if (jsonData.success == "1")
+                            {
+                                Swal.fire(
+                                    'Thành công!',
+                                    'Đã xóa tình trạng',
                                     'success'
                                 ).then((result) => {
                                     if (result.isConfirmed) {
@@ -682,7 +903,11 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    if (action_type.includes("edit")) {
+                                        $('#myModal').modal('hide');
+                                        updateRowData();
+                                    }
+                                    else location.reload();
                                 }
                             })
                         }
@@ -692,7 +917,7 @@ $NhaCungCapList = $ModelNhaCungCap->get_AllNhaCungCap();
                                 'Vui lòng kiểm tra lại!',
                                 'error'
                             )
-                            }
+                        }
                     },
                     complete: function() {
                         $this.attr('disabled', false).html($caption);

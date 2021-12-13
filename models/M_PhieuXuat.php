@@ -91,10 +91,22 @@ class Model_PhieuXuat
             }
         }
 
-        $sql = "DELETE FROM ct_phieuxuat WHERE MaPX='" . $id . "'";
-        $result = $conn->query($sql);
-        if ($result)
+        if (count($ListCTPhieuXuat) > 0)
         {
+            $sql = "DELETE FROM ct_phieuxuat WHERE MaPX='" . $id . "'";
+            $result = $conn->query($sql);
+            if ($result)
+            {
+                $sql = "DELETE FROM phieuxuat WHERE MaPX='" . $id . "'";
+                $result = $conn->query($sql);
+                if ($result)
+                {
+                    return 1;
+                }
+                return 0;
+            }
+        }
+        else {
             $sql = "DELETE FROM phieuxuat WHERE MaPX='" . $id . "'";
             $result = $conn->query($sql);
             if ($result)
@@ -103,14 +115,13 @@ class Model_PhieuXuat
             }
             return 0;
         }
-        return 0;
     }
 
     public function generate_MaPhieuXuat()
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("phieuxuat", "px");
+        return $general_cmd->getIDNum("phieuxuat", "PX", "MaPX");
     }
 }
 
@@ -149,6 +160,7 @@ class Model_CT_PhieuXuat
             
             return $CTPhieuXuatArr;
         }
+        return $CTPhieuXuatArr;
     }
 
     public function add_CT_PhieuXuat($px)

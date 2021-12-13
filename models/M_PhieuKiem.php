@@ -97,7 +97,7 @@ class Model_PhieuKiem
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("phieukiem", "pk");
+        return $general_cmd->getIDNum("phieukiem", "PK", "MaPK");
     }
 }
 

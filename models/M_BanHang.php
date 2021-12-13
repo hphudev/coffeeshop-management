@@ -24,6 +24,7 @@
             }
             if ($data->name == "saveOrder")
             {
+                Model_Sale::deleteOrderFail();
                 Model_Sale::saveOrder($data->data);
                 // echo json_encode($data);
             }

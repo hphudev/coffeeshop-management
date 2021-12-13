@@ -225,7 +225,7 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                                         {
                                             array_push($ArrMaNVL, $CTPhieuKiem[$i]->get_MaNVL());
                                             $NguyenVatLieu = $ModelNguyenVatLieu->get_NguyenVatLieuDetails($CTPhieuKiem[$i]->get_MaNVL());
-                                            echo "<tr role='row' class='odd'>";
+                                            echo "<tr role='row' class='odd' id='" . $CTPhieuKiem[$i]->get_MaNVL() . "'>";
                                             echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                             echo "<td class='text-center mater-id'>" . $CTPhieuKiem[$i]->get_MaNVL() . "</td>";
                                             echo "<td class='text-center mater-name'><strong>" . $NguyenVatLieu->get_TenNVL() . "</strong></td>";
@@ -235,10 +235,10 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                                             echo "<td class='text-center mater-stt'>" . getTenTT($TinhTrangList, $CTPhieuKiem[$i]->get_MaTT()) . "</td>";
                                             echo "<td class='text-center mater-note'>" . $CTPhieuKiem[$i]->get_GhiChu() . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" rel="tooltip" class="btn btn-success btn-edit" data-target="#myEditModal" data-toggle="modal">
+                                                    <button type="button" id="' . $CTPhieuKiem[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myEditModal" data-toggle="modal">
                                                         <i class="material-icons">edit</i>
                                                     </button>
-                                                    <button type="button" rel="tooltip" class="btn btn-danger btn-delete" data-target="#myDeleteModal" data-toggle="modal" data-placement="top" title="Xóa">
+                                                    <button type="button" id="' . $CTPhieuKiem[$i]->get_MaNVL() . '" rel="tooltip" class="btn btn-danger btn-delete" data-target="#myDeleteModal" data-toggle="modal">
                                                         <i class="material-icons">close</i>
                                                     </button>
                                                 </td>';
@@ -446,32 +446,33 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
         // edit phiếu xuất
         $(".btn-edit").each(function(index) {
             $(this).on("click", function() {
-                $("#mater-val-lb").text($($(".mater-name").get(index)).text());
-                $("#quantity-report").val($($(".mater-quantity-rp").get(index)).text());
-                $("#quantity-check").val($($(".mater-quantity-ck").get(index)).text());
-                if ($($(".mater-stt").get(index)).text() == "") {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
+                action_type = "edit";
+
+                $("#mater-val-lb").text($row.find(".mater-name").text());
+                $("#quantity-report").val($row.find(".mater-quantity-rp").text());
+                $("#quantity-check").val($row.find(".mater-quantity-ck").text());
+                if ($row.find(".mater-stt").text() == "") {
                     $("#mater-sts-val").text("Chọn tình trạng");
                 }
                 else {
-                    $("#mater-sts-val").text($($(".mater-stt").get(index)).text());
+                    $("#mater-sts-val").text($row.find(".mater-stt").text());
                 }
-                $("#note").val($($(".mater-note").get(index)).text());
+                $("#note").val($row.find(".mater-note").text());
 
                 $(".modal-title").text("Chỉnh sửa thông tin");
-                action_type = "edit";
-                obj_id = $($(".mater-id").get(index)).text();
-                console.log(obj_id);
             });
         })
 
         // xoá nvl
         $(".btn-delete").each(function(index) {
             $(this).on("click", function() {
+                var $row = $(this).closest('tr');
+                obj_id = $row.attr('id');
                 $(".modal-title").text("Xóa nguyên vật liệu");
 
                 action_type = "delete";
-                obj_id = $($(".mater-id").get(index)).text();
-                console.log(obj_id);
             });
         })
 
@@ -490,8 +491,32 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
         })
     });
 
+    function getRowIndex() {
+        for (let i = 0; i < $(".btn-edit").length; i++)
+        {
+            if ($($(".btn-edit").get(i)).attr('id') == obj_id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    function removeRow() {
+        var $row = $($(".btn-edit").get(getRowIndex())).closest('tr');
+        $row.remove();
+    }
+
+    function updateRowData() {
+        var $row = $($(".btn-edit").get(getRowIndex())).closest('tr');
+
+        $row.find('.mater-quantity-ck').text($("#quantity-check").val());
+        if ($("#mater-sts-val").text() != "Chọn tình trạng")
+            $row.find(".mater-stt").text($("#mater-sts-val").text());
+        $row.find(".mater-note").text($("#note").val());
+    }
+
     function checkInput() {
-        if ($("#quantity-check").val() == "" || $("#mater-sts-val").text() == "Chọn tình trạng") {
+        if ($("#quantity-check").val() == "" || parseInt($("#quantity-check").val()) < 0) {
             return false;
         }
         return true;
@@ -582,7 +607,8 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                                 'success'
                             ).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();
+                                    $('#myEditModal').modal('hide');
+                                    updateRowData();
                                 }
                             })
                         }
@@ -640,7 +666,8 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                                 'success'
                         ).then((result) => {
                             if (result.isConfirmed) {
-                                location.reload();
+                                $('#myDeleteModal').modal('hide');
+                                removeRow();
                             }
                         })
                     }

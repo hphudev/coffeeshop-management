@@ -2,7 +2,6 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-// $dbname = "coffeemanagement";
 $dbname = "mydb";
 
 // Create connection

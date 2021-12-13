@@ -90,6 +90,6 @@ class Model_LoaiNguyenVatLieu
     {
         include 'M_General_CMD.php';
         $general_cmd = new General_CMD();
-        return $general_cmd->AutoGetID("loai_nguyenvatlieu", "lnvl");
+        return $general_cmd->getIDNum("loai_nguyenvatlieu", "LNVL", "MaLoaiNVL");
     }
 }

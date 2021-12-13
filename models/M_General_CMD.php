@@ -32,6 +32,7 @@ class General_CMD
     public static function getIDNum($table, $prefix, $primaryKey)
     {
         include('../configs/config.php');
+        $prefix =   mb_strtolower($prefix);
         $sql = 'SELECT ' . $primaryKey . ', LENGTH(' . $primaryKey . ') FROM ' . $table .
             ' ORDER BY LENGTH(' . $primaryKey . ') DESC, ' . $primaryKey . " DESC";
         $result = $conn->query($sql);
