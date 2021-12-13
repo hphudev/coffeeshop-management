@@ -42,7 +42,7 @@ class C_PhieuXuat
                 function getMaNV($NhanVienList, $tenNV)
                 {
                     for ($i = 0; $i < count($NhanVienList); $i++) {
-                        if ($NhanVienList[$i]->get_Ten() == $tenNV) {
+                        if (($NhanVienList[$i]->get_HoTenDem() . " " . $NhanVienList[$i]->get_Ten()) == $tenNV) {
                             return $NhanVienList[$i]->get_MaNV();
                         }
                     }
@@ -79,7 +79,7 @@ class C_PhieuXuat
                 function getMaNV($NhanVienList, $tenNV)
                 {
                     for ($i = 0; $i < count($NhanVienList); $i++) {
-                        if ($NhanVienList[$i]->get_Ten() == $tenNV) {
+                        if (($NhanVienList[$i]->get_HoTenDem() . " " . $NhanVienList[$i]->get_Ten()) == $tenNV) {
                             return $NhanVienList[$i]->get_MaNV();
                         }
                     }

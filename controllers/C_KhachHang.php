@@ -179,7 +179,7 @@ class C_KhachHang
                             $KH = $ModelKhachHang->get_KhachHangDetails($_POST['khID']);
                             $KH->set_DiemTV($KH->get_DiemTV() - intval($_POST['point']));
 
-                            if ($ModelKhachHang->update_KhachHang($KH)) {
+                            if ($ModelKhachHang->update_KhachHangPoint($KH)) {
                                 echo "success";
                             } else {
                                 echo "error";

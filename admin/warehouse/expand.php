@@ -338,6 +338,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                     <th class='text-center text-primary'>STT</th>
                                     <th class='text-center text-primary'>Mã NCC</th>
                                     <th class='text-center text-primary'>Tên nhà cung cấp</th>
+                                    <th class='text-center text-primary'>Số điện thoại</th>
                                     <th class='text-center text-primary'>Thao tác</th>
                                 </tr>
                             </thead>
@@ -346,6 +347,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                     <th class='text-center'>STT</th>
                                     <th class='text-center'>Mã NCC</th>
                                     <th class='text-center'>Tên nhà cung cấp</th>
+                                    <th class='text-center'>Số điện thoại</th>
                                     <th class='text-center'>Thao tác</th>
                                 </tr>
                             </tfoot>
@@ -358,6 +360,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                     echo "<td tabindex='0' class='text-center sorting_1'>" . ($i + 1) . "</td>";
                                     echo "<td class='text-center supplier-id'>" . $NhaCungCapList[$i]->get_MaNCC() . "</td>";
                                     echo "<td class='text-center supplier-name'>" . $NhaCungCapList[$i]->get_TenNCC() . "</td>";
+                                    echo "<td class='text-center supplier-phone'>" . $NhaCungCapList[$i]->get_SDT() . "</td>";
                                     echo '<td class="td-actions text-center">
                                             <button type="button" id="' . $NhaCungCapList[$i]->get_MaNCC() . '" rel="tooltip" class="btn btn-success btn-edit-supplier" data-target="#myModal" data-toggle="modal">
                                                 <i class="material-icons">edit</i>
@@ -399,6 +402,15 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                         <p class="input-label text-left">Tên NVL: </p>
                         <input name="name" id="obj-name-val" class="form-control input-value"
                             required type="text" placeholder="Nhập tên"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group bmd-form-group phone-box" hidden>
+                    <div class="fields-group">
+                        <p class="input-label text-left">Số điện thoại: </p>
+                        <input name="name" id="obj-phone-val" class="form-control input-value"
+                            required type="number" placeholder="Nhập số điện thoại"
                         >
                     </div>
                 </div>
@@ -453,6 +465,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
             path = "../controllers/C_DonViTinh.php";
             $(".input-label").text("Tên đơn vị tính:");
             $(".modal-title").text("Thêm đơn vị tính");
+            $(".phone-box").attr("hidden", true);
             $("#obj-name-val").val("");
         });
 
@@ -463,6 +476,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
             path = "../controllers/C_LoaiNguyenVatLieu.php";
             $(".input-label").text("Tên loại ng. vật liệu:");
             $(".modal-title").text("Thêm loại nguyên vật liệu");
+            $(".phone-box").attr("hidden", true);
             $("#obj-name-val").val("");
         });
 
@@ -473,6 +487,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
             path = "../controllers/C_TinhTrang.php";
             $(".input-label").text("Tên tình trạng:");
             $(".modal-title").text("Thêm tình trạng");
+            $(".phone-box").attr("hidden", true);
             $("#obj-name-val").val("");
         });
 
@@ -482,8 +497,11 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
             action_type = "add-supplier";
             path = "../controllers/C_NhaCungCap.php";
             $(".input-label").text("Tên nhà cung cấp:");
+            $(".phone-box .input-label").text("Số điện thoại:");
             $(".modal-title").text("Thêm nhà cung cấp");
+            $(".phone-box").removeAttr("hidden");
             $("#obj-name-val").val("");
+            $("#obj-phone-val").val("");
         });
 
         //edit đvt
@@ -498,6 +516,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                 $(".input-label").text("Tên đơn vị tính:");
                 $(".modal-title").text("Chỉnh sửa đơn vị tính");
                 $("#obj-name-val").val($row.find(".unit-name").text());
+                $(".phone-box").attr("hidden", true);
             });
         });
 
@@ -513,6 +532,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                 $(".input-label").text("Tên loại ng. vật liệu:");
                 $(".modal-title").text("Chỉnh sửa loại nguyên vật liệu");
                 $("#obj-name-val").val($row.find(".type-name").text());
+                $(".phone-box").attr("hidden", true);
             });
         });
 
@@ -528,7 +548,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                 $(".input-label").text("Tên tình trạng:");
                 $(".modal-title").text("Chỉnh sửa tình trạng");
                 $("#obj-name-val").val($row.find(".sts-name").text());
-                console.log(obj_id);
+                $(".phone-box").attr("hidden", true);
             });
         });
 
@@ -542,9 +562,11 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                 path = "../controllers/C_NhaCungCap.php";
 
                 $(".input-label").text("Tên nhà cung cấp:");
+                $(".phone-box .input-label").text("Số điện thoại:");
                 $(".modal-title").text("Chỉnh sửa nhà cung cấp");
                 $("#obj-name-val").val($row.find(".supplier-name").text());
-                console.log(obj_id);
+                $("#obj-phone-val").val($row.find(".supplier-phone").text());
+                $(".phone-box").removeAttr("hidden");
             });
         });
     });
@@ -608,6 +630,7 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
 
             var $row = $($(".btn-edit-supplier").get(index)).closest('tr');
             $row.find('.supplier-name').text($("#obj-name-val").val());
+            $row.find('.supplier-phone').text($("#obj-phone-val").val());
         }
     }
 
@@ -867,9 +890,29 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
         })
     });
 
+    function checkSDT(sdt) {
+        const regex = /(84|0[3|5|7|8|9])+([0-9]{8})/
+        return regex.test(String(sdt));
+    }
+
     function checkInput() {
         if ($("#obj-name-val").val() == "") {
+            Swal.fire(
+                'Thất bại!',
+                'Vui lòng nhập đủ dữ liệu!',
+                'warning'
+            )
             return false;
+        }
+        else {
+            if (!checkSDT($("#obj-phone-val").val())) {
+                Swal.fire(
+                    'Thất bại!',
+                    'Số điện thoại không đúng định dạng!',
+                    'warning'
+                )
+                return false;
+            }
         }
         return true;
     }   
@@ -889,7 +932,8 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                     data: {
                         action: action_type,
                         id: obj_id,
-                        name: $("#obj-name-val").val()
+                        name: $("#obj-name-val").val(),
+                        phone: $("#obj-phone-val").val()
                     },
                     beforeSend: function () {
                         $this.attr('disabled', true).html("Đang xử lý...");
@@ -930,14 +974,14 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                     }
                 });
             }
-            else {
-                Swal.fire(
-                    'Thất bại!',
-                    'Vui lòng nhập đủ dữ liệu!',
-                    'error'
-                )
-                // $(".alert").addClass("open");
-            }
+            // else {
+            //     Swal.fire(
+            //         'Thất bại!',
+            //         'Vui lòng nhập đủ dữ liệu!',
+            //         'error'
+            //     )
+            //     // $(".alert").addClass("open");
+            // }
   		});
   	});
 </script>

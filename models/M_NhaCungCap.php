@@ -39,8 +39,8 @@ class Model_NhaCungCap
     public function add_NhaCungCap($ncc)
     {
         include '../configs/config.php';
-        $sql = "INSERT INTO nhacungcap (MaNCC, TenNCC)
-                VALUES ('" . $ncc->get_MaNCC() . "', '" . $ncc->get_TenNCC() . "')";
+        $sql = "INSERT INTO nhacungcap (MaNCC, TenNCC, SDT)
+                VALUES ('" . $ncc->get_MaNCC() . "', '" . $ncc->get_TenNCC() . "', '" . $ncc->get_SDT() . "')";
         $result = $conn->query($sql);
         if ($result)
         {
@@ -56,7 +56,7 @@ class Model_NhaCungCap
     {
         include '../configs/config.php';
         $sql = "UPDATE nhacungcap
-                SET TenNCC='" . $ncc->get_TenNCC() . "' WHERE MaNCC='" . $ncc->get_MaNCC() . "'";
+                SET TenNCC='" . $ncc->get_TenNCC() . "', SDT='" . $ncc->get_SDT() . "' WHERE MaNCC='" . $ncc->get_MaNCC() . "'";
         $result = $conn->query($sql);
         if ($result)
         {
