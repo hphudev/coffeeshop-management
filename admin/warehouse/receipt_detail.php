@@ -6,14 +6,13 @@ include '../models/M_NhanVien.php';
 $ModelNVL = new Model_NguyenVatLieu();
 $NVLList = $ModelNVL->get_AllNguyenVatLieu();
 
-
 $ModelNhanVien = new Model_NhanVien();
 $NhanVienList = $ModelNhanVien->get_AllNhanVien();
 function getTenNV($NhanVienList, $maNV)
 {
     for ($i = 0; $i < count($NhanVienList); $i++) {
         if ($NhanVienList[$i]->get_MaNV() == $maNV) {
-            return $NhanVienList[$i]->get_Ten();
+            return $NhanVienList[$i]->get_HoTenDem() . " " . $NhanVienList[$i]->get_Ten();
         }
     }
 }

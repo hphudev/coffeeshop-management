@@ -8,7 +8,7 @@ function getTenNV($NhanVienList, $maNV)
 {
     for ($i = 0; $i < count($NhanVienList); $i++) {
         if ($NhanVienList[$i]->get_MaNV() == $maNV) {
-            return $NhanVienList[$i]->get_Ten();
+            return $NhanVienList[$i]->get_HoTenDem() . " " . $NhanVienList[$i]->get_Ten();
         }
     }
 }
@@ -285,7 +285,7 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                 <?php
                                 if ($NhanVienList && count($NhanVienList) > 0) {
                                     for ($i = 0; $i < count($NhanVienList); $i++) {
-                                        echo "<p class='dropdown-item staff-opt'>" . $NhanVienList[$i]->get_Ten(). "</p>";
+                                        echo "<p class='dropdown-item staff-opt'>" . $NhanVienList[$i]->get_HoTenDem() . " " . $NhanVienList[$i]->get_Ten(). "</p>";
                                     }
                                 }
                                 ?>
