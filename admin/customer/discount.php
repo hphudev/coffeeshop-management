@@ -410,9 +410,7 @@
                         )
                     }
                 },
-                complete: function() {
-                    modal.modal('hide')
-                },
+                complete: function() {},
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     alert(errorThrown);
                 }
@@ -484,7 +482,13 @@
 
         function checkNgayBD() {
             if (!$('#btnConfirm').hasClass('view')) {
+                var today = new Date()
                 var ngaybd = new Date($('#inputNgayBD').val())
+
+                if (today.getFullYear() == ngaybd.getFullYear() &&
+                    today.getMonth() == ngaybd.getMonth() &&
+                    today.getDate() == ngaybd.getDate())
+                    return true;
 
                 if (ngaybd < new Date()) {
                     Swal.fire(
