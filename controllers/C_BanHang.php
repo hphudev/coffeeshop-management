@@ -1,4 +1,5 @@
 <script type="text/javascript">
+
     function checkSameName(valueA, valueB) {
         valueA = valueA.toLowerCase();
         valueB = valueB.toLowerCase();
@@ -69,118 +70,142 @@
 
     function payOrder() {
         // if (sessionStorage`)
-        let bill = JSON.parse(sessionStorage.getItem('bill'));
-        if (bill === null || bill.length == 0) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Order không có món',
-                showConfirmButton: true,
-                timer: 2000
-            });
-            return;
-        } else
-            Swal.fire({
-                icon: 'info',
-                title: 'Đang thiết lập thanh toán',
-                text: 'Hệ thống đang gửi order lên nhà bếp và in phiếu thanh toán',
-                showConfirmButton: false,
-                allowOutsideClick: false
-                // timer: 800
-            });
-        Swal.showLoading();
-        setTimeout(() => {
-            let func = {};
-            // func.id = "MON001";
-            func.name = "saveOrder";
-            func.data = JSON.parse(sessionStorage.getItem('bill'));
-            console.log(func);
-            $.ajax({
-                type: "POST",
-                data: {
-                    func: JSON.stringify(func)
-                },
-                url: "../models/M_BanHang.php",
-                // dataType: "json",
-                timeout: 5000,
-                success: function(response) {
-                    Swal.close();
-                    //console.log(response);
-                    // sessionStorage.removeItem('bill');
-                    $("#bill").modal('hide');
-                    // Swal.fire({
-                    //     title: response
-                    // })
-                    $.ajax({
-                        type: "POST",
-                        url: "/coffeeshopmanagement/controllers/C_HoaDon.php",
-                        data: {
-                            action: "pay",
-                            id: response,
-                        },
-                        beforeSend: function() {},
-                        success: function(response) {
-                            //alert(response)
-                            console.log(response);
-                            $("#modalThanhToan").html(response);
-                        },
-                        complete: function() {},
-                        error: function(XMLHttpRequest, textStatus, errorThrown) {
-                            alert(errorThrown);
-                        }
+        let func = {};
+        func.name = 'checkRight';
+        func.id = 'order1';
+        $.ajax({
+            type: "POST",
+            url: "../models/M_BanHang.php",
+            data: {
+                func: JSON.stringify(func)
+            },
+            success: function (response) {
+                // response = JSON.parse(response);
+                // alert(response);
+                if (!response)
+                {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Thất bại",
+                        text: "Tính năng này cần quyền truy cập"
                     })
-                    // if (true)
-                    // {
-                    //     Swal.fire({
-                    //         title: 'Thanh toán thành công',
-                    //         icon: 'success',
-                    //         showConfirmButton: false,
-                    //         timer: 700
-                    //     });
-                    // }
-                    // else
-                    // {
-                    //     Swal.fire({
-                    //         icon: 'error',
-                    //         title: 'Không thể thanh toán',
-                    //         text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
-                    //         showConfirmButton: true,
-                    //         timer: 3000 
-                    //     });
-                    // }
+                    return;
+                }
+                let bill = JSON.parse(sessionStorage.getItem('bill'));
+            if (bill === null || bill.length == 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Order không có món',
+                    showConfirmButton: true,
+                    timer: 2000
+                });
+                return;
+            } else
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Đang thiết lập thanh toán',
+                    text: 'Hệ thống đang gửi order lên nhà bếp và in phiếu thanh toán',
+                    showConfirmButton: false,
+                    allowOutsideClick: false
+                    // timer: 800
+                });
+            Swal.showLoading();
+            setTimeout(() => {
+                let func = {};
+                // func.id = "MON001";
+                func.name = "saveOrder";
+                func.data = JSON.parse(sessionStorage.getItem('bill'));
+                console.log(func);
+                $.ajax({
+                    type: "POST",
+                    data: {
+                        func: JSON.stringify(func)
+                    },
+                    url: "../models/M_BanHang.php",
+                    // dataType: "json",
+                    timeout: 5000,
+                    success: function(response) {
+                        Swal.close();
+                        //console.log(response);
+                        // sessionStorage.removeItem('bill');
+                        $("#bill").modal('hide');
+                        // Swal.fire({
+                        //     title: response
+                        // })
+                        $.ajax({
+                            type: "POST",
+                            url: "/coffeeshopmanagement/controllers/C_HoaDon.php",
+                            data: {
+                                action: "pay",
+                                id: response,
+                            },
+                            beforeSend: function() {},
+                            success: function(response) {
+                                //alert(response)
+                                console.log(response);
+                                $("#modalThanhToan").html(response);
+                            },
+                            complete: function() {},
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                alert(errorThrown);
+                            }
+                        })
+                        // if (true)
+                        // {
+                        //     Swal.fire({
+                        //         title: 'Thanh toán thành công',
+                        //         icon: 'success',
+                        //         showConfirmButton: false,
+                        //         timer: 700
+                        //     });
+                        // }
+                        // else
+                        // {
+                        //     Swal.fire({
+                        //         icon: 'error',
+                        //         title: 'Không thể thanh toán',
+                        //         text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!', 
+                        //         showConfirmButton: true,
+                        //         timer: 3000 
+                        //     });
+                        // }
 
-                },
-                error: function(xmlhttprequest, textstatus, message) {
-                    if (textstatus === "timeout") {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Thời gian phản hồi quá lâu',
-                            text: 'Không thể thanh toán vì có sự cố máy chủ',
-                            showConfirmButton: true,
-                            timer: 3000
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Không thể thanh toán',
-                            text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!',
-                            showConfirmButton: true,
-                            timer: 3000
-                        });
+                    },
+                    error: function(xmlhttprequest, textstatus, message) {
+                        if (textstatus === "timeout") {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Thời gian phản hồi quá lâu',
+                                text: 'Không thể thanh toán vì có sự cố máy chủ',
+                                showConfirmButton: true,
+                                timer: 3000
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Không thể thanh toán',
+                                text: 'Hệ thống gặp sự cố! Vui lòng liên hệ nhà phát hành!',
+                                showConfirmButton: true,
+                                timer: 3000
+                            });
+                        }
                     }
+                });
+                // func = {};
+                // func.name = "getItemName";
+                // func.id = "MON001";
+                // $.ajax({
+                //     type: "POST",
+                //     url: "../models/M_BanHang.php",
+                //     data: {func: JSON.stringify(func)},
+                //     success: function (response) {
+                //         console.log(response);
+                //     }
+                // });
+            }, 1200);
                 }
             });
-            // func = {};
-            // func.name = "getItemName";
-            // func.id = "MON001";
-            // $.ajax({
-            //     type: "POST",
-            //     url: "../models/M_BanHang.php",
-            //     data: {func: JSON.stringify(func)},
-            //     success: function (response) {
-            //         console.log(response);
-            //     }
-            // });
-        }, 1200);
+        
 
     }
 
@@ -305,6 +330,74 @@
         } else {
             let value = JSON.parse(sessionStorage.getItem(idItemSession));
             value.num++;
+            sessionStorage.setItem(idItemSession, JSON.stringify(value));
+        }
+
+        // console.log(sessionStorage.getItem(idItemSession)); 
+        // if ( sessionStorage.getItem(idBadge) === null)
+        //     sessionStorage.setItem(idBadge, 0);
+        // else
+        //     sessionStorage.setItem(idBadge, Number(sessionStorage.getItem(idBadge)) + 1);
+        elementBadge.innerHTML = JSON.parse(sessionStorage.getItem(idItemSession)).num;
+        showOptionTable(idItem);
+        setTimeout(() => {
+            saveWork();
+        }, 500);
+    }
+
+    function oneMoreItemNew(idItem, limitNum) {
+        // alert(idCard);
+        let idItemSession = 'order' + idItem;
+        let idBadge = 'badge' + idItem;
+        let idBtnMinus = 'btnMinus' + idItem;
+        let idBtnAddItemToBill = 'btnAddItemToBill' + idItem;
+        let idBtnShowOptionItemList = 'btnShowOptionItemList' + idItem;
+
+        let elementBadge = document.getElementById(idBadge);
+        let elementBtnMinus = document.getElementById(idBtnMinus);
+        let elementBtnAddItemToBill = document.getElementById(idBtnAddItemToBill);
+        let elementBtnShowOptionItemList = document.getElementById(idBtnShowOptionItemList);
+        console.log(elementBtnAddItemToBill.id);
+
+        if (sessionStorage.getItem(idItemSession) !== null && limitNum <= Number(elementBadge.innerHTML))
+        {
+            Swal.fire({
+                icon: "warning",
+                title: "Cảnh báo",
+                text: "Số lượng tối đa chỉ: " + limitNum.toString(),
+                timer: 5000
+            })
+            return;
+        }
+        if (elementBadge.classList.contains('d-none')) {
+            elementBadge.classList.remove('d-none');
+        }
+        if (elementBtnMinus.classList.contains('d-none')) {
+            elementBtnMinus.classList.remove('d-none');
+        }
+        if (elementBtnAddItemToBill.classList.contains('d-none')) {
+            elementBtnAddItemToBill.classList.remove('d-none');
+        }
+        if (elementBtnShowOptionItemList.classList.contains('d-none')) {
+            elementBtnShowOptionItemList.classList.remove('d-none');
+        }
+        if (sessionStorage.getItem(idItemSession) === null) {
+            let value = {};
+            value.id = idItem;
+            value.num = 1;
+            value.name = "";
+            value.size = "";
+            value.price = 0;
+            value.limitNum = limitNum;
+            value.toppingList = new Array();
+            // console.log(value);
+            sessionStorage.setItem(idItemSession, JSON.stringify(value));
+            // console.log(JSON.stringify(value)); 
+
+        } else {
+            let value = JSON.parse(sessionStorage.getItem(idItemSession));
+            value.num++;
+            value.limitNum = limitNum;
             sessionStorage.setItem(idItemSession, JSON.stringify(value));
         }
 
@@ -633,6 +726,15 @@
     function editAddItem(serial) {
         //console.log(serialBill);
         let bill = JSON.parse(sessionStorage.getItem('bill'));
+        if (bill[serial].limitNum <= bill[serial].num)
+        {
+            Swal.fire({
+                icon: "warning",
+                title: "Cảnh báo",
+                text: "Số lượng tối đa chỉ: " + bill[serial].limitNum.toString()
+            })
+            return;
+        }
         bill[serial].num++;
         let elementBill = document.getElementById('bill_' + serial.toString());
         let elementChild = elementBill.getElementsByClassName('des');
@@ -822,6 +924,8 @@
         });
     });
 
+    
+
     var timerOrder = setInterval(() => {
         // console.log($('#tbFindOrder').val() == '');
         if (!$('#billBlender').is(':visible') || ($('#badgeOrderFinish').text() == '0')) {
@@ -912,28 +1016,45 @@
 </script>
 
 <?php
-include_once '../models/M_BanHang.php';
-include_once '../models/M_Blender.php';
-//include '../models/M_General_CMD.php';
-// echo "<script>alert('" . $_SESSION['id'] . "')</script>";
-if (1 == 2)
-    die("Bạn không có quyền truy cập, ok?");
-
-//$modelSale->sortItemListByNumChoice();
-$itemList = Model_Sale::getItemListFromServer();
-echo
-'  
-        <script type="text/javascript">
-            sessionStorage.setItem("itemList", ' . json_encode($itemList) . ')
-        </script>
-    ';
-include('../admin/sale.php');
-for ($i = 0; $i < count($itemList); $i++) {
-    echo
-    '
-            <script type="text/javascript">
-                checkVisionBadge(\'' . $itemList[$i]->get_MaMon() . '\');
+    include_once '../models/M_BanHang.php';
+    include_once '../models/M_Blender.php';
+    include_once '../models/M_PhanQuyen.php';
+    // include_once '../models/M_General_CMD.php';
+    //include '../models/M_General_CMD.php';
+    // echo "<script>alert('" . $_SESSION['id'] . "')</script>";
+    // $quyen = new Model_PhanQuyen();
+    // echo "<script>alert('" . $_SESSION['maCV'] . "')</script>";
+    if (!General_CMD::checkRight('order0'))
+    {
+        echo '<script>
+            Swal.fire({
+                icon: "warning",
+                title: "Bạn chưa có quyền truy cập vào trang này"
+            })
             </script>
         ';
-}
+        return;
+    }
+    else
+    {
+        // echo '<script>
+        // alert(\'' . General_CMD::checkRight('order0') .'\') </script>';
+    }
+    //$modelSale->sortItemListByNumChoice();
+    $itemList = Model_Sale::getItemListFromServer();
+    echo
+    '  
+            <script type="text/javascript">
+                sessionStorage.setItem("itemList", ' . json_encode($itemList) . ')
+            </script>
+        ';
+    include('../admin/sale.php');
+    for ($i = 0; $i < count($itemList); $i++) {
+        echo
+        '
+                <script type="text/javascript">
+                    checkVisionBadge(\'' . $itemList[$i]->get_MaMon() . '\');
+                </script>
+            ';
+    }
 ?>

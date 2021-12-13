@@ -411,7 +411,7 @@
                     }
                 },
                 complete: function() {
-                    modal.modal('hide')
+                    // modal.modal('hide')
                 },
                 error: function(XMLHttpRequest, textStatus, errorThrown) {
                     alert(errorThrown);
@@ -642,7 +642,7 @@
         }
 
         function deleteKM() {
-            alert(selectedKMID)
+            // alert(selectedKMID)
             $.ajax({
                 type: "POST",
                 url: "/coffeeshopmanagement/controllers/C_KhachHang.php",

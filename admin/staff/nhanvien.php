@@ -49,11 +49,7 @@
                                                 ?> type="button" rel="tooltip" class="btn btnViewNV btn-link btn-info btn-just-icon" data-toggle="tooltip" data-placement="top" title="Thông tin chi tiết">
                                             <i class="material-icons">person</i>
                                         </button>
-                                        <button <?php
-                                                echo 'id="' . $NhanVienList[$i]->get_MaNV() . '"'
-                                                ?> type="button" rel="tooltip" class="btn btn-Delete-NV btn-link btn-danger btn-just-icon" data-toggle="tooltip" data-placement="top" title="Xóa nhân viên">
-                                            <i class="material-icons">close</i>
-                                        </button>
+                                       
                                     </td>
 
                                 <?php
@@ -318,19 +314,20 @@
                 xmlhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         // Swal.fire({
-                        //     title: this.responseText
+                        //     title: (this.responseText == 'success').toString()
                         // })
                         if (this.responseText == 'success') {
                             $("#addNVModel").modal('hide');
-                            // console.log("vào ");
+                            console.log("vào ");
                             Swal.fire({
                                 title: 'Thành công!',
                                 text: 'Thông tin nhân viên đã được thêm',
                                 icon: 'success',
                                 confirmButtonText: 'Ok'
-                            }).then((result) => {
+                            }).then(() => {
                                 $('#btnDSNV').click()
                             })
+                            return;
                         } else if (this.responseText == 'account') {
                             Swal.fire(
                                 'Thất bại!',

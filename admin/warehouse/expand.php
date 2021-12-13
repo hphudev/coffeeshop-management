@@ -905,14 +905,18 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
             return false;
         }
         else {
-            if (!checkSDT($("#obj-phone-val").val())) {
-                Swal.fire(
-                    'Thất bại!',
-                    'Số điện thoại không đúng định dạng!',
-                    'warning'
-                )
-                return false;
+            if ($("#obj-phone-val").val() != '')
+            {
+                if (!checkSDT($("#obj-phone-val").val())) {
+                    Swal.fire(
+                        'Thất bại!',
+                        'Số điện thoại không đúng định dạng!',
+                        'warning'
+                    )
+                    return false;
+                }
             }
+            
         }
         return true;
     }   

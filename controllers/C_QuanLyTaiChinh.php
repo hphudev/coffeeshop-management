@@ -442,8 +442,8 @@
             url: "../models/M_QL_TaiChinh.php",
             data: {func: JSON.stringify(func)},
             success: function (response) {
-                console.log(response);
                 response = JSON.parse(response);
+                console.log(response);
                 let dataGood = [];
                 let labelsTmp = [];
                 for (let i = 0; i < response.length; i++)
@@ -465,8 +465,9 @@
             url: "../models/M_QL_TaiChinh.php",
             data: {func: JSON.stringify(func)},
             success: function (response) {
+                console.log("Tất cả các ngày");
+                response = JSON.parse(response);
                 console.log(response);
-                // response = JSON.parse(response);
                 let dataGood = [];
                 let labelsTmp = [];
                 for (let i = 0; i < response.length; i++)

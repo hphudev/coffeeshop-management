@@ -208,7 +208,7 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                             echo "<td class='text-center supplier'>" . getTenNCC($NhaCungCapList, $PhieuNhapList[$i]->get_MaNCC()) . "</td>";
                                             echo "<td class='text-center total-amount money'>" . $PhieuNhapList[$i]->get_TongTien() . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" id="' . $PhieuNhapList[$i]->get_MaPN() . '" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $PhieuNhapList[$i]->get_MaPN() . '" rel="tooltip" class="btn btn-info btn-view-detail" data-target="" data-toggle="modal">
                                                         <i class="material-icons">info</i>
                                                     </button>
                                                     <button type="button" id="' . $PhieuNhapList[$i]->get_MaPN() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">

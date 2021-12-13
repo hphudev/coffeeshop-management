@@ -1,4 +1,6 @@
 <?php
+// if (!@include_once '../models/M_PhanQuyen.php')
+//     include_once '../models/M_PhanQuyen.php';
 class General_CMD
 {
     public function __construct()
