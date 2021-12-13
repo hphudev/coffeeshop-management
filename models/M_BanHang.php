@@ -45,7 +45,10 @@
             }
             if ($data->name == "checkRight")
             {
-                echo json_encode(General_CMD::checkRight($data->id));
+                if (!@include_once("../models/M_PhanQuyen.php"))
+                    include_once("../models/M_PhanQuyen.php");
+                echo General_CMD::checkRight($data->id);
+                // echo json_encode("ok");
             }
         }
     }

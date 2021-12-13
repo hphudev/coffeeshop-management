@@ -161,7 +161,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <!-- <div class="col-md-12">
                                     <div class="form-check">
                                         <label class="form-check-label">
                                             <input id="order2" class="form-check-input" type="checkbox" value="" disabled>
@@ -171,7 +171,7 @@
                                             </span>
                                         </label>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

@@ -196,7 +196,7 @@ function getTenNV($NhanVienList, $maNV)
                                             echo "<td class='text-center main-staff'>" . getTenNV($NhanVienList, $PhieuKiemList[$i]->get_MaNVKiem()) . "</td>";
                                             echo "<td class='text-center sup-staff'>" . getTenNV($NhanVienList, $PhieuKiemList[$i]->get_MaNVPK()) . "</td>";
                                             echo '<td class="td-actions text-center">
-                                                    <button type="button" id="' . $PhieuKiemList[$i]->get_MaPK() . '" rel="tooltip" class="btn btn-info btn-view-detail" data-target="#myModal" data-toggle="modal">
+                                                    <button type="button" id="' . $PhieuKiemList[$i]->get_MaPK() . '" rel="tooltip" class="btn btn-info btn-view-detail" data-target="" data-toggle="modal">
                                                         <i class="material-icons">info</i>
                                                     </button>
                                                     <button type="button" id="' . $PhieuKiemList[$i]->get_MaPK() . '" rel="tooltip" class="btn btn-success btn-edit" data-target="#myModal" data-toggle="modal">

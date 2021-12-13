@@ -55,9 +55,9 @@ if (isset($_SESSION['id'])) {
             </h3>
           </div>
           <div class="container-fluid text-center" style="margin-top: -50px">
-            <button id="btnDK" class="btn btn-round bg-success text-light" style="width: 30%; font-weight: bold">
+            <!-- <button id="btnDK" class="btn btn-round bg-success text-light" style="width: 30%; font-weight: bold">
               Đăng ký
-            </button>
+            </button> -->
             <button class="btn btn-round bg-danger text-light" data-toggle="modal" data-target="#loginModal" type="button" style="width: 30%; margin-left: 30px; font-weight: bold">
               Đăng nhập
             </button>
@@ -76,12 +76,11 @@ if (isset($_SESSION['id'])) {
       <div class="modal-content">
         <div class="card card-signup card-plain">
           <div class="modal-header bg-dark">
-            <div class="card-header card-header-danger text-center" style="width: 9rem">
+            <div class="card-header  text-center" style="width: 12rem">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                <i class="material-icons text-light">clear</i>
+                <i class="material-icons text-dark">clear</i>
               </button>
-
-              <h4 class="card-title">Đăng nhập</h4>
+              <h4 class="card-title" >Đăng nhập</h4>
             </div>
           </div>
           <div class="modal-body">
@@ -112,7 +111,7 @@ if (isset($_SESSION['id'])) {
             </form>
           </div>
           <div class="modal-footer justify-content-center">
-            <a id="btnLogin" class="btn btn-danger btn-round btn-wd btn-lg" style="font-weight: bold">ĐĂNG NHẬP</a>
+            <a id="btnLogin" class="btn btn-danger btn-round btn-wd btn-lg text-light" style="font-weight: bold">ĐĂNG NHẬP</a>
           </div>
         </div>
       </div>
