@@ -1024,7 +1024,8 @@ $AllTopping = $ModelTopping->getAllTopping();
             }
         } else {
             if ($("#name-val").val() == "" || $("#type-val").text() == "Chọn loại món" ||
-                $("#unit-val").text() == "Chọn ĐVT" || $("#description-val").val() == "") {
+                $("#unit-val").text() == "Chọn ĐVT" || $("#description-val").val() == "" ||
+                sizeRowArr.length < 1) {
                     return false;
             }
         }
