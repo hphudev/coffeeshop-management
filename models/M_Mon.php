@@ -163,4 +163,23 @@ class Model_Mon
         $general_cmd = new General_CMD();
         return $general_cmd->getIDNum("mon", "MON", "MaMon");
     }
+
+    public function update_SellAmount($MaMon, $SL)
+    {
+        $amount = 0;
+        include '../configs/config.php';
+        $sql = 'SELECT SoLanDung FROM mon WHERE MaMon="' . $MaMon . '"';
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $amount = intval($row['SoLanDung']);
+            }
+        } else {
+            $amount = 0;
+        }
+        $amount += $SL;
+        $sql = 'UPDATE `mon` SET SoLanDung="' . $amount . '" ' .
+            'WHERE MaMon="' . $MaMon . '"';
+        $result = $conn->query($sql);
+    }
 }

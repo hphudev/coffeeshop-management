@@ -95,7 +95,7 @@
                         echo "<td>" . $ModelMon->get_NameById($CTHD->get_MaMon()) . " " . $CTHD->get_TenDonVi() . "</td>";
                         echo "<td>" . $CTHD->get_SoLuong() . "</td>";
                         echo "<td>" . $CTHD->get_DonGia() . "</td>";
-                        echo "<td>" . $CTHD->get_ThanhTien() . "</td>";
+                        echo "<td thanhtien>" . $CTHD->get_ThanhTien() . "</td>";
                         echo "</tr>";
                     }
                     ?>
@@ -161,3 +161,7 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {})
+</script>

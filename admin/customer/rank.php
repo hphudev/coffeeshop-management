@@ -16,7 +16,6 @@
                         <table id="tableNhanVien" class="table table-striped table-no-bordered table-hover dataTable dtr-inline" cellspacing="0" role="grid" aria-describedby="datatables_info">
                             <thead>
                                 <tr role="row">
-                                    <th class='text-center text-info'>Mã hạng thành viên</th>
                                     <th class='text-center text-info'>Tên hạng thành viên</th>
                                     <th class='text-center text-info'>Điểm tích lũy lên hạng (VNĐ)</th>
                                     <th class='text-center text-info'>Tỷ lệ tích lũy</th>
@@ -26,7 +25,6 @@
                             </thead>
                             <tfoot>
                                 <tr>
-                                    <th class='text-center text-info'>Mã hạng thành viên</th>
                                     <th class='text-center text-info'>Tên hạng thành viên</th>
                                     <th class='text-center text-info'>Điểm tích lũy lên hạng (VNĐ)</th>
                                     <th class='text-center text-info'>Tỷ lệ tích lũy</th>
@@ -38,7 +36,6 @@
                                 <?php
                                 for ($i = 0; $i < count($DSHangTV); $i++) {
                                     echo "<tr class='text-center' id='" . $DSHangTV[$i]->get_MaLoaiTV() . "'>";
-                                    echo "<td class='text-center maloaitv' >" . $DSHangTV[$i]->get_MaLoaiTV() . "</td>";
                                     echo "<td class='text-center tenloai' >" . $DSHangTV[$i]->get_TenLoaiTV() . "</td>";
                                     echo "<td class='text-center diemlenhang' >" . $DSHangTV[$i]->get_DiemLenHang() . "</td>";
                                     echo "<td class='text-center tichdiem' >" . $DSHangTV[$i]->get_TyLeTichDiem() . "</td>";
@@ -182,12 +179,13 @@
                         }).then((result) => {
                             $('#btnHangTV').click()
                         })
-                    } else
+                    } else {
                         Swal.fire(
                             'Thất bại!',
-                            '.Đã xảy ra lỗi. Vui lòng thử lại',
+                            'Đã xảy ra lỗi. Vui lòng thử lại',
                             'error'
                         )
+                    }
                 },
                 complete: function() {
                     modal.modal('hide')
@@ -267,12 +265,18 @@
                         modal.modal('hide')
                         Swal.fire({
                             title: 'Thành công!',
-                            text: "Hạng thành viên đã được cập nhật!",
+                            text: "Hạng thành viên đã được xóa!",
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         }).then((result) => {
                             $('#btnHangTV').click()
                         })
+                    } else if (response.includes("exist")) {
+                        Swal.fire(
+                            'Thất bại!',
+                            'Không thể xóa vì có khách hàng ở hạng thành viên này!',
+                            'error'
+                        )
                     } else
                         Swal.fire(
                             'Thất bại!',
@@ -332,7 +336,7 @@
                     cancelButtonText: 'Hủy'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        deleteHangTV($row.find('.maloaitv').html())
+                        deleteHangTV($row.attr('id'))
                     }
                 })
             })
