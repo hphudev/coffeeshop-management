@@ -162,7 +162,7 @@ class C_KhachHang
             }
             if ($_POST['action'] == 'addKM') {
                 $KhuyenMai = new KhuyenMai();
-                $KhuyenMai->set_MaKM($General->AutoGetID('khuyenmai', 'km', 'MaKM'));
+                $KhuyenMai->set_MaKM($General->getIDNum('khuyenmai', 'km', 'MaKM'));
                 $KhuyenMai->set_Code($_POST['code']);
                 $KhuyenMai->set_TenKM($_POST['tenkm']);
                 $KhuyenMai->set_ThoiGianBD($_POST['ngaybd']);

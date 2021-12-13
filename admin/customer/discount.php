@@ -52,8 +52,8 @@
                                     echo "<tr class='text-center' id='" . $DSKhuyenMai[$i]->get_MaKM() . "'>";
                                     echo "<td class='text-center code' >" . $DSKhuyenMai[$i]->get_Code() . "</td>";
                                     echo "<td class='text-center tenkm' >" . $DSKhuyenMai[$i]->get_TenKM() . "</td>";
-                                    echo "<td class='text-center ngaybd' >" . date("d-m-Y", $DSKhuyenMai[$i]->get_ThoiGianBD()) . "</td>";
-                                    echo "<td class='text-center ngaykt' >" . date("d-m-Y", $DSKhuyenMai[$i]->get_ThoiGianKT()) . "</td>";
+                                    echo "<td class='text-center ngaybd' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianBD()) . "</td>";
+                                    echo "<td class='text-center ngaykt' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianKT()) . "</td>";
                                     echo "<td class='text-center soluong' >" . $DSKhuyenMai[$i]->get_SoLuong() . "</td>";
                                     echo "<td class='text-center soluongconlai' >" . $DSKhuyenMai[$i]->get_SoLuongConLai() . "</td>";
                                     echo "<td class='text-center phantram' >" . $DSKhuyenMai[$i]->get_PhanTramKM() . "</td>";
@@ -442,7 +442,7 @@
             } else if (point < giatri) {
                 Swal.fire(
                     "Thất bại",
-                    "Không đủ điểm tích lũy!\nVui lòng nhập giá trị nhỏ hơn!",
+                    "Không đủ điểm tích lũy!\nVui lòng nhập giá trị nhỏ hơn " + toMoney($('#khPoint').val() * 1000) + "VNĐ!",
                     "error"
                 )
             } else {
@@ -743,7 +743,7 @@
         })
 
         $('#btnExchangeKM').click(function() {
-            checkPhanQuyen('kh6', function() {
+            checkPhanQuyen('kh5', function() {
                 modal2.modal('show')
                 clearModalData()
             })

@@ -1,5 +1,5 @@
 <?php
- if (!@include("../models/E_Mon.php"))
+if (!@include("../models/E_Mon.php"))
     include_once '../models/E_Mon.php';
 
 class Model_Mon
@@ -49,17 +49,16 @@ class Model_Mon
                         mon (MaMon, TenMon, MaLoaiMon, SoLuong, MaDVT, HinhAnh, MoTa, GhiChu, SoLanDung, NgayThem, NgayChinhSuaLanCuoi, TinhTrang)
                 VALUES
                     ('" . $mon->get_MaMon() . "', '" . $mon->get_TenMon() . "', '" . $mon->get_MaLoaiMon() . "', " .
-                $mon->get_SoLuong() . ", '" . $mon->get_MaDVT() . "', '" . $mon->get_HinhAnh() . "', '" .
-                $mon->get_MoTa() . "', '" . $mon->get_GhiChu() . "', 0, '" . $mon->get_NgayThem() . "', '" .
-                $mon->get_NgayChinhSuaLanCuoi() . "', 'true')";
+            $mon->get_SoLuong() . ", '" . $mon->get_MaDVT() . "', '" . $mon->get_HinhAnh() . "', '" .
+            $mon->get_MoTa() . "', '" . $mon->get_GhiChu() . "', 0, '" . $mon->get_NgayThem() . "', '" .
+            $mon->get_NgayChinhSuaLanCuoi() . "', 'true')";
         $result = $conn->query($sql);
         if ($result) {
             if ($ModelCTMon->addChiTietMon($mon->get_MaMon(), $sizeArr, $priceArr) == 1) {
                 if (!$toppingArr || count($toppingArr) < 1) {
                     return 1;
                 }
-                if ($ModelTopping->addTopping($mon->get_MaMon(), $toppingArr) == 1)
-                {
+                if ($ModelTopping->addTopping($mon->get_MaMon(), $toppingArr) == 1) {
                     return 1;
                 }
                 return 0;
@@ -118,13 +117,11 @@ class Model_Mon
         if ($result) {
             if (count($sizeArr) == 0) {
                 if ($ModelCTMon->deleteChiTietMon($mon->get_MaMon()) == 1) {
-                    if (count($toppingArr) == 0)
-                    {
+                    if (count($toppingArr) == 0) {
                         if ($ModelTopping->deleteTopping($mon->get_MaMon()) == 1) {
                             return 1;
                         }
-                    }
-                    else {
+                    } else {
                         if ($ModelTopping->deleteTopping($mon->get_MaMon()) == 1) {
                             if ($ModelTopping->addTopping($mon->get_MaMon(), $toppingArr) == 1) {
                                 return 1;
@@ -135,13 +132,11 @@ class Model_Mon
             } else {
                 if ($ModelCTMon->deleteChiTietMon($mon->get_MaMon()) == 1) {
                     if ($ModelCTMon->addChiTietMon($mon->get_MaMon(), $sizeArr, $priceArr) == 1) {
-                        if (count($toppingArr) == 0)
-                        {
+                        if (count($toppingArr) == 0) {
                             if ($ModelTopping->deleteTopping($mon->get_MaMon()) == 1) {
                                 return 1;
                             }
-                        }
-                        else {
+                        } else {
                             if ($ModelTopping->deleteTopping($mon->get_MaMon()) == 1) {
                                 if ($ModelTopping->addTopping($mon->get_MaMon(), $toppingArr) == 1) {
                                     return 1;
@@ -167,18 +162,23 @@ class Model_Mon
     public function update_SellAmount($MaMon, $SL)
     {
         $amount = 0;
+        $amount_left = 0;
         include '../configs/config.php';
-        $sql = 'SELECT SoLanDung FROM mon WHERE MaMon="' . $MaMon . '"';
+        $sql = 'SELECT SoLanDung, SoLuong FROM mon WHERE MaMon="' . $MaMon . '"';
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $amount = intval($row['SoLanDung']);
+                $amount_left = intval($row['SoLuong']);
             }
         } else {
             $amount = 0;
         }
         $amount += $SL;
-        $sql = 'UPDATE `mon` SET SoLanDung="' . $amount . '" ' .
+        $amount_left -= $SL;
+        $sql = 'UPDATE `mon` SET ' .
+            'SoLanDung="' . $amount . '", ' .
+            'SoLuong="' . $amount_left . '" ' .
             'WHERE MaMon="' . $MaMon . '"';
         $result = $conn->query($sql);
     }

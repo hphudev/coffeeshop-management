@@ -80,8 +80,6 @@ class C_HoaDon
                     $KhuyenMai->set_SoLuongConLai($KhuyenMai->get_SoLuongConLai() - 1);
                     $ModelKhuyenMai->update_KhuyenMai($KhuyenMai);
                 }
-                // Cap nhat so lan su dung mon
-
 
 
                 $NhanVienThuNgan = $ModelNhanVien->get_NhanVienDetails($HoaDon->get_MaNVLap());

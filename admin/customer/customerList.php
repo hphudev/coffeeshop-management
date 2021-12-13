@@ -368,7 +368,6 @@
         }
 
         function deleteKH(id) {
-            alert(id)
             $.ajax({
                 type: "POST",
                 url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
