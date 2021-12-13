@@ -446,7 +446,9 @@ function getTenNCC($NhaCungCapList, $maNCC)
                                         $('#myModal').modal('hide');
                                         updateRowData();
                                     }
-                                    else location.reload();
+                                    if (action_type == "add") {
+                                        location.reload();
+                                    }
                                 }
                             })
                         }

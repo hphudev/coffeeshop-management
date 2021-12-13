@@ -495,6 +495,7 @@ $ModelNguyenVatLieu = new Model_NguyenVatLieu();
                                         $('#myModal').modal('hide');
                                         updateRowData();
                                     }
+                                    else location.reload();
                                 }
                             })
                         }

@@ -714,7 +714,8 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                     'success'
                                 ).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.reload();
+                                        //location.reload();
+                                        $row.remove();
                                     }
                                 })
                             }
@@ -777,7 +778,8 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                     'success'
                                 ).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.reload();
+                                        //location.reload();
+                                        $row.remove();
                                     }
                                 })
                             }
@@ -840,7 +842,8 @@ $TinhTrangList = $ModelTinhTrang->get_AllTinhTrang();
                                     'success'
                                 ).then((result) => {
                                     if (result.isConfirmed) {
-                                        location.reload();
+                                        // location.reload();
+                                        $row.remove();
                                     }
                                 })
                             }
