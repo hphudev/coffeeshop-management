@@ -1,5 +1,5 @@
 <?php
-include '../models/E_Mon.php';
+include_once '../models/E_Mon.php';
 
 class Model_Mon
 {
