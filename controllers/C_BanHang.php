@@ -120,7 +120,8 @@
                         beforeSend: function() {},
                         success: function(response) {
                             //alert(response)
-                            $("#modalThanhToan").html(response)
+                            console.log(response);
+                            $("#modalThanhToan").html(response);
                         },
                         complete: function() {},
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
@@ -849,55 +850,55 @@
                     if (data[i][0]['TinhTrang'] != 'phuc vu')
                         continue;
                     countOrderFinish++;
-                    let html = '<div id="row' + data[i][0]['MaDM'] + '" class="row blenderOrders" style="padding: 0">' +
-                        '<div id="accordion' + data[i][0]['MaDM'] + '" role="tablist">' +
-                        '<div class="card card-collapse" style="width: 70vw; text-align: center;">' +
-                        '<div class="card-header bg-light border-primary" style=" background-color: white" role="tab" id="heading">' +
-                        '<h5 class="mb-0" style="font-size: 20px; font-weight: 500;">' +
-                        '<a id="title" data-toggle="collapse" href="#collapse' + data[i][0]['MaDM'] + '" aria-expanded="true" aria-controls="collapse" style="display: flex; color: black">' +
-                        'Order <br>' + data[i][0]['SoBan'] +
-                        '<i class="material-icons">keyboard_arrow_down</i>' +
-                        '<div style="display: flex; position: absolute; right: 5%; ">' +
-                        '<button type="button" rel="tooltip" class="btn btn-simple btn-warning" style=" font-weight: 700; background-color: white; color: black" onclick="deleteOrder(\'' + data[i][0]['MaDM'] + '\')">' +
-                        'PHỤC VỤ' +
-                        '<i class="material-icons">person</i>' +
-                        '</button>' +
-                        '</div>' +
-                        '</a>' +
-                        '</h5>' +
-                        '</div>' +
-                        '<div id="collapse' + data[i][0]['MaDM'] + '" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion' + data[i][0]['MaDM'] + '" style="text-align: center;">' +
-                        '<div class="card-body">' +
-                        '<table class="table">' +
-                        '<thead>' +
-                        '<tr>' +
-                        '<th class="text-center" style="font-weight: 500;">STT</th>' +
-                        '<th style="width: 300px; font-weight: 500;">Tên món</th>' +
-                        '<th style="width: 300px; font-weight: 500;">Số lượng</th>' +
-                        '<th style="width: 300px; font-weight: 500;">Kích cỡ</th>' +
-                        '<th style="max-width: 100px; font-weight: 500;">Topping</th>' +
-                        '</tr>' +
-                        '</thead>' +
-                        '<tbody id="content">';
-                    for (let j = 0; j < data[i][1].length; j++) {
-                        html +=
-                            '<tr>' +
-                            '<td class="text-center" style="width: 50px;">' + (j + 1) + '</td>' +
-                            '<td>' + data[i][1][j][0]['TenMon'] + '</td>' +
-                            '<td>' + data[i][1][j][0]['SoLuong'] + '</td>' +
-                            '<td>' + data[i][1][j][0]['TenDonVi'] + '</td>' +
-                            '<td style="max-width: 400px;">' +
-                            data[i][1][j][1] +
-                            '</td>' +
-                            '</tr>'
-                    }
-                    '</tbody>' +
-                    '</table>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
+                    let html = '<div id="row' + data[i][0]['MaDM'] + '" class="row blenderOrders" style="padding: 0; margin: auto">' +
+                                    '<div id="accordion' + data[i][0]['MaDM'] + '" role="tablist">' +
+                                        '<div class="card card-collapse" style="width: 70vw; text-align: center;">' +
+                                            '<div class="card-header bg-light border-primary" style=" background-color: white" role="tab" id="heading">' +
+                                                '<h5 class="mb-0" style="font-size: 20px; font-weight: 500;">' +
+                                                    '<a id="title" data-toggle="collapse" href="#collapse' + data[i][0]['MaDM'] + '" aria-expanded="true" aria-controls="collapse" style="display: flex; color: black">' +
+                                                        'Order <br>' + data[i][0]['SoBan'] +
+                                                        '<i class="material-icons">keyboard_arrow_down</i>' +
+                                                        '<div style="display: flex; position: absolute; right: 5%; ">' +
+                                                            '<button type="button" rel="tooltip" class="btn btn-simple btn-warning" style=" font-weight: 700; background-color: white; color: black" onclick="deleteOrder(\'' + data[i][0]['MaDM'] + '\')">' +
+                                                            'PHỤC VỤ' +
+                                                            '<i class="material-icons">person</i>' +
+                                                            '</button>' +
+                                                        '</div>' +
+                                                    '</a>' +
+                                                '</h5>' +
+                                            '</div>' +
+                                            '<div id="collapse' + data[i][0]['MaDM'] + '" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion' + data[i][0]['MaDM'] + '" style="text-align: center;">' +
+                                                '<div class="card-body">' +
+                                                    '<table class="table">' +
+                                                        '<thead>' +
+                                                            '<tr>' +
+                                                                '<th class="text-center" style="font-weight: 500;">STT</th>' +
+                                                                '<th style="width: 300px; font-weight: 500;">Tên món</th>' +
+                                                                '<th style="width: 300px; font-weight: 500;">Số lượng</th>' +
+                                                                '<th style="width: 300px; font-weight: 500;">Kích cỡ</th>' +
+                                                                '<th style="max-width: 100px; font-weight: 500;">Topping</th>' +
+                                                            '</tr>' +
+                                                        '</thead>' +
+                                                        '<tbody id="content">';
+                                                    for (let j = 0; j < data[i][1].length; j++) {
+                                                        html +=
+                                                            '<tr>' +
+                                                                '<td class="text-center" style="width: 50px;">' + (j + 1) + '</td>' +
+                                                                '<td>' + data[i][1][j][0]['TenMon'] + '</td>' +
+                                                                '<td>' + data[i][1][j][0]['SoLuong'] + '</td>' +
+                                                                '<td>' + data[i][1][j][0]['TenDonVi'] + '</td>' +
+                                                                '<td style="max-width: 400px;">' +
+                                                                data[i][1][j][1] +
+                                                                '</td>' +
+                                                            '</tr>'
+                                                    }
+                                                        '</tbody>' +
+                                                    '</table>' +
+                                                '</div>' +
+                                            '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>';
                     document.getElementById('blenderCustomer').innerHTML += html;
                 }
                 document.getElementById('badgeOrderFinish').innerHTML = countOrderFinish;
@@ -914,7 +915,7 @@
 include_once '../models/M_BanHang.php';
 include_once '../models/M_Blender.php';
 //include '../models/M_General_CMD.php';
-
+// echo "<script>alert('" . $_SESSION['id'] . "')</script>";
 if (1 == 2)
     die("Bạn không có quyền truy cập, ok?");
 

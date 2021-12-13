@@ -19,7 +19,7 @@
         {
             return $this->MaTDM;
         }
-        function set_MaCTDM($mactdm)
+        function set_MaCTDM($mactdm)    
         {
             $this->MaCTDM = $mactdm;
         }

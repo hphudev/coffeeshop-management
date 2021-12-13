@@ -21,7 +21,7 @@
                                     <th class='text-center text-info'>SĐT</th>
                                     <th class='text-center text-info'>Giới tính</th>
                                     <th class='text-center text-info'>Loại thành viên</th>
-                                    <th class='text-center text-info'>Điểm thành viên</th>
+                                    <th class='text-center text-info'>Điểm tích lũy</th>
                                     <th class='text-center text-info'>Ngày đăng ký</th>
                                     <th class='text-center text-info'>Tổng chi (VNĐ)</th>
                                     <th class='text-center text-info'>Thao tác</th>
@@ -34,7 +34,7 @@
                                     <th class='text-center text-info'>SĐT</th>
                                     <th class='text-center text-info'>Giới tính</th>
                                     <th class='text-center text-info'>Loại thành viên</th>
-                                    <th class='text-center text-info'>Điểm thành viên</th>
+                                    <th class='text-center text-info'>Điểm tích lũy</th>
                                     <th class='text-center text-info'>Ngày đăng ký</th>
                                     <th class='text-center text-info'>Tổng chi (VNĐ)</th>
                                     <th class='text-center text-info'>Thao tác</th>
@@ -42,7 +42,7 @@
                             </tfoot>
                             <tbody>
                                 <?php
-                                if (count($DSKhachHang) > 0) {
+                                if ($DSKhachHang != null) {
                                     for ($i = 0; $i < count($DSKhachHang); $i++) {
                                         echo "<tr class='text-center' id='" . $DSKhachHang[$i]->get_MaKH() . "'>";
                                         echo "<td class='text-center makh' >" . $DSKhachHang[$i]->get_MaKH() . "</td>";
@@ -109,7 +109,7 @@
                             <div class="row">
                                 <div class=" col-md-6">
                                     <label class="bmd-label-floating">Số điện thoại</label>
-                                    <input id="inputSDT" type="number" class="form-control personal_info" value="0">
+                                    <input id="inputSDT" type="text" class="form-control personal_info" value="0">
                                 </div>
                                 <div class=" col-md-6">
                                     <label class="bmd-label-floating">Ngày đăng ký</label>
@@ -223,8 +223,8 @@
             $('#inputHoTen').attr('value', '')
             $('#inputSDT').attr('value', '')
             $('#inputNgayDK').attr('value', today)
-            $('#inputDiemTV').attr('value', '')
-            $('#inputTongChi').attr('value', '')
+            $('#inputDiemTV').attr('value', '0')
+            $('#inputTongChi').attr('value', '0')
         }
 
         function updateKH() {
@@ -304,6 +304,13 @@
                     "warning"
                 )
                 return false;
+            } else if (!checkSDT($('#inputSDT').val())) {
+                Swal.fire(
+                    "Thất bại",
+                    "Số điện thoại không đúng định dạng!",
+                    "warning"
+                )
+                return false;
             }
             return true;
         }
@@ -330,13 +337,15 @@
                     //     title: response,
                     // })
                     if (response.includes("success")) {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin khách hàng đã được cập nhật',
-                            'success'
-                        )
                         modal.modal('hide')
-                        $('#btnDSKH').click()
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: 'Thông tin khách hàng đã được thêm mới',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then(result => {
+                            $('#btnDSKH').click()
+                        })
                     } else if (response.includes("phone")) {
                         Swal.fire(
                             'Thất bại!',
@@ -359,6 +368,7 @@
         }
 
         function deleteKH(id) {
+            alert(id)
             $.ajax({
                 type: "POST",
                 url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
@@ -374,13 +384,16 @@
                     //     title: response
                     // })
                     if (response.includes("success")) {
-                        Swal.fire(
-                            'Thành công!',
-                            'Thông tin khách hàng đã được xóa',
-                            'success'
-                        )
                         modal.modal('hide')
-                        $('#btnDSKH').click()
+
+                        Swal.fire({
+                            title: 'Thành công!',
+                            text: 'Thông tin khách hàng đã được xóa',
+                            icon: 'success',
+                            confirmButtonText: 'Ok'
+                        }).then(result => {
+                            $('#btnDSKH').click()
+                        })
                     } else {
                         Swal.fire(
                             'Thất bại!',
@@ -429,8 +442,8 @@
         })
 
         $('.btnDeleteKH').click(function() {
+            var $row = $(this).closest('tr')
             checkPhanQuyen('kh1', function() {
-                var $row = $(this).closest('tr')
                 Swal.fire({
                     title: 'Bạn có chắc chắn muốn xóa khách hàng?',
                     text: "Việc làm này sẽ không thể hoàn tác!",
@@ -453,7 +466,6 @@
                 if ($(this).hasClass('view')) {
                     updateKH()
                 } else {
-                    alert("add")
                     addKH()
                 }
             }

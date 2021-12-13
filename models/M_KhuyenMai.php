@@ -69,7 +69,6 @@ class Model_KhuyenMai
             `TienKMToiDa`='" . $KhuyenMai->get_TienKMToiDa() .  "',
             `TienHDToiThieu`='" . $KhuyenMai->get_TienHDToiThieu() .  "' 
             WHERE MaKM='" . $KhuyenMai->get_MaKM() . "'";
-        echo $sql;
         if ($conn->query($sql) === TRUE) {
             return true;
         } else {
