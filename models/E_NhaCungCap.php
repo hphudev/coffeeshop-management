@@ -9,7 +9,7 @@ class NhaCungCap
     {
         $this->MaNCC = $row['MaNCC'];
         $this->TenNCC = $row['TenNCC'];
-        $this->SDT = 0;
+        $this->SDT = $row['SDT'];
     }
 
     function set_MaNCC($MaNCC)

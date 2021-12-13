@@ -14,7 +14,8 @@ class C_NhaCungCap
             {
                 $data = array(
                     "MaNCC"=>$ModelNCC->generate_MaNCC(),
-                    "TenNCC"=>$_POST['name']
+                    "TenNCC"=>$_POST['name'],
+                    "SDT"=>$_POST['phone']
                 );
                 
                 $NCC = new NhaCungCap($data);
@@ -32,7 +33,8 @@ class C_NhaCungCap
             {
                 $data = array(
                     "MaNCC"=>$_POST['id'],
-                    "TenNCC"=>$_POST['name']
+                    "TenNCC"=>$_POST['name'],
+                    "SDT"=>$_POST['phone']
                 );
                 
                 $NCC = new NhaCungCap($data);
