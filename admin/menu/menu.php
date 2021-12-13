@@ -215,7 +215,7 @@ $AllTopping = $ModelTopping->getAllTopping();
                                             $status = 'Không sẵn sàng';
                                         }
 
-                                        echo "<tr role='row' class='odd' id='" . $MonList[$i]->get_MaMon() . "'>";
+                                        echo "<tr role='row' class='odd tr' id='" . $MonList[$i]->get_MaMon() . "'>";
                                         echo "<td class='text-center'>". ($i + 1) ."</td>";
                                         echo "<td class='text-center m-id'>". $MonList[$i]->get_MaMon() ."</td>";
                                         echo "<td class='text-center'><img class='img' src='data:image/jpeg;base64,". base64_encode($MonList[$i]->get_HinhAnh()) ."' alt='Món' style='min-width:80px; max-width:100px; min-height: 80px; max-height: 80px; border-radius: 6px;'</td>";
@@ -591,7 +591,7 @@ $AllTopping = $ModelTopping->getAllTopping();
 
     function initModalData($row) {
         var div_index = getHiddenDivIndex();
-        $("#name-val").attr('value', $row.find('.name').text());
+        $("#name-val").val($row.find('.name').text());
         $("#img-val").attr('src', $row.find(".img").attr('src'));
         $("#type-val").text($row.find(".type-name").html());
         $("#unit-val").text($($(".unit").get(div_index)).text());
@@ -618,10 +618,10 @@ $AllTopping = $ModelTopping->getAllTopping();
     }
 
     function updateQuantityAfterAdd(new_quantity) {
-        for (let i = 0; i < $(".odd").length; i++)
-        {
-            if ($($(".odd").get(i)).attr('id') == mon_id) {
-                $($($(".odd").get(i)).find(".quantity")).text(new_quantity);
+        for (let i = 0; i < $(".tr").length; i++)
+        {   
+            if ($($(".tr").get(i)).attr('id') == mon_id) {
+                $($($(".tr").get(i)).find(".quantity")).text(new_quantity);
                 return;
             }
         }
@@ -735,6 +735,7 @@ $AllTopping = $ModelTopping->getAllTopping();
                 $(".sizeRow").remove();
                 $("#btnRemoveAllRow").addClass("disabledbutton");
                 $("#btnRemoveAllTRow").addClass("disabledbutton");
+                $("#toppingTable > tbody").empty();
 
                 action = "add";
                 $(".modal-title").text("Thêm món");
@@ -742,6 +743,7 @@ $AllTopping = $ModelTopping->getAllTopping();
 
                 sizeRowArr = [];
                 priceRowArr = [];
+                toppingRowArr = [];
             } else {
                 e.stopPropagation();
                 Swal.fire(
@@ -1022,7 +1024,8 @@ $AllTopping = $ModelTopping->getAllTopping();
             }
         } else {
             if ($("#name-val").val() == "" || $("#type-val").text() == "Chọn loại món" ||
-                $("#unit-val").text() == "Chọn ĐVT" || $("#description-val").val() == "") {
+                $("#unit-val").text() == "Chọn ĐVT" || $("#description-val").val() == "" ||
+                sizeRowArr.length < 1) {
                     return false;
             }
         }
@@ -1132,7 +1135,6 @@ $AllTopping = $ModelTopping->getAllTopping();
                         $this.attr('disabled', true).html("Đang xử lý...");
                     },
                     success: function (response) {
-                        console.log(response);
                         var jsonData = JSON.parse(response);
     
                         if (jsonData.success == "1")
