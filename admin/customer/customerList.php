@@ -276,6 +276,10 @@
         function checkNgayDK() {
             var today = new Date()
             var ngayDK = new Date($('#inputNgayDK').val())
+            if (today.getFullYear() == ngayDK.getFullYear() &&
+                today.getMonth() == ngayDK.getMonth() &&
+                today.getDate() == ngayDK.getDate())
+                return true;
             if (today < ngayDK) {
                 return false
             } else {
