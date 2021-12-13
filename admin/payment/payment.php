@@ -102,9 +102,9 @@
                                 <th>Số thứ tự</th>
                                 <th>Tên món</th>
                                 <th>Tùy chọn</th>
-                                <th>Đơn giá</th>
+                                <th>Đơn giá (VNĐ)</th>
                                 <th>Số lượng</th>
-                                <th>Thành tiền</th>
+                                <th>Thành tiền (VNĐ)</th>
                             </thead>
                             <tbody>
                                 <?php
@@ -113,9 +113,9 @@
                                     echo "<td>" . ($i + 1) . "</td>";
                                     echo "<td>" . $ModelMon->get_NameById($DatMonDetails[$i]->get_MaMon()) . "</td>";
                                     echo "<td>" . $DatMonDetails[$i]->get_TenDonVi() . "</td>";
-                                    echo "<td>" . $DatMonDetails[$i]->get_DonGia() . "</td>";
+                                    echo "<td class='dongia'>" . $DatMonDetails[$i]->get_DonGia() . "</td>";
                                     echo "<td>" . $DatMonDetails[$i]->get_SoLuong() . "</td>";
-                                    echo "<td>" . $DatMonDetails[$i]->get_SoLuong() * $DatMonDetails[$i]->get_DonGia() . "</td>";
+                                    echo "<td class='thanhtien'>" . $DatMonDetails[$i]->get_SoLuong() * $DatMonDetails[$i]->get_DonGia() . "</td>";
                                 }
                                 ?>
                             </tbody>
@@ -123,9 +123,9 @@
                                 <th>Số thứ tự</th>
                                 <th>Tên món</th>
                                 <th>Tùy chọn</th>
-                                <th>Đơn giá</th>
+                                <th>Đơn giá (VNĐ)</th>
                                 <th>Số lượng</th>
-                                <th>Thành tiền</th>
+                                <th>Thành tiền (VNĐ)</th>
                             </tfoot>
                         </table>
                     </div>
@@ -304,6 +304,14 @@
         pay.html(toMoney(pay_v))
         total.html(toMoney(total_v))
         calculateExcess()
+
+        $('.thanhtien').each(function() {
+            $(this).html(toMoney($(this).html()))
+        })
+
+        $('.dongia').each(function() {
+            $(this).html(toMoney($(this).html()))
+        })
 
         function initSuggesMoney() {
             buttons += '<div class="col-md-4">' +
@@ -533,6 +541,10 @@
             payed_v = toInt($(this).val())
             payed.val(toMoney(payed_v))
             calculateExcess()
+            if (discount_v > pay_v) {
+                excess_v = 0;
+                excess.html(toMoney(excess_v))
+            }
         })
 
         $(".promotion").click(function() {

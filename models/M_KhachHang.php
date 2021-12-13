@@ -127,6 +127,20 @@ class Model_KhachHang
         }
         return null;
     }
+    public function get_firstLoaiTV()
+    {
+        include '../configs/config.php';
+        $sql =  'SELECT * FROM loaithanhvien ORDER BY HangThanhVien DESC';
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $LoaiTV = new LoaiTV();
+                $LoaiTV->clone($row);
+                return $LoaiTV;
+            }
+        }
+        return null;
+    }
     public function get_LoaiTV($id)
     {
         include '../configs/config.php';
@@ -169,6 +183,17 @@ class Model_KhachHang
             return true;
         } else {
             return false;
+        }
+    }
+    public function check_LoaiTV($id)
+    {
+        include '../configs/config.php';
+        $sql =  'SELECT * FROM khachhang WHERE MaLoaiTV="' . $id . '"';
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            return false;
+        } else {
+            return true;
         }
     }
     public function delete_LoaiTV($id)

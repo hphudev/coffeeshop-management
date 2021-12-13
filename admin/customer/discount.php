@@ -52,8 +52,8 @@
                                     echo "<tr class='text-center' id='" . $DSKhuyenMai[$i]->get_MaKM() . "'>";
                                     echo "<td class='text-center code' >" . $DSKhuyenMai[$i]->get_Code() . "</td>";
                                     echo "<td class='text-center tenkm' >" . $DSKhuyenMai[$i]->get_TenKM() . "</td>";
-                                    echo "<td class='text-center ngaybd' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianBD()) . "</td>";
-                                    echo "<td class='text-center ngaykt' >" . date("Y-m-d", $DSKhuyenMai[$i]->get_ThoiGianKT()) . "</td>";
+                                    echo "<td class='text-center ngaybd' >" . date("d-m-Y", $DSKhuyenMai[$i]->get_ThoiGianBD()) . "</td>";
+                                    echo "<td class='text-center ngaykt' >" . date("d-m-Y", $DSKhuyenMai[$i]->get_ThoiGianKT()) . "</td>";
                                     echo "<td class='text-center soluong' >" . $DSKhuyenMai[$i]->get_SoLuong() . "</td>";
                                     echo "<td class='text-center soluongconlai' >" . $DSKhuyenMai[$i]->get_SoLuongConLai() . "</td>";
                                     echo "<td class='text-center phantram' >" . $DSKhuyenMai[$i]->get_PhanTramKM() . "</td>";
@@ -138,15 +138,15 @@
                                 </div>
                                 <div class=" col-md-6">
                                     <label class="bmd-label-floating">Phần trăm khuyến mãi</label>
-                                    <input id="inputPercent" type="number" class="form-control personal_info" value="">
+                                    <input id="inputPercent" type="number" class="form-control personal_info" value="" disabled>
                                 </div>
                                 <div class=" col-md-6">
                                     <label class="bmd-label-floating">Trị giá tối đa (VNĐ)</label>
-                                    <input id="inputMaximum" type="number" class="form-control personal_info" value="">
+                                    <input id="inputMaximum" type="text" class="form-control personal_info" value="">
                                 </div>
                                 <div class=" col-md-6">
                                     <label class="bmd-label-floating">Hóa đơn áp dụng (VNĐ)</label>
-                                    <input id="inputMinimum" type="number" class="form-control personal_info" value="">
+                                    <input id="inputMinimum" type="text" class="form-control personal_info" value="" disabled>
                                 </div>
                             </div>
                         </div>
@@ -248,15 +248,47 @@
             }
         })
 
+        $('.toida').each(function() {
+            $(this).html(toMoney($(this).html()))
+        })
+
+        $('.toithieu').each(function() {
+            $(this).html(toMoney($(this).html()))
+        })
+
+        $('#inputAmount').on('input', function() {
+            if (!$('#btnConfirm').hasClass('view')) {
+                $('#inputAmountLeft').val($('#inputAmount').val())
+            }
+        })
+
+        $('#inputMinimum').on('input', function() {
+            if ($(this).val() == "")
+                $(this).val("0")
+            var amount = toInt($(this).val())
+            $(this).val(toMoney(amount))
+        })
+
+        $('#inputMaximum').on('input', function() {
+            if ($(this).val() == "")
+                $(this).val("0")
+            var amount = toInt($(this).val())
+            $(this).val(toMoney(amount))
+        })
+
         function initModalData($row) {
             $('#inputCode').attr('value', $row.find('.code').html())
             $('#inputName').attr('value', $row.find('.tenkm').html())
             $('#inputNgayBD').attr('value', $row.find('.ngaybd').html())
+            $('#inputNgayBD').attr('disabled', true)
             $('#inputNgayKT').attr('value', $row.find('.ngaykt').html())
             $('#inputAmount').attr('value', $row.find('.soluong').html())
+            $('#inputAmount').attr('disabled', true)
             $('#inputAmountLeft').attr('value', $row.find('.soluongconlai').html())
+            $('#inputAmountLeft').attr('disabled', false)
             $('#inputPercent').attr('value', $row.find('.phantram').html())
             $('#inputMaximum').attr('value', $row.find('.toida').html())
+            $('#inputMaximum').attr('disabled', true)
             $('#inputMinimum').attr('value', $row.find('.toithieu').html())
         }
 
@@ -265,15 +297,19 @@
             var day = ("0" + now.getDate()).slice(-2);
             var month = ("0" + (now.getMonth() + 1)).slice(-2);
             var today = now.getFullYear() + "-" + (month) + "-" + (day);
-            $('#inputCode').attr('value', '')
-            $('#inputName').attr('value', '')
+            $('#inputCode').val("")
+            $('#inputName').val("")
             $('#inputNgayBD').attr('value', today)
+            $('#inputNgayBD').attr('disabled', false)
             $('#inputNgayKT').attr('value', today)
-            $('#inputAmount').attr('value', '')
-            $('#inputAmountLeft').attr('value', '')
-            $('#inputPercent').attr('value', '')
-            $('#inputMaximum').attr('value', '')
-            $('#inputMinimum').attr('value', '')
+            $('#inputAmount').attr('value', ' ')
+            $('#inputAmount').attr('disabled', false)
+            $('#inputAmountLeft').val("")
+            $('#inputAmountLeft').attr('disabled', true)
+            $('#inputPercent').attr('value', '100')
+            $('#inputMaximum').val("")
+            $('#inputMaximum').attr('disabled', false)
+            $('#inputMinimum').val("0")
         }
 
         function updateKhuyenMai() {
@@ -290,8 +326,8 @@
                     soluong: $('#inputAmount').val(),
                     soluongconlai: $('#inputAmountLeft').val(),
                     tyle: $('#inputPercent').val(),
-                    toida: $('#inputMaximum').val(),
-                    toithieu: $('#inputMinimum').val()
+                    toida: toInt($('#inputMaximum').val()),
+                    toithieu: toInt($('#inputMinimum').val())
                 },
                 beforeSend: function() {
 
@@ -340,8 +376,8 @@
                     soluong: $('#inputAmount').val(),
                     soluongconlai: $('#inputAmount').val(),
                     tyle: $('#inputPercent').val(),
-                    toida: $('#inputMaximum').val(),
-                    toithieu: $('#inputMinimum').val()
+                    toida: toInt($('#inputMaximum').val()),
+                    toithieu: toInt($('#inputMinimum').val())
                 },
                 beforeSend: function() {
 
@@ -354,7 +390,7 @@
                         modal.modal('hide')
                         Swal.fire({
                             title: 'Thành công!',
-                            text: "Mã khuyến mãi đã được tạo!\nCode: " + $('#inputKMCode').val(),
+                            text: "Mã khuyến mãi đã được tạo!\nCode: " + $('#inputCode').val(),
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         }).then((result) => {
@@ -394,8 +430,6 @@
             return result;
         }
 
-
-
         function checkPoint() {
             var point = $('#khPoint').val()
             var giatri = $('#inputKMValue').val() / 1000
@@ -420,12 +454,16 @@
             if (!checkName()) {
                 return false
             } else if (!checkAmount()) {
+
                 return false
             } else if (!checkNgayBD()) {
+
                 return false
             } else if (!checkNgayKT()) {
+
                 return false
             } else if (!checkValue()) {
+
                 return false
             }
             return true;
@@ -441,19 +479,24 @@
                 )
                 return false;
             }
+            return true;
         }
 
         function checkNgayBD() {
-            var ngaybd = new Date($('#inputNgayBD').val())
-            alert(ngaybd)
+            if (!$('#btnConfirm').hasClass('view')) {
+                var ngaybd = new Date($('#inputNgayBD').val())
 
-            if (ngaybd < new Date()) {
-                Swal.fire(
-                    'Thất bại!',
-                    'Ngày bắt đầu phải sau ngày hiện tại!',
-                    'error'
-                )
-                return false;
+                if (ngaybd < new Date()) {
+                    Swal.fire(
+                        'Thất bại!',
+                        'Ngày bắt đầu phải sau ngày hiện tại!',
+                        'error'
+                    )
+                    return false;
+                }
+                return true;
+            } else {
+                return true;
             }
         }
 
@@ -469,6 +512,7 @@
                 )
                 return false;
             }
+            return true;
         }
 
         function checkAmount() {
@@ -500,14 +544,13 @@
                 )
                 return false
             }
+            return true;
         }
 
         function checkValue() {
-            var percent = $('#inputPercent').val()
-            var max_value = $('#inputMaximum').val()
-            var min_value = $('#inputMinimum').val()
+            var max_value = toInt($('#inputMaximum').val())
 
-            if (percent == "" || max_value == "" || min_value == "") {
+            if (max_value == null) {
                 Swal.fire(
                     'Thất bại!',
                     'Vui lòng nhập đủ thông tin!',
@@ -516,7 +559,7 @@
                 return false
             }
 
-            if (percent < 0 || max_value < 0 || min_value < 0) {
+            if (max_value < 0) {
                 Swal.fire(
                     'Thất bại!',
                     'Giá trị không được là số âm!',
@@ -526,14 +569,16 @@
             }
 
 
-            if (percent < 0 || percent > 100) {
-                Swal.fire(
-                    'Thất bại!',
-                    'Giá trị phần trăm phải từ 0 đến 100!',
-                    'error'
-                )
-                return false
-            }
+            // if (percent < 0 || percent > 100) {
+            //     Swal.fire(
+            //         'Thất bại!',
+            //         'Giá trị phần trăm phải từ 1 đến 100!',
+            //         'error'
+            //     )
+            //     return false
+            // }
+
+            return true
         }
 
         function createKM(point) {
@@ -548,6 +593,7 @@
                     ngaybd: date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + (date.getDate() + 1),
                     ngaykt: (date.getFullYear() + 1) + "-" + (date.getMonth() + 1) + "-" + (date.getDate() + 1),
                     soluong: 1,
+                    soluongconlai: 1,
                     tyle: 100,
                     toida: $('#inputKMValue').val(),
                     toithieu: 0,
@@ -596,6 +642,7 @@
         }
 
         function deleteKM() {
+            alert(selectedKMID)
             $.ajax({
                 type: "POST",
                 url: "/coffeeshopmanagement/controllers/C_KhachHang.php",
@@ -696,7 +743,7 @@
         })
 
         $('#btnExchangeKM').click(function() {
-            checkPhanQuyen('kh5', function() {
+            checkPhanQuyen('kh6', function() {
                 modal2.modal('show')
                 clearModalData()
             })
@@ -713,8 +760,8 @@
         })
 
         $('.btnDeleteKM').click(function() {
+            var $row = $(this).closest('tr')
             checkPhanQuyen('kh5', function() {
-                var $row = $(this).closest('tr')
                 selectedKMID = $row.attr('id');
                 Swal.fire({
                     title: 'Bạn có chắc chắn muốn xóa khuyến mãi?',

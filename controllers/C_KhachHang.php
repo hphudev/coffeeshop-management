@@ -62,7 +62,7 @@ class C_KhachHang
                 $KhachHang->set_TongChi($_POST['tongchi']);
                 $KhachHang->set_DiemTV($_POST['diemtv']);
                 $KhachHang->set_NgayDK(date('Y-m-d', strtotime($_POST['ngaydk'])));
-                $KhachHang->set_LoaiTV($ModelKhachHang->get_LoaiTVByName($_POST['loaitv']));
+                $KhachHang->set_LoaiTV($ModelKhachHang->get_firstLoaiTV());
 
                 if ($ModelKhachHang->find_KHBySDT($KhachHang->get_SDT()) == null) {
                     if ($ModelKhachHang->add_KhachHang($KhachHang)) {
@@ -117,11 +117,15 @@ class C_KhachHang
                 }
             }
             if ($_POST['action'] == 'deleteHangTV') {
-                if ($ModelKhachHang->delete_LoaiTV($_POST['id'])) {
-                    $ModelKhachHang->updateHTVPosition();
-                    echo "success";
+                if ($ModelKhachHang->check_LoaiTV($_POST['id'])) {
+                    if ($ModelKhachHang->delete_LoaiTV($_POST['id'])) {
+                        $ModelKhachHang->updateHTVPosition();
+                        echo "success";
+                    } else {
+                        echo "error";
+                    }
                 } else {
-                    echo "error";
+                    echo "exist";
                 }
             }
             if ($_POST['action'] == 'findKH') {
